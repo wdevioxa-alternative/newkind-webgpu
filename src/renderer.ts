@@ -54,7 +54,9 @@ export default class Renderer {
             await this.initializeResources();
             this.render();
         } else {
-            await alert( "You browser do not support WebGPU" );
+            console.log(
+                '❌' + ' · Error · ' + 'You browser does`t support WebGPU'
+            );
         }
     }
 
