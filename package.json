@@ -6,8 +6,8 @@
     "scripts": {
         "start": "npm i && npm run build && npm run dev",
         "dev": "http-server",
-        "build": "cross-env NODE_ENV=production ts-node webpack.ts && babel dist -d .",
-        "es5": "babel dist -d ."
+        "build": "cross-env NODE_ENV=production ts-node webpack.ts && babel dist -d dist/es5",
+        "es5": "babel dist -d dist/es5"
     },
     "repository": {
         "type": "git",
