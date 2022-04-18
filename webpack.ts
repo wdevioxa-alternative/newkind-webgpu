@@ -18,7 +18,7 @@ let config: webpack.Configuration = {
         path: path.resolve(__dirname, 'dist')
     },
     resolve: {
-        extensions: ['.ts', '.tsx', 'js'],
+        extensions: ['.ts', '.tsx', '.js'],
         modules: [path.resolve(__dirname, 'src'), 'node_modules']
     },
     module: {
@@ -33,6 +33,15 @@ let config: webpack.Configuration = {
                         isolatedModules: true
                     }
                 }
+            },
+            { 
+                test: /\.(js|jsx)$/, 
+		exclude: /node_modules/, 
+                loader: 'babel-loader',
+		options: {
+                     plugins: ['transform-runtime'],
+                     presets: ['es2015']
+                } 
             },
             {
                 test: /\.wgsl/,
@@ -68,7 +77,7 @@ if (!argv.reduce((prev, cur) => prev || cur === '--watch', false)) {
         if (stats.hasErrors()) {
             let statsJson = stats.toJson();
             console.log(
-                '❌' + ' · Error · ' + 'webgpu-seed failed to compile:'
+                '❌' + ' · Error · ' + 'newkind-graph failed to compile:'
             );
             for (let error of statsJson.errors) {
                 console.log(error.message);
@@ -78,7 +87,7 @@ if (!argv.reduce((prev, cur) => prev || cur === '--watch', false)) {
         console.log(
             '✔️️' +
                 '  · Success · ' +
-                'webgpu-seed' +
+                'newking-graph' +
                 (isProduction ? ' (production) ' : ' (development) ') +
                 'built in ' +
                 (+stats.endTime - +stats.startTime + ' ms.')
@@ -91,7 +100,7 @@ if (!argv.reduce((prev, cur) => prev || cur === '--watch', false)) {
         if (stats.hasErrors()) {
             let statsJson = stats.toJson();
             console.log(
-                '❌' + ' · Error · ' + 'webgpu-seed failed to compile:'
+                '❌' + ' · Error · ' + 'newkind-graph failed to compile:'
             );
             for (let error of statsJson.errors) {
                 console.log(error.message);
@@ -102,7 +111,7 @@ if (!argv.reduce((prev, cur) => prev || cur === '--watch', false)) {
         console.log(
             '✔️️' +
                 '  · Success · ' +
-                'webgpu-seed' +
+                'newkind-graph' +
                 (isProduction ? ' (production) ' : ' (development) ') +
                 'built in ' +
                 (+stats.endTime - +stats.startTime + ' ms.') +
