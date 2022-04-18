@@ -1,7 +1,0 @@
-ertertertertert
-
-ghsdghsdghdfgh
-
-
-фывафывфыв
-фывафывфыв
