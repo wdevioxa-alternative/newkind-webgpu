@@ -53,6 +53,8 @@ export default class Renderer {
             this.resizeBackings();
             await this.initializeResources();
             this.render();
+        } else {
+            alert( "You browser do not support WebGPU" );
         }
     }
 
