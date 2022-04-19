@@ -23,7 +23,6 @@ class Application
 
     createBuffer(arr, usage, device) 
     {
-        // 📏 Align to 4 bytes (thanks @chrimsonite)
         let desc = {
             size: (arr.byteLength + 3) & ~3,
             usage,
