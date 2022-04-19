@@ -7,7 +7,7 @@ module.exports = {
   entry: [ 'babel-polyfill', './src/main.js' ],
   plugins: [
     new HtmlWebpackPlugin({ 
-	title: 'WebGPU Test Page',
+        title: 'WebGPU Test Page',
         filename: 'index.html',
         template: './src/index.hbs'
     }),

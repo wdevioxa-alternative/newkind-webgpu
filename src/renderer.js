@@ -61,6 +61,7 @@ class Application
             format: presentationFormat,
             size: presentationSize,
         });
+    
 /* 
         const vertexShaderWgslCode =
             `
@@ -150,6 +151,7 @@ class Application
         };
         const passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);
         passEncoder.setPipeline(pipeline);
+        /*
         passEncoder.setViewport(
             0,
             0,
@@ -164,6 +166,7 @@ class Application
             this.canvas.width,
             this.canvas.height
         );
+        */
         passEncoder.setVertexBuffer(0, positionBuffer);
         passEncoder.setVertexBuffer(1, colorBuffer);
         passEncoder.setIndexBuffer(indexBuffer, 'uint16');
