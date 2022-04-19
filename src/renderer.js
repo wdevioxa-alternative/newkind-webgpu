@@ -4,7 +4,8 @@ const fragmentShaderWgslCode = require('./shaders/triangle.frag.wgsl');
 const positions = new Float32Array([
     1.0, -1.0, 0.0,
    -1.0, -1.0, 0.0,
-    0.0,  1.0, 0.0
+    0.0,  1.0, 0.0,
+    -2.0,  -2.0, 0.0
 ]);
 
 const colors = new Float32Array([
@@ -13,7 +14,7 @@ const colors = new Float32Array([
     0.0, 0.0, 1.0  // 🔵
 ]);
 
-const indices = new Uint16Array([ 0, 1, 2 ]);
+const indices = new Uint16Array([ 0, 1, 2, 3 ]);
 
 class Application
 {
@@ -151,7 +152,6 @@ class Application
         };
         const passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);
         passEncoder.setPipeline(pipeline);
-        /*
         passEncoder.setViewport(
             0,
             0,
@@ -166,7 +166,6 @@ class Application
             this.canvas.width,
             this.canvas.height
         );
-        */
         passEncoder.setVertexBuffer(0, positionBuffer);
         passEncoder.setVertexBuffer(1, colorBuffer);
         passEncoder.setIndexBuffer(indexBuffer, 'uint16');
