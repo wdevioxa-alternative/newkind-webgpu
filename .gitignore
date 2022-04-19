@@ -38,6 +38,6 @@ ts-node
 
 # Build Files
 temp
-*.js
+dist/*.js
 *.map
 !webpack.*
