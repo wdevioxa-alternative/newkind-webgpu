@@ -4,8 +4,8 @@ const canvas = document.getElementById('gfx');
 
 function setCanvasSize(canvas)
 {
-    canvas.width = window.innerWidth / 2;
-    canvas.height = window.innerHeight / 2;
+    canvas.width = Math.round(window.innerWidth / 2);
+    canvas.height = Math.round(window.innerHeight / 2);
 }
 
 setCanvasSize(canvas);
