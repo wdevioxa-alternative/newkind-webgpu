@@ -6,7 +6,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: [ 'babel-polyfill', './src/main.js' ],
   plugins: [
-    new HtmlWebpackPlugin({ title: 'production' }),
+    new HtmlWebpackPlugin({ 
+	title: 'WebGPU Test Page',
+        filename: 'index.html',
+        template: './src/index.hbs'
+    }),
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),

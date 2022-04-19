@@ -1,7 +1,7 @@
 # Dependency directory
 node_modules
 modules/
-ts-node--*/
+dist
 rss.xml
 
 # Logs
@@ -38,6 +38,5 @@ ts-node
 
 # Build Files
 temp
-dist/*.js
 *.map
 !webpack.*

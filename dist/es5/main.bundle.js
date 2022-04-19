@@ -3,11 +3,162 @@
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 (function () {
-  var t,
-      r,
-      n = {
+  var t = {
     7563: function _(t, r, n) {
-      n(5457), n(2206);
+      function e(t, r, n, e, i, o, u) {
+        try {
+          var a = t[o](u),
+              c = a.value;
+        } catch (t) {
+          return void n(t);
+        }
+
+        a.done ? r(c) : Promise.resolve(c).then(e, i);
+      }
+
+      function i(t, r) {
+        for (var n = 0; n < r.length; n++) {
+          var e = r[n];
+          e.enumerable = e.enumerable || !1, e.configurable = !0, "value" in e && (e.writable = !0), Object.defineProperty(t, e.key, e);
+        }
+      }
+
+      var o = n(9915),
+          u = n(9168),
+          a = new Float32Array([1, -1, 0, -1, -1, 0, 0, 1, 0]),
+          c = new Float32Array([1, 0, 0, 0, 1, 0, 0, 0, 1]),
+          s = new Uint16Array([0, 1, 2]),
+          f = function () {
+        function t(r) {
+          !function (t, r) {
+            if (!(t instanceof r)) throw new TypeError("Cannot call a class as a function");
+          }(this, t), this.canvas = r;
+        }
+
+        var r, n, f, l;
+        return r = t, n = [{
+          key: "createBuffer",
+          value: function value(t, r, n) {
+            var e = {
+              size: t.byteLength + 3 & -4,
+              usage: r,
+              mappedAtCreation: !0
+            },
+                i = n.createBuffer(e);
+            return (t instanceof Uint16Array ? new Uint16Array(i.getMappedRange()) : new Float32Array(i.getMappedRange())).set(t), i.unmap(), i;
+          }
+        }, {
+          key: "start",
+          value: (f = regeneratorRuntime.mark(function t() {
+            var r, n, e, i, f, l, h, v, p, g, d, y, x, m, b, w, S, _;
+
+            return regeneratorRuntime.wrap(function (t) {
+              for (;;) {
+                switch (t.prev = t.next) {
+                  case 0:
+                    if (navigator.gpu) {
+                      t.next = 3;
+                      break;
+                    }
+
+                    return alert("Your browser does`t support WebGPU or it is not enabled. More info: https://webgpu.io"), t.abrupt("return");
+
+                  case 3:
+                    return t.next = 5, navigator.gpu.requestAdapter();
+
+                  case 5:
+                    return r = t.sent, t.next = 8, r.requestDevice();
+
+                  case 8:
+                    n = t.sent, e = this.canvas.getContext("webgpu"), i = window.devicePixelRatio || 1, f = [this.canvas.clientWidth * i, this.canvas.clientHeight * i], l = e.getPreferredFormat(r), e.configure({
+                      device: n,
+                      format: l,
+                      size: f
+                    }), h = this.createBuffer(a, GPUBufferUsage.VERTEX, n), v = this.createBuffer(c, GPUBufferUsage.VERTEX, n), p = this.createBuffer(s, GPUBufferUsage.INDEX, n), g = {
+                      format: "bgra8unorm"
+                    }, d = {
+                      attributes: [{
+                        shaderLocation: 0,
+                        offset: 0,
+                        format: "float32x3"
+                      }],
+                      arrayStride: 12,
+                      stepMode: "vertex"
+                    }, y = {
+                      attributes: [{
+                        shaderLocation: 1,
+                        offset: 0,
+                        format: "float32x3"
+                      }],
+                      arrayStride: 12,
+                      stepMode: "vertex"
+                    }, x = {
+                      bindGroupLayouts: []
+                    }, m = n.createRenderPipeline({
+                      layout: n.createPipelineLayout(x),
+                      vertex: {
+                        module: n.createShaderModule({
+                          code: o
+                        }),
+                        entryPoint: "main",
+                        buffers: [d, y]
+                      },
+                      fragment: {
+                        module: n.createShaderModule({
+                          code: u
+                        }),
+                        entryPoint: "main",
+                        targets: [g]
+                      },
+                      primitive: {
+                        frontFace: "cw",
+                        cullMode: "none",
+                        topology: "triangle-list"
+                      }
+                    }), b = n.createCommandEncoder(), w = e.getCurrentTexture().createView(), S = {
+                      colorAttachments: [{
+                        view: w,
+                        loadValue: {
+                          r: 0,
+                          g: 0,
+                          b: 0,
+                          a: 1
+                        },
+                        storeOp: "store"
+                      }]
+                    }, (_ = b.beginRenderPass(S)).setPipeline(m), _.setViewport(0, 0, this.canvas.width, this.canvas.height, 0, 1), _.setScissorRect(0, 0, this.canvas.width, this.canvas.height), _.setVertexBuffer(0, h), _.setVertexBuffer(1, v), _.setIndexBuffer(p, "uint16"), _.drawIndexed(3, 1), _.end(), n.queue.submit([b.finish()]);
+
+                  case 37:
+                  case "end":
+                    return t.stop();
+                }
+              }
+            }, t, this);
+          }), l = function l() {
+            var t = this,
+                r = arguments;
+            return new Promise(function (n, i) {
+              var o = f.apply(t, r);
+
+              function u(t) {
+                e(o, n, i, u, a, "next", t);
+              }
+
+              function a(t) {
+                e(o, n, i, u, a, "throw", t);
+              }
+
+              u(void 0);
+            });
+          }, function () {
+            return l.apply(this, arguments);
+          })
+        }], n && i(r.prototype, n), Object.defineProperty(r, "prototype", {
+          writable: !1
+        }), t;
+      }();
+
+      t.exports = f;
     },
     7694: function _(t, r, n) {
       n(1761), t.exports = n(5645).RegExp.escape;
@@ -142,8 +293,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             h = 5 == t || l,
             v = r || a;
         return function (r, a, p) {
-          for (var g, d, y = o(r), x = i(y), m = e(a, p, 3), b = u(x.length), S = 0, w = n ? v(r, b) : c ? v(r, 0) : void 0; b > S; S++) {
-            if ((h || S in x) && (d = m(g = x[S], S, y), t)) if (n) w[S] = d;else if (d) switch (t) {
+          for (var g, d, y = o(r), x = i(y), m = e(a, p, 3), b = u(x.length), w = 0, S = n ? v(r, b) : c ? v(r, 0) : void 0; b > w; w++) {
+            if ((h || w in x) && (d = m(g = x[w], w, y), t)) if (n) S[w] = d;else if (d) switch (t) {
               case 3:
                 return !0;
 
@@ -151,14 +302,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
                 return g;
 
               case 6:
-                return S;
+                return w;
 
               case 2:
-                w.push(g);
+                S.push(g);
             } else if (f) return !1;
           }
 
-          return l ? -1 : s || f ? f : w;
+          return l ? -1 : s || f ? f : S;
         };
       };
     },
@@ -459,11 +610,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         var x = e[t],
             m = x,
             b = d ? "set" : "add",
-            S = m && m.prototype,
-            w = {},
+            w = m && m.prototype,
+            S = {},
             _ = function _(t) {
-          var r = S[t];
-          o(S, t, "delete" == t || "has" == t ? function (t) {
+          var r = w[t];
+          o(w, t, "delete" == t || "has" == t ? function (t) {
             return !(y && !f(t)) && r.call(this, 0 === t ? 0 : t);
           } : "get" == t ? function (t) {
             return y && !f(t) ? void 0 : r.call(this, 0 === t ? 0 : t);
@@ -474,15 +625,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           });
         };
 
-        if ("function" == typeof m && (y || S.forEach && !l(function () {
+        if ("function" == typeof m && (y || w.forEach && !l(function () {
           new m().entries().next();
         }))) {
           var E = new m(),
               O = E[b](y ? {} : -0, 1) != E,
-              M = l(function () {
+              P = l(function () {
             E.has(1);
           }),
-              P = h(function (t) {
+              M = h(function (t) {
             new m(t);
           }),
               F = !y && l(function () {
@@ -492,14 +643,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 
             return !t.has(-0);
           });
-          P || ((m = r(function (r, n) {
+          M || ((m = r(function (r, n) {
             s(r, m, t);
             var e = p(new x(), r, m);
             return null != n && c(n, d, e[b], e), e;
-          })).prototype = S, S.constructor = m), (M || F) && (_("delete"), _("has"), d && _("get")), (F || O) && _(b), y && S.clear && delete S.clear;
+          })).prototype = w, w.constructor = m), (P || F) && (_("delete"), _("has"), d && _("get")), (F || O) && _(b), y && w.clear && delete w.clear;
         } else m = g.getConstructor(r, t, d, b), u(m.prototype, n), a.NEED = !0;
 
-        return v(m, t), w[t] = m, i(i.G + i.W + i.F * (m != x), w), y || g.setStrong(m, t, d), m;
+        return v(m, t), S[t] = m, i(i.G + i.W + i.F * (m != x), S), y || g.setStrong(m, t, d), m;
       };
     },
     5645: function _(t) {
@@ -982,10 +1133,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         c(n, r, d);
 
         var b,
-            S,
             w,
+            S,
             _ = function _(t) {
-          if (!h && t in P) return P[t];
+          if (!h && t in M) return M[t];
 
           switch (t) {
             case v:
@@ -1001,22 +1152,22 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         },
             E = r + " Iterator",
             O = y == p,
-            M = !1,
-            P = t.prototype,
-            F = P[l] || P["@@iterator"] || y && P[y],
+            P = !1,
+            M = t.prototype,
+            F = M[l] || M["@@iterator"] || y && M[y],
             A = F || _(y),
             I = y ? O ? _("entries") : A : void 0,
-            j = "Array" == r && P.entries || F;
+            j = "Array" == r && M.entries || F;
 
-        if (j && (w = f(j.call(new t()))) !== Object.prototype && w.next && (s(w, E, !0), e || "function" == typeof w[l] || u(w, l, g)), O && F && F.name !== p && (M = !0, A = function A() {
+        if (j && (S = f(j.call(new t()))) !== Object.prototype && S.next && (s(S, E, !0), e || "function" == typeof S[l] || u(S, l, g)), O && F && F.name !== p && (P = !0, A = function A() {
           return F.call(this);
-        }), e && !m || !h && !M && P[l] || u(P, l, A), a[r] = A, a[E] = g, y) if (b = {
+        }), e && !m || !h && !P && M[l] || u(M, l, A), a[r] = A, a[E] = g, y) if (b = {
           values: O ? A : _(p),
           keys: x ? A : _(v),
           entries: I
-        }, m) for (S in b) {
-          S in P || o(P, S, b[S]);
-        } else i(i.P + i.F * (h || M), r, b);
+        }, m) for (w in b) {
+          w in M || o(M, w, b[w]);
+        } else i(i.P + i.F * (h || P), r, b);
         return b;
       };
     },
@@ -2011,13 +2162,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             x = n(1689),
             m = n(9181),
             b = n(1488),
-            S = n(5286),
-            w = n(508),
+            w = n(5286),
+            S = n(508),
             _ = n(6555),
             E = n(2503),
             O = n(468),
-            M = n(616).f,
-            P = n(9002),
+            P = n(616).f,
+            M = n(9002),
             F = n(3953),
             A = n(6314),
             I = n(50),
@@ -2029,17 +2180,17 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             L = n(2974),
             C = n(6852),
             D = n(5216),
-            G = n(9275),
-            W = n(8693),
-            U = G.f,
-            V = W.f,
+            U = n(9275),
+            G = n(8693),
+            V = U.f,
+            W = G.f,
             B = i.RangeError,
             z = i.TypeError,
             Y = i.Uint8Array,
             $ = "ArrayBuffer",
-            J = "SharedArrayBuffer",
-            K = "BYTES_PER_ELEMENT",
-            q = Array.prototype,
+            q = "SharedArrayBuffer",
+            J = "BYTES_PER_ELEMENT",
+            K = Array.prototype,
             X = c.ArrayBuffer,
             H = c.DataView,
             Z = I(0),
@@ -2053,29 +2204,29 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             ut = R.values,
             at = R.keys,
             ct = R.entries,
-            st = q.lastIndexOf,
-            ft = q.reduce,
-            lt = q.reduceRight,
-            ht = q.join,
-            vt = q.sort,
-            pt = q.slice,
-            gt = q.toString,
-            dt = q.toLocaleString,
+            st = K.lastIndexOf,
+            ft = K.reduce,
+            lt = K.reduceRight,
+            ht = K.join,
+            vt = K.sort,
+            pt = K.slice,
+            gt = K.toString,
+            dt = K.toLocaleString,
             yt = A("iterator"),
             xt = A("toStringTag"),
             mt = F("typed_constructor"),
             bt = F("def_constructor"),
-            St = a.CONSTR,
-            wt = a.TYPED,
+            wt = a.CONSTR,
+            St = a.TYPED,
             _t = a.VIEW,
             Et = "Wrong length!",
             Ot = I(1, function (t, r) {
           return It(N(t, t[bt]), r);
         }),
-            Mt = o(function () {
+            Pt = o(function () {
           return 1 === new Y(new Uint16Array([1]).buffer)[0];
         }),
-            Pt = !!Y && !!Y.prototype.set && o(function () {
+            Mt = !!Y && !!Y.prototype.set && o(function () {
           new Y(1).set({});
         }),
             Ft = function Ft(t, r) {
@@ -2084,11 +2235,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           return n;
         },
             At = function At(t) {
-          if (S(t) && wt in t) return t;
+          if (w(t) && St in t) return t;
           throw z(t + " is not a typed array!");
         },
             It = function It(t, r) {
-          if (!S(t) || !(mt in t)) throw z("It is not a typed array constructor!");
+          if (!w(t) || !(mt in t)) throw z("It is not a typed array constructor!");
           return new t(r);
         },
             jt = function jt(t, r) {
@@ -2102,7 +2253,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           return i;
         },
             Rt = function Rt(t, r, n) {
-          U(t, r, {
+          V(t, r, {
             get: function get() {
               return this._d[n];
             }
@@ -2115,11 +2266,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
               i,
               o,
               u,
-              a = w(t),
+              a = S(t),
               c = arguments.length,
               f = c > 1 ? arguments[1] : void 0,
               l = void 0 !== f,
-              h = P(a);
+              h = M(a);
 
           if (null != h && !_(h)) {
             for (u = h.call(a), e = [], r = 0; !(o = u.next()).done; r++) {
@@ -2211,14 +2362,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             return new (N(n, n[bt]))(n.buffer, n.byteOffset + i * n.BYTES_PER_ELEMENT, g((void 0 === r ? e : y(r, e)) - i));
           }
         },
-            Gt = function Gt(t, r) {
+            Ut = function Ut(t, r) {
           return jt(this, pt.call(At(this), t, r));
         },
-            Wt = function Wt(t) {
+            Gt = function Gt(t) {
           At(this);
           var r = Ft(arguments[1], 1),
               n = this.length,
-              e = w(t),
+              e = S(t),
               i = g(e.length),
               o = 0;
           if (i + r > n) throw B(Et);
@@ -2227,7 +2378,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             this[r + o] = e[o++];
           }
         },
-            Ut = {
+            Vt = {
           entries: function entries() {
             return ct.call(At(this));
           },
@@ -2238,17 +2389,17 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             return ut.call(At(this));
           }
         },
-            Vt = function Vt(t, r) {
-          return S(t) && t[wt] && "symbol" != _typeof(r) && r in t && String(+r) == String(r);
+            Wt = function Wt(t, r) {
+          return w(t) && t[St] && "symbol" != _typeof(r) && r in t && String(+r) == String(r);
         },
             Bt = function Bt(t, r) {
-          return Vt(t, r = x(r, !0)) ? l(2, t[r]) : V(t, r);
+          return Wt(t, r = x(r, !0)) ? l(2, t[r]) : W(t, r);
         },
             zt = function zt(t, r, n) {
-          return !(Vt(t, r = x(r, !0)) && S(n) && m(n, "value")) || m(n, "get") || m(n, "set") || n.configurable || m(n, "writable") && !n.writable || m(n, "enumerable") && !n.enumerable ? U(t, r, n) : (t[r] = n.value, t);
+          return !(Wt(t, r = x(r, !0)) && w(n) && m(n, "value")) || m(n, "get") || m(n, "set") || n.configurable || m(n, "writable") && !n.writable || m(n, "enumerable") && !n.enumerable ? V(t, r, n) : (t[r] = n.value, t);
         };
 
-        St || (W.f = Bt, G.f = zt), u(u.S + u.F * !St, "Object", {
+        wt || (G.f = Bt, U.f = zt), u(u.S + u.F * !wt, "Object", {
           getOwnPropertyDescriptor: Bt,
           defineProperty: zt
         }), o(function () {
@@ -2257,15 +2408,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           return ht.call(this);
         });
         var Yt = v({}, Dt);
-        v(Yt, Ut), h(Yt, yt, Ut.values), v(Yt, {
-          slice: Gt,
-          set: Wt,
+        v(Yt, Vt), h(Yt, yt, Vt.values), v(Yt, {
+          slice: Ut,
+          set: Gt,
           constructor: function constructor() {},
           toString: gt,
           toLocaleString: Ct
-        }), Rt(Yt, "buffer", "b"), Rt(Yt, "byteOffset", "o"), Rt(Yt, "byteLength", "l"), Rt(Yt, "length", "e"), U(Yt, xt, {
+        }), Rt(Yt, "buffer", "b"), Rt(Yt, "byteOffset", "o"), Rt(Yt, "byteLength", "l"), Rt(Yt, "length", "e"), V(Yt, xt, {
           get: function get() {
-            return this[wt];
+            return this[St];
           }
         }), t.exports = function (t, r, n, c) {
           var s = t + ((c = !!c) ? "Clamped" : "") + "Array",
@@ -2275,20 +2426,20 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
               y = p || {},
               x = p && O(p),
               m = !p || !a.ABV,
-              w = {},
+              S = {},
               _ = p && p.prototype,
-              P = function P(t, n) {
-            U(t, n, {
+              M = function M(t, n) {
+            V(t, n, {
               get: function get() {
                 return function (t, n) {
                   var e = t._d;
-                  return e.v[l](n * r + e.o, Mt);
+                  return e.v[l](n * r + e.o, Pt);
                 }(this, n);
               },
               set: function set(t) {
                 return function (t, n, e) {
                   var i = t._d;
-                  c && (e = (e = Math.round(e)) < 0 ? 0 : e > 255 ? 255 : 255 & e), i.v[v](n * r + i.o, e, Mt);
+                  c && (e = (e = Math.round(e)) < 0 ? 0 : e > 255 ? 255 : 255 & e), i.v[v](n * r + i.o, e, Pt);
                 }(this, n, t);
               },
               enumerable: !0
@@ -2304,8 +2455,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
                 l = 0,
                 v = 0;
 
-            if (S(n)) {
-              if (!(n instanceof X || (c = b(n)) == $ || c == J)) return wt in n ? Nt(p, n) : Tt.call(p, n);
+            if (w(n)) {
+              if (!(n instanceof X || (c = b(n)) == $ || c == q)) return St in n ? Nt(p, n) : Tt.call(p, n);
               o = n, v = Ft(e, r);
               var y = n.byteLength;
 
@@ -2324,7 +2475,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
               e: a,
               v: new H(o)
             }); l < a;) {
-              P(t, l++);
+              M(t, l++);
             }
           }), _ = p.prototype = E(Yt), h(_, "constructor", p)) : o(function () {
             p(1);
@@ -2334,30 +2485,30 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             new p(), new p(null), new p(1.5), new p(t);
           }, !0) || (p = n(function (t, n, e, i) {
             var o;
-            return f(t, p, s), S(n) ? n instanceof X || (o = b(n)) == $ || o == J ? void 0 !== i ? new y(n, Ft(e, r), i) : void 0 !== e ? new y(n, Ft(e, r)) : new y(n) : wt in n ? Nt(p, n) : Tt.call(p, n) : new y(d(n));
-          }), Z(x !== Function.prototype ? M(y).concat(M(x)) : M(y), function (t) {
+            return f(t, p, s), w(n) ? n instanceof X || (o = b(n)) == $ || o == q ? void 0 !== i ? new y(n, Ft(e, r), i) : void 0 !== e ? new y(n, Ft(e, r)) : new y(n) : St in n ? Nt(p, n) : Tt.call(p, n) : new y(d(n));
+          }), Z(x !== Function.prototype ? P(y).concat(P(x)) : P(y), function (t) {
             t in p || h(p, t, y[t]);
           }), p.prototype = _, e || (_.constructor = p));
           var F = _[yt],
               A = !!F && ("values" == F.name || null == F.name),
-              I = Ut.values;
-          h(p, mt, !0), h(_, wt, s), h(_, _t, !0), h(_, bt, p), (c ? new p(1)[xt] == s : xt in _) || U(_, xt, {
+              I = Vt.values;
+          h(p, mt, !0), h(_, St, s), h(_, _t, !0), h(_, bt, p), (c ? new p(1)[xt] == s : xt in _) || V(_, xt, {
             get: function get() {
               return s;
             }
-          }), w[s] = p, u(u.G + u.W + u.F * (p != y), w), u(u.S, s, {
+          }), S[s] = p, u(u.G + u.W + u.F * (p != y), S), u(u.S, s, {
             BYTES_PER_ELEMENT: r
           }), u(u.S + u.F * o(function () {
             y.of.call(p, 1);
           }), s, {
             from: Tt,
             of: kt
-          }), K in _ || h(_, K, r), u(u.P, s, Dt), L(s), u(u.P + u.F * Pt, s, {
-            set: Wt
-          }), u(u.P + u.F * !A, s, Ut), e || _.toString == gt || (_.toString = gt), u(u.P + u.F * o(function () {
+          }), J in _ || h(_, J, r), u(u.P, s, Dt), L(s), u(u.P + u.F * Mt, s, {
+            set: Gt
+          }), u(u.P + u.F * !A, s, Vt), e || _.toString == gt || (_.toString = gt), u(u.P + u.F * o(function () {
             new p(1).slice();
           }), s, {
-            slice: Gt
+            slice: Ut
           }), u(u.P + u.F * (o(function () {
             return [1, 2].toLocaleString() != new p([1, 2]).toLocaleString();
           }) || !o(function () {
@@ -2389,13 +2540,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           x = "ArrayBuffer",
           m = "DataView",
           b = "Wrong index!",
-          _S2 = e.ArrayBuffer,
-          _w = e.DataView,
+          _w2 = e.ArrayBuffer,
+          _S = e.DataView,
           _ = e.Math,
           E = e.RangeError,
           O = e.Infinity,
-          M = _S2,
-          P = _.abs,
+          P = _w2,
+          M = _.abs,
           F = _.pow,
           A = _.floor,
           I = _.log,
@@ -2419,7 +2570,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             l = 0,
             h = t < 0 || 0 === t && 1 / t < 0 ? 1 : 0;
 
-        for ((t = P(t)) != t || t === O ? (i = t != t ? 1 : 0, e = c) : (e = A(I(t) / j), t * (o = F(2, -e)) < 1 && (e--, o *= 2), (t += e + s >= 1 ? f / o : f * F(2, 1 - s)) * o >= 2 && (e++, o /= 2), e + s >= c ? (i = 0, e = c) : e + s >= 1 ? (i = (t * o - 1) * F(2, r), e += s) : (i = t * F(2, s - 1) * F(2, r), e = 0)); r >= 8; u[l++] = 255 & i, i /= 256, r -= 8) {
+        for ((t = M(t)) != t || t === O ? (i = t != t ? 1 : 0, e = c) : (e = A(I(t) / j), t * (o = F(2, -e)) < 1 && (e--, o *= 2), (t += e + s >= 1 ? f / o : f * F(2, 1 - s)) * o >= 2 && (e++, o /= 2), e + s >= c ? (i = 0, e = c) : e + s >= 1 ? (i = (t * o - 1) * F(2, r), e += s) : (i = t * F(2, s - 1) * F(2, r), e = 0)); r >= 8; u[l++] = 255 & i, i /= 256, r -= 8) {
           ;
         }
 
@@ -2430,7 +2581,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         return u[--l] |= 128 * h, u;
       }
 
-      function G(t, r, n) {
+      function U(t, r, n) {
         var e,
             i = 8 * n - r - 1,
             o = (1 << i) - 1,
@@ -2455,15 +2606,15 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         return (s ? -1 : 1) * e * F(2, f - r);
       }
 
-      function W(t) {
+      function G(t) {
         return t[3] << 24 | t[2] << 16 | t[1] << 8 | t[0];
       }
 
-      function U(t) {
+      function V(t) {
         return [255 & t];
       }
 
-      function V(t) {
+      function W(t) {
         return [255 & t, t >> 8 & 255];
       }
 
@@ -2487,7 +2638,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         });
       }
 
-      function J(t, r, n, e) {
+      function q(t, r, n, e) {
         var i = v(+n);
         if (i + r > t[L]) throw E(b);
         var o = t[k]._b,
@@ -2496,7 +2647,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         return e ? a : a.reverse();
       }
 
-      function K(t, r, n, e, i, o) {
+      function J(t, r, n, e, i, o) {
         var u = v(+n);
         if (u + r > t[L]) throw E(b);
 
@@ -2507,24 +2658,24 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 
       if (u.ABV) {
         if (!s(function () {
-          _S2(1);
+          _w2(1);
         }) || !s(function () {
-          new _S2(-1);
+          new _w2(-1);
         }) || s(function () {
-          return new _S2(), new _S2(1.5), new _S2(NaN), _S2.name != x;
+          return new _w2(), new _w2(1.5), new _w2(NaN), _w2.name != x;
         })) {
-          for (var q, X = (_S2 = function S(t) {
-            return f(this, _S2), new M(v(t));
-          }).prototype = M.prototype, H = p(M), Z = 0; H.length > Z;) {
-            (q = H[Z++]) in _S2 || a(_S2, q, M[q]);
+          for (var K, X = (_w2 = function w(t) {
+            return f(this, _w2), new P(v(t));
+          }).prototype = P.prototype, H = p(P), Z = 0; H.length > Z;) {
+            (K = H[Z++]) in _w2 || a(_w2, K, P[K]);
           }
 
-          o || (X.constructor = _S2);
+          o || (X.constructor = _w2);
         }
 
-        var Q = new _w(new _S2(2)),
-            tt = _w.prototype.setInt8;
-        Q.setInt8(0, 2147483648), Q.setInt8(1, 2147483649), !Q.getInt8(0) && Q.getInt8(1) || c(_w.prototype, {
+        var Q = new _S(new _w2(2)),
+            tt = _S.prototype.setInt8;
+        Q.setInt8(0, 2147483648), Q.setInt8(1, 2147483649), !Q.getInt8(0) && Q.getInt8(1) || c(_S.prototype, {
           setInt8: function setInt8(t, r) {
             tt.call(this, t, r << 24 >> 24);
           },
@@ -2532,71 +2683,71 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             tt.call(this, t, r << 24 >> 24);
           }
         }, !0);
-      } else _S2 = function _S(t) {
-        f(this, _S2, x);
+      } else _w2 = function _w(t) {
+        f(this, _w2, x);
         var r = v(t);
         this._b = d.call(new Array(r), 0), this[L] = r;
-      }, _w = function w(t, r, n) {
-        f(this, _w, m), f(t, _S2, m);
+      }, _S = function S(t, r, n) {
+        f(this, _S, m), f(t, _w2, m);
         var e = t[L],
             i = l(r);
         if (i < 0 || i > e) throw E("Wrong offset!");
         if (i + (n = void 0 === n ? e - i : h(n)) > e) throw E("Wrong length!");
         this[k] = t, this[C] = i, this[L] = n;
-      }, i && ($(_S2, R, "_l"), $(_w, N, "_b"), $(_w, R, "_l"), $(_w, T, "_o")), c(_w.prototype, {
+      }, i && ($(_w2, R, "_l"), $(_S, N, "_b"), $(_S, R, "_l"), $(_S, T, "_o")), c(_S.prototype, {
         getInt8: function getInt8(t) {
-          return J(this, 1, t)[0] << 24 >> 24;
+          return q(this, 1, t)[0] << 24 >> 24;
         },
         getUint8: function getUint8(t) {
-          return J(this, 1, t)[0];
+          return q(this, 1, t)[0];
         },
         getInt16: function getInt16(t) {
-          var r = J(this, 2, t, arguments[1]);
+          var r = q(this, 2, t, arguments[1]);
           return (r[1] << 8 | r[0]) << 16 >> 16;
         },
         getUint16: function getUint16(t) {
-          var r = J(this, 2, t, arguments[1]);
+          var r = q(this, 2, t, arguments[1]);
           return r[1] << 8 | r[0];
         },
         getInt32: function getInt32(t) {
-          return W(J(this, 4, t, arguments[1]));
+          return G(q(this, 4, t, arguments[1]));
         },
         getUint32: function getUint32(t) {
-          return W(J(this, 4, t, arguments[1])) >>> 0;
+          return G(q(this, 4, t, arguments[1])) >>> 0;
         },
         getFloat32: function getFloat32(t) {
-          return G(J(this, 4, t, arguments[1]), 23, 4);
+          return U(q(this, 4, t, arguments[1]), 23, 4);
         },
         getFloat64: function getFloat64(t) {
-          return G(J(this, 8, t, arguments[1]), 52, 8);
+          return U(q(this, 8, t, arguments[1]), 52, 8);
         },
         setInt8: function setInt8(t, r) {
-          K(this, 1, t, U, r);
+          J(this, 1, t, V, r);
         },
         setUint8: function setUint8(t, r) {
-          K(this, 1, t, U, r);
+          J(this, 1, t, V, r);
         },
         setInt16: function setInt16(t, r) {
-          K(this, 2, t, V, r, arguments[2]);
+          J(this, 2, t, W, r, arguments[2]);
         },
         setUint16: function setUint16(t, r) {
-          K(this, 2, t, V, r, arguments[2]);
+          J(this, 2, t, W, r, arguments[2]);
         },
         setInt32: function setInt32(t, r) {
-          K(this, 4, t, B, r, arguments[2]);
+          J(this, 4, t, B, r, arguments[2]);
         },
         setUint32: function setUint32(t, r) {
-          K(this, 4, t, B, r, arguments[2]);
+          J(this, 4, t, B, r, arguments[2]);
         },
         setFloat32: function setFloat32(t, r) {
-          K(this, 4, t, Y, r, arguments[2]);
+          J(this, 4, t, Y, r, arguments[2]);
         },
         setFloat64: function setFloat64(t, r) {
-          K(this, 8, t, z, r, arguments[2]);
+          J(this, 8, t, z, r, arguments[2]);
         }
       });
 
-      y(_S2, x), y(_w, m), a(_w.prototype, u.VIEW, !0), r.ArrayBuffer = _S2, r.DataView = _w;
+      y(_w2, x), y(_S, m), a(_S.prototype, u.VIEW, !0), r.ArrayBuffer = _w2, r.DataView = _S;
     },
     9383: function _(t, r, n) {
       for (var e, i = n(3816), o = n(7728), u = n(3953), a = u("typed_array"), c = u("view"), s = !(!i.ArrayBuffer || !i.DataView), f = s, l = 0, h = "Int8Array,Uint8Array,Uint8ClampedArray,Int16Array,Uint16Array,Int32Array,Uint32Array,Float32Array,Float64Array".split(","); l < 9;) {
@@ -3301,8 +3452,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           }) : o(n) != v) ? u(new g(m(r)), n, _p) : m(r);
         };
 
-        for (var b, S = n(7057) ? s(g) : "MAX_VALUE,MIN_VALUE,NaN,NEGATIVE_INFINITY,POSITIVE_INFINITY,EPSILON,isFinite,isInteger,isNaN,isSafeInteger,MAX_SAFE_INTEGER,MIN_SAFE_INTEGER,parseFloat,parseInt,isInteger".split(","), w = 0; S.length > w; w++) {
-          i(g, b = S[w]) && !i(_p, b) && l(_p, b, f(g, b));
+        for (var b, w = n(7057) ? s(g) : "MAX_VALUE,MIN_VALUE,NaN,NEGATIVE_INFINITY,POSITIVE_INFINITY,EPSILON,isFinite,isInteger,isNaN,isSafeInteger,MAX_SAFE_INTEGER,MIN_SAFE_INTEGER,parseFloat,parseInt,isInteger".split(","), S = 0; w.length > S; S++) {
+          i(g, b = w[S]) && !i(_p, b) && l(_p, b, f(g, b));
         }
 
         _p.prototype = d, d.constructor = _p, n(7234)(e, v, _p);
@@ -3630,13 +3781,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           x = n(4351)(),
           m = n(3499),
           b = n(188),
-          S = n(575),
-          w = n(94),
+          w = n(575),
+          S = n(94),
           _ = "Promise",
           E = c.TypeError,
           O = c.process,
-          M = O && O.versions,
-          P = M && M.v8 || "",
+          P = O && O.versions,
+          M = P && P.v8 || "",
           _F = c.Promise,
           A = "process" == f(O),
           I = function I() {},
@@ -3648,7 +3799,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             t(I, I);
           };
 
-          return (A || "function" == typeof PromiseRejectionEvent) && t.then(I) instanceof r && 0 !== P.indexOf("6.6") && -1 === S.indexOf("Chrome/66");
+          return (A || "function" == typeof PromiseRejectionEvent) && t.then(I) instanceof r && 0 !== M.indexOf("6.6") && -1 === w.indexOf("Chrome/66");
         } catch (t) {}
       }(),
           R = function R(t) {
@@ -3713,7 +3864,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         var r = this;
         r._d || (r._d = !0, (r = r._w || r)._v = t, r._s = 2, r._a || (r._a = r._c.slice()), T(r, !0));
       },
-          G = function G(t) {
+          U = function U(t) {
         var r,
             n = this;
 
@@ -3729,7 +3880,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
               };
 
               try {
-                r.call(t, s(G, e, 1), s(D, e, 1));
+                r.call(t, s(U, e, 1), s(D, e, 1));
               } catch (t) {
                 D.call(e, t);
               }
@@ -3747,7 +3898,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         p(this, _F, _, "_h"), v(t), e.call(this);
 
         try {
-          t(s(G, this, 1), s(D, this, 1));
+          t(s(U, this, 1), s(D, this, 1));
         } catch (t) {
           D.call(this, t);
         }
@@ -3763,7 +3914,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         }
       }), o = function o() {
         var t = new e();
-        this.promise = t, this.resolve = s(G, t, 1), this.reject = s(D, t, 1);
+        this.promise = t, this.resolve = s(U, t, 1), this.reject = s(D, t, 1);
       }, m.f = j = function j(t) {
         return t === _F || t === u ? new o(t) : i(t);
       }), l(l.G + l.W + l.F * !N, {
@@ -3775,7 +3926,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         }
       }), l(l.S + l.F * (a || !N), _, {
         resolve: function resolve(t) {
-          return w(a && this === u ? _F : this, t);
+          return S(a && this === u ? _F : this, t);
         }
       }), l(l.S + l.F * !(N && n(7462)(function (t) {
         _F.all(t)["catch"](I);
@@ -4209,25 +4360,25 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             "" === String(m[0]) && (l.lastIndex = a(h, o(l.lastIndex), y));
           }
 
-          for (var b, S = "", w = 0, _ = 0; _ < x.length; _++) {
+          for (var b, w = "", S = 0, _ = 0; _ < x.length; _++) {
             m = x[_];
 
-            for (var E = String(m[0]), O = s(f(u(m.index), h.length), 0), M = [], P = 1; P < m.length; P++) {
-              M.push(void 0 === (b = m[P]) ? b : String(b));
+            for (var E = String(m[0]), O = s(f(u(m.index), h.length), 0), P = [], M = 1; M < m.length; M++) {
+              P.push(void 0 === (b = m[M]) ? b : String(b));
             }
 
             var F = m.groups;
 
             if (v) {
-              var A = [E].concat(M, O, h);
+              var A = [E].concat(P, O, h);
               void 0 !== F && A.push(F);
               var I = String(r.apply(void 0, A));
-            } else I = g(E, h, O, M, F, r);
+            } else I = g(E, h, O, P, F, r);
 
-            O >= w && (S += h.slice(w, O) + I, w = O + E.length);
+            O >= S && (w += h.slice(S, O) + I, S = O + E.length);
           }
 
-          return S + h.slice(w);
+          return w + h.slice(S);
         }];
 
         function g(t, r, e, o, u, a) {
@@ -4342,22 +4493,22 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           if (0 === b) return [];
           if (0 === h.length) return null === c(m, h) ? [h] : [];
 
-          for (var S = 0, w = 0, _ = []; w < h.length;) {
-            m.lastIndex = p ? w : 0;
+          for (var w = 0, S = 0, _ = []; S < h.length;) {
+            m.lastIndex = p ? S : 0;
             var E,
-                O = c(m, p ? h : h.slice(w));
-            if (null === O || (E = l(a(m.lastIndex + (p ? 0 : w)), h.length)) === S) w = u(h, w, y);else {
-              if (_.push(h.slice(S, w)), _.length === b) return _;
+                O = c(m, p ? h : h.slice(S));
+            if (null === O || (E = l(a(m.lastIndex + (p ? 0 : S)), h.length)) === w) S = u(h, S, y);else {
+              if (_.push(h.slice(w, S)), _.length === b) return _;
 
-              for (var M = 1; M <= O.length - 1; M++) {
-                if (_.push(O[M]), _.length === b) return _;
+              for (var P = 1; P <= O.length - 1; P++) {
+                if (_.push(O[P]), _.length === b) return _;
               }
 
-              w = S = E;
+              S = w = E;
             }
           }
 
-          return _.push(h.slice(S)), _;
+          return _.push(h.slice(w)), _;
         }];
       });
     },
@@ -4663,16 +4814,16 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           x = n(7007),
           m = n(5286),
           b = n(508),
-          S = n(2110),
-          w = n(1689),
+          w = n(2110),
+          S = n(1689),
           _ = n(681),
           E = n(2503),
           O = n(9327),
-          M = n(8693),
-          P = n(4548),
+          P = n(8693),
+          M = n(4548),
           F = n(9275),
           A = n(7184),
-          I = M.f,
+          I = P.f,
           j = F.f,
           N = O.f,
           _R = e.Symbol,
@@ -4681,11 +4832,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           L = v("_hidden"),
           C = v("toPrimitive"),
           D = {}.propertyIsEnumerable,
-          G = f("symbol-registry"),
-          W = f("symbols"),
-          U = f("op-symbols"),
-          V = Object.prototype,
-          B = "function" == typeof _R && !!P.f,
+          U = f("symbol-registry"),
+          G = f("symbols"),
+          V = f("op-symbols"),
+          W = Object.prototype,
+          B = "function" == typeof _R && !!M.f,
           z = e.QObject,
           Y = !z || !z.prototype || !z.prototype.findChild,
           $ = o && s(function () {
@@ -4697,52 +4848,52 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           }
         })).a;
       }) ? function (t, r, n) {
-        var e = I(V, r);
-        e && delete V[r], j(t, r, n), e && t !== V && j(V, r, e);
+        var e = I(W, r);
+        e && delete W[r], j(t, r, n), e && t !== W && j(W, r, e);
       } : j,
-          J = function J(t) {
-        var r = W[t] = E(_R.prototype);
+          q = function q(t) {
+        var r = G[t] = E(_R.prototype);
         return r._k = t, r;
       },
-          K = B && "symbol" == _typeof(_R.iterator) ? function (t) {
+          J = B && "symbol" == _typeof(_R.iterator) ? function (t) {
         return "symbol" == _typeof(t);
       } : function (t) {
         return t instanceof _R;
       },
-          q = function q(t, r, n) {
-        return t === V && q(U, r, n), x(t), r = w(r, !0), x(n), i(W, r) ? (n.enumerable ? (i(t, L) && t[L][r] && (t[L][r] = !1), n = E(n, {
+          K = function K(t, r, n) {
+        return t === W && K(V, r, n), x(t), r = S(r, !0), x(n), i(G, r) ? (n.enumerable ? (i(t, L) && t[L][r] && (t[L][r] = !1), n = E(n, {
           enumerable: _(0, !1)
         })) : (i(t, L) || j(t, L, _(1, {})), t[L][r] = !0), $(t, r, n)) : j(t, r, n);
       },
           X = function X(t, r) {
         x(t);
 
-        for (var n, e = d(r = S(r)), i = 0, o = e.length; o > i;) {
-          q(t, n = e[i++], r[n]);
+        for (var n, e = d(r = w(r)), i = 0, o = e.length; o > i;) {
+          K(t, n = e[i++], r[n]);
         }
 
         return t;
       },
           H = function H(t) {
-        var r = D.call(this, t = w(t, !0));
-        return !(this === V && i(W, t) && !i(U, t)) && (!(r || !i(this, t) || !i(W, t) || i(this, L) && this[L][t]) || r);
+        var r = D.call(this, t = S(t, !0));
+        return !(this === W && i(G, t) && !i(V, t)) && (!(r || !i(this, t) || !i(G, t) || i(this, L) && this[L][t]) || r);
       },
           Z = function Z(t, r) {
-        if (t = S(t), r = w(r, !0), t !== V || !i(W, r) || i(U, r)) {
+        if (t = w(t), r = S(r, !0), t !== W || !i(G, r) || i(V, r)) {
           var n = I(t, r);
-          return !n || !i(W, r) || i(t, L) && t[L][r] || (n.enumerable = !0), n;
+          return !n || !i(G, r) || i(t, L) && t[L][r] || (n.enumerable = !0), n;
         }
       },
           Q = function Q(t) {
-        for (var r, n = N(S(t)), e = [], o = 0; n.length > o;) {
-          i(W, r = n[o++]) || r == L || r == c || e.push(r);
+        for (var r, n = N(w(t)), e = [], o = 0; n.length > o;) {
+          i(G, r = n[o++]) || r == L || r == c || e.push(r);
         }
 
         return e;
       },
           tt = function tt(t) {
-        for (var r, n = t === V, e = N(n ? U : S(t)), o = [], u = 0; e.length > u;) {
-          !i(W, r = e[u++]) || n && !i(V, r) || o.push(W[r]);
+        for (var r, n = t === W, e = N(n ? V : w(t)), o = [], u = 0; e.length > u;) {
+          !i(G, r = e[u++]) || n && !i(W, r) || o.push(G[r]);
         }
 
         return o;
@@ -4753,17 +4904,17 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 
         var t = h(arguments.length > 0 ? arguments[0] : void 0),
             r = function r(n) {
-          this === V && r.call(U, n), i(this, L) && i(this[L], t) && (this[L][t] = !1), $(this, t, _(1, n));
+          this === W && r.call(V, n), i(this, L) && i(this[L], t) && (this[L][t] = !1), $(this, t, _(1, n));
         };
 
-        return o && Y && $(V, t, {
+        return o && Y && $(W, t, {
           configurable: !0,
           set: r
-        }), J(t);
+        }), q(t);
       }).prototype, "toString", function () {
         return this._k;
-      }), M.f = Z, F.f = q, n(616).f = O.f = Q, n(4682).f = H, P.f = tt, o && !n(4461) && a(V, "propertyIsEnumerable", H, !0), p.f = function (t) {
-        return J(v(t));
+      }), P.f = Z, F.f = K, n(616).f = O.f = Q, n(4682).f = H, M.f = tt, o && !n(4461) && a(W, "propertyIsEnumerable", H, !0), p.f = function (t) {
+        return q(v(t));
       }), u(u.G + u.W + u.F * !B, {
         Symbol: _R
       });
@@ -4778,13 +4929,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 
       u(u.S + u.F * !B, "Symbol", {
         "for": function _for(t) {
-          return i(G, t += "") ? G[t] : G[t] = _R(t);
+          return i(U, t += "") ? U[t] : U[t] = _R(t);
         },
         keyFor: function keyFor(t) {
-          if (!K(t)) throw TypeError(t + " is not a symbol!");
+          if (!J(t)) throw TypeError(t + " is not a symbol!");
 
-          for (var r in G) {
-            if (G[r] === t) return r;
+          for (var r in U) {
+            if (U[r] === t) return r;
           }
         },
         useSetter: function useSetter() {
@@ -4797,18 +4948,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         create: function create(t, r) {
           return void 0 === r ? E(t) : X(E(t), r);
         },
-        defineProperty: q,
+        defineProperty: K,
         defineProperties: X,
         getOwnPropertyDescriptor: Z,
         getOwnPropertyNames: Q,
         getOwnPropertySymbols: tt
       });
       var ot = s(function () {
-        P.f(1);
+        M.f(1);
       });
       u(u.S + u.F * ot, "Object", {
         getOwnPropertySymbols: function getOwnPropertySymbols(t) {
-          return P.f(b(t));
+          return M.f(b(t));
         }
       }), T && u(u.S + u.F * (!B || s(function () {
         var t = _R();
@@ -4822,8 +4973,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             e.push(arguments[i++]);
           }
 
-          if (n = r = e[1], (m(r) || void 0 !== t) && !K(t)) return y(r) || (r = function r(t, _r) {
-            if ("function" == typeof n && (_r = n.call(this, t, _r)), !K(_r)) return _r;
+          if (n = r = e[1], (m(r) || void 0 !== t) && !J(t)) return y(r) || (r = function r(t, _r) {
+            if ("function" == typeof n && (_r = n.call(this, t, _r)), !J(_r)) return _r;
           }), e[1] = r, k.apply(T, e);
         }
       }), _R.prototype[C] || n(7728)(_R.prototype, C, _R.prototype.valueOf), l(_R, "Symbol"), l(Math, "Math", !0), l(e.JSON, "JSON", !0);
@@ -5428,11 +5579,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         }
       });
 
-      var S = function S(t) {
-        f(this, S, "Observable", "_f")._f = c(t);
+      var w = function w(t) {
+        f(this, w, "Observable", "_f")._f = c(t);
       };
 
-      l(S.prototype, {
+      l(w.prototype, {
         subscribe: function subscribe(t) {
           return new m(t, this._f);
         },
@@ -5453,9 +5604,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             });
           });
         }
-      }), l(S, {
+      }), l(w, {
         from: function from(t) {
-          var r = "function" == typeof this ? this : S,
+          var r = "function" == typeof this ? this : w,
               n = g(s(t)[a]);
 
           if (n) {
@@ -5490,7 +5641,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             n[t] = arguments[t++];
           }
 
-          return new ("function" == typeof this ? this : S)(function (t) {
+          return new ("function" == typeof this ? this : w)(function (t) {
             var r = !1;
             return u(function () {
               if (!r) {
@@ -5505,10 +5656,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
             };
           });
         }
-      }), h(S.prototype, a, function () {
+      }), h(w.prototype, a, function () {
         return this;
       }), e(e.G, {
-        Observable: S
+        Observable: w
       }), n(2974)("Observable");
     },
     9865: function _(t, r, n) {
@@ -5911,10 +6062,10 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           var d = Object.getPrototypeOf,
               y = d && d(d(I([])));
           y && y !== e && i.call(y, u) && (g = y);
-          var x = _.prototype = S.prototype = Object.create(g);
-          w.prototype = x.constructor = _, _.constructor = w, _[c] = w.displayName = "GeneratorFunction", s.isGeneratorFunction = function (t) {
+          var x = _.prototype = w.prototype = Object.create(g);
+          S.prototype = x.constructor = _, _.constructor = S, _[c] = S.displayName = "GeneratorFunction", s.isGeneratorFunction = function (t) {
             var r = "function" == typeof t && t.constructor;
-            return !!r && (r === w || "GeneratorFunction" === (r.displayName || r.name));
+            return !!r && (r === S || "GeneratorFunction" === (r.displayName || r.name));
           }, s.mark = function (t) {
             return Object.setPrototypeOf ? Object.setPrototypeOf(t, _) : (t.__proto__ = _, c in t || (t[c] = "GeneratorFunction")), t.prototype = Object.create(x), t;
           }, s.awrap = function (t) {
@@ -6042,7 +6193,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         }
 
         function m(t, r, n, e) {
-          var i = r && r.prototype instanceof S ? r : S,
+          var i = r && r.prototype instanceof w ? r : w,
               o = Object.create(i.prototype),
               u = new A(e || []);
           return o._invoke = function (t, r, n) {
@@ -6059,7 +6210,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
                 var u = n.delegate;
 
                 if (u) {
-                  var a = M(u, n);
+                  var a = P(u, n);
 
                   if (a) {
                     if (a === p) continue;
@@ -6102,9 +6253,9 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           }
         }
 
-        function S() {}
-
         function w() {}
+
+        function S() {}
 
         function _() {}
 
@@ -6147,12 +6298,12 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           };
         }
 
-        function M(t, r) {
+        function P(t, r) {
           var e = t.iterator[r.method];
 
           if (e === n) {
             if (r.delegate = null, "throw" === r.method) {
-              if (t.iterator["return"] && (r.method = "return", r.arg = n, M(t, r), "throw" === r.method)) return p;
+              if (t.iterator["return"] && (r.method = "return", r.arg = n, P(t, r), "throw" === r.method)) return p;
               r.method = "throw", r.arg = new TypeError("The iterator does not provide a 'throw' method");
             }
 
@@ -6165,7 +6316,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
           return o ? o.done ? (r[t.resultName] = o.value, r.next = t.nextLoc, "return" !== r.method && (r.method = "next", r.arg = n), r.delegate = null, p) : o : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, p);
         }
 
-        function P(t) {
+        function M(t) {
           var r = {
             tryLoc: t[0]
           };
@@ -6180,7 +6331,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         function A(t) {
           this.tryEntries = [{
             tryLoc: "root"
-          }], t.forEach(P, this), this.reset(!0);
+          }], t.forEach(M, this), this.reset(!0);
         }
 
         function I(t) {
@@ -6216,29 +6367,29 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
         }
       }("object" == _typeof(n.g) ? n.g : "object" == (typeof window === "undefined" ? "undefined" : _typeof(window)) ? window : "object" == (typeof self === "undefined" ? "undefined" : _typeof(self)) ? self : this);
     },
-    2206: function _(t) {
+    9168: function _(t) {
       "use strict";
 
-      t.exports = 'export default "@stage(fragment)\\r\\nfn main(@location(0) inColor: vec3<f32>) -> @location(0) vec4<f32> {\\r\\n    return vec4<f32>(inColor, 1.0);\\r\\n}\\r\\n";';
+      t.exports = "@stage(fragment)\r\nfn main(@location(0) inColor: vec3<f32>) -> @location(0) vec4<f32> {\r\n    return vec4<f32>(inColor, 1.0);\r\n}";
     },
-    5457: function _(t) {
+    9915: function _(t) {
       "use strict";
 
-      t.exports = 'export default "struct VSOut {\\r\\n    @builtin(position) Position: vec4<f32>;\\r\\n    @location(0) color: vec3<f32>;\\r\\n};\\r\\n\\r\\n@stage(vertex)\\r\\nfn main(@location(0) inPos: vec3<f32>,\\r\\n        @location(1) inColor: vec3<f32>) -> VSOut {\\r\\n    var vsOut: VSOut;\\r\\n    vsOut.Position = vec4<f32>(inPos, 1.0);\\r\\n    vsOut.color = inColor;\\r\\n    return vsOut;\\r\\n}\\r\\n";';
+      t.exports = "struct VSOut {\r\n    @builtin(position) Position: vec4<f32>;\r\n    @location(0) color: vec3<f32>;\r\n};\r\n\r\n@stage(vertex)\r\nfn main(@location(0) inPos: vec3<f32>,\r\n        @location(1) inColor: vec3<f32>) -> VSOut {\r\n    var vsOut: VSOut;\r\n    vsOut.Position = vec4<f32>(inPos, 1.0);\r\n    vsOut.color = inColor;\r\n    return vsOut;\r\n}\r\n";
     }
   },
-      e = {};
+      r = {};
 
-  function i(t) {
-    var r = e[t];
-    if (void 0 !== r) return r.exports;
-    var o = e[t] = {
+  function n(e) {
+    var i = r[e];
+    if (void 0 !== i) return i.exports;
+    var o = r[e] = {
       exports: {}
     };
-    return n[t].call(o.exports, o, o.exports, i), o.exports;
+    return t[e].call(o.exports, o, o.exports, n), o.exports;
   }
 
-  i.g = function () {
+  n.g = function () {
     if ("object" == (typeof globalThis === "undefined" ? "undefined" : _typeof(globalThis))) return globalThis;
 
     try {
@@ -6249,7 +6400,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
   }(), function () {
     "use strict";
 
-    if (i(1934), i(5666), i(7694), i.g._babelPolyfill) throw new Error("only one instance of babel-polyfill is allowed");
+    if (n(1934), n(5666), n(7694), n.g._babelPolyfill) throw new Error("only one instance of babel-polyfill is allowed");
 
     function t(t, r, n) {
       t[r] || Object.defineProperty(t, r, {
@@ -6259,8 +6410,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
       });
     }
 
-    i.g._babelPolyfill = !0, t(String.prototype, "padLeft", "".padStart), t(String.prototype, "padRight", "".padEnd), "pop,reverse,shift,keys,values,entries,indexOf,every,some,forEach,map,filter,find,findIndex,includes,join,slice,concat,push,splice,unshift,sort,lastIndexOf,reduce,reduceRight,copyWithin,fill".split(",").forEach(function (r) {
+    n.g._babelPolyfill = !0, t(String.prototype, "padLeft", "".padStart), t(String.prototype, "padRight", "".padEnd), "pop,reverse,shift,keys,values,entries,indexOf,every,some,forEach,map,filter,find,findIndex,includes,join,slice,concat,push,splice,unshift,sort,lastIndexOf,reduce,reduceRight,copyWithin,fill".split(",").forEach(function (r) {
       [][r] && t(Array, r, Function.call.bind([][r]));
     });
-  }(), t = i(7563), (r = document.getElementById("gfx")).width = 640, r.height = 640, new t().start(r);
+  }(), new (n(7563))(document.getElementById("gfx")).start();
 })();
