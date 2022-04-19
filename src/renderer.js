@@ -21,7 +21,6 @@ class Application
     constructor(canvas) {
         this.canvas = canvas;
     }
-
     createBuffer(arr, usage, device) 
     {
         let desc = {
