@@ -11,7 +11,7 @@ let isProduction =
 let config: webpack.Configuration = {
     context: path.join(__dirname, 'src'),
     entry: {
-        app: './main.ts'
+        app: './main.js'
     },
     output: {
         filename: 'main.js',
