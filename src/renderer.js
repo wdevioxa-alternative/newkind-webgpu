@@ -212,8 +212,8 @@ class Application
         this.passEncoder.setVertexBuffer(1, this.colorBuffer);
         this.passEncoder.setIndexBuffer(this.indexBuffer, 'uint16');
         this.passEncoder.drawIndexed(8,1);
-        this.passEncoder.end();
 
+        this.passEncoder.end();
         this.queue.submit([this.commandEncoder.finish()]);
     }
     render = () => {
