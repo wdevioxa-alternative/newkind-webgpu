@@ -106,13 +106,13 @@ class Application
     async initializeResources()
     {
         let offsetx = 100;
-        let offsety = 22;
+        let offsety = 20;
 
         let objectwidth = 120;
         let objectheight = 20;
 
         const positions = new Float32Array([
-          
+/*          
             this.calcX(0+offsetx), this.calcY(0+objectheight+offsety), 0.0,
             this.calcX(0+objectwidth+offsetx), this.calcY(0+objectheight+offsety), 0.0,
 
@@ -124,7 +124,19 @@ class Application
 
             this.calcX(1+offsetx), this.calcY(0+offsety), 0.0,
             this.calcX(1+offsetx), this.calcY(0+objectheight+offsety), 0.0
-            
+*/            
+            this.calcX(1+offsetx), this.calcY(1+objectheight+offsety), 0.0,
+            this.calcX(1+objectwidth+offsetx), this.calcY(1+objectheight+offsety), 0.0,
+
+            this.calcX(1+objectwidth+offsetx), this.calcY(1+objectheight+offsety), 0.0,
+            this.calcX(1+objectwidth+offsetx), this.calcY(1+offsety), 0.0,
+
+            this.calcX(1+objectwidth+offsetx), this.calcY(1+offsety), 0.0,
+            this.calcX(1+offsetx), this.calcY(1+offsety), 0.0,
+
+            this.calcX(1+offsetx), this.calcY(0+offsety), 0.0,
+            this.calcX(1+offsetx), this.calcY(1+objectheight+offsety), 0.0
+
         ]);
 
         this.positionBuffer = this.createBuffer(positions, GPUBufferUsage.VERTEX,this.device);
@@ -219,7 +231,7 @@ class Application
         this.passEncoder.setVertexBuffer(0, this.positionBuffer);
         this.passEncoder.setVertexBuffer(1, this.colorBuffer);
         //this.passEncoder.setIndexBuffer(this.indexBuffer, 'uint16');
-        this.passEncoder.draw(8,4,0,0);
+        this.passEncoder.draw(8,1,0,0);
 
         this.passEncoder.end();
         this.queue.submit([this.commandEncoder.finish()]);
