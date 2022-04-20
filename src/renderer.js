@@ -3,17 +3,6 @@ import { GBox } from './box';
 const vertexShaderWgslCode = require('./shaders/triangle.vert.wgsl');
 const fragmentShaderWgslCode = require('./shaders/triangle.frag.wgsl');
 
-const colors = new Float32Array([
-    1.0, 0.0, 0.0, // 🔴
-    0.0, 1.0, 0.0, // 🟢
-    0.0, 1.0, 0.0, // 🟢
-    0.0, 0.0, 1.0, // 🔵
-    0.0, 0.0, 1.0, // 🔵
-    0.0, 1.0, 0.0, // 🟢
-    0.0, 1.0, 0.0, // 🟢
-    1.0, 0.0, 0.0  // 🔴
-]);
-
 export class Application
 {
     constructor(surface) {
@@ -195,16 +184,20 @@ export class Application
 
         this.encodeCommands();
 
-        this.positionBuffer = this.createBuffer(new GBox(1,1,126,18).getPositions(this), GPUBufferUsage.VERTEX,this.device);
-        this.colorBuffer = this.createBuffer(colors, GPUBufferUsage.VERTEX,this.device);
+        this.component = new GBox(1,1,126,18);
+
+        this.positionBuffer = this.createBuffer(this.component.getPositions(this), GPUBufferUsage.VERTEX,this.device);
+        this.colorBuffer = this.createBuffer(this.component.getColors(this), GPUBufferUsage.VERTEX,this.device);
 
         this.passEncoder.setVertexBuffer(0, this.positionBuffer);
         this.passEncoder.setVertexBuffer(1, this.colorBuffer);
 
         this.passEncoder.draw(8,1,0,0);
 
-        this.positionBuffer = this.createBuffer(new GBox(1,22,126,18).getPositions(this), GPUBufferUsage.VERTEX,this.device);
-        this.colorBuffer = this.createBuffer(colors, GPUBufferUsage.VERTEX,this.device);
+        this.component = new GBox(1,22,126,18);
+
+        this.positionBuffer = this.createBuffer(this.component.getPositions(this), GPUBufferUsage.VERTEX,this.device);
+        this.colorBuffer = this.createBuffer(this.component.getColors(this), GPUBufferUsage.VERTEX,this.device);
 
         this.passEncoder.setVertexBuffer(0, this.positionBuffer);
         this.passEncoder.setVertexBuffer(1, this.colorBuffer);

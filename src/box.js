@@ -5,6 +5,20 @@ export class GBox extends GObject
     constructor( x, y, width, height ) {
         super( x, y, width, height );
     }  
+    getColors( instance )
+    {
+        let colors = new Float32Array([
+            1.0, 0.0, 0.0, // 🔴
+            0.0, 1.0, 0.0, // 🟢
+            0.0, 1.0, 0.0, // 🟢
+            0.0, 0.0, 1.0, // 🔵
+            0.0, 0.0, 1.0, // 🔵
+            0.0, 1.0, 0.0, // 🟢
+            0.0, 1.0, 0.0, // 🟢
+            1.0, 0.0, 0.0  // 🔴
+        ]);
+        return colors;
+    }
     getPositions( instance )
     {
         let objectwidth = super.getWidth();
