@@ -107,7 +107,7 @@ class Application
     {
         let offsetx = 100;
         let offsety = 22;
-        
+
         let objectwidth = 120;
         let objectheight = 20;
 
