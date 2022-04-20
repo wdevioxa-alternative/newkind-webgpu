@@ -31,6 +31,12 @@ class Application
     constructor(canvas) {
         this.canvas = canvas;
     }
+    calcX( cx ) {
+        return ( cx / this.canvas.width ) ;
+    }
+    calcY( cy ) {
+        return ( cy / this.canvas.height ) ;
+    }
     async start() 
     {
         if (await this.initializeAPI()) {
