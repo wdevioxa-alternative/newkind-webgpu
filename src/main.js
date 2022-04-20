@@ -1,11 +1,9 @@
-const Application = require("./renderer.js");
-import GBox from "./box.js";
+
+import { Application } from './renderer';
 
 const canvas = document.getElementById('gfx');
 
 const renderer = new Application(canvas);
-
-const adss = new GBox(10,10,10,10);
 
 //let a = 6+128;
 //alert ( a & ~3 );

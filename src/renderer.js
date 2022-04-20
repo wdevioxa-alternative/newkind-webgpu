@@ -1,3 +1,5 @@
+import { GBox } from './box';
+
 const vertexShaderWgslCode = require('./shaders/triangle.vert.wgsl');
 const fragmentShaderWgslCode = require('./shaders/triangle.frag.wgsl');
 
@@ -12,44 +14,43 @@ const colors = new Float32Array([
     1.0, 0.0, 0.0  // 🔴
 ]);
 
-const indexes = new Uint16Array([[ 0, 1 ],[ 0, 1 ],[ 0, 1 ],[ 0, 1 ]]);
-//const indexes = new Uint16Array([ 0, 1, 2, 3, 4, 5, 6, 7 ]);
-
-class Application
+export class Application
 {
-    constructor(canvas) {
-        this.canvas = canvas;
+    constructor(surface) {
+        this.canvas = surface;
     }
-    
+    getCanvasWidth() {
+        return this.canvas.width;
+    }
+    getCanvasHeight() {
+        return this.canvas.height;
+    }
     calcX( cx ) {
-        let cw = Math.fround(this.canvas.width / 2.0);
+        let cw = Math.fround(this.getCanvasWidth() / 2.0);
         let item = 1.0 / cw;
         return Math.fround(cx) * item - 1.0;
     }
-
     calcY( cy ) {
-        let ccy = this.canvas.height - cy;
-        let ch = Math.fround(this.canvas.height / 2.0);
+        let ccy = this.getCanvasHeight() - cy;
+        let ch = Math.fround(this.getCanvasHeight() / 2.0);
         let item = 1.0 / ch;
         return Math.fround(ccy) * item - 1.0;
     }
-
     async start() 
     {
-        if (await this.initializeAPI()) {
+        if (await this.initializeAPI()) 
+        {
             this.resizeBackings();
             await this.initializeResources();
             this.render();
         }
     }
-
     async restart() 
     {        
         this.resizeBackings();
         await this.initializeResources();
         this.render();
     }
-
     createBuffer(arr, usage, device) 
     {
         let desc = {
@@ -102,35 +103,8 @@ class Application
         });
         this.depthTextureView = this.depthTexture.createView();
     }
-
     async initializeResources()
     {
-        let offsetx = 1;
-        let offsety = 1;
-
-        let objectwidth = 126 | 1; // всегда дополнять на 1
-        let objectheight = 18 | 1; // всегда дополнять на 1
-
-        const positions = new Float32Array([
-        
-            this.calcX(1+offsetx), this.calcY(1+objectheight+offsety), 0.0,
-            this.calcX(1+objectwidth+offsetx), this.calcY(1+objectheight+offsety), 0.0,
-
-            this.calcX(1+objectwidth+offsetx), this.calcY(1+objectheight+offsety), 0.0,
-            this.calcX(1+objectwidth+offsetx), this.calcY(1+offsety), 0.0,
-
-            this.calcX(1+objectwidth+offsetx), this.calcY(1+offsety), 0.0,
-            this.calcX(1+offsetx), this.calcY(1+offsety), 0.0,
-
-            this.calcX(1+offsetx), this.calcY(0+offsety), 0.0,
-            this.calcX(1+offsetx), this.calcY(1+objectheight+offsety), 0.0
-
-        ]);
-
-        this.positionBuffer = this.createBuffer(positions, GPUBufferUsage.VERTEX,this.device);
-        this.colorBuffer = this.createBuffer(colors, GPUBufferUsage.VERTEX,this.device);
-        this.indexBuffer = this.createBuffer(indexes, GPUBufferUsage.INDEX,this.device);
-
         this.pipeline = this.device.createRenderPipeline({
             layout: this.device.createPipelineLayout({ bindGroupLayouts: [] }),
             vertex: {
@@ -182,9 +156,7 @@ class Application
     }
     encodeCommands() 
     {
-        const devicePixelRatio = window.devicePixelRatio || 1;
         this.commandEncoder = this.device.createCommandEncoder();
-
         this.passEncoder = this.commandEncoder.beginRenderPass({
             colorAttachments: [{
                 view: this.colorTextureView,
@@ -218,18 +190,24 @@ class Application
         );
         this.passEncoder.setVertexBuffer(0, this.positionBuffer);
         this.passEncoder.setVertexBuffer(1, this.colorBuffer);
-        //this.passEncoder.setIndexBuffer(this.indexBuffer, 'uint16');
-        this.passEncoder.draw(8,1,0,0);
 
+        this.passEncoder.draw(8,1,0,0);
         this.passEncoder.end();
         this.queue.submit([this.commandEncoder.finish()]);
     }
     render = () => {
         this.colorTexture = this.context.getCurrentTexture();
         this.colorTextureView = this.colorTexture.createView();
+
+        let box1 = new GBox(1,1,126,18);
+
+        let positions = box1.getPositions(this);
+
+        this.positionBuffer = this.createBuffer(positions, GPUBufferUsage.VERTEX,this.device);
+        this.colorBuffer = this.createBuffer(colors, GPUBufferUsage.VERTEX,this.device);
+
         this.encodeCommands();
         requestAnimationFrame(this.render);
     }
 };
 
-module.exports = Application;

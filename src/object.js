@@ -1,16 +1,11 @@
 
-export default class GObject
+export class GObject
 {
-    x = 0;
-    y = 0;
-    width = 0;
-    height = 0;
-
     constructor( x, y, width, height ) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+        this.setX(x);
+        this.setY(y);
+        this.setWidth( width );
+        this.setHeight( height );
     }
     getX() {
         return this.x;
@@ -28,12 +23,12 @@ export default class GObject
         return this.width;
     }
     setWidth(width) {
-        this.width = width;
+        this.width = width | 1;
     }
     getHeigth() {
         return this.height;
     }
     setHeight(height) {
-        this.height = height;
+        this.height = height | 1;
     }
 };
