@@ -1,17 +1,6 @@
 const vertexShaderWgslCode = require('./shaders/triangle.vert.wgsl');
 const fragmentShaderWgslCode = require('./shaders/triangle.frag.wgsl');
 
-const positions = new Float32Array([
-    0.99, -0.99, 0.0,
-   -0.99, -0.99, 0.0,
-   -0.99, -0.99, 0.0,
-   -0.99,  0.99, 0.0,
-   -0.99,  0.99, 0.0,
-    0.99,  0.99, 0.0,
-    0.99,  0.99, 0.0,
-    0.99, -0.99, 0.0
-]);
-
 const colors = new Float32Array([
     1.0, 0.0, 0.0, // 🔴
     0.0, 1.0, 0.0, // 🟢
@@ -31,12 +20,22 @@ class Application
     constructor(canvas) {
         this.canvas = canvas;
     }
+    
     calcX( cx ) {
-        return ( cx / this.canvas.width ) ;
+        //const devicePixelRatio = window.devicePixelRatio || 1;
+        let cw = Math.fround(this.canvas.width);
+        let item = 2.0 / cw;
+        return Math.fround(cx) * item - 1.0;
     }
+
     calcY( cy ) {
-        return ( cy / this.canvas.height ) ;
+        //const devicePixelRatio = window.devicePixelRatio || 1;
+        let ch = Math.fround(this.canvas.height);
+        let item = 2.0 / ch;
+        //alert( item + " " + Math.fround(cy) + " " + cy );
+        return Math.fround(cy) * item - 1.0;
     }
+
     async start() 
     {
         if (await this.initializeAPI()) {
@@ -48,7 +47,7 @@ class Application
     createBuffer(arr, usage, device) 
     {
         let desc = {
-            size: (arr.byteLength + 3) & ~3,
+            size: arr.byteLength,
             usage,
             mappedAtCreation: true
         };
@@ -81,8 +80,8 @@ class Application
         if (!this.context) {
             this.context = this.canvas.getContext('webgpu');
             const presentationSize = [
-                this.canvas.clientWidth * devicePixelRatio,
-                this.canvas.clientWidth * devicePixelRatio,
+                this.canvas.width,
+                this.canvas.height,
             ];
             const presentationFormat = this.context.getPreferredFormat(this.adapter);
             this.context.configure({
@@ -104,6 +103,21 @@ class Application
 
     async initializeResources()
     {
+        const positions = new Float32Array([
+            this.calcX(0), this.calcY(319), 0.0,
+            this.calcX(320), this.calcY(319), 0.0,
+
+            this.calcX(320), this.calcY(319), 0.0,
+            this.calcX(320), this.calcY(1), 0.0,
+
+            this.calcX(320), this.calcY(1), 0.0,
+            this.calcX(1), this.calcY(1), 0.0,
+
+            this.calcX(1), this.calcY(1), 0.0,
+            this.calcX(1), this.calcY(319), 0.0
+
+        ]);
+
         this.positionBuffer = this.createBuffer(positions, GPUBufferUsage.VERTEX,this.device);
         this.colorBuffer = this.createBuffer(colors, GPUBufferUsage.VERTEX,this.device);
         this.indexBuffer = this.createBuffer(indexes, GPUBufferUsage.INDEX,this.device);
