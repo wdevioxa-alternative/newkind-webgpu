@@ -207,7 +207,7 @@ export class Application
 
         this.passEncoder.draw(8,1,0,0);
 
-        let box2 = new GBox(1,22,126,18);
+        let box2 = new GBox(1,22,130,18);
 
         let positions2 = box2.getPositions(this);
 
