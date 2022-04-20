@@ -53,7 +53,7 @@ class Application
     createBuffer(arr, usage, device) 
     {
         let desc = {
-            size: arr.byteLength,
+            size: (arr.byteLength + 3) & ~3,
             usage,
             mappedAtCreation: true
         };
