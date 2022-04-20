@@ -1,5 +1,5 @@
 
-class GObject
+export default class GObject
 {
     x = 0;
     y = 0;

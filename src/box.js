@@ -1,11 +1,8 @@
-const GObject = require("./object");
+import GObject from "./object.js";
 
 export default class GBox extends GObject
 {
     constructor( x, y, width, height ) {
-        super.setX(x);
-        super.setY(y);
-        super.setWidth(width);
-        super.setHeight(height);
-    }
+        super( x, y, width, height );
+    }  
 };
