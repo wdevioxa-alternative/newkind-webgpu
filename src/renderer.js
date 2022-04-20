@@ -2,24 +2,42 @@ const vertexShaderWgslCode = require('./shaders/triangle.vert.wgsl');
 const fragmentShaderWgslCode = require('./shaders/triangle.frag.wgsl');
 
 const positions = new Float32Array([
-    1.0, -1.0, 0.0,
-   -1.0, -1.0, 0.0,
-    0.0,  1.0, 0.0,
-    -2.0,  -2.0, 0.0
+    0.99, -0.99, 0.0,
+   -0.99, -0.99, 0.0,
+   -0.99, -0.99, 0.0,
+   -0.99,  0.99, 0.0,
+   -0.99,  0.99, 0.0,
+    0.99,  0.99, 0.0,
+    0.99,  0.99, 0.0,
+    0.99, -0.99, 0.0
 ]);
 
 const colors = new Float32Array([
     1.0, 0.0, 0.0, // 🔴
     0.0, 1.0, 0.0, // 🟢
-    0.0, 0.0, 1.0  // 🔵
+    0.0, 1.0, 0.0, // 🟢
+    0.0, 0.0, 1.0, // 🔵
+    0.0, 0.0, 1.0, // 🔵
+    0.0, 1.0, 0.0, // 🟢
+    0.0, 1.0, 0.0, // 🟢
+    1.0, 0.0, 0.0  // 🔴
 ]);
 
-const indices = new Uint16Array([ 0, 1, 2, 3 ]);
+//const indexes = new Uint16Array([ 0, 1 ]);
+const indexes = new Uint16Array([ 0, 1, 2, 3, 4, 5, 6, 7 ]);
 
 class Application
 {
     constructor(canvas) {
         this.canvas = canvas;
+    }
+    async start() 
+    {
+        if (await this.initializeAPI()) {
+            this.resizeBackings();
+            await this.initializeResources();
+            this.render();
+        }
     }
     createBuffer(arr, usage, device) 
     {
@@ -28,130 +46,135 @@ class Application
             usage,
             mappedAtCreation: true
         };
-        let buffer = device.createBuffer(desc);
-        const writeArray =
+        let buff = device.createBuffer(desc);
+        let wa =
             arr instanceof Uint16Array
-                ? new Uint16Array(buffer.getMappedRange())
-                : new Float32Array(buffer.getMappedRange());
-        writeArray.set(arr);
-        buffer.unmap();
-        return buffer;
-    };
-
-    async start() 
+                ? new Uint16Array(buff.getMappedRange())
+                : new Float32Array(buff.getMappedRange());
+        wa.set(arr);
+        buff.unmap();
+        return buff;
+    }
+    async initializeAPI() 
     {
-        if (!navigator.gpu) {
-            alert('Your browser does`t support WebGPU or it is not enabled. More info: https://webgpu.io');
-            return;
+        try {
+            if (!navigator.gpu) 
+                throw('Your browser does`t support WebGPU or it is not enabled. More info: https://webgpu.io');
+            this.adapter = await navigator.gpu.requestAdapter();
+            this.device = await this.adapter.requestDevice();
+            this.queue = this.device.queue;
+        } catch (e) {
+            console.error(e);
+            return false;
         }
-
-        const adapter = await navigator.gpu.requestAdapter();
-        const device = await adapter.requestDevice();
-
-        const context = this.canvas.getContext('webgpu');
-
+        return true;
+    }
+    resizeBackings()
+    {
         const devicePixelRatio = window.devicePixelRatio || 1;
-        const presentationSize = [
-            this.canvas.clientWidth  * devicePixelRatio,
-            this.canvas.clientHeight * devicePixelRatio,
-        ];
-        const presentationFormat = context.getPreferredFormat(adapter);
-        context.configure({
-            device,
-            format: presentationFormat,
-            size: presentationSize,
+        if (!this.context) {
+            this.context = this.canvas.getContext('webgpu');
+            const presentationSize = [
+                this.canvas.clientWidth * devicePixelRatio,
+                this.canvas.clientWidth * devicePixelRatio,
+            ];
+            const presentationFormat = this.context.getPreferredFormat(this.adapter);
+            this.context.configure({
+                device: this.device,
+                format: presentationFormat,
+                size: presentationSize,
+                usage:
+                        GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
+            });
+        }
+        this.depthTexture = this.device.createTexture({
+            size: [this.canvas.width, this.canvas.height, 1],
+            dimension: '2d',
+            format: 'depth24plus-stencil8',
+            usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
         });
-    
-/* 
-        const vertexShaderWgslCode =
-            `
-            @stage(vertex)
-            fn main(@builtin(vertex_index) VertexIndex : u32)
-                -> @builtin(position) vec4<f32> {
-            var pos = array<vec2<f32>, 3>(
-                vec2<f32>(0.0, 0.5),
-                vec2<f32>(-0.5, -0.5),
-                vec2<f32>(0.5, -0.5));
-            return vec4<f32>(pos[VertexIndex], 0.0, 1.0);
-            }
-        `;
+        this.depthTextureView = this.depthTexture.createView();
+    }
 
-        const fragmentShaderWgslCode =
-            `
-            @stage(fragment)
-            fn main() -> @location(0) vec4<f32> {
-            return vec4<f32>(1.0, 0.0, 0.0, 1.0);
-            }
-        `;
-  */
-        const positionBuffer = this.createBuffer(positions, GPUBufferUsage.VERTEX,device);
-        const colorBuffer = this.createBuffer(colors, GPUBufferUsage.VERTEX,device);
-        const indexBuffer = this.createBuffer(indices, GPUBufferUsage.INDEX,device);
-        const colorState = {
-            format: 'bgra8unorm'
-        };
-        const positionAttribDesc = {
-            shaderLocation: 0, // [[location(0)]]
-            offset: 0,
-            format: 'float32x3'
-        };
-        const colorAttribDesc = {
-            shaderLocation: 1, // [[location(1)]]
-            offset: 0,
-            format: 'float32x3'
-        };
-        const positionBufferDesc = {
-            attributes: [positionAttribDesc],
-            arrayStride: 4 * 3, // sizeof(float) * 3
-            stepMode: 'vertex'
-        };
-        const colorBufferDesc = {
-            attributes: [colorAttribDesc],
-            arrayStride: 4 * 3, // sizeof(float) * 3
-            stepMode: 'vertex'
-        };
-        const pipelineLayoutDesc = { bindGroupLayouts: [] };
-        const pipeline = device.createRenderPipeline({
-            layout: device.createPipelineLayout(pipelineLayoutDesc),
+    async initializeResources()
+    {
+        this.positionBuffer = this.createBuffer(positions, GPUBufferUsage.VERTEX,this.device);
+        this.colorBuffer = this.createBuffer(colors, GPUBufferUsage.VERTEX,this.device);
+        this.indexBuffer = this.createBuffer(indexes, GPUBufferUsage.INDEX,this.device);
+
+        this.pipeline = this.device.createRenderPipeline({
+            layout: this.device.createPipelineLayout({ bindGroupLayouts: [] }),
             vertex: {
-                module: device.createShaderModule({
+                module: this.device.createShaderModule({
                     code: vertexShaderWgslCode
                 }),
                 entryPoint: 'main',
-                buffers: [positionBufferDesc, colorBufferDesc]
+                buffers: [
+                    {
+                        attributes: [{
+                            shaderLocation: 0, // [[location(0)]]
+                            offset: 0,
+                            format: 'float32x3'
+                        }],
+                        arrayStride: 4 * 3, // sizeof(float) * 3
+                        stepMode: 'vertex'
+                    }, 
+                    {
+                        attributes: [{
+                            shaderLocation: 1, // [[location(1)]]
+                            offset: 0,
+                            format: 'float32x3'
+                        }],
+                        arrayStride: 4 * 3, // sizeof(float) * 3
+                        stepMode: 'vertex'
+                    }
+                ]
             },
             fragment: {
-                module: device.createShaderModule({
+                module: this.device.createShaderModule({
                     code: fragmentShaderWgslCode
                 }),
                 entryPoint: 'main',
-                targets: [colorState]
+                targets: [{
+                    format: 'bgra8unorm'
+                }]
             },
             primitive: {
                 frontFace: 'cw',
                 cullMode: 'none',
-                topology: 'triangle-list'
+                topology: 'line-list'
             },
-            /*
             depthStencil: {
                 depthWriteEnabled: true,
                 depthCompare: 'less',
                 format: 'depth24plus-stencil8'
             }
-            */
         });
-        const commandEncoder = device.createCommandEncoder();
-        const textureView = context.getCurrentTexture().createView();
-        const renderPassDescriptor = {
+    }
+    encodeCommands() 
+    {
+        const devicePixelRatio = window.devicePixelRatio || 1;
+        this.commandEncoder = this.device.createCommandEncoder();
+
+        this.passEncoder = this.commandEncoder.beginRenderPass({
             colorAttachments: [{
-                view: textureView,
-                loadValue: { r: 0.0, g: 0.0, b: 0.0, a: 1.0 },
-                storeOp: 'store',
-            }]
-        };
-        const passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);
-        passEncoder.setPipeline(pipeline);
-        passEncoder.setViewport(
+                view: this.colorTextureView,
+                clearValue: { r: 0.0, g: 0.0, b: 0.0, a: 1.0 },
+                loadOp: 'clear',
+                storeOp: 'store'
+            }],
+            depthStencilAttachment: {
+                view: this.depthTextureView,
+                depthClearValue: 1,
+                depthLoadOp: 'clear',
+                depthStoreOp: 'store',
+                stencilLoadOp: 'clear',
+                stencilStoreOp: 'store'
+            }
+        });
+
+        this.passEncoder.setPipeline(this.pipeline);
+        this.passEncoder.setViewport(
             0,
             0,
             this.canvas.width,
@@ -159,19 +182,26 @@ class Application
             0,
             1
         );
-        passEncoder.setScissorRect(
+        this.passEncoder.setScissorRect(
             0,
             0,
             this.canvas.width,
             this.canvas.height
         );
-        passEncoder.setVertexBuffer(0, positionBuffer);
-        passEncoder.setVertexBuffer(1, colorBuffer);
-        passEncoder.setIndexBuffer(indexBuffer, 'uint16');
-        passEncoder.drawIndexed(3, 1);
-        passEncoder.end();
-        device.queue.submit([commandEncoder.finish()]);
-    };
+        this.passEncoder.setVertexBuffer(0, this.positionBuffer);
+        this.passEncoder.setVertexBuffer(1, this.colorBuffer);
+        this.passEncoder.setIndexBuffer(this.indexBuffer, 'uint16');
+        this.passEncoder.drawIndexed(8,1);
+        this.passEncoder.end();
+
+        this.queue.submit([this.commandEncoder.finish()]);
+    }
+    render = () => {
+        this.colorTexture = this.context.getCurrentTexture();
+        this.colorTextureView = this.colorTexture.createView();
+        this.encodeCommands();
+        requestAnimationFrame(this.render);
+    }
 };
 
 module.exports = Application;

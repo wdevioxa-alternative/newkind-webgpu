@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <title><%= htmlWebpackPlugin.options.title %></title>
     <style>
+      * {
+         -moz-box-sizing: border-box;
+          box-sizing: border-box;
+      }
       html,
       body {
         margin: 0;
@@ -22,6 +26,6 @@
     </style>
   </head>
   <body>
-    <canvas id="gfx"></canvas>
+    <canvas id="gfx" style="border: 1px solid gray;"></canvas>
   </body>
 </html>
