@@ -217,7 +217,7 @@ export class Application
 
         this.component.setItem([1.0,1.0,0.0],[1.0,1.0,1.0]);
         this.component.setItem([-1.0,-1.0,0.0],[1.0,1.0,1.0]);
-        this.component.setItem([1.0,1.0,0.0],[1.0,0.0,0.0]);
+        this.component.setItem([0.0,1.0,0.0],[1.0,0.0,0.0]);
         this.component.setItem([0.0,0.0,0.0],[0.0,1.0,0.0]);
 
         this.positionBuffer = this.createBuffer(this.component.getPositions(this), GPUBufferUsage.VERTEX,this.device);
