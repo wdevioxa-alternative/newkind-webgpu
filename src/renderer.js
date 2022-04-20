@@ -28,9 +28,10 @@ class Application
     }
 
     calcY( cy ) {
+        let ccy = this.canvas.height - cy;
         let ch = Math.fround(this.canvas.height / 2.0);
         let item = 1.0 / ch;
-        return Math.fround(cy) * item - 1.0;
+        return Math.fround(ccy) * item - 1.0;
     }
 
     async start() 
@@ -104,13 +105,14 @@ class Application
 
     async initializeResources()
     {
-        let offsetx = 200;
-        let offsety = 200;
-        let objectwidth = 200;
+        let offsetx = 100;
+        let offsety = 22;
+        let objectwidth = 120;
         let objectheight = 20;
+
         const positions = new Float32Array([
           
-            this.calcX(0+offsetx), this.calcY(0+offsety+objectheight), 0.0,
+            this.calcX(0+offsetx), this.calcY(0+objectheight+offsety), 0.0,
             this.calcX(0+objectwidth+offsetx), this.calcY(0+objectheight+offsety), 0.0,
 
             this.calcX(0+objectwidth+offsetx), this.calcY(0+objectheight+offsety), 0.0,
@@ -119,7 +121,7 @@ class Application
             this.calcX(0+objectwidth+offsetx), this.calcY(1+offsety), 0.0,
             this.calcX(1+offsetx), this.calcY(1+offsety), 0.0,
 
-            this.calcX(1+offsetx), this.calcY(1+offsety), 0.0,
+            this.calcX(1+offsetx), this.calcY(0+offsety), 0.0,
             this.calcX(1+offsetx), this.calcY(0+objectheight+offsety), 0.0
             
         ]);
