@@ -112,19 +112,7 @@ class Application
         let objectheight = 20;
 
         const positions = new Float32Array([
-/*          
-            this.calcX(0+offsetx), this.calcY(0+objectheight+offsety), 0.0,
-            this.calcX(0+objectwidth+offsetx), this.calcY(0+objectheight+offsety), 0.0,
-
-            this.calcX(0+objectwidth+offsetx), this.calcY(0+objectheight+offsety), 0.0,
-            this.calcX(0+objectwidth+offsetx), this.calcY(1+offsety), 0.0,
-
-            this.calcX(0+objectwidth+offsetx), this.calcY(1+offsety), 0.0,
-            this.calcX(1+offsetx), this.calcY(1+offsety), 0.0,
-
-            this.calcX(1+offsetx), this.calcY(0+offsety), 0.0,
-            this.calcX(1+offsetx), this.calcY(0+objectheight+offsety), 0.0
-*/            
+        
             this.calcX(1+offsetx), this.calcY(1+objectheight+offsety), 0.0,
             this.calcX(1+objectwidth+offsetx), this.calcY(1+objectheight+offsety), 0.0,
 
