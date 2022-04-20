@@ -90,8 +90,8 @@ class Application
                 device: this.device,
                 format: presentationFormat,
                 size: [this.canvas.width, this.canvas.height, 1],
-                usage:
-                        GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
+                compositingAlphaMode: "opaque",
+                usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
             });
         }
         this.depthTexture = this.device.createTexture({
