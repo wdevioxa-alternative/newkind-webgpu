@@ -193,25 +193,17 @@ export class Application
         this.colorTexture = this.context.getCurrentTexture();
         this.colorTextureView = this.colorTexture.createView();
 
-        let box1 = new GBox(1,1,126,18);
-
-        let positions1 = box1.getPositions(this);
-
-        this.positionBuffer = this.createBuffer(positions1, GPUBufferUsage.VERTEX,this.device);
-        this.colorBuffer = this.createBuffer(colors, GPUBufferUsage.VERTEX,this.device);
-
         this.encodeCommands();
+
+        this.positionBuffer = this.createBuffer(new GBox(1,1,126,18).getPositions(this), GPUBufferUsage.VERTEX,this.device);
+        this.colorBuffer = this.createBuffer(colors, GPUBufferUsage.VERTEX,this.device);
 
         this.passEncoder.setVertexBuffer(0, this.positionBuffer);
         this.passEncoder.setVertexBuffer(1, this.colorBuffer);
 
         this.passEncoder.draw(8,1,0,0);
 
-        let box2 = new GBox(1,22,126,18);
-
-        let positions2 = box2.getPositions(this);
-
-        this.positionBuffer = this.createBuffer(positions2, GPUBufferUsage.VERTEX,this.device);
+        this.positionBuffer = this.createBuffer(new GBox(1,22,126,18).getPositions(this), GPUBufferUsage.VERTEX,this.device);
         this.colorBuffer = this.createBuffer(colors, GPUBufferUsage.VERTEX,this.device);
 
         this.passEncoder.setVertexBuffer(0, this.positionBuffer);
