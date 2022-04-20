@@ -1,5 +1,5 @@
 import { GBox } from './box';
-import { GGraph } from './graph';
+import { GChart } from './chart';
 
 const vertexShaderWgslCode = require('./shaders/triangle.vert.wgsl');
 const fragmentShaderWgslCode = require('./shaders/triangle.frag.wgsl');
@@ -205,8 +205,8 @@ export class Application
 
         this.passEncoder.draw(8,1,0,0);
 
-        this.component = new GGraph(1,32, 200, 200);
-
+        this.component = new GChart(1, 43, 600, 200);
+  
         this.positionBuffer = this.createBuffer(this.component.getBorderPositions(this), GPUBufferUsage.VERTEX,this.device);
         this.colorBuffer = this.createBuffer(this.component.getBorderColors(this), GPUBufferUsage.VERTEX,this.device);
 
@@ -214,6 +214,19 @@ export class Application
         this.passEncoder.setVertexBuffer(1, this.colorBuffer);
 
         this.passEncoder.draw(8,1,0,0);
+
+        this.component.setItem([1.0,1.0,0.0],[1.0,1.0,1.0]);
+        this.component.setItem([-1.0,-1.0,0.0],[1.0,1.0,1.0]);
+        this.component.setItem([1.0,1.0,0.0],[1.0,0.0,0.0]);
+        this.component.setItem([0.0,0.0,0.0],[0.0,1.0,0.0]);
+
+        this.positionBuffer = this.createBuffer(this.component.getPositions(this), GPUBufferUsage.VERTEX,this.device);
+        this.colorBuffer = this.createBuffer(this.component.getColors(this), GPUBufferUsage.VERTEX,this.device);
+
+        this.passEncoder.setVertexBuffer(0, this.positionBuffer);
+        this.passEncoder.setVertexBuffer(1, this.colorBuffer);
+
+        this.passEncoder.draw(4,1,0,0);
 
         this.passEncoder.end();
         this.queue.submit([this.commandEncoder.finish()]);
