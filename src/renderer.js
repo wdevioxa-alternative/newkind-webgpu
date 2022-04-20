@@ -12,8 +12,8 @@ const colors = new Float32Array([
     1.0, 0.0, 0.0  // 🔴
 ]);
 
-//const indexes = new Uint16Array([ 0, 1 ]);
-const indexes = new Uint16Array([ 0, 1, 2, 3, 4, 5, 6, 7 ]);
+const indexes = new Uint16Array([[ 0, 1 ],[ 0, 1 ],[ 0, 1 ],[ 0, 1 ]]);
+//const indexes = new Uint16Array([ 0, 1, 2, 3, 4, 5, 6, 7 ]);
 
 class Application
 {
@@ -22,17 +22,14 @@ class Application
     }
     
     calcX( cx ) {
-        //const devicePixelRatio = window.devicePixelRatio || 1;
-        let cw = Math.fround(this.canvas.width);
-        let item = 2.0 / cw;
+        let cw = Math.fround(this.canvas.width / 2.0);
+        let item = 1.0 / cw;
         return Math.fround(cx) * item - 1.0;
     }
 
     calcY( cy ) {
-        //const devicePixelRatio = window.devicePixelRatio || 1;
-        let ch = Math.fround(this.canvas.height);
-        let item = 2.0 / ch;
-        //alert( item + " " + Math.fround(cy) + " " + cy );
+        let ch = Math.fround(this.canvas.height / 2.0);
+        let item = 1.0 / ch;
         return Math.fround(cy) * item - 1.0;
     }
 
@@ -44,6 +41,14 @@ class Application
             this.render();
         }
     }
+
+    async restart() 
+    {        
+        this.resizeBackings();
+        await this.initializeResources();
+        this.render();
+    }
+
     createBuffer(arr, usage, device) 
     {
         let desc = {
@@ -79,15 +84,11 @@ class Application
         const devicePixelRatio = window.devicePixelRatio || 1;
         if (!this.context) {
             this.context = this.canvas.getContext('webgpu');
-            const presentationSize = [
-                this.canvas.width,
-                this.canvas.height,
-            ];
             const presentationFormat = this.context.getPreferredFormat(this.adapter);
             this.context.configure({
                 device: this.device,
                 format: presentationFormat,
-                size: presentationSize,
+                size: [this.canvas.width, this.canvas.height, 1],
                 usage:
                         GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
             });
@@ -103,19 +104,19 @@ class Application
 
     async initializeResources()
     {
+        let offsetx = 100;
+        let offsety = 200;
+        let objectwidth = 200;
+        let objectheight = 24;
         const positions = new Float32Array([
-            this.calcX(0), this.calcY(319), 0.0,
-            this.calcX(320), this.calcY(319), 0.0,
-
-            this.calcX(320), this.calcY(319), 0.0,
-            this.calcX(320), this.calcY(1), 0.0,
-
-            this.calcX(320), this.calcY(1), 0.0,
-            this.calcX(1), this.calcY(1), 0.0,
-
-            this.calcX(1), this.calcY(1), 0.0,
-            this.calcX(1), this.calcY(319), 0.0
-
+            this.calcX(0+offsetx), this.calcY(offsety+objectheight), 0.0,
+            this.calcX(objectwidth+offsetx), this.calcY(objectheight+offsety), 0.0,
+            this.calcX(objectwidth+offsetx), this.calcY(objectheight+offsety), 0.0,
+            this.calcX(objectwidth+offsetx), this.calcY(1+offsety), 0.0,
+            this.calcX(objectwidth+offsetx), this.calcY(1+offsety), 0.0,
+            this.calcX(1+offsetx), this.calcY(1+offsety), 0.0,
+            this.calcX(1+offsetx), this.calcY(1+offsety), 0.0,
+            this.calcX(1+offsetx), this.calcY(objectheight+offsety), 0.0
         ]);
 
         this.positionBuffer = this.createBuffer(positions, GPUBufferUsage.VERTEX,this.device);
@@ -192,7 +193,6 @@ class Application
                 stencilStoreOp: 'store'
             }
         });
-
         this.passEncoder.setPipeline(this.pipeline);
         this.passEncoder.setViewport(
             0,
@@ -210,8 +210,8 @@ class Application
         );
         this.passEncoder.setVertexBuffer(0, this.positionBuffer);
         this.passEncoder.setVertexBuffer(1, this.colorBuffer);
-        this.passEncoder.setIndexBuffer(this.indexBuffer, 'uint16');
-        this.passEncoder.drawIndexed(8,1);
+        //this.passEncoder.setIndexBuffer(this.indexBuffer, 'uint16');
+        this.passEncoder.draw(8,4,0,0);
 
         this.passEncoder.end();
         this.queue.submit([this.commandEncoder.finish()]);

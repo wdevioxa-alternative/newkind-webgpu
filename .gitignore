@@ -1,8 +1,4 @@
 # Dependency directory
-node_modules
-modules/
-dist
-rss.xml
 
 # Logs
 logs
@@ -24,13 +20,11 @@ Thumbs.db
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 bin
-ts-node
 
 # Personal Scripts
 *.bat
 *.ssh
 *.sh
-!system.min.js
 
 # Editors
 .vscode
@@ -39,4 +33,4 @@ ts-node
 # Build Files
 temp
 *.map
-!webpack.*
+node_modules

@@ -4,22 +4,24 @@ const canvas = document.getElementById('gfx');
 
 const renderer = new Application(canvas);
 
-canvas.width = canvas.height = 320;
+//let a = 6+128;
+//alert ( a & ~3 );
 
-/*
 function setCanvasSize(canvas)
 {
     const devicePixelRatio = window.devicePixelRatio || 1;
-    canvas.width = (window.innerWidth * devicePixelRatio) / 2;
-    canvas.height = (window.innerHeight * devicePixelRatio) / 2;
+    const wbSize = (window.innerWidth * devicePixelRatio) / 6;
+
+    canvas.width = ((window.innerWidth * devicePixelRatio) - wbSize) & ~3;
+    canvas.height = ((window.innerHeight * devicePixelRatio) - wbSize) & ~3;
 }
+
+setCanvasSize(canvas);
+/*
+window.addEventListener('resize', async ()=>{
+	setCanvasSize(canvas);
+    await renderer.restart();
+}, true);
 */
-
-//setCanvasSize(canvas);
-
-//window.addEventListener('resize', ()=>{
-// setCanvasSize(canvas);
-//}, true);
-
 renderer.start();
 
