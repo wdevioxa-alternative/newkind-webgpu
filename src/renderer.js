@@ -105,11 +105,11 @@ class Application
 
     async initializeResources()
     {
-        let offsetx = 100;
-        let offsety = 20;
+        let offsetx = 1;
+        let offsety = 1;
 
-        let objectwidth = 120;
-        let objectheight = 20;
+        let objectwidth = 126 | 1; // всегда дополнять на 1
+        let objectheight = 18 | 1; // всегда дополнять на 1
 
         const positions = new Float32Array([
         
