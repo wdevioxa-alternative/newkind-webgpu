@@ -217,34 +217,44 @@ export class Application
 
         this.defaulColor = [0.0,1.0,0.0];
 
-        const now = Date.now() / 1000;
-        let g = Math.sin(now);
-        let b = Math.cos(now);
+        const now = Date.now();
 
-        this.sinColor = [ ( g + 1.0 ) * 0.5, 0.0, ( b + 1.0 ) * 0.5 ];
-        this.sinColor2 = [ ( g + 1.0 ) * 0.5, ( g + 1.0 ) * 0.5, ( b + 1.0 ) * 0.5 ];
-        this.cosColor = [ ( b + 1.0 ) * 0.5, 0.0, ( g + 1.0 ) * 0.5 ];
-        this.cosColor2 = [ ( b + 1.0 ) * 0.5, ( b + 1.0 ) * 0.5, ( g + 1.0 ) * 0.5 ];
+        if ( !this.prevtime ) this.prevtime = now;
+        if ( now != this.prevtime ) 
+        {
+            if ( ( now - this.prevtime ) > 42 ) 
+            {
+                let g1 = Math.cos(now / 1000);
+                let g2 = Math.cos(now / 1000 + Math.PI / 2.0);
+                let g3 = Math.cos(now / 1000 + Math.PI );
+                let g4 = Math.cos(now / 1000 + 3.0 * Math.PI / 2.0);
+
+                this.defaultColor1 = [ ( g1 + 1.0 ) * 0.5, 0.0, 0.0 ];
+                this.defaultColor2 = [ 0.0, ( g2 + 1.0 ) * 0.5, 0.0 ];
+                this.defaultColor3 = [ 0.0, 0.0, ( g3 + 1.0 ) * 0.5 ];
+                this.defaultColor4 = [ 0.0, ( g4 + 1.0 ) * 0.5, 0.0 ];
         
-        this.component.setItem([0.55,-0.55,0.0],this.sinColor2);
-        this.component.setItem([-0.55,-0.55,0.0],this.sinColor);
+                this.component.setItem([0.55,-0.55,0.0],this.defaultColor1);
+                this.component.setItem([-0.55,-0.55,0.0],this.defaultColor2);
 
-        this.component.setItem([-0.55,-0.55,0.0],this.sinColor);
-        this.component.setItem([-0.55,0.55,0.0],this.cosColor2);
+                this.component.setItem([-0.55,-0.55,0.0],this.defaultColor2);
+                this.component.setItem([-0.55,0.55,0.0],this.defaultColor3);
 
-        this.component.setItem([-0.55,0.55,0.0],this.cosColor2);
-        this.component.setItem([0.55,0.55,0.0],this.cosColor);
+                this.component.setItem([-0.55,0.55,0.0],this.defaultColor3);
+                this.component.setItem([0.55,0.55,0.0],this.defaultColor4);
 
-        this.component.setItem([0.55,0.55,0.0],this.cosColor);
-        this.component.setItem([0.55,-0.55,0.0],this.sinColor2);
+                this.component.setItem([0.55,0.55,0.0],this.defaultColor4);
+                this.component.setItem([0.55,-0.55,0.0],this.defaultColor1);
 
-        this.positionBuffer = this.createBuffer(this.component.getPositions(this), GPUBufferUsage.VERTEX,this.device);
-        this.colorBuffer = this.createBuffer(this.component.getColors(this), GPUBufferUsage.VERTEX,this.device);
+                this.positionBuffer = this.createBuffer(this.component.getPositions(this), GPUBufferUsage.VERTEX,this.device);
+                this.colorBuffer = this.createBuffer(this.component.getColors(this), GPUBufferUsage.VERTEX,this.device);
 
-        this.passEncoder.setVertexBuffer(0, this.positionBuffer);
-        this.passEncoder.setVertexBuffer(1, this.colorBuffer);
+                this.passEncoder.setVertexBuffer(0, this.positionBuffer);
+                this.passEncoder.setVertexBuffer(1, this.colorBuffer);
 
-        this.passEncoder.draw(8,1,0,0);
+                this.passEncoder.draw(8,1,0,0);
+            }
+        }
 
         this.passEncoder.end();
         this.queue.submit([this.commandEncoder.finish()]);
