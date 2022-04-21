@@ -80,13 +80,13 @@ export class Application
             this.context.configure({
                 device: this.device,
                 format: presentationFormat,
-                size: [this.canvas.width, this.canvas.height, 1],
+                size: [this.getCanvasWidth(), this.getCanvasHeight(), 1],
                 compositingAlphaMode: "opaque",
                 usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
             });
         }
         this.depthTexture = this.device.createTexture({
-            size: [this.canvas.width, this.canvas.height, 1],
+            size: [this.getCanvasWidth(), this.getCanvasHeight(), 1],
             dimension: '2d',
             format: 'depth24plus-stencil8',
             usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
@@ -167,16 +167,16 @@ export class Application
         this.passEncoder.setViewport(
             0,
             0,
-            this.canvas.width,
-            this.canvas.height,
+            this.getCanvasWidth(),
+            this.getCanvasHeight(),
             0,
             1
         );
         this.passEncoder.setScissorRect(
             0,
             0,
-            this.canvas.width,
-            this.canvas.height
+            this.getCanvasWidth(),
+            this.getCanvasHeight()
         );
     }
     render = () => {
@@ -215,10 +215,28 @@ export class Application
 
         this.passEncoder.draw(8,1,0,0);
 
-        this.component.setItem([1.0,1.0,0.0],[1.0,1.0,1.0]);
-        this.component.setItem([-1.0,-1.0,0.0],[1.0,1.0,1.0]);
-        this.component.setItem([0.0,1.0,0.0],[1.0,0.0,0.0]);
-        this.component.setItem([0.0,0.0,0.0],[0.0,1.0,0.0]);
+        this.defaulColor = [0.0,1.0,0.0];
+
+        const now = Date.now() / 1000;
+        let g = Math.sin(now);
+        let b = Math.cos(now);
+
+        this.sinColor = [ ( g + 1.0 ) * 0.5, 0.0, ( b + 1.0 ) * 0.5 ];
+        this.sinColor2 = [ ( g + 1.0 ) * 0.5, ( g + 1.0 ) * 0.5, ( b + 1.0 ) * 0.5 ];
+        this.cosColor = [ ( b + 1.0 ) * 0.5, 0.0, ( g + 1.0 ) * 0.5 ];
+        this.cosColor2 = [ ( b + 1.0 ) * 0.5, ( b + 1.0 ) * 0.5, ( g + 1.0 ) * 0.5 ];
+        
+        this.component.setItem([0.55,-0.55,0.0],this.sinColor2);
+        this.component.setItem([-0.55,-0.55,0.0],this.sinColor);
+
+        this.component.setItem([-0.55,-0.55,0.0],this.sinColor);
+        this.component.setItem([-0.55,0.55,0.0],this.cosColor2);
+
+        this.component.setItem([-0.55,0.55,0.0],this.cosColor2);
+        this.component.setItem([0.55,0.55,0.0],this.cosColor);
+
+        this.component.setItem([0.55,0.55,0.0],this.cosColor);
+        this.component.setItem([0.55,-0.55,0.0],this.sinColor2);
 
         this.positionBuffer = this.createBuffer(this.component.getPositions(this), GPUBufferUsage.VERTEX,this.device);
         this.colorBuffer = this.createBuffer(this.component.getColors(this), GPUBufferUsage.VERTEX,this.device);
@@ -226,7 +244,7 @@ export class Application
         this.passEncoder.setVertexBuffer(0, this.positionBuffer);
         this.passEncoder.setVertexBuffer(1, this.colorBuffer);
 
-        this.passEncoder.draw(4,1,0,0);
+        this.passEncoder.draw(8,1,0,0);
 
         this.passEncoder.end();
         this.queue.submit([this.commandEncoder.finish()]);

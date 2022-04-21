@@ -4,8 +4,7 @@ export class GChart extends GObject
 {
     constructor( x, y, width, height ) {
         super( x, y, width, height );
-        this.positions = new Float32Array();
-        this.colors = new Float32Array();
+        this.clearItems();
     }  
     /**
     * @param {Float32Array} position - The array of vertex
@@ -21,6 +20,10 @@ export class GChart extends GObject
         for (let i=0; i<this.colors.length; i++) vcolors[i] = this.colors[i];
         for (let i=0; i<color.length; i++) vcolors[i + this.colors.length] = color[i];
         this.colors = vcolors;
+    }
+    clearItems() {
+        this.positions = new Float32Array();
+        this.colors = new Float32Array();
     }
     getPositions( instance ) {
         return this.positions;
