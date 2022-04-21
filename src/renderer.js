@@ -234,17 +234,17 @@ export class Application
                 this.defaultColor3 = [ 0.0, 0.0, ( g3 + 1.0 ) * 0.5 ];
                 this.defaultColor4 = [ 0.0, ( g4 + 1.0 ) * 0.5, 0.0 ];
         
-                this.component.setItem([0.55,-0.55,0.0],this.defaultColor1);
-                this.component.setItem([-0.55,-0.55,0.0],this.defaultColor2);
+                this.component.appendItem(this,[10,100,0.0],this.defaultColor4);
+                this.component.appendItem(this,[10,200,0.0],this.defaultColor1);
 
-                this.component.setItem([-0.55,-0.55,0.0],this.defaultColor2);
-                this.component.setItem([-0.55,0.55,0.0],this.defaultColor3);
+                this.component.appendItem(this,[10,200,0.0],this.defaultColor1);
+                this.component.appendItem(this,[400,200,0.0],this.defaultColor2);
 
-                this.component.setItem([-0.55,0.55,0.0],this.defaultColor3);
-                this.component.setItem([0.55,0.55,0.0],this.defaultColor4);
+                this.component.appendItem(this,[400,200,0.0],this.defaultColor2);
+                this.component.appendItem(this,[400,100,0.0],this.defaultColor3);
 
-                this.component.setItem([0.55,0.55,0.0],this.defaultColor4);
-                this.component.setItem([0.55,-0.55,0.0],this.defaultColor1);
+                this.component.appendItem(this,[400,100,0.0],this.defaultColor3);
+                this.component.appendItem(this,[10,100,0.0],this.defaultColor4);
 
                 this.positionBuffer = this.createBuffer(this.component.getPositions(this), GPUBufferUsage.VERTEX,this.device);
                 this.colorBuffer = this.createBuffer(this.component.getColors(this), GPUBufferUsage.VERTEX,this.device);
