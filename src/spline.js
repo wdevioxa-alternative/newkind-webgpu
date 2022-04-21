@@ -1,6 +1,6 @@
 import { GObject } from './object';
 
-export class GChart extends GObject
+export class GSpline extends GObject
 {
     constructor( x, y, width, height ) {
         super( x, y, width, height );
@@ -16,8 +16,8 @@ export class GChart extends GObject
         let vpositions = new Float32Array(this.positions.length + position.length);
         for (let i=0; i<this.positions.length; i++) 
             vpositions[i] = this.positions[i];
-        vpositions[0 + this.positions.length] = instance.calcX(position[0]);
-        vpositions[1 + this.positions.length] = instance.calcY(position[1]);
+        vpositions[0 + this.positions.length] = position[0];
+        vpositions[1 + this.positions.length] = position[1];
         vpositions[2 + this.positions.length] = position[2];
         this.positions = vpositions;
         let vcolors = new Float32Array(this.colors.length + color.length);
@@ -33,7 +33,23 @@ export class GChart extends GObject
         this.colors = new Float32Array();
     }
     getPositions( instance ) {
-        return this.positions;
+        let vcopy = new Float32Array(this.positions);
+        vcopy[0] = vcopy[0] - 1;
+        let vpositions = new Float32Array(vcopy.length);
+        for ( let i = 0; i < vcopy.length; i = i + 3 ) {
+            let x = this.getX() + vcopy[ i + 0 ] + 1 + 1;
+            if ( x < this.getX() ) x = this.getX() + 1;
+            if ( x > this.getX() + this.getWidth() ) 
+                x = this.getX() + this.getWidth() - 1;
+            let y = this.getY() + vcopy[ i + 1 ] + 1 + 1;
+            if ( y < this.getY() ) y = this.getY() + 1;
+            if ( y > this.getY() + this.getHeigth() ) 
+                y = this.getY() + this.getHeigth() - 1;
+            vpositions[ i + 0 ] = instance.calcX(x);
+            vpositions[ i + 1 ] = instance.calcY(y);
+            vpositions[ i + 2 ] = vcopy[ i + 2 ];
+        }
+        return vpositions;
     }
     getColors( instance ) {
         return this.colors;

@@ -21,19 +21,23 @@ export class GBox extends GObject
     }
     getPositions( instance )
     {
-        let objectwidth = super.getWidth();
-        let objectheight = super.getHeigth();
-        let offsetx = super.getX();
-        let offsety = super.getY();
+        let objectwidth = super.getWidth() - 1;
+        let objectheight = super.getHeigth() - 1;
+        let offsetx = super.getX() + 1;
+        let offsety = super.getY() + 1;
         let positions = new Float32Array([
-            instance.calcX(1+offsetx), instance.calcY(1+objectheight+offsety), 0.0,
-            instance.calcX(1+objectwidth+offsetx), instance.calcY(1+objectheight+offsety), 0.0,
-            instance.calcX(1+objectwidth+offsetx), instance.calcY(1+objectheight+offsety), 0.0,
-            instance.calcX(1+objectwidth+offsetx), instance.calcY(1+offsety), 0.0,
-            instance.calcX(1+objectwidth+offsetx), instance.calcY(1+offsety), 0.0,
-            instance.calcX(1+offsetx), instance.calcY(1+offsety), 0.0,
-            instance.calcX(1+offsetx), instance.calcY(0+offsety), 0.0,
-            instance.calcX(1+offsetx), instance.calcY(1+objectheight+offsety), 0.0
+            instance.calcX(offsetx-1), instance.calcY(offsety), 0.0,
+            instance.calcX(objectwidth+offsetx), instance.calcY(offsety), 0.0,
+
+            instance.calcX(objectwidth+offsetx), instance.calcY(offsety), 0.0,
+            instance.calcX(objectwidth+offsetx), instance.calcY(objectheight+offsety), 0.0,
+
+            instance.calcX(objectwidth+offsetx), instance.calcY(objectheight+offsety), 0.0,
+            instance.calcX(offsetx), instance.calcY(objectheight+offsety), 0.0,
+
+            instance.calcX(offsetx), instance.calcY(objectheight+offsety), 0.0,
+            instance.calcX(offsetx), instance.calcY(offsety), 0.0
+
         ]);
         return positions;
     }

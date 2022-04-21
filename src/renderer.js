@@ -1,5 +1,5 @@
 import { GBox } from './box';
-import { GChart } from './chart';
+import { GSpline } from './spline';
 
 const vertexShaderWgslCode = require('./shaders/triangle.vert.wgsl');
 const fragmentShaderWgslCode = require('./shaders/triangle.frag.wgsl');
@@ -205,7 +205,7 @@ export class Application
 
         this.passEncoder.draw(8,1,0,0);
 
-        this.component = new GChart(1, 43, 600, 200);
+        this.component = new GSpline(1, 43, 600, 200);
   
         this.positionBuffer = this.createBuffer(this.component.getBorderPositions(this), GPUBufferUsage.VERTEX,this.device);
         this.colorBuffer = this.createBuffer(this.component.getBorderColors(this), GPUBufferUsage.VERTEX,this.device);
@@ -233,18 +233,18 @@ export class Application
                 this.defaultColor2 = [ 0.0, ( g2 + 1.0 ) * 0.5, 0.0 ];
                 this.defaultColor3 = [ 0.0, 0.0, ( g3 + 1.0 ) * 0.5 ];
                 this.defaultColor4 = [ 0.0, ( g4 + 1.0 ) * 0.5, 0.0 ];
-        
-                this.component.appendItem(this,[10,100,0.0],this.defaultColor4);
-                this.component.appendItem(this,[10,200,0.0],this.defaultColor1);
 
-                this.component.appendItem(this,[10,200,0.0],this.defaultColor1);
-                this.component.appendItem(this,[400,200,0.0],this.defaultColor2);
+                this.component.appendItem(this,[0,0,0.0],this.defaultColor4);
+                this.component.appendItem(this,[3,0,0.0],this.defaultColor1);
 
-                this.component.appendItem(this,[400,200,0.0],this.defaultColor2);
-                this.component.appendItem(this,[400,100,0.0],this.defaultColor3);
+                this.component.appendItem(this,[3,0,0.0],this.defaultColor1);
+                this.component.appendItem(this,[3,3,0.0],this.defaultColor2);
 
-                this.component.appendItem(this,[400,100,0.0],this.defaultColor3);
-                this.component.appendItem(this,[10,100,0.0],this.defaultColor4);
+                this.component.appendItem(this,[3,3,0.0],this.defaultColor2);
+                this.component.appendItem(this,[0,3,0.0],this.defaultColor3);
+
+                this.component.appendItem(this,[0,3,0.0],this.defaultColor3);
+                this.component.appendItem(this,[0,0,0.0],this.defaultColor4);
 
                 this.positionBuffer = this.createBuffer(this.component.getPositions(this), GPUBufferUsage.VERTEX,this.device);
                 this.colorBuffer = this.createBuffer(this.component.getColors(this), GPUBufferUsage.VERTEX,this.device);
