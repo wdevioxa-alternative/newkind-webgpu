@@ -33,21 +33,19 @@ export class GSpline extends GObject
         this.colors = new Float32Array();
     }
     getPositions( instance ) {
-        let vcopy = new Float32Array(this.positions);
-        vcopy[0] = vcopy[0] - 1;
-        let vpositions = new Float32Array(vcopy.length);
-        for ( let i = 0; i < vcopy.length; i = i + 3 ) {
-            let x = this.getX() + vcopy[ i + 0 ] + 1 + 1;
-            if ( x < this.getX() ) x = this.getX() + 1;
+        let vpositions = new Float32Array(this.positions.length);
+        for ( let i = 0; i < this.positions.length; i = i + 3 ) {
+            let x = this.getX() + this.positions[ i + 0 ] + 1 + 1;
+            if ( x <= this.getX() + 1 ) x = this.getX() + 1 + 1;
             if ( x > this.getX() + this.getWidth() ) 
-                x = this.getX() + this.getWidth() - 1;
-            let y = this.getY() + vcopy[ i + 1 ] + 1 + 1;
-            if ( y < this.getY() ) y = this.getY() + 1;
+                x = this.getX() + this.getWidth();
+            let y = this.getY() + this.positions[ i + 1 ] + 1 + 1;
+            if ( y <= this.getY() + 1 ) y = this.getY() + 1 + 1;
             if ( y > this.getY() + this.getHeigth() ) 
-                y = this.getY() + this.getHeigth() - 1;
-            vpositions[ i + 0 ] = instance.calcX(x);
+                y = this.getY() + this.getHeigth();
+            vpositions[ i + 0 ] = instance.calcX( ( i == 0 ) ? x - 1 : x );
             vpositions[ i + 1 ] = instance.calcY(y);
-            vpositions[ i + 2 ] = vcopy[ i + 2 ];
+            vpositions[ i + 2 ] = this.positions[ i + 2 ];
         }
         return vpositions;
     }
@@ -69,19 +67,22 @@ export class GSpline extends GObject
     }
     getBorderPositions( instance )
     {
-        let objectwidth = super.getWidth();
-        let objectheight = super.getHeigth();
-        let offsetx = super.getX();
-        let offsety = super.getY();
+        let objectwidth = super.getWidth() - 1;
+        let objectheight = super.getHeigth() - 1;
+        let offsetx = super.getX() + 1;
+        let offsety = super.getY() + 1;
         return new Float32Array([
-            instance.calcX(1+offsetx), instance.calcY(1+objectheight+offsety), 0.0,
-            instance.calcX(1+objectwidth+offsetx), instance.calcY(1+objectheight+offsety), 0.0,
-            instance.calcX(1+objectwidth+offsetx), instance.calcY(1+objectheight+offsety), 0.0,
-            instance.calcX(1+objectwidth+offsetx), instance.calcY(1+offsety), 0.0,
-            instance.calcX(1+objectwidth+offsetx), instance.calcY(1+offsety), 0.0,
-            instance.calcX(1+offsetx), instance.calcY(1+offsety), 0.0,
-            instance.calcX(1+offsetx), instance.calcY(0+offsety), 0.0,
-            instance.calcX(1+offsetx), instance.calcY(1+objectheight+offsety), 0.0
+            instance.calcX(offsetx-1), instance.calcY(offsety), 0.0,
+            instance.calcX(objectwidth+offsetx), instance.calcY(offsety), 0.0,
+
+            instance.calcX(objectwidth+offsetx), instance.calcY(offsety), 0.0,
+            instance.calcX(objectwidth+offsetx), instance.calcY(objectheight+offsety), 0.0,
+
+            instance.calcX(objectwidth+offsetx), instance.calcY(objectheight+offsety), 0.0,
+            instance.calcX(offsetx), instance.calcY(objectheight+offsety), 0.0,
+
+            instance.calcX(offsetx), instance.calcY(objectheight+offsety), 0.0,
+            instance.calcX(offsetx), instance.calcY(offsety), 0.0
         ]);
     }
 };

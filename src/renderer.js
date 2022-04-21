@@ -195,6 +195,9 @@ export class Application
 
         this.passEncoder.draw(8,1,0,0);
 
+        //this.positionBuffer.destroy();
+        //this.colorBuffer.destroy();
+
         this.component = new GBox(1,22,126,18);
 
         this.positionBuffer = this.createBuffer(this.component.getPositions(this), GPUBufferUsage.VERTEX,this.device);
@@ -205,6 +208,9 @@ export class Application
 
         this.passEncoder.draw(8,1,0,0);
 
+        //this.positionBuffer.destroy();
+        //this.colorBuffer.destroy();
+
         this.component = new GSpline(1, 43, 600, 200);
   
         this.positionBuffer = this.createBuffer(this.component.getBorderPositions(this), GPUBufferUsage.VERTEX,this.device);
@@ -214,6 +220,9 @@ export class Application
         this.passEncoder.setVertexBuffer(1, this.colorBuffer);
 
         this.passEncoder.draw(8,1,0,0);
+
+        //this.positionBuffer.destroy();
+        //this.colorBuffer.destroy();
 
         this.defaulColor = [0.0,1.0,0.0];
 
@@ -234,17 +243,17 @@ export class Application
                 this.defaultColor3 = [ 0.0, 0.0, ( g3 + 1.0 ) * 0.5 ];
                 this.defaultColor4 = [ 0.0, ( g4 + 1.0 ) * 0.5, 0.0 ];
 
-                this.component.appendItem(this,[0,0,0.0],this.defaultColor4);
-                this.component.appendItem(this,[3,0,0.0],this.defaultColor1);
+                this.component.appendItem(this,[10,10,0.0],this.defaultColor4);
+                this.component.appendItem(this,[310,10,0.0],this.defaultColor1);
 
-                this.component.appendItem(this,[3,0,0.0],this.defaultColor1);
-                this.component.appendItem(this,[3,3,0.0],this.defaultColor2);
+                this.component.appendItem(this,[310,10,0.0],this.defaultColor1);
+                this.component.appendItem(this,[310,40,0.0],this.defaultColor2);
 
-                this.component.appendItem(this,[3,3,0.0],this.defaultColor2);
-                this.component.appendItem(this,[0,3,0.0],this.defaultColor3);
+                this.component.appendItem(this,[310,40,0.0],this.defaultColor2);
+                this.component.appendItem(this,[10,40,0.0],this.defaultColor3);
 
-                this.component.appendItem(this,[0,3,0.0],this.defaultColor3);
-                this.component.appendItem(this,[0,0,0.0],this.defaultColor4);
+                this.component.appendItem(this,[10,40,0.0],this.defaultColor3);
+                this.component.appendItem(this,[10,10,0.0],this.defaultColor4);
 
                 this.positionBuffer = this.createBuffer(this.component.getPositions(this), GPUBufferUsage.VERTEX,this.device);
                 this.colorBuffer = this.createBuffer(this.component.getColors(this), GPUBufferUsage.VERTEX,this.device);
@@ -258,6 +267,9 @@ export class Application
 
         this.passEncoder.end();
         this.queue.submit([this.commandEncoder.finish()]);
+
+        this.positionBuffer.destroy();
+        this.colorBuffer.destroy();
 
         requestAnimationFrame(this.render);
     }

@@ -37,7 +37,6 @@ export class GBox extends GObject
 
             instance.calcX(offsetx), instance.calcY(objectheight+offsety), 0.0,
             instance.calcX(offsetx), instance.calcY(offsety), 0.0
-
         ]);
         return positions;
     }
