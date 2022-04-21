@@ -6,21 +6,16 @@ export class GSpline extends GObject
         super( x, y, width, height );
         this.clearItems();
     }  
-    /**
-     *  @param {this} instance 
-     *  @param {Float32Array} position - The array of vertex
-     *  @param {Float32Array} color - The array of vertex color
-    */
     appendItem( instance, position, color )
     {
-        let vpositions = new Float32Array(this.positions.length + position.length);
+        var vpositions = new Float32Array(this.positions.length + position.length);
         for (let i=0; i<this.positions.length; i++) 
             vpositions[i] = this.positions[i];
         vpositions[0 + this.positions.length] = position[0];
         vpositions[1 + this.positions.length] = position[1];
         vpositions[2 + this.positions.length] = position[2];
         this.positions = vpositions;
-        let vcolors = new Float32Array(this.colors.length + color.length);
+        var vcolors = new Float32Array(this.colors.length + color.length);
         for (let i=0; i<this.colors.length; i++) 
             vcolors[i] = this.colors[i];
         vcolors[0 + this.colors.length] = color[0];
@@ -41,8 +36,8 @@ export class GSpline extends GObject
                 x = this.getX() + this.getWidth();
             let y = this.getY() + this.positions[ i + 1 ] + 1 + 1;
             if ( y <= this.getY() + 1 ) y = this.getY() + 1 + 1;
-            if ( y > this.getY() + this.getHeigth() ) 
-                y = this.getY() + this.getHeigth();
+            if ( y > this.getY() + this.getHeight() ) 
+                y = this.getY() + this.getHeight();
             vpositions[ i + 0 ] = instance.calcX( ( i == 0 ) ? x - 1 : x );
             vpositions[ i + 1 ] = instance.calcY(y);
             vpositions[ i + 2 ] = this.positions[ i + 2 ];
@@ -68,7 +63,7 @@ export class GSpline extends GObject
     getBorderPositions( instance )
     {
         let objectwidth = super.getWidth() - 1;
-        let objectheight = super.getHeigth() - 1;
+        let objectheight = super.getHeight() - 1;
         let offsetx = super.getX() + 1;
         let offsety = super.getY() + 1;
         return new Float32Array([

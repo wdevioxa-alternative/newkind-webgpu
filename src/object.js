@@ -25,7 +25,7 @@ export class GObject
     setWidth(width) {
         this.width = width; // | 1;
     }
-    getHeigth() {
+    getHeight() {
         return this.height;
     }
     setHeight(height) {

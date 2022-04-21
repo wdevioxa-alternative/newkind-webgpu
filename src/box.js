@@ -22,7 +22,7 @@ export class GBox extends GObject
     getPositions( instance )
     {
         let objectwidth = super.getWidth() - 1;
-        let objectheight = super.getHeigth() - 1;
+        let objectheight = super.getHeight() - 1;
         let offsetx = super.getX() + 1;
         let offsety = super.getY() + 1;
         let positions = new Float32Array([

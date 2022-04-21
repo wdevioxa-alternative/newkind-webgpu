@@ -144,6 +144,10 @@ export class Application
             }
         });
     }
+    calcScale( maxsize, scalemaxsize, scaleitem )
+    {
+        return ( ( maxsize * scaleitem ) / scalemaxsize );
+    }
     encodeCommands() 
     {
         this.commandEncoder = this.device.createCommandEncoder();
@@ -224,7 +228,7 @@ export class Application
         //this.positionBuffer.destroy();
         //this.colorBuffer.destroy();
 
-        this.defaulColor = [0.0,1.0,0.0];
+        this.defaultColor = [0.6,0.6,0.6];
 
         const now = Date.now();
 
@@ -262,6 +266,55 @@ export class Application
                 this.passEncoder.setVertexBuffer(1, this.colorBuffer);
 
                 this.passEncoder.draw(8,1,0,0);
+
+                this.component.clearItems();
+
+                let origWidth = this.component.getWidth();
+				let origHeight = this.component.getHeight();				
+
+                var xCount = 58;
+				var xOffset = Math.PI / xCount;
+
+				var xp = 0;
+				var yp = 0;
+
+                for ( let i=0; i<xCount; i++ ) 
+				{
+					let realx = this.calcScale(origWidth,Math.PI,xp);
+					let realy = origHeight-this.calcScale(origHeight,1,yp);
+
+                    this.component.appendItem(this,[realx,realy,0.0],this.defaultColor1);
+
+					xp = ( i + 1 ) * xOffset;
+					yp = Math.sin(xp);
+
+					realx = this.calcScale(origWidth,Math.PI,xp);
+					realy = origHeight-this.calcScale(origHeight,1,yp);
+ 
+                    this.component.appendItem(this,[realx,realy,0.0],this.defaultColor2);
+
+                    this.component.appendItem(this,[realx-1,realy+1,0.0],this.defaultColor);
+                    this.component.appendItem(this,[realx-1,realy-1,0.0],this.defaultColor);
+
+                    this.component.appendItem(this,[realx-1,realy-1,0.0],this.defaultColor);
+                    this.component.appendItem(this,[realx+1,realy-1,0.0],this.defaultColor);
+
+                    this.component.appendItem(this,[realx+1,realy-1,0.0],this.defaultColor);
+                    this.component.appendItem(this,[realx+1,realy+1,0.0],this.defaultColor);
+
+                    this.component.appendItem(this,[realx+1,realy+1,0.0],this.defaultColor);
+                    this.component.appendItem(this,[realx-1,realy+1,0.0],this.defaultColor);
+                }
+
+                let positions = this.component.getPositions(this);
+
+                this.positionBuffer = this.createBuffer(positions, GPUBufferUsage.VERTEX,this.device);
+                this.colorBuffer = this.createBuffer(this.component.getColors(this), GPUBufferUsage.VERTEX,this.device);
+
+                this.passEncoder.setVertexBuffer(0, this.positionBuffer);
+                this.passEncoder.setVertexBuffer(1, this.colorBuffer);
+
+                this.passEncoder.draw(positions.length / 3, 1, 0, 0 );
             }
         }
 
