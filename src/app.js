@@ -1,4 +1,3 @@
-
 import { Application } from './renderer';
 
 const canvas = document.getElementById('gfx');

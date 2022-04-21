@@ -1,4 +1,3 @@
-
 export class GObject
 {
     constructor( x, y, width, height ) {

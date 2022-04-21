@@ -4,12 +4,12 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: [ 'babel-polyfill', './src/main.js' ],
+  entry: [ 'babel-polyfill', './src/app.js' ],
   plugins: [
     new HtmlWebpackPlugin({ 
         title: 'WebGPU Test Page',
         filename: 'index.html',
-        template: './src/index.hbs'
+        template: './src/index.template'
     }),
   ],
   output: {

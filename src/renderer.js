@@ -61,7 +61,7 @@ export class Application
     {
         try {
             if (!navigator.gpu) 
-                throw('Your browser does`t support WebGPU or it is not enabled. More info: https://webgpu.io');
+                throw('Your browser does`t support WebGPU or it is not enabled.');
             this.adapter = await navigator.gpu.requestAdapter();
             this.device = await this.adapter.requestDevice();
             this.queue = this.device.queue;
@@ -271,50 +271,58 @@ export class Application
 
                 let origWidth = this.component.getWidth();
 				let origHeight = this.component.getHeight();				
+                
+                let complexWidth = Math.PI;
+                let complexHeight = 1;
 
                 var xCount = 58;
-				var xOffset = Math.PI / xCount;
+				var xOffset = complexWidth / xCount;
 
-				var xp = 0;
-				var yp = 0;
+				var floatX = 0;
+				var floatY = 0;
 
-                for ( let i=0; i<xCount; i++ ) 
+                for ( let i = 0; i < xCount; i++ ) 
 				{
-					let realx = this.calcScale(origWidth,Math.PI,xp);
-					let realy = origHeight-this.calcScale(origHeight,1,yp);
+					let realX = this.calcScale(origWidth,complexWidth,floatX);
+					let realY = origHeight-this.calcScale(origHeight,complexHeight,floatY);
 
-                    this.component.appendItem(this,[realx,realy,0.0],this.defaultColor1);
+                    this.component.appendItem(this,[realX,realY,0.0],this.defaultColor1);
 
-					xp = ( i + 1 ) * xOffset;
-					yp = Math.sin(xp);
+					floatX = ( i + 1 ) * xOffset;
+					floatY = Math.sin( floatX );
 
-					realx = this.calcScale(origWidth,Math.PI,xp);
-					realy = origHeight-this.calcScale(origHeight,1,yp);
+					realX = this.calcScale(origWidth,complexWidth,floatX);
+					realY = origHeight - this.calcScale(origHeight,complexHeight,floatY);
  
-                    this.component.appendItem(this,[realx,realy,0.0],this.defaultColor2);
+                    this.component.appendItem(this,[realX,realY,0.0],this.defaultColor2);
 
-                    this.component.appendItem(this,[realx-1,realy+1,0.0],this.defaultColor);
-                    this.component.appendItem(this,[realx-1,realy-1,0.0],this.defaultColor);
+                    this.component.appendItem(this,[realX-1,realY+1,0.0],this.defaultColor3);
+                    this.component.appendItem(this,[realX-1,realY-1,0.0],this.defaultColor3);
 
-                    this.component.appendItem(this,[realx-1,realy-1,0.0],this.defaultColor);
-                    this.component.appendItem(this,[realx+1,realy-1,0.0],this.defaultColor);
+                    this.component.appendItem(this,[realX-1,realY-1,0.0],this.defaultColor3);
+                    this.component.appendItem(this,[realX+1,realY-1,0.0],this.defaultColor3);
 
-                    this.component.appendItem(this,[realx+1,realy-1,0.0],this.defaultColor);
-                    this.component.appendItem(this,[realx+1,realy+1,0.0],this.defaultColor);
+                    this.component.appendItem(this,[realX+1,realY-1,0.0],this.defaultColor3);
+                    this.component.appendItem(this,[realX+1,realY+1,0.0],this.defaultColor3);
 
-                    this.component.appendItem(this,[realx+1,realy+1,0.0],this.defaultColor);
-                    this.component.appendItem(this,[realx-1,realy+1,0.0],this.defaultColor);
+                    this.component.appendItem(this,[realX+1,realY+1,0.0],this.defaultColor3);
+                    this.component.appendItem(this,[realX-1,realY+1,0.0],this.defaultColor3);
                 }
 
                 let positions = this.component.getPositions(this);
+                let colors = this.component.getColors(this);
 
-                this.positionBuffer = this.createBuffer(positions, GPUBufferUsage.VERTEX,this.device);
-                this.colorBuffer = this.createBuffer(this.component.getColors(this), GPUBufferUsage.VERTEX,this.device);
+                if ( colors.length == positions.length ) {
+                    let vertexCount = positions.length / 3;
 
-                this.passEncoder.setVertexBuffer(0, this.positionBuffer);
-                this.passEncoder.setVertexBuffer(1, this.colorBuffer);
+                    this.positionBuffer = this.createBuffer(positions, GPUBufferUsage.VERTEX,this.device);
+                    this.colorBuffer = this.createBuffer(colors, GPUBufferUsage.VERTEX,this.device);
 
-                this.passEncoder.draw(positions.length / 3, 1, 0, 0 );
+                    this.passEncoder.setVertexBuffer(0, this.positionBuffer);
+                    this.passEncoder.setVertexBuffer(1, this.colorBuffer);
+
+                    this.passEncoder.draw(vertexCount, 1, 0, 0 );
+                }
             }
         }
 
