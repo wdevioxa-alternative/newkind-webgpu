@@ -1,6 +1,6 @@
 struct vertexOut {
-    @builtin(position) outPosition: vec4<f32>,
-    @location(0) outColor: vec3<f32>
+    @builtin(position) outPosition: vec4<f32>;
+    @location(0) outColor: vec3<f32>;
 };
 
 @stage(vertex)

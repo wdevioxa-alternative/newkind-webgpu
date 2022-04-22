@@ -1,5 +1,6 @@
 import { GBox } from './box';
 import { GSpline } from './spline';
+import { GText } from './text';
 
 const vertexShaderWgslCode = require('./shaders/triangle.vert.wgsl');
 const fragmentShaderWgslCode = require('./shaders/triangle.frag.wgsl');
@@ -8,6 +9,9 @@ export class Application
 {
     constructor(surface) {
         this.canvas = surface;
+    }
+    getCanvas() {
+        return this.canvas;
     }
     getCanvasWidth() {
         return this.canvas.width;
@@ -232,11 +236,14 @@ export class Application
 
         const now = Date.now();
 
-        if ( !this.prevtime ) this.prevtime = now;
-        if ( now != this.prevtime ) 
+        if ( !this.prevTime ) this.prevTime = now;
+        if ( now != this.prevTime ) 
         {
-            if ( ( now - this.prevtime ) > 42 ) 
-            {
+            ////////////////////////////////
+            // Рисует на том же месте
+            ////////////////////////////////
+    //        if ( ( now - this.prevTime ) > 42 ) 
+    //        {
                 let g1 = Math.cos(now / 1000);
                 let g2 = Math.cos(now / 1000 + Math.PI / 2.0);
                 let g3 = Math.cos(now / 1000 + Math.PI );
@@ -281,7 +288,7 @@ export class Application
 				var floatX = 0;
 				var floatY = 0;
 
-                for ( let i = 0; i < xCount; i++ ) 
+	                for ( let i = 0; i < xCount; i++ ) 
 				{
 					let realX = this.calcScale(origWidth,complexWidth,floatX);
 					let realY = origHeight-this.calcScale(origHeight,complexHeight,floatY);
@@ -323,9 +330,32 @@ export class Application
 
                     this.passEncoder.draw(vertexCount, 1, 0, 0 );
                 }
-            }
+    //        }
         }
+/*
+        this.component = new GText( 100, 7,'Verdana', 10, 10, 56, 10);
 
+        const imageBitmap = this.component.draw('green','Hello World!!!',true);
+
+        const textureSize = {
+            width: imageBitmap.width,
+            height: imageBitmap.height,
+            depth: 1
+        }
+        const textureText = this.device.createTexture({
+            size: textureSize,
+            dimension: '2d',
+            format: `rgba8unorm`,
+            usage: GPUTextureUsage.COPY_DST |
+                GPUTextureUsage.RENDER_ATTACHMENT |
+                GPUTextureUsage.SAMPLED
+        });
+        this.queue.copyExternalImageToTexture(
+            { source: imageBitmap }, 
+            { texture: textureText, mipLevel: 0 }, 
+            textureSize
+        );
+  */
         this.passEncoder.end();
         this.queue.submit([this.commandEncoder.finish()]);
 
