@@ -17,7 +17,7 @@
         "typescript"
     ],
     "author": "Vyacheslav Zababurin",
-    "license": "Unlicense",               
+    "license": "Unlicense",
     "dependencies": {
         "@babel/cli": "^7.17.6",
         "@babel/core": "^7.17.9",
@@ -31,6 +31,7 @@
         "babel-preset-env": "^1.7.0",
         "babel-runtime": "^6.26.0",
         "clean-webpack-plugin": "^4.0.x",
+        "core-js": "^3.22.2",
         "eslint": "^7.32.0",
         "eslint-webpack-plugin": "^3.1.1",
         "file-loader": "^6.2.0",
