@@ -6,7 +6,9 @@
     "scripts": {
         "start": "webpack serve --open --config webpack/webpack.dev.js && babel dist -d dist/es5",
         "build": "webpack --config webpack/webpack.prod.js && babel dist -d dist/es5",
-        "es5": "babel dist -d dist/es5"
+        "es5": "babel dist -d dist/es5",
+        "gh-pages__cache_remove": "rm -rf node_modules/.cache/gh-pages",
+        "deploy": "gh-pages -d dist/es5"
     },
     "keywords": [
         "webgpu",
@@ -48,6 +50,7 @@
         "webpack-merge": "^5.8.0"
     },
     "devDependencies": {
+        "gh-pages": "^3.2.3",
         "markdownlint": "^0.25.1"
     }
 }
