@@ -26,9 +26,12 @@ export class GText extends GObject
     getFontFamily() {
         return this.fontFamily;
     }    
-    draw( textColor, textOut, autoMeasure ) {
+    async draw( textColor, textOut, autoMeasure ) 
+    {
         const wa = document.getElementById('wa');
-        if (wa.childNodes.length > 1) wa.childNodes[1].remove(); 
+
+        //if (wa.childNodes.length > 1) wa.childNodes[1].remove(); 
+
         const cs = document.createElement('canvas');
         var ctx = cs.getContext('2d');
         ctx.font = this.getFontWeight().toString() +
@@ -41,7 +44,9 @@ export class GText extends GObject
             fh = mesure.fontBoundingBoxAscent + mesure.fontBoundingBoxDescent;
             fw = mesure.width;
             this.setWidth(Math.ceil(fw));
-            this.setHeight(Math.ceil(fh));    
+            this.setHeight(Math.ceil(fh)); 
+            fh = this.getHeight();
+            fw = this.getWidth();    
         } else {
             ////////////////////////////////////
             // TODO: иначе, сделать по центру
@@ -52,15 +57,15 @@ export class GText extends GObject
         ctx.font = this.getFontWeight().toString() + 
             ' ' + this.getFontSize().toString() + 
             'px ' + this.getFontFamily();
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.0)';
+        ctx.fillStyle = 'rgba(255, 255, 255, 1.0)';
         ctx.fillRect(0, 0, this.getWidth(), this.getHeight());
         ctx.fillStyle = textColor;
         ctx.fillText( textOut, 0, this.getFontSize(), fw );
-        wa.appendChild(cs);
-        const imageBitmap = createImageBitmap(cs);
-        cs.remove();
-        return imageBitmap;
-        //cs.style.display = 'block';
+
+        //if (wa.childNodes.length > 1) wa.childNodes[0].remove(); 
+        //wa.appendChild(cs);
+
+        return await createImageBitmap(cs);
     }
     getColors( instance )
     {
@@ -74,7 +79,23 @@ export class GText extends GObject
             0.0, 1.0, 0.0, // 🟢
             1.0, 0.0, 0.0  // 🔴
         ]);
-    }
+    }    
+    getFragUV( instance )
+    {
+        return new Float32Array([
+            0.0, 0.0,
+            1.0, 0.0,
+
+            1.0, 0.0,
+            1.0, 1.0,
+
+            1.0, 1.0,
+            0.0, 1.0,
+
+            0.0, 1.0,
+            0.0, 0.0
+        ]);
+    }    
     getPositions( instance )
     {
         let objectWidth = this.getWidth() - 1;

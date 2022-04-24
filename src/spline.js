@@ -39,7 +39,7 @@ export class GSpline extends GObject
             if ( y > this.getY() + this.getHeight() ) 
                 y = this.getY() + this.getHeight();
             vpositions[ i + 0 ] = instance.calcX( ( i == 0 ) ? x - 1 : x );
-            vpositions[ i + 1 ] = instance.calcY(y);
+            vpositions[ i + 1 ] = instance.calcY( y );
             vpositions[ i + 2 ] = this.positions[ i + 2 ];
         }
         return vpositions;
