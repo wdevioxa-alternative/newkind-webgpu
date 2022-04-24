@@ -7,9 +7,9 @@ module.exports = {
   entry: [ 'babel-polyfill', './src/app.js' ],
   plugins: [
     new HtmlWebpackPlugin({ 
-        title: 'WebGPU Test Page',
+        title: 'NewKind Graph',
         filename: 'index.html',
-        template: './src/index.template'
+        template: './src/index.html'
     }),
   ],
   output: {

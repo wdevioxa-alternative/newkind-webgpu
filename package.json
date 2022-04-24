@@ -4,8 +4,8 @@
     "description": "A simple hello triangle example introducing WebGPU.",
     "main": "app.js",
     "scripts": {
-        "start": "webpack serve --open --config webpack.dev.js && babel dist -d dist/es5",
-        "build": "webpack --config webpack.prod.js && babel dist -d dist/es5",
+        "start": "webpack serve --open --config webpack/webpack.dev.js && babel dist -d dist/es5",
+        "build": "webpack --config webpack/webpack.prod.js && babel dist -d dist/es5",
         "es5": "babel dist -d dist/es5"
     },
     "keywords": [
