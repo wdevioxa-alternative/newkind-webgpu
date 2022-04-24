@@ -1,4 +1,4 @@
-import { GObject } from './object';
+import { GObject } from './object.mjs';
 
 export class GText extends GObject
 {
@@ -116,5 +116,4 @@ export class GText extends GObject
             instance.calcX(offsetX), instance.calcY(offsetY), 0.0
         ]);
     }
-};
-
+}

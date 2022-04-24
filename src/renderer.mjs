@@ -1,9 +1,8 @@
-import { GBox } from './box';
-import { GSpline } from './spline';
-import { GText } from './text';
-
-const vertexShaderWgslCode = require('./shaders/triangle.vert.wgsl');
-const fragmentShaderWgslCode = require('./shaders/triangle.frag.wgsl');
+import { GBox } from './box.mjs';
+import { GSpline } from './spline.mjs';
+import { GText } from './text.mjs';
+import vertexShaderWgslCode from './shaders/triangle.vert.wgsl'
+import fragmentShaderWgslCode from './shaders/triangle.frag.wgsl'
 
 export class Application
 {
@@ -44,7 +43,7 @@ export class Application
         }
     }
     async restart() 
-    {        
+    {
         this.resizeBackings();
         await this.initializeResources();
         this.render();
