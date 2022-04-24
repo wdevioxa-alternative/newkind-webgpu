@@ -4,7 +4,7 @@ struct vertexOut {
 };
 
 @stage(vertex)
-fn main(@location(0) inPosition: vec3<f32>, @location(1) inColor: vec3<f32>) -> vertexOut {
+fn main(@location(0) inPosition: vec3<f32>, @location(1) inColor: vec4<f32>) -> vertexOut {
     var vertex: vertexOut;
     vertex.outPosition = vec4<f32>(inPosition, 1.0);
     vertex.outColor = inColor;

@@ -244,16 +244,7 @@ export class Application
                     }, 
                     {
                         attributes: [{
-                            shaderLocation: 1, // [[location(1)]]
-                            offset: 0,
-                            format: 'float32x2'
-                        }],
-                        arrayStride: 4 * 2, //, sizeof(float) * 2
-                        stepMode: 'vertex'
-                    }, 
-                    {
-                        attributes: [{
-                            shaderLocation: 2, // [[location(2)]]
+                            shaderLocation: 1, // [[location(2)]]
                             offset: 0,
                             format: 'float32x4'
                         }],
@@ -309,7 +300,8 @@ export class Application
                 stencilStoreOp: 'store'
             }
 */            
-        });
+        });    
+        this.passEncoder.setPipeline(this.pipeline);
         ////////////////////////////////////////
         // вписаться в размер браузера
         ////////////////////////////////////////
@@ -326,12 +318,16 @@ export class Application
             0,
             this.getCanvasWidth(),
             this.getCanvasHeight()
-        );        
+        );  
     }
     render = async () => {
-        
-/*
-        this.component = new GBox(1,1,126,18);
+
+        this.colorTexture = this.context.getCurrentTexture();
+        this.colorTextureView = this.colorTexture.createView();
+
+        this.encodeCommands();
+
+        this.component = new GBox( 1, 1, 126, 18 );
 
         this.positionBuffer = this.createBuffer(this.component.getPositions(this),
             GPUBufferUsage.VERTEX,this.device);
@@ -341,18 +337,9 @@ export class Application
         this.passEncoder.setVertexBuffer(0, this.positionBuffer);
         this.passEncoder.setVertexBuffer(1, this.colorBuffer);
 
-        this.passEncoder.draw(8,1,0,0);
+        this.passEncoder.draw( 8, 1, 0, 0 );
 
-        //this.positionBuffer.destroy();
-        //this.colorBuffer.destroy();
-*/
-
-        this.colorTexture = this.context.getCurrentTexture();
-        this.colorTextureView = this.colorTexture.createView();
-
-        this.encodeCommands();
-
-        this.component = new GBox(1,22,126,18);
+        this.component = new GBox( 1, 22, 126, 18 );
 
         this.positionBuffer = this.createBuffer(this.component.getPositions(this), GPUBufferUsage.VERTEX,this.device);
         this.colorBuffer = this.createBuffer(this.component.getColors(this), GPUBufferUsage.VERTEX,this.device);
@@ -360,12 +347,9 @@ export class Application
         this.passEncoder.setVertexBuffer(0, this.positionBuffer);
         this.passEncoder.setVertexBuffer(1, this.colorBuffer);
 
-        this.passEncoder.draw(8,1,0,0);
+        this.passEncoder.draw( 8, 1, 0, 0 );
 
-        //this.positionBuffer.destroy();
-        //this.colorBuffer.destroy();
-
-        this.component = new GSpline(1, 43, 600, 200);
+        this.component = new GSpline( 1, 43, this.getCanvasWidth() - 2, this.getCanvasHeight() / 2 );
   
         this.positionBuffer = this.createBuffer(this.component.getBorderPositions(this), GPUBufferUsage.VERTEX,this.device);
         this.colorBuffer = this.createBuffer(this.component.getBorderColors(this), GPUBufferUsage.VERTEX,this.device);
@@ -375,17 +359,14 @@ export class Application
 
         this.passEncoder.draw( 8, 1, 0, 0 );
 
-        //this.positionBuffer.destroy();
-        //this.colorBuffer.destroy();
-
         this.defaultColor = [ 0.6, 0.6, 0.6, 1.0 ];
 
-  //      let now = new Date();
+        const now = Date.now();
 
-        let g1 = Math.cos(0);
-        let g2 = Math.cos(Math.PI / 2.0);
-        let g3 = Math.cos(Math.PI );
-        let g4 = Math.cos(3.0 * Math.PI / 2.0);
+        let g1 = Math.cos( now / 1000 );
+        let g2 = Math.cos( now / 1000 + Math.PI / 2.0 );
+        let g3 = Math.cos( now / 1000 + Math.PI );
+        let g4 = Math.cos( now / 1000 + 3.0 * Math.PI / 2.0 );
 
         this.defaultColor1 = [ ( g1 + 1.0 ) * 0.5, 0.0, 0.0, 1.0 ];
         this.defaultColor2 = [ 0.0, ( g2 + 1.0 ) * 0.5, 0.0, 1.0 ];
@@ -457,18 +438,15 @@ export class Application
         let positions = this.component.getPositions(this);
         let colors = this.component.getColors(this);
 
-        if ( colors.length == positions.length ) 
-        {
-            let vertexCount = positions.length / 3;
+        let vertexCount = positions.length / 3;
 
-            this.positionBuffer = this.createBuffer(positions, GPUBufferUsage.VERTEX,this.device);
-            this.colorBuffer = this.createBuffer(colors, GPUBufferUsage.VERTEX,this.device);
+        this.positionBuffer = this.createBuffer(positions, GPUBufferUsage.VERTEX,this.device);
+        this.colorBuffer = this.createBuffer(colors, GPUBufferUsage.VERTEX,this.device);
 
-            this.passEncoder.setVertexBuffer(0, this.positionBuffer);
-            this.passEncoder.setVertexBuffer(1, this.colorBuffer);
+        this.passEncoder.setVertexBuffer(0, this.positionBuffer);
+        this.passEncoder.setVertexBuffer(1, this.colorBuffer);
 
-            this.passEncoder.draw(vertexCount, 1, 0, 0 );
-        }
+        this.passEncoder.draw(vertexCount, 1, 0, 0 );
 
         //this.component = new GText( 100, 20,'Verdana', 10, 10, 128, 128);
 
@@ -491,6 +469,7 @@ export class Application
             ]
         });
 */
+/*
         this.commandEncoder = this.device.createCommandEncoder();
         
         this.passEncoder = this.commandEncoder.beginRenderPass({
@@ -500,7 +479,7 @@ export class Application
                 loadOp: 'clear',
                 storeOp: 'store'
             }],
-/*            
+            
             depthStencilAttachment: {
                 view: this.depthTextureView,
                 depthClearValue: 1,
@@ -510,7 +489,7 @@ export class Application
                 stencilStoreOp: 'store'
             }
 */            
-        });
+ //       });
 
 
         //this.positionBuffer = this.createBuffer(this.component.getPositions(this), GPUBufferUsage.VERTEX,this.device);
