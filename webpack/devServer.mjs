@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   devServer: {
     port: 7355
   },

@@ -1,9 +1,7 @@
-const path = require('path');
-const webpack = require('webpack');
-
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-module.exports = {
+import path from "path";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+const __dirname = path.dirname(process.argv[1]);
+export default {
   entry: [ 'babel-polyfill', './src/app.mjs' ],
   plugins: [
     new HtmlWebpackPlugin({ 
