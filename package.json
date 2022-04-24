@@ -3,6 +3,8 @@
     "version": "0.1.0",
     "description": "webGPU graph",
     "main": "app.mjs",
+    "author": "Vyacheslav Zababurin",
+    "license": "GPL-3.0-only",
     "scripts": {
         "start": "webpack serve --open --config webpack/webpack.dev.js && babel dist -d dist/es5",
         "build": "webpack --config webpack/webpack.prod.js && babel dist -d dist/es5",
@@ -21,8 +23,6 @@
     "service": {
         "publicUrl": "/"
     },
-    "author": "Vyacheslav Zababurin",
-    "license": "Unlicense",
     "dependencies": {
         "@babel/cli": "^7.17.6",
         "@babel/core": "^7.17.9",
