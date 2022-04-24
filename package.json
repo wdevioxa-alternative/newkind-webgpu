@@ -1,8 +1,8 @@
 {
     "name": "newkind-graph",
     "version": "0.1.0",
-    "description": "A simple hello triangle example introducing WebGPU.",
-    "main": "app.js",
+    "description": "webGPU graph",
+    "main": "app.mjs",
     "scripts": {
         "start": "webpack serve --open --config webpack/webpack.dev.js && babel dist -d dist/es5",
         "build": "webpack --config webpack/webpack.prod.js && babel dist -d dist/es5",
