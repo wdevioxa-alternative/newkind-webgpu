@@ -310,6 +310,23 @@ export class Application
             }
 */            
         });
+        ////////////////////////////////////////
+        // вписаться в размер браузера
+        ////////////////////////////////////////
+        this.passEncoder.setViewport(
+            0,
+            0,
+            this.getCanvasWidth(),
+            this.getCanvasHeight(),
+            0,
+            1
+        );
+        this.passEncoder.setScissorRect(
+            0,
+            0,
+            this.getCanvasWidth(),
+            this.getCanvasHeight()
+        );        
     }
     render = async () => {
         
@@ -328,6 +345,12 @@ export class Application
 
         //this.positionBuffer.destroy();
         //this.colorBuffer.destroy();
+*/
+
+        this.colorTexture = this.context.getCurrentTexture();
+        this.colorTextureView = this.colorTexture.createView();
+
+        this.encodeCommands();
 
         this.component = new GBox(1,22,126,18);
 
@@ -350,24 +373,24 @@ export class Application
         this.passEncoder.setVertexBuffer(0, this.positionBuffer);
         this.passEncoder.setVertexBuffer(1, this.colorBuffer);
 
-        this.passEncoder.draw(8,1,0,0);
+        this.passEncoder.draw( 8, 1, 0, 0 );
 
         //this.positionBuffer.destroy();
         //this.colorBuffer.destroy();
 
-        this.defaultColor = [0.6,0.6,0.6];
+        this.defaultColor = [ 0.6, 0.6, 0.6, 1.0 ];
 
-        let now = new Date();
+  //      let now = new Date();
 
-        let g1 = Math.cos(now / 1000);
-        let g2 = Math.cos(now / 1000 + Math.PI / 2.0);
-        let g3 = Math.cos(now / 1000 + Math.PI );
-        let g4 = Math.cos(now / 1000 + 3.0 * Math.PI / 2.0);
+        let g1 = Math.cos(0);
+        let g2 = Math.cos(Math.PI / 2.0);
+        let g3 = Math.cos(Math.PI );
+        let g4 = Math.cos(3.0 * Math.PI / 2.0);
 
-        this.defaultColor1 = [ ( g1 + 1.0 ) * 0.5, 0.0, 0.0 ];
-        this.defaultColor2 = [ 0.0, ( g2 + 1.0 ) * 0.5, 0.0 ];
-        this.defaultColor3 = [ 0.0, 0.0, ( g3 + 1.0 ) * 0.5 ];
-        this.defaultColor4 = [ 0.0, ( g4 + 1.0 ) * 0.5, 0.0 ];
+        this.defaultColor1 = [ ( g1 + 1.0 ) * 0.5, 0.0, 0.0, 1.0 ];
+        this.defaultColor2 = [ 0.0, ( g2 + 1.0 ) * 0.5, 0.0, 1.0 ];
+        this.defaultColor3 = [ 0.0, 0.0, ( g3 + 1.0 ) * 0.5, 1.0 ];
+        this.defaultColor4 = [ 0.0, ( g4 + 1.0 ) * 0.5, 0.0, 1.0 ];
 
         this.component.appendItem(this,[10,10,0.0],this.defaultColor4);
         this.component.appendItem(this,[310,10,0.0],this.defaultColor1);
@@ -446,17 +469,13 @@ export class Application
 
             this.passEncoder.draw(vertexCount, 1, 0, 0 );
         }
-*/
-        this.colorTexture = this.context.getCurrentTexture();
-        this.colorTextureView = this.colorTexture.createView();
 
-        this.component = new GText( 100, 20,'Verdana', 10, 10, 128, 128);
+        //this.component = new GText( 100, 20,'Verdana', 10, 10, 128, 128);
 
-        const imageBitmap = await this.component.draw('black','Hello World!!!',false);
+        //const imageBitmap = await this.component.draw('black','Hello World!!!',false);
 
-        const textureText = this.webGPUTextureFromImageBitmapOrCanvas(this.device, imageBitmap, true);
+        //const textureText = this.webGPUTextureFromImageBitmapOrCanvas(this.device, imageBitmap, true);
 
-        alert( textureText.width );
 /*      
         this.resultBindGroup = this.device.createBindGroup({
             layout: this.pipeline.getBindGroupLayout(0),
@@ -473,6 +492,7 @@ export class Application
         });
 */
         this.commandEncoder = this.device.createCommandEncoder();
+        
         this.passEncoder = this.commandEncoder.beginRenderPass({
             colorAttachments: [{
                 view: this.colorTextureView,
@@ -492,36 +512,18 @@ export class Application
 */            
         });
 
-        ////////////////////////////////////////
-        // вписаться в размер браузера
-        ////////////////////////////////////////
-        this.passEncoder.setViewport(
-            0,
-            0,
-            this.getCanvasWidth(),
-            this.getCanvasHeight(),
-            0,
-            1
-        );
-        this.passEncoder.setScissorRect(
-            0,
-            0,
-            this.getCanvasWidth(),
-            this.getCanvasHeight()
-        );
 
-        this.positionBuffer = this.createBuffer(this.component.getPositions(this), GPUBufferUsage.VERTEX,this.device);
-        this.fragUVBuffer = this.createBuffer(this.component.getFragUV(this), GPUBufferUsage.VERTEX,this.device);     
-        this.colorBuffer = this.createBuffer(this.component.getColors(this), GPUBufferUsage.VERTEX,this.device);   
+        //this.positionBuffer = this.createBuffer(this.component.getPositions(this), GPUBufferUsage.VERTEX,this.device);
+        //this.fragUVBuffer = this.createBuffer(this.component.getFragUV(this), GPUBufferUsage.VERTEX,this.device);     
+        //this.colorBuffer = this.createBuffer(this.component.getColors(this), GPUBufferUsage.VERTEX,this.device);   
 
-        this.passEncoder.setVertexBuffer(0, this.positionBuffer);
-        this.passEncoder.setVertexBuffer(1, this.fragUVBuffer);
-        this.passEncoder.setVertexBuffer(2, this.colorBuffer);
+        //this.passEncoder.setVertexBuffer(0, this.positionBuffer);
+        //this.passEncoder.setVertexBuffer(1, this.fragUVBuffer);
+        //this.passEncoder.setVertexBuffer(2, this.colorBuffer);
 
-        this.passEncoder.setPipeline(this.pipeline);
-        this.passEncoder.setBindGroup(0, this.resultBindGroup);
+        //this.passEncoder.setBindGroup(0, this.resultBindGroup);
 
-        this.passEncoder.draw(8,1,0,0);
+        //this.passEncoder.draw(8,1,0,0);
 
         this.passEncoder.end();
         this.queue.submit([this.commandEncoder.finish()]);

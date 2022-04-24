@@ -6,8 +6,8 @@ export default {
   plugins: [
     new HtmlWebpackPlugin({ 
         title: 'NewKind Graph',
-        filename: 'index.template',
-        template: './src/index.html'
+        filename: 'index.html',
+        template: './src/index.template'
     }),
   ],
   output: {
@@ -24,7 +24,7 @@ export default {
 		      loader: 'babel-loader',  
 		      options: {
 			      presets: ['@babel/preset-env']
-                      } 
+          } 
 	      },
       },
       { 
