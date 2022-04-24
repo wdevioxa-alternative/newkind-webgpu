@@ -6,7 +6,7 @@ export default {
   plugins: [
     new HtmlWebpackPlugin({ 
         title: 'NewKind Graph',
-        filename: 'index.html',
+        filename: 'index.template',
         template: './src/index.html'
     }),
   ],
