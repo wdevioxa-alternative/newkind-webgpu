@@ -8,7 +8,7 @@
         "build": "webpack --config webpack/webpack.prod.js && babel dist -d dist/es5",
         "es5": "babel dist -d dist/es5",
         "gh-pages__cache_remove": "rm -rf node_modules/.cache/gh-pages",
-        "deploy": "gh-pages -d dist/es5"
+        "deploy": "gh-pages -d dist"
     },
     "keywords": [
         "webgpu",
