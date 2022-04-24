@@ -1,4 +1,4 @@
-import { GObject } from './object';
+import { GObject } from './object.mjs';
 
 export class GSpline extends GObject
 {

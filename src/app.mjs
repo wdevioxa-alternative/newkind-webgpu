@@ -1,4 +1,4 @@
-import { Application } from './renderer';
+import { Application } from './renderer.mjs';
 
 const canvas = document.getElementById('gfx');
 const renderer = new Application(canvas);
