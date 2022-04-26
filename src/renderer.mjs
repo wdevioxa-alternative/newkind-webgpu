@@ -80,24 +80,24 @@ export class Application
               vec2<f32>(-1.0, -1.0), vec2<f32>(1.0, -1.0));
       
             struct VertexOutput {
-              [[builtin(position)]] position : vec4<f32>;
-              [[location(0)]] texCoord : vec2<f32>;
+              @builtin(position) position : vec4<f32>;
+              @location(0) texCoord : vec2<f32>;
             };
       
-            [[stage(vertex)]]
-            fn vertexMain([[builtin(vertex_index)]] vertexIndex : u32) -> VertexOutput {
+            @stage(vertex)
+            fn vertexMain(@builtin(vertex_index) vertexIndex : u32) -> VertexOutput {
               var output : VertexOutput;
               output.texCoord = pos[vertexIndex] * vec2<f32>(0.5, -0.5) + vec2<f32>(0.5);
               output.position = vec4<f32>(pos[vertexIndex], 0.0, 1.0);
               return output;
             }
       
-            [[binding(0), group(0)]] var imgSampler : sampler;
-            [[binding(1), group(0)]] var img : texture_2d<f32>;
+            @group(0) @binding(0) var bindSampler : sampler;
+            @group(0) @binding(1) var bindTexture : texture_2d<f32>;
       
-            [[stage(fragment)]]
-            fn fragmentMain([[location(0)]] texCoord : vec2<f32>) -> [[location(0)]] vec4<f32> {
-              return textureSample(img, imgSampler, texCoord);
+            @stage(fragment)
+            fn fragmentMain(@location(0) texCoord : vec2<f32>) -> @location(0) vec4<f32> {
+              return textureSample(bindTexture, bindSampler, texCoord);
             }
           `
         });
@@ -379,55 +379,13 @@ export class Application
         let spline = new GSpline( 1, 43, this.getCanvasWidth() - 2, this.getCanvasHeight() - 45 );
         await spline.draw( this );
 
-        await spline.functionDraw( this, 0, Math.PI, 58, ( x ) => {
+        await spline.functionDraw( this, Math.PI / 2, 4 * Math.PI, -1, 1, 58, ( x ) => {
           return Math.sin( x );
-        } );
+        }, [ 1.0, 0.0, 0.0, 1.0 ] );
 
-        await spline.functionDraw( this, 0, 2 * Math.PI, 58, ( x ) => {
+        await spline.functionDraw( this, Math.PI / 2, 4 * Math.PI, -1, 1, 58, ( x ) => {
           return Math.cos( x );
-        } );
-
-        //await spline.draw( this, () = > { 
-
-        //} );
-/*
-        this.defaultColor = [ 0.6, 0.6, 0.6, 1.0 ];
-
-        const now = Date.now();
-
-        let g1 = Math.cos( now / 1000 );
-        let g2 = Math.cos( now / 1000 + Math.PI / 2.0 );
-        let g3 = Math.cos( now / 1000 + Math.PI );
-        let g4 = Math.cos( now / 1000 + 3.0 * Math.PI / 2.0 );
-
-        this.defaultColor1 = [ ( g1 + 1.0 ) * 0.5, 0.0, 0.0, 1.0 ];
-        this.defaultColor2 = [ 0.0, ( g2 + 1.0 ) * 0.5, 0.0, 1.0 ];
-        this.defaultColor3 = [ 0.0, 0.0, ( g3 + 1.0 ) * 0.5, 1.0 ];
-        this.defaultColor4 = [ 0.0, ( g4 + 1.0 ) * 0.5, 0.0, 1.0 ];
-
-        spline.appendItem(this,[10,10,0.0],this.defaultColor4);
-        spline.appendItem(this,[310,10,0.0],this.defaultColor1);
-
-        spline.appendItem(this,[310,10,0.0],this.defaultColor1);
-        spline.appendItem(this,[310,40,0.0],this.defaultColor2);
-
-        spline.appendItem(this,[310,40,0.0],this.defaultColor2);
-        spline.appendItem(this,[10,40,0.0],this.defaultColor3);
-
-        spline.appendItem(this,[10,40,0.0],this.defaultColor3);
-        spline.appendItem(this,[10,10,0.0],this.defaultColor4);
-
-        this.positionBuffer = this.createBuffer(spline.getPositions(this), GPUBufferUsage.VERTEX,this.device);
-        this.colorBuffer = this.createBuffer(spline.getColors(this), GPUBufferUsage.VERTEX,this.device);
-
-        this.passEncoder.setVertexBuffer(0, this.positionBuffer);
-        this.passEncoder.setVertexBuffer(1, this.colorBuffer);
-
-        this.passEncoder.draw(8,1,0,0);
-
-        spline.clearItems();
-*/
-
+        }, [ 0.0, 1.0, 0.0, 1.0 ] );
 
         this.passEncoder.setPipeline(this.texturePipeline);
 
