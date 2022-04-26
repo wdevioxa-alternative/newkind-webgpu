@@ -26,11 +26,12 @@ export class GText extends GObject
     getFontFamily() {
         return this.fontFamily;
     }    
-    async draw( instance, textColor, textOut, autoMeasure ) 
+    async draw( instance, textColor, backgroundColor, textOut, autoMeasure ) 
     {
         const cs = document.createElement('canvas');
         cs.style.background = 'transparent';
-        var ctx = cs.getContext('2d');
+        var ctx = cs.getContext('2d',{ alpha: true });
+        ctx.globalAlpha = true;
         ctx.font = this.getFontWeight().toString() +
             ' ' + this.getFontSize().toString() + 
             'px ' + this.getFontFamily();
@@ -61,17 +62,42 @@ export class GText extends GObject
             fx = ( this.getWidth() - fw ) / 2;
             fy = this.getHeight() - ( this.getHeight() - fh ) / 2;
         }
-        cs.width = this.getWidth();
         cs.height = this.getHeight();
+        cs.width = this.getWidth();
+        cs.style.backgroundColor = backgroundColor;
         ctx.font = this.getFontWeight().toString() + 
             ' ' + this.getFontSize().toString() + 
             'px ' + this.getFontFamily();
-        ctx.fillStyle = 'rgba(0, 0, 0, 1.0)';
+        ctx.fillStyle = backgroundColor;
         ctx.fillRect( 0, 0, this.getWidth(), this.getHeight() );
         ctx.fillStyle = textColor;
+        let r = parseInt(ctx.fillStyle.substring(1,3), 16);
+        let g = parseInt(ctx.fillStyle.substring(3,5), 16);
+        let b = parseInt(ctx.fillStyle.substring(5,7), 16);
+        let color = 'rgba(' + r + ',' + g + ',' + b + ',' + 1.0 + ')';
+        ctx.fillStyle = color;
         ctx.fillText( textOut, fx, fy, fw );
         const imageBitmap = await createImageBitmap( cs );
-        return instance.webGPUTextureFromImageBitmapOrCanvas( instance.device, imageBitmap, true );
+        const textureImage = instance.webGPUTextureFromImageBitmapOrCanvas( instance.device, imageBitmap, true );
+        let bindGroup = instance.device.createBindGroup({
+            layout: instance.texturePipeline.getBindGroupLayout(0),
+            entries: [
+              {
+                binding: 0,
+                resource: instance.sampler,
+              },
+              {
+                binding: 1,
+                resource: textureImage.createView(),
+              }
+            ]
+        });
+        instance.positionBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX, instance.device);
+        instance.fragUVBuffer = instance.createBuffer(this.getFragUV(instance), GPUBufferUsage.VERTEX, instance.device);     
+        instance.passEncoder.setVertexBuffer(0, instance.positionBuffer);
+        instance.passEncoder.setVertexBuffer(1, instance.fragUVBuffer);
+        instance.passEncoder.setBindGroup(0, bindGroup);
+        instance.passEncoder.draw(6, 1, 0, 0);
     }
     getColors( instance )
     {

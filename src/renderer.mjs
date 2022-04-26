@@ -329,7 +329,7 @@ export class Application
         this.passEncoder = this.commandEncoder.beginRenderPass({
             colorAttachments: [{
                 view: this.colorTextureView,
-                clearValue: { r: 0.0, g: 0.0, b: 0.0, a: 1.0 },
+                clearValue: { r: 0.0, g: 0.0, b: 0.0, a: 0.0 },
                 loadOp: 'clear',
                 storeOp: 'store'
             }],
@@ -371,39 +371,26 @@ export class Application
 
         this.passEncoder.setPipeline(this.linePipeline);
 
-        this.component = new GBox( 1, 1, 126, 18 );
+        let box = new GBox( 1, 1, 126, 18 );
+        await box.draw( this );
+        box.setY(22);
+        await box.draw( this );
 
-        this.positionBuffer = this.createBuffer(this.component.getPositions(this),
-            GPUBufferUsage.VERTEX,this.device);
+        let spline = new GSpline( 1, 43, this.getCanvasWidth() - 2, this.getCanvasHeight() - 45 );
+        await spline.draw( this );
 
-        this.colorBuffer = this.createBuffer(this.component.getColors(this),
-            GPUBufferUsage.VERTEX,this.device);
+        await spline.functionDraw( this, 0, Math.PI, 58, ( x ) => {
+          return Math.sin( x );
+        } );
 
-        this.passEncoder.setVertexBuffer(0, this.positionBuffer);
-        this.passEncoder.setVertexBuffer(1, this.colorBuffer);
+        await spline.functionDraw( this, 0, 2 * Math.PI, 58, ( x ) => {
+          return Math.cos( x );
+        } );
 
-        this.passEncoder.draw( 8, 1, 0, 0 );
+        //await spline.draw( this, () = > { 
 
-        this.component = new GBox( 1, 22, 126, 18 );
-
-        this.positionBuffer = this.createBuffer(this.component.getPositions(this), GPUBufferUsage.VERTEX,this.device);
-        this.colorBuffer = this.createBuffer(this.component.getColors(this), GPUBufferUsage.VERTEX,this.device);
-
-        this.passEncoder.setVertexBuffer(0, this.positionBuffer);
-        this.passEncoder.setVertexBuffer(1, this.colorBuffer);
-
-        this.passEncoder.draw( 8, 1, 0, 0 );
-
-        this.component = new GSpline( 1, 43, this.getCanvasWidth() - 2, this.getCanvasHeight() - 45 );
-  
-        this.positionBuffer = this.createBuffer(this.component.getBorderPositions(this), GPUBufferUsage.VERTEX,this.device);
-        this.colorBuffer = this.createBuffer(this.component.getBorderColors(this), GPUBufferUsage.VERTEX,this.device);
-
-        this.passEncoder.setVertexBuffer(0, this.positionBuffer);
-        this.passEncoder.setVertexBuffer(1, this.colorBuffer);
-
-        this.passEncoder.draw( 8, 1, 0, 0 );
-
+        //} );
+/*
         this.defaultColor = [ 0.6, 0.6, 0.6, 1.0 ];
 
         const now = Date.now();
@@ -418,110 +405,40 @@ export class Application
         this.defaultColor3 = [ 0.0, 0.0, ( g3 + 1.0 ) * 0.5, 1.0 ];
         this.defaultColor4 = [ 0.0, ( g4 + 1.0 ) * 0.5, 0.0, 1.0 ];
 
-        this.component.appendItem(this,[10,10,0.0],this.defaultColor4);
-        this.component.appendItem(this,[310,10,0.0],this.defaultColor1);
+        spline.appendItem(this,[10,10,0.0],this.defaultColor4);
+        spline.appendItem(this,[310,10,0.0],this.defaultColor1);
 
-        this.component.appendItem(this,[310,10,0.0],this.defaultColor1);
-        this.component.appendItem(this,[310,40,0.0],this.defaultColor2);
+        spline.appendItem(this,[310,10,0.0],this.defaultColor1);
+        spline.appendItem(this,[310,40,0.0],this.defaultColor2);
 
-        this.component.appendItem(this,[310,40,0.0],this.defaultColor2);
-        this.component.appendItem(this,[10,40,0.0],this.defaultColor3);
+        spline.appendItem(this,[310,40,0.0],this.defaultColor2);
+        spline.appendItem(this,[10,40,0.0],this.defaultColor3);
 
-        this.component.appendItem(this,[10,40,0.0],this.defaultColor3);
-        this.component.appendItem(this,[10,10,0.0],this.defaultColor4);
+        spline.appendItem(this,[10,40,0.0],this.defaultColor3);
+        spline.appendItem(this,[10,10,0.0],this.defaultColor4);
 
-        this.positionBuffer = this.createBuffer(this.component.getPositions(this), GPUBufferUsage.VERTEX,this.device);
-        this.colorBuffer = this.createBuffer(this.component.getColors(this), GPUBufferUsage.VERTEX,this.device);
+        this.positionBuffer = this.createBuffer(spline.getPositions(this), GPUBufferUsage.VERTEX,this.device);
+        this.colorBuffer = this.createBuffer(spline.getColors(this), GPUBufferUsage.VERTEX,this.device);
 
         this.passEncoder.setVertexBuffer(0, this.positionBuffer);
         this.passEncoder.setVertexBuffer(1, this.colorBuffer);
 
         this.passEncoder.draw(8,1,0,0);
 
-        this.component.clearItems();
+        spline.clearItems();
+*/
 
-        let origWidth = this.component.getWidth();
-        let origHeight = this.component.getHeight();				
-                
-        let complexWidth = Math.PI;
-        let complexHeight = 1;
-
-        var xCount = 58;
-        var xOffset = complexWidth / xCount;
-
-        var floatX = 0.0;
-        var floatY = 0.0;
-
-        for ( let i = 0; i < xCount + 1; i++ ) 
-        {
-                let realX = this.calcScale(origWidth,complexWidth,floatX);
-                let realY = origHeight-this.calcScale(origHeight,complexHeight,floatY);
-
-                this.component.appendItem(this,[realX,realY,0.0],this.defaultColor1);
-
-                floatX = i * xOffset;
-                floatY = Math.sin( floatX );
-
-                realX = this.calcScale(origWidth,complexWidth,floatX);
-                realY = origHeight - this.calcScale(origHeight,complexHeight,floatY);
- 
-                this.component.appendItem(this,[realX,realY,0.0],this.defaultColor2);
-
-                this.component.appendItem(this,[realX-1,realY+1,0.0],this.defaultColor3);
-                this.component.appendItem(this,[realX-1,realY-1,0.0],this.defaultColor3);
-
-                this.component.appendItem(this,[realX-1,realY-1,0.0],this.defaultColor3);
-                this.component.appendItem(this,[realX+1,realY-1,0.0],this.defaultColor3);
-
-                this.component.appendItem(this,[realX+1,realY-1,0.0],this.defaultColor3);
-                this.component.appendItem(this,[realX+1,realY+1,0.0],this.defaultColor3);
-
-                this.component.appendItem(this,[realX+1,realY+1,0.0],this.defaultColor3);
-                this.component.appendItem(this,[realX-1,realY+1,0.0],this.defaultColor3);
-        }
-
-        let positions = this.component.getPositions(this);
-        let colors = this.component.getColors(this);
-
-        let vertexCount = positions.length / 3;
-
-        this.positionBuffer = this.createBuffer(positions, GPUBufferUsage.VERTEX,this.device);
-        this.colorBuffer = this.createBuffer(colors, GPUBufferUsage.VERTEX,this.device);
-
-        this.passEncoder.setVertexBuffer(0, this.positionBuffer);
-        this.passEncoder.setVertexBuffer(1, this.colorBuffer);
-
-        this.passEncoder.draw(vertexCount, 1, 0, 0 );
 
         this.passEncoder.setPipeline(this.texturePipeline);
 
-        this.component = new GText( 100, 10,'Verdana', 3, 3, 128, 128 );
-
-        const textureText = await this.component.draw( this, 'green', 'Hello World!!!', true );
-     
-        this.resultBindGroup = this.device.createBindGroup({
-            layout: this.texturePipeline.getBindGroupLayout(0),
-            entries: [
-              {
-                binding: 0,
-                resource: this.sampler,
-              },
-              {
-                binding: 1,
-                resource: textureText.createView(),
-              }
-            ]
-        });
-
-        this.positionBuffer = this.createBuffer(this.component.getPositions(this), GPUBufferUsage.VERTEX,this.device);
-        this.fragUVBuffer = this.createBuffer(this.component.getFragUV(this), GPUBufferUsage.VERTEX,this.device);     
-
-        this.passEncoder.setVertexBuffer(0, this.positionBuffer);
-        this.passEncoder.setVertexBuffer(1, this.fragUVBuffer);
-
-        this.passEncoder.setBindGroup(0, this.resultBindGroup);
-
-        this.passEncoder.draw(6,1,0,0);
+        let text = new GText( 100, 10,'Verdana', 3, 3, 128, 128 );
+        await text.draw( this, 'green', 'rgba(222, 0, 0, 1.0)', 'another1  Hello World!!!', true );
+        text.setX(100);
+        text.setY(100);
+        await text.draw( this, 'green', 'rgba(0, 0, 0, 1.0)',  'another2  Hello World!!!', true );
+        text.setX(100);
+        text.setY(130);
+        await text.draw( this, 'green', 'rgba(0, 0, 0, 1.0)', 'another3  Hello World!!!', true );
 
         this.passEncoder.end();
         this.queue.submit([this.commandEncoder.finish()]);

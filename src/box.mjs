@@ -38,4 +38,11 @@ export class GBox extends GObject
             instance.calcX(offsetx), instance.calcY(offsety), 0.0
         ]);
     }
+    async draw( instance ) {
+        instance.positionBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX,instance.device);
+        instance.colorBuffer = instance.createBuffer(this.getColors(instance), GPUBufferUsage.VERTEX,instance.device);
+        instance.passEncoder.setVertexBuffer(0, instance.positionBuffer);
+        instance.passEncoder.setVertexBuffer(1, instance.colorBuffer);
+        instance.passEncoder.draw( 8, 1, 0, 0 );
+    }
 };
