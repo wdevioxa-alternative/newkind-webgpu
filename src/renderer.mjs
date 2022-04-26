@@ -403,7 +403,7 @@ export class Application
         await text.draw( this, 'rgba(0, 255, 0, 1.0)', 'rgba(255, 0, 0, 1.0)', 'another1  Hello World!!!', true );
         text.setX(100);
         text.setY(100);
-        await text.draw( this, 'green', 'rgba(0, 0, 0, 0.4)',  'another2  Hello World!!!', true );
+        await text.draw( this, 'black', 'gray',  'another2  Hello World!!!', true );
         text.setX(100);
         text.setY(130);
         await text.draw( this, 'green', 'black', 'another3  Hello World!!!', true );
