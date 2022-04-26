@@ -350,7 +350,7 @@ export class Application
         this.passEncoder.setViewport(
             0,
             0,
-            this.getCanvasWidth(),тзь кгтыефке
+            this.getCanvasWidth(),
             this.getCanvasHeight(),
             0,
             1
