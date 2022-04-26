@@ -393,7 +393,7 @@ export class Application
 
         this.passEncoder.draw( 8, 1, 0, 0 );
 
-        this.component = new GSpline( 1, 43, this.getCanvasWidth() - 2, this.getCanvasHeight() * 2 / 3 );
+        this.component = new GSpline( 1, 43, this.getCanvasWidth() - 2, this.getCanvasHeight() - 45 );
   
         this.positionBuffer = this.createBuffer(this.component.getBorderPositions(this), GPUBufferUsage.VERTEX,this.device);
         this.colorBuffer = this.createBuffer(this.component.getBorderColors(this), GPUBufferUsage.VERTEX,this.device);
