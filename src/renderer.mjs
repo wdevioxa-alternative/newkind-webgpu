@@ -369,6 +369,9 @@ export class Application
 
         this.encodeCommands();
 
+        ////////////////////////////////////////////
+        // рисовать линиями
+        ////////////////////////////////////////////
         this.passEncoder.setPipeline(this.linePipeline);
 
         let box = new GBox( 1, 1, 126, 18 );
@@ -387,6 +390,9 @@ export class Application
           return Math.cos( x );
         }, [ 0.0, 1.0, 0.0, 1.0 ] );
 
+        ////////////////////////////////////////////
+        // рисовать треугольниками
+        ////////////////////////////////////////////
         this.passEncoder.setPipeline(this.texturePipeline);
 
         let text = new GText( 100, 10,'Verdana', 100, 70, 128, 128 );
