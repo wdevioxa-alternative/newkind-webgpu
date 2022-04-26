@@ -26,7 +26,7 @@ export class GText extends GObject
     getFontFamily() {
         return this.fontFamily;
     }    
-    async draw( textColor, textOut, autoMeasure ) 
+    async draw( instance, textColor, textOut, autoMeasure ) 
     {
         const wa = document.getElementById('wa');
 
@@ -57,15 +57,12 @@ export class GText extends GObject
         ctx.font = this.getFontWeight().toString() + 
             ' ' + this.getFontSize().toString() + 
             'px ' + this.getFontFamily();
-        ctx.fillStyle = 'rgba(255, 255, 255, 1.0)';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
         ctx.fillRect(0, 0, this.getWidth(), this.getHeight());
         ctx.fillStyle = textColor;
         ctx.fillText( textOut, 0, this.getFontSize(), fw );
-
-        //if (wa.childNodes.length > 1) wa.childNodes[0].remove(); 
-        //wa.appendChild(cs);
-
-        return await createImageBitmap(cs);
+        const imageBitmap = await createImageBitmap(cs);
+        return instance.webGPUTextureFromImageBitmapOrCanvas(instance.device, imageBitmap, true);
     }
     getColors( instance )
     {
@@ -83,37 +80,27 @@ export class GText extends GObject
     getFragUV( instance )
     {
         return new Float32Array([
+            1.0, 1.0,
+            1.0, 0.0,
             0.0, 0.0,
-            1.0, 0.0,
-
-            1.0, 0.0,
             1.0, 1.0,
-
-            1.0, 1.0,
-            0.0, 1.0,
-
-            0.0, 1.0,
-            0.0, 0.0
+            0.0, 0.0,
+            0.0, 1.0
         ]);
     }    
     getPositions( instance )
     {
-        let objectWidth = this.getWidth() - 1;
-        let objectHeight = this.getHeight() - 1;
+        let objectWidth = this.getWidth();
+        let objectHeight = this.getHeight();
         let offsetX = this.getX() + 1;
         let offsetY = this.getY() + 1;
         return new Float32Array([
-            instance.calcX(offsetX-1), instance.calcY(offsetY), 0.0,
-            instance.calcX(objectWidth+offsetX), instance.calcY(offsetY), 0.0,
-
-            instance.calcX(objectWidth+offsetX), instance.calcY(offsetY), 0.0,
-            instance.calcX(objectWidth+offsetX), instance.calcY(objectHeight+offsetY), 0.0,
-
-            instance.calcX(objectWidth+offsetX), instance.calcY(objectHeight+offsetY), 0.0,
-            instance.calcX(offsetX), instance.calcY(objectHeight+offsetY), 0.0,
-
-            instance.calcX(offsetX), instance.calcY(objectHeight+offsetY), 0.0,
-            instance.calcX(offsetX), instance.calcY(offsetY), 0.0
+            instance.calcX(objectWidth+offsetX), instance.calcY(objectHeight+offsetY),
+            instance.calcX(objectWidth+offsetX), instance.calcY(offsetY),
+            instance.calcX(offsetX), instance.calcY(offsetY),
+            instance.calcX(objectWidth+offsetX), instance.calcY(objectHeight+offsetY), 
+            instance.calcX(offsetX), instance.calcY(offsetY), 
+            instance.calcX(offsetX), instance.calcY(objectHeight+offsetY)
         ]);
     }
 }

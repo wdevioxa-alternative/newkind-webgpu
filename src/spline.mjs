@@ -62,10 +62,10 @@ export class GSpline extends GObject
     }
     getBorderPositions( instance )
     {
-        let objectwidth = this.getWidth() - 1;
-        let objectheight = this.getHeight() - 1;
-        let offsetx = this.getX() + 1;
-        let offsety = this.getY() + 1;
+        let objectwidth = this.getWidth();
+        let objectheight = this.getHeight();
+        let offsetx = this.getX() + 1; // border size
+        let offsety = this.getY() + 1; // border size
         return new Float32Array([
             instance.calcX(offsetx-1), instance.calcY(offsety), 0.0,
             instance.calcX(objectwidth+offsetx), instance.calcY(offsety), 0.0,

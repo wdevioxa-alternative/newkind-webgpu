@@ -8,20 +8,20 @@ export class GBox extends GObject
     getColors( instance )
     {
         return new Float32Array([
-            1.0, 0.0, 0.0, 1.0, // 🔴
-            0.0, 1.0, 0.0, 1.0, // 🟢
-            0.0, 1.0, 0.0, 1.0, // 🟢
-            0.0, 0.0, 1.0, 1.0, // 🔵
-            0.0, 0.0, 1.0, 1.0, // 🔵
-            0.0, 1.0, 0.0, 1.0, // 🟢
-            0.0, 1.0, 0.0, 1.0, // 🟢
-            1.0, 0.0, 0.0, 1.0  // 🔴
+            1.0, 0.0, 0.0, 1.0,
+            0.0, 1.0, 0.0, 1.0,
+            0.0, 1.0, 0.0, 1.0,
+            0.0, 0.0, 1.0, 1.0,
+            0.0, 0.0, 1.0, 1.0,
+            0.0, 1.0, 0.0, 1.0,
+            0.0, 1.0, 0.0, 1.0,
+            1.0, 0.0, 0.0, 1.0
         ]);
     }
     getPositions( instance )
     {
-        let objectwidth = this.getWidth() - 1;
-        let objectheight = this.getHeight() - 1;
+        let objectwidth = this.getWidth();
+        let objectheight = this.getHeight();
         let offsetx = this.getX() + 1;
         let offsety = this.getY() + 1;
         return new Float32Array([
