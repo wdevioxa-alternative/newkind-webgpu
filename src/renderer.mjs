@@ -375,6 +375,7 @@ export class Application
 
         this.positionBuffer = this.createBuffer(this.component.getPositions(this),
             GPUBufferUsage.VERTEX,this.device);
+
         this.colorBuffer = this.createBuffer(this.component.getColors(this),
             GPUBufferUsage.VERTEX,this.device);
 
@@ -494,9 +495,9 @@ export class Application
 
         this.passEncoder.setPipeline(this.texturePipeline);
 
-        this.component = new GText( 'normal', 10,'Verdana', 3, 3, 128, 128 );
+        this.component = new GText( 100, 10,'Verdana', 3, 3, 128, 128 );
 
-        const textureText = await this.component.draw( this, 'green','Hello World!!!', true );
+        const textureText = await this.component.draw( this, 'green', 'Hello World!!!', true );
      
         this.resultBindGroup = this.device.createBindGroup({
             layout: this.texturePipeline.getBindGroupLayout(0),

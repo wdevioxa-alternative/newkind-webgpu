@@ -28,41 +28,50 @@ export class GText extends GObject
     }    
     async draw( instance, textColor, textOut, autoMeasure ) 
     {
-        const wa = document.getElementById('wa');
-
-        //if (wa.childNodes.length > 1) wa.childNodes[1].remove(); 
-
         const cs = document.createElement('canvas');
+        cs.style.background = 'transparent';
         var ctx = cs.getContext('2d');
         ctx.font = this.getFontWeight().toString() +
             ' ' + this.getFontSize().toString() + 
             'px ' + this.getFontFamily();
         var fh = this.getHeight();
         var fw = this.getWidth();
+        var fx = 0;
+        var fy = 0;
         if ( autoMeasure == true ) {
+            ////////////////////////////////////
+            // автоматическая подгонка контура
+            ////////////////////////////////////            
             let mesure = ctx.measureText( textOut );
             fh = mesure.fontBoundingBoxAscent + mesure.fontBoundingBoxDescent;
             fw = mesure.width;
             this.setWidth(Math.ceil(fw));
             this.setHeight(Math.ceil(fh)); 
             fh = this.getHeight();
-            fw = this.getWidth();    
+            fw = this.getWidth();
+            fx = 0;
+            fy = this.getFontSize();
         } else {
             ////////////////////////////////////
-            // TODO: иначе, сделать по центру
+            // по центру указанного контура
             ////////////////////////////////////
+            let mesure = ctx.measureText( textOut );
+            fh = mesure.fontBoundingBoxAscent + mesure.fontBoundingBoxDescent;
+            fw = mesure.width;
+            fx = ( this.getWidth() - fw ) / 2;
+            fy = this.getHeight() - ( this.getHeight() - fh ) / 2;
         }
         cs.width = this.getWidth();
         cs.height = this.getHeight();
         ctx.font = this.getFontWeight().toString() + 
             ' ' + this.getFontSize().toString() + 
             'px ' + this.getFontFamily();
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
-        ctx.fillRect(0, 0, this.getWidth(), this.getHeight());
+        ctx.fillStyle = 'rgba(0, 0, 0, 1.0)';
+        ctx.fillRect( 0, 0, this.getWidth(), this.getHeight() );
         ctx.fillStyle = textColor;
-        ctx.fillText( textOut, 0, this.getFontSize(), fw );
-        const imageBitmap = await createImageBitmap(cs);
-        return instance.webGPUTextureFromImageBitmapOrCanvas(instance.device, imageBitmap, true);
+        ctx.fillText( textOut, fx, fy, fw );
+        const imageBitmap = await createImageBitmap( cs );
+        return instance.webGPUTextureFromImageBitmapOrCanvas( instance.device, imageBitmap, true );
     }
     getColors( instance )
     {

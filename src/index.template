@@ -28,6 +28,5 @@
 </head>
 <body>
     <canvas id="gfx" style="border: 1px solid gray;"></canvas>
-    <div id="wa" style="display: block"></div>
 </body>
 </html>
