@@ -138,13 +138,11 @@ export class Application
           const passEncoder = commandEncoder.beginRenderPass({
             colorAttachments: [{
               view: dstView, // Render pass uses the next mip level as it's render attachment.
-              loadValue: [0, 0, 0, 0],
+              //loadValue: [0, 0, 0, 0],
+              loadOp: 'clear',
               storeOp: 'store'
             }],
           });
-      
-          // Need a separate bind group for each level to ensure
-          // we're only sampling from the previous level.
           const bindGroup = gpuDevice.createBindGroup({
             layout: pipeline.getBindGroupLayout(0),
             entries: [{
@@ -160,7 +158,7 @@ export class Application
           passEncoder.setPipeline(pipeline);
           passEncoder.setBindGroup(0, bindGroup);
           passEncoder.draw(4);
-          passEncoder.endPass();
+          passEncoder.end();
       
           srcView = dstView;
         }
@@ -209,17 +207,7 @@ export class Application
                 compositingAlphaMode: "opaque",
                 usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
             });
-        }
-/*        
-        this.depthTexture = this.device.createTexture({
-            size: [this.getCanvasWidth(), this.getCanvasHeight(), 1],
-            dimension: '2d',
-            format: 'depth24plus-stencil8',
-            usage:  GPUTextureUsage.RENDER_ATTACHMENT |
-                    GPUTextureUsage.COPY_SRC
-        });
-        this.depthTextureView = this.depthTexture.createView();
-*/        
+        }       
     }
     async initializeResources()
     {
@@ -261,63 +249,48 @@ export class Application
             },
             primitive: {
                 topology: 'triangle-list'
-            },
-/*            
-            depthStencil: {
-                depthWriteEnabled: true,
-                depthCompare: 'less',
-                format: 'depth24plus-stencil8'
-            }
-*/            
+            }          
         });
         this.linePipeline = this.device.createRenderPipeline({
-          vertex: {
-              module: this.device.createShaderModule({
-                  code: vertexShaderWgslCode
-              }),
-              entryPoint: 'main',
-              buffers: [
-                  {
-                      attributes: [{
-                          shaderLocation: 0, // [[location(0)]]
-                          offset: 0,
-                          format: 'float32x3'
-                      }],
-                      arrayStride: 4 * 3, // sizeof(float) * 3
-                      stepMode: 'vertex'
-                  }, 
-                  {
-                      attributes: [{
-                          shaderLocation: 1, // [[location(1)]]
-                          offset: 0,
-                          format: 'float32x4'
-                      }],
-                      arrayStride: 4 * 4, // sizeof(float) * 4
-                      stepMode: 'vertex'
-                  }
-              ]
-          },
-          fragment: {
-              module: this.device.createShaderModule({
-                  code: fragmentShaderWgslCode
-              }),
-              entryPoint: 'main',
-              targets: [{
-                  format: 'bgra8unorm'
-              }]
-          },
-          primitive: {
-              topology: 'line-list'
-          },
-/*            
-          depthStencil: {
-              depthWriteEnabled: true,
-              depthCompare: 'less',
-              format: 'depth24plus-stencil8'
-          }
-*/            
-      });
-
+            vertex: {
+                module: this.device.createShaderModule({
+                    code: vertexShaderWgslCode
+                }),
+                entryPoint: 'main',
+                buffers: [
+                    {
+                        attributes: [{
+                            shaderLocation: 0, // [[location(0)]]
+                            offset: 0,
+                            format: 'float32x3'
+                        }],
+                        arrayStride: 4 * 3, // sizeof(float) * 3
+                        stepMode: 'vertex'
+                    }, 
+                    {
+                        attributes: [{
+                            shaderLocation: 1, // [[location(1)]]
+                            offset: 0,
+                            format: 'float32x4'
+                        }],
+                        arrayStride: 4 * 4, // sizeof(float) * 4
+                        stepMode: 'vertex'
+                    }
+                ]
+            },
+            fragment: {
+                module: this.device.createShaderModule({
+                    code: fragmentShaderWgslCode
+                }),
+                entryPoint: 'main',
+                targets: [{
+                    format: 'bgra8unorm'
+                }]
+            },
+            primitive: {
+                topology: 'line-list'
+            }          
+        });
         this.sampler = this.device.createSampler({
             magFilter: 'linear',
             minFilter: 'linear'
@@ -332,17 +305,7 @@ export class Application
                 clearValue: { r: 0.0, g: 0.0, b: 0.0, a: 0.0 },
                 loadOp: 'clear',
                 storeOp: 'store'
-            }],
-/*
-            depthStencilAttachment: {
-                view: this.depthTextureView,
-                depthClearValue: 1,
-                depthLoadOp: 'clear',
-                depthStoreOp: 'store',
-                stencilLoadOp: 'clear',
-                stencilStoreOp: 'store'
-            }
-*/            
+            }]          
         });    
         ////////////////////////////////////////
         // вписаться в размер браузера
