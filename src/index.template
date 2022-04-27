@@ -27,6 +27,6 @@
     </style>
 </head>
 <body>
-    <canvas id="gfx" style="border: 1px solid gray;"></canvas>
+    <canvas id="gfx" style="border: 1px solid white"></canvas>
 </body>
 </html>

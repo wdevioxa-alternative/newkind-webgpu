@@ -339,9 +339,9 @@ export class Application
         
 
         let box = new GBox( 1, 1, 126, 18 );
-        await box.draw( this );
+        await box.draw( this, [1.0,1.0,0.0,1.0] );
         box.setY(22);
-        await box.draw( this );
+        await box.draw( this, [1.0,0.0,1.0,1.0] );
 
         let spline = new GSpline( 1, 43, this.getCanvasWidth() - 2, this.getCanvasHeight() - 45 );
 

@@ -5,7 +5,7 @@ export class GBox extends GObject
     constructor( x, y, width, height ) {
         super( x, y, width, height );
     }  
-    getColors( instance )
+    getColors( instance, color )
     {
         const now = Date.now();
         let g1 = Math.cos( now / 1000 );
@@ -19,21 +19,21 @@ export class GBox extends GObject
         let colors = new Float32Array( 32 );
         let index = 0;
         for ( let i = 0; i < 4; i++ )
-            colors[index++] = defaultColor2[i];
+            colors[index++] = color[i];
         for ( let i = 0; i < 4; i++ )
-            colors[index++] = defaultColor2[i];
+            colors[index++] = color[i];
         for ( let i = 0; i < 4; i++ )
-            colors[index++] = defaultColor2[i];
+            colors[index++] = color[i];
         for ( let i = 0; i < 4; i++ )
-            colors[index++] = defaultColor2[i];
+            colors[index++] = color[i];
         for ( let i = 0; i < 4; i++ )
-            colors[index++] = defaultColor2[i];            
+            colors[index++] = color[i];            
         for ( let i = 0; i < 4; i++ )
-            colors[index++] = defaultColor2[i];
+            colors[index++] = color[i];
         for ( let i = 0; i < 4; i++ )
-            colors[index++] = defaultColor2[i];
+            colors[index++] = color[i];
         for ( let i = 0; i < 4; i++ )
-            colors[index++] = defaultColor2[i];
+            colors[index++] = color[i];
         return colors;
     }
     getPositions( instance )
@@ -53,10 +53,10 @@ export class GBox extends GObject
             instance.calcX(offsetx), instance.calcY(offsety), 0.0
         ]);
     }
-    async draw( instance ) {
+    async draw( instance, color ) {
         this.rnd = Math.random() * 2.0 * Math.PI;
         instance.positionBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX,instance.device);
-        instance.colorBuffer = instance.createBuffer(this.getColors(instance), GPUBufferUsage.VERTEX,instance.device);
+        instance.colorBuffer = instance.createBuffer(this.getColors(instance, color), GPUBufferUsage.VERTEX,instance.device);
         instance.passEncoder.setVertexBuffer(0, instance.positionBuffer);
         instance.passEncoder.setVertexBuffer(1, instance.colorBuffer);
         instance.passEncoder.draw( 8, 1, 0, 0 );
