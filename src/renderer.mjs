@@ -336,6 +336,7 @@ export class Application
         // рисовать линиями
         ////////////////////////////////////////////
         this.passEncoder.setPipeline(this.linePipeline);
+        
 
         let box = new GBox( 1, 1, 126, 18 );
         await box.draw( this );
@@ -343,12 +344,6 @@ export class Application
         await box.draw( this );
 
         let spline = new GSpline( 1, 43, this.getCanvasWidth() - 2, this.getCanvasHeight() - 45 );
-
-        this.positionBuffer = this.createBuffer(spline.getBorderPositions(this), GPUBufferUsage.VERTEX,this.device);
-        this.colorBuffer = this.createBuffer(spline.getBorderColors(this), GPUBufferUsage.VERTEX,this.device);
-        this.passEncoder.setVertexBuffer(0, this.positionBuffer);
-        this.passEncoder.setVertexBuffer(1, this.colorBuffer);
-        this.passEncoder.draw( 8, 2, 0, 0 );
 
         await spline.draw( this );
 
