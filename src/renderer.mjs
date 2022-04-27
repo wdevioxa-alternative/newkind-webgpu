@@ -310,6 +310,7 @@ export class Application
         ////////////////////////////////////////
         // вписаться в размер браузера
         ////////////////////////////////////////
+/*        
         this.passEncoder.setViewport(
             0,
             0,
@@ -324,6 +325,7 @@ export class Application
             this.getCanvasWidth(),
             this.getCanvasHeight()
         );  
+*/        
     }
     render = async () => {
 
@@ -343,8 +345,7 @@ export class Application
         await box.draw( this, [1.0,0.0,1.0,1.0] );
 
         let spline = new GSpline( 1, 43, this.getCanvasWidth() - 2, this.getCanvasHeight() - 45 );
-
-        await spline.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
+        await spline.draw( this, [ 1.0, 1.0, 1.0, 1.0 ] );
         await spline.functionDraw( this, Math.PI / 2, 4 * Math.PI, -1, 1, 58, ( x ) => {
           return Math.sin( x );
         }, [ 1.0, 0.0, 0.0, 1.0 ] );

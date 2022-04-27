@@ -100,13 +100,15 @@ export class GSpline extends GObject
     {
         let objectwidth = this.getWidth();
         let objectheight = this.getHeight();
-        let offsetx = this.getX() + 1; // border size
-        let offsety = this.getY() + 1; // border size
+        let offsetx = this.getX() + 1;
+        let offsety = this.getY() + 1;
         return new Float32Array([
-            instance.calcX(offsetx-1), instance.calcY(offsety), 0.0,
-            instance.calcX(objectwidth+offsetx), instance.calcY(offsety), 0.0,
-            instance.calcX(offsetx), instance.calcY(offsety), 0.0,
-            instance.calcX(offsetx), instance.calcY(objectheight+offsety), 0.0,
+            // vertical
+            instance.calcX(offsetx-1), instance.calcY( offsety + objectheight / 2 ), 0.0,
+            instance.calcX(objectwidth+offsetx), instance.calcY( offsety + objectheight / 2 ), 0.0,
+            // horizontal
+            instance.calcX( objectwidth / 2 + offsetx ), instance.calcY( offsety ), 0.0,
+            instance.calcX( objectwidth / 2 + offsetx ), instance.calcY( objectheight + offsety ), 0.0,
         ]);
     }
     async draw( instance, color ) {
@@ -120,14 +122,12 @@ export class GSpline extends GObject
         instance.passEncoder.draw( 8, 1, 0, 0 );
         //////////////////////////////////
         // draw axis
-        //////////////////////////////////
-/*        
+        //////////////////////////////////        
         instance.positionBuffer = instance.createBuffer(this.getAxisPositions(instance), GPUBufferUsage.VERTEX,instance.device);
         instance.colorBuffer = instance.createBuffer(this.getAxisColors(instance, color), GPUBufferUsage.VERTEX,instance.device);
         instance.passEncoder.setVertexBuffer(0, instance.positionBuffer);
         instance.passEncoder.setVertexBuffer(1, instance.colorBuffer);
         instance.passEncoder.draw( 4, 1, 0, 0 );
-*/        
     }
     async functionDraw( instance, beginX, endX, beginY, endY, iterations, func, color = [ 1.0, 1.0, 1.0, 1.0 ] ) {
         let origWidth = this.getWidth();
