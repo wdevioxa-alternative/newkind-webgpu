@@ -1,12 +1,12 @@
 
 struct lineOut {
-    @builtin(position) outPosition: vec4<f32>,
-    @location(0) outColor : vec4<f32>
+    @builtin(position) outPosition: vec4<f32>;
+    @location(0) outColor : vec4<f32>;
 };
 
 struct triangleOut {
-    @builtin(position) outPosition: vec4<f32>,
-    @location(0) outFragUV : vec2<f32>
+    @builtin(position) outPosition: vec4<f32>;
+    @location(0) outFragUV : vec2<f32>;
 };
 
 @stage(vertex)
