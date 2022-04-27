@@ -29,9 +29,9 @@ export class GLabel extends GObject
     async draw( instance, textColor, backgroundColor, textOut, autoMeasure ) 
     {
         const cs = document.createElement('canvas');
-        cs.style.background = 'transparent';
-        var ctx = cs.getContext('2d',{ alpha: true });
-        ctx.globalAlpha = true;
+ 
+        var ctx = cs.getContext('2d');
+
         ctx.font = this.getFontWeight().toString() +
             ' ' + this.getFontSize().toString() + 
             'px ' + this.getFontFamily();
@@ -64,12 +64,14 @@ export class GLabel extends GObject
         }
         cs.height = this.getHeight();
         cs.width = this.getWidth();
-        cs.style.backgroundColor = backgroundColor;
+
         ctx.font = this.getFontWeight().toString() + 
             ' ' + this.getFontSize().toString() + 
             'px ' + this.getFontFamily();
+
         ctx.fillStyle = backgroundColor;
         ctx.fillRect( 0, 0, this.getWidth(), this.getHeight() );
+
         ctx.fillStyle = textColor;
         let r = parseInt(ctx.fillStyle.substring(1,3), 16);
         let g = parseInt(ctx.fillStyle.substring(3,5), 16);
@@ -77,8 +79,9 @@ export class GLabel extends GObject
         let color = 'rgba(' + r + ',' + g + ',' + b + ',' + 1.0 + ')';
         ctx.fillStyle = color;
         ctx.fillText( textOut, fx, fy, fw );
+
         const imageBitmap = await createImageBitmap( cs );
-        const textureImage = instance.webGPUTextureFromImageBitmapOrCanvas( instance.device, imageBitmap, true );
+        const textureImage = instance.webGPUTextureFromImageBitmapOrCanvas( instance.device, imageBitmap, false );
         let bindGroup = instance.device.createBindGroup({
             layout: instance.texturePipeline.getBindGroupLayout(0),
             entries: [
@@ -93,7 +96,7 @@ export class GLabel extends GObject
             ]
         });
         instance.positionBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX, instance.device);
-        instance.fragUVBuffer = instance.createBuffer(this.getFragUV(instance), GPUBufferUsage.VERTEX, instance.device);     
+        instance.fragUVBuffer = instance.createBuffer(this.getFragUV(instance), GPUBufferUsage.VERTEX, instance.device);
         instance.passEncoder.setVertexBuffer(0, instance.positionBuffer);
         instance.passEncoder.setVertexBuffer(1, instance.fragUVBuffer);
         instance.passEncoder.setBindGroup(0, bindGroup);
