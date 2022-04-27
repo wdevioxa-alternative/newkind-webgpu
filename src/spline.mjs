@@ -102,14 +102,30 @@ export class GSpline extends GObject
         let objectheight = this.getHeight();
         let offsetx = this.getX() + 1;
         let offsety = this.getY() + 1;
-        return new Float32Array([
+
+        let iterationsX = 50;
+        let iterationsY = 10;
+
+        let stepX = objectwidth / iterationsX;
+        let stepY = objectheight / iterationsY;
+
+        let axis = new Float32Array([
             // vertical
             instance.calcX(offsetx-1), instance.calcY( offsety + objectheight / 2 ), 0.0,
             instance.calcX(objectwidth+offsetx), instance.calcY( offsety + objectheight / 2 ), 0.0,
             // horizontal
             instance.calcX( objectwidth / 2 + offsetx ), instance.calcY( offsety ), 0.0,
-            instance.calcX( objectwidth / 2 + offsetx ), instance.calcY( objectheight + offsety ), 0.0,
+            instance.calcX( objectwidth / 2 + offsetx ), instance.calcY( objectheight + offsety ), 0.0
         ]);
+
+        for ( let i = 0; i < iterationsX; i++ ) {
+            // на право
+            instance.calcX( objectwidth / 2 + offsetx ), instance.calcY( offsety ), 0.0,
+            instance.calcX( objectwidth / 2 + offsetx ), instance.calcY( objectheight + offsety ), 0.0
+                
+        }
+
+        return axis;
     }
     async draw( instance, color ) {
         //////////////////////////////////

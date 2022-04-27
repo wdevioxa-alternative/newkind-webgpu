@@ -346,10 +346,10 @@ export class Application
 
         let spline = new GSpline( 1, 43, this.getCanvasWidth() - 2, this.getCanvasHeight() - 45 );
         await spline.draw( this, [ 1.0, 1.0, 1.0, 1.0 ] );
-        await spline.functionDraw( this, Math.PI / 2, 4 * Math.PI, -1, 1, 58, ( x ) => {
+        await spline.functionDraw( this, 0, 4 * Math.PI, -1, 1, 58, ( x ) => {
           return Math.sin( x );
         }, [ 1.0, 0.0, 0.0, 1.0 ] );
-        await spline.functionDraw( this, Math.PI / 2, 4 * Math.PI, -1, 1, 58, ( x ) => {
+        await spline.functionDraw( this, 0, 4 * Math.PI, -1, 1, 58, ( x ) => {
           return Math.cos( x );
         }, [ 0.0, 1.0, 0.0, 1.0 ] );
         await spline.functionDraw( this, 10, 20, -50, 50, 58, ( x ) => {

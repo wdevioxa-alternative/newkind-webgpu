@@ -1,3 +1,4 @@
+
 struct lineOut {
     @builtin(position) outPosition: vec4<f32>,
     @location(0) outColor : vec4<f32>
