@@ -4,7 +4,6 @@ export class GTextBox extends GLabel
 {
     constructor( x, y, width, height ) {
         super( x, y, width, height );
-        super.setFontSize( height );
     }  
     async draw( instance, textColor, backgroundColor, textOut, autoMeasure ) 
     {
