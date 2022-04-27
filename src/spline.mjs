@@ -104,31 +104,36 @@ export class GSpline extends GObject
     }
     async functionDraw( instance, beginX, endX, beginY, endY, iterations, func, color = [ 1.0, 1.0, 1.0, 1.0 ] ) {
         let origWidth = this.getWidth();
-        let origHeight = this.getHeight();				
+        let origHeight = this.getHeight() ;				
         let complexWidth = endX - beginX;
-        let complexHeight = endY - beginY;
+        let complexHeight = endY - beginY ;
         var xCount = iterations;
         var xOffset = complexWidth / xCount;    
         var floatX = 0.0;
         var floatY = 0.0;
         this.clearItems();
-        for ( let i = 0; i < xCount + 1; i++ ) {
-                let realX = instance.calcScale(origWidth,complexWidth,floatX);
-                let realY = origHeight-instance.calcScale(origHeight,complexHeight,floatY - beginY);
-                this.appendItem(instance,[realX,realY,0.0],color);
-                floatX = i * xOffset;
-                floatY = func( floatX + beginX );
-                realX = instance.calcScale(origWidth,complexWidth,floatX);
-                realY = origHeight - instance.calcScale(origHeight,complexHeight,floatY - beginY);
-                this.appendItem(instance,[realX,realY,0.0],color);
-                this.appendItem(instance,[realX-1,realY+1,0.0],color);
-                this.appendItem(instance,[realX-1,realY-1,0.0],color);
-                this.appendItem(instance,[realX-1,realY-1,0.0],color);
-                this.appendItem(instance,[realX+1,realY-1,0.0],color);
-                this.appendItem(instance,[realX+1,realY-1,0.0],color);
-                this.appendItem(instance,[realX+1,realY+1,0.0],color);
-                this.appendItem(instance,[realX+1,realY+1,0.0],color);
-                this.appendItem(instance,[realX-1,realY+1,0.0],color);
+        for ( let i = 0; i < xCount; i++ ) {  
+            floatX = ( i + 0 ) * xOffset;
+            floatY = func( floatX + beginX );       
+            let realX = instance.calcScale(origWidth,complexWidth,floatX);
+            let realY = origHeight-instance.calcScale(origHeight,complexHeight,floatY - beginY);
+            this.appendItem(instance,[realX,realY,0.0],color);
+            floatX = ( i + 1 ) * xOffset;
+            floatY = func( floatX + beginX );
+            realX = instance.calcScale(origWidth,complexWidth,floatX);
+            realY = origHeight - instance.calcScale(origHeight,complexHeight,floatY - beginY);
+            this.appendItem(instance,[realX,realY,0.0],color);
+            /////////////////////////////////////////////////////////////////////
+            // рисование точки
+            /////////////////////////////////////////////////////////////////////
+            this.appendItem(instance,[realX-1,realY+1,0.0],color);
+            this.appendItem(instance,[realX-1,realY-1,0.0],color);
+            this.appendItem(instance,[realX-1,realY-1,0.0],color);
+            this.appendItem(instance,[realX+1,realY-1,0.0],color);
+            this.appendItem(instance,[realX+1,realY-1,0.0],color);
+            this.appendItem(instance,[realX+1,realY+1,0.0],color);
+            this.appendItem(instance,[realX+1,realY+1,0.0],color);
+            this.appendItem(instance,[realX-1,realY+1,0.0],color);
         }
         let positions = this.getPositions(instance);
         let colors = this.getColors(instance);

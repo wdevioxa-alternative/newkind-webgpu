@@ -337,7 +337,6 @@ export class Application
         ////////////////////////////////////////////
         this.passEncoder.setPipeline(this.linePipeline);
         
-
         let box = new GBox( 1, 1, 126, 18 );
         await box.draw( this, [1.0,1.0,0.0,1.0] );
         box.setY(22);
@@ -351,7 +350,7 @@ export class Application
           return Math.sin( x );
         }, [ 1.0, 0.0, 0.0, 1.0 ] );
 
-        await spline.functionDraw( this, Math.PI / 2, 4 * Math.PI, -1, 1, 58, ( x ) => {
+        await spline.functionDraw( this, 0, 4 * Math.PI, -1, 1, 58, ( x ) => {
           return Math.cos( x );
         }, [ 0.0, 1.0, 0.0, 1.0 ] );
 
