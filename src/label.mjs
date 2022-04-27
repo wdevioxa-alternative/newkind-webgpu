@@ -29,9 +29,7 @@ export class GLabel extends GObject
     async draw( instance, textColor, backgroundColor, textOut, autoMeasure ) 
     {
         const cs = document.createElement('canvas');
- 
         var ctx = cs.getContext('2d');
-
         ctx.font = this.getFontWeight().toString() +
             ' ' + this.getFontSize().toString() + 
             'px ' + this.getFontFamily();
