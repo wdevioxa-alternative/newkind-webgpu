@@ -9,5 +9,4 @@ export class GTextBox extends GLabel
     {
 
     }
-
 };
