@@ -117,14 +117,14 @@ export class GSpline extends GObject
             instance.calcX( objectwidth / 2 + offsetx ), instance.calcY( offsety ), 0.0,
             instance.calcX( objectwidth / 2 + offsetx ), instance.calcY( objectheight + offsety ), 0.0
         ]);
-
+/*
         for ( let i = 0; i < iterationsX; i++ ) {
             // на право
-            instance.calcX( objectwidth / 2 + offsetx ), instance.calcY( offsety ), 0.0,
+            instance.calcX( objectwidth / 2 + offsetx +  ), instance.calcY( offsety ), 0.0,
             instance.calcX( objectwidth / 2 + offsetx ), instance.calcY( objectheight + offsety ), 0.0
                 
         }
-
+*/
         return axis;
     }
     async draw( instance, color ) {
