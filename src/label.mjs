@@ -1,6 +1,6 @@
 import { GObject } from './object.mjs';
 
-export class GText extends GObject
+export class GLabel extends GObject
 {
     constructor( fontWeight, fontSize, fontFamily, x, y, width, height ) {        
         super( x, y, width, height );

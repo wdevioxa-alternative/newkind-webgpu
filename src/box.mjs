@@ -18,22 +18,14 @@ export class GBox extends GObject
         let defaultColor4 = [ 0.0, ( g4 + 1.0 ) * 0.5, 0.0, 1.0 ];   
         let colors = new Float32Array( 32 );
         let index = 0;
-        for ( let i = 0; i < 4; i++ )
-            colors[index++] = color[i];
-        for ( let i = 0; i < 4; i++ )
-            colors[index++] = color[i];
-        for ( let i = 0; i < 4; i++ )
-            colors[index++] = color[i];
-        for ( let i = 0; i < 4; i++ )
-            colors[index++] = color[i];
-        for ( let i = 0; i < 4; i++ )
-            colors[index++] = color[i];            
-        for ( let i = 0; i < 4; i++ )
-            colors[index++] = color[i];
-        for ( let i = 0; i < 4; i++ )
-            colors[index++] = color[i];
-        for ( let i = 0; i < 4; i++ )
-            colors[index++] = color[i];
+        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];
+        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];
+        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];
+        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];
+        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];            
+        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];
+        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];
+        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];
         return colors;
     }
     getPositions( instance )

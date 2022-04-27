@@ -47,8 +47,7 @@ export class GSpline extends GObject
     getColors( instance ) {
         return this.colors;
     }
-    getBorderColors( instance )
-    {
+    getBorderColors( instance ) {
         const now = Date.now();
         let g1 = Math.cos( now / 1000);
         let g2 = Math.cos( now / 1000 + Math.PI / 2.0  );
@@ -58,24 +57,16 @@ export class GSpline extends GObject
         let defaultColor2 = [ 0.0, ( g2 + 1.0 ) * 0.5, 0.0, 1.0 ];
         let defaultColor3 = [ 0.0, 0.0, ( g3 + 1.0 ) * 0.5, 1.0 ];
         let defaultColor4 = [ 0.0, ( g4 + 1.0 ) * 0.5, 0.0, 1.0 ];   
-        let colors = new Float32Array( 32 );
         let index = 0;
-        for ( let i = 0; i < 4; i++ )
-            colors[index++] = defaultColor1[i];
-        for ( let i = 0; i < 4; i++ )
-            colors[index++] = defaultColor2[i];
-        for ( let i = 0; i < 4; i++ )
-            colors[index++] = defaultColor2[i];
-        for ( let i = 0; i < 4; i++ )
-            colors[index++] = defaultColor3[i];
-        for ( let i = 0; i < 4; i++ )
-            colors[index++] = defaultColor3[i];            
-        for ( let i = 0; i < 4; i++ )
-            colors[index++] = defaultColor4[i];
-        for ( let i = 0; i < 4; i++ )
-            colors[index++] = defaultColor4[i];
-        for ( let i = 0; i < 4; i++ )
-            colors[index++] = defaultColor1[i];
+        let colors = new Float32Array( 32 );
+        for ( let i = 0; i < 4; i++ ) colors[index++] = defaultColor1[i];
+        for ( let i = 0; i < 4; i++ ) colors[index++] = defaultColor2[i];
+        for ( let i = 0; i < 4; i++ ) colors[index++] = defaultColor2[i];
+        for ( let i = 0; i < 4; i++ ) colors[index++] = defaultColor3[i];
+        for ( let i = 0; i < 4; i++ ) colors[index++] = defaultColor3[i];            
+        for ( let i = 0; i < 4; i++ ) colors[index++] = defaultColor4[i];
+        for ( let i = 0; i < 4; i++ ) colors[index++] = defaultColor4[i];
+        for ( let i = 0; i < 4; i++ ) colors[index++] = defaultColor1[i];
         return colors;
     }
     getBorderPositions( instance )
@@ -95,12 +86,48 @@ export class GSpline extends GObject
             instance.calcX(offsetx), instance.calcY(offsety), 0.0
         ]);
     }
-    async draw( instance ) {
+    getAxisColors( instance, color )
+    {
+        let colors = new Float32Array( 16 );
+        let index = 0;
+        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];
+        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];
+        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];
+        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];
+        return colors;
+    }
+    getAxisPositions( instance )
+    {
+        let objectwidth = this.getWidth();
+        let objectheight = this.getHeight();
+        let offsetx = this.getX() + 1; // border size
+        let offsety = this.getY() + 1; // border size
+        return new Float32Array([
+            instance.calcX(offsetx-1), instance.calcY(offsety), 0.0,
+            instance.calcX(objectwidth+offsetx), instance.calcY(offsety), 0.0,
+            instance.calcX(offsetx), instance.calcY(offsety), 0.0,
+            instance.calcX(offsetx), instance.calcY(objectheight+offsety), 0.0,
+        ]);
+    }
+    async draw( instance, color ) {
+        //////////////////////////////////
+        // draw border
+        //////////////////////////////////
         instance.positionBuffer = instance.createBuffer(this.getBorderPositions(instance), GPUBufferUsage.VERTEX,instance.device);
         instance.colorBuffer = instance.createBuffer(this.getBorderColors(instance), GPUBufferUsage.VERTEX,instance.device);
         instance.passEncoder.setVertexBuffer(0, instance.positionBuffer);
         instance.passEncoder.setVertexBuffer(1, instance.colorBuffer);
         instance.passEncoder.draw( 8, 1, 0, 0 );
+        //////////////////////////////////
+        // draw axis
+        //////////////////////////////////
+/*        
+        instance.positionBuffer = instance.createBuffer(this.getAxisPositions(instance), GPUBufferUsage.VERTEX,instance.device);
+        instance.colorBuffer = instance.createBuffer(this.getAxisColors(instance, color), GPUBufferUsage.VERTEX,instance.device);
+        instance.passEncoder.setVertexBuffer(0, instance.positionBuffer);
+        instance.passEncoder.setVertexBuffer(1, instance.colorBuffer);
+        instance.passEncoder.draw( 4, 1, 0, 0 );
+*/        
     }
     async functionDraw( instance, beginX, endX, beginY, endY, iterations, func, color = [ 1.0, 1.0, 1.0, 1.0 ] ) {
         let origWidth = this.getWidth();
@@ -111,7 +138,7 @@ export class GSpline extends GObject
         var xOffset = complexWidth / xCount;    
         var floatX = 0.0;
         var floatY = 0.0;
-        this.clearItems();
+        this.clearItems();    
         for ( let i = 0; i < xCount; i++ ) {  
             floatX = ( i + 0 ) * xOffset;
             floatY = func( floatX + beginX );       

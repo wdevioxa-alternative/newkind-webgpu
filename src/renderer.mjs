@@ -1,6 +1,6 @@
 import { GBox } from './box.mjs';
 import { GSpline } from './spline.mjs';
-import { GText } from './text.mjs';
+import { GLabel } from './label.mjs';
 import vertexShaderWgslCode from './shaders/shader.vert.wgsl'
 import fragmentShaderWgslCode from './shaders/shader.frag.wgsl'
 
@@ -80,8 +80,8 @@ export class Application
               vec2<f32>(-1.0, -1.0), vec2<f32>(1.0, -1.0));
       
             struct VertexOutput {
-              @builtin(position) position : vec4<f32>;
-              @location(0) texCoord : vec2<f32>;
+              @builtin(position) position : vec4<f32>,
+              @location(0) texCoord : vec2<f32>
             };
       
             @stage(vertex)
@@ -344,26 +344,23 @@ export class Application
 
         let spline = new GSpline( 1, 43, this.getCanvasWidth() - 2, this.getCanvasHeight() - 45 );
 
-        await spline.draw( this );
-
+        await spline.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
         await spline.functionDraw( this, Math.PI / 2, 4 * Math.PI, -1, 1, 58, ( x ) => {
           return Math.sin( x );
         }, [ 1.0, 0.0, 0.0, 1.0 ] );
-
-        await spline.functionDraw( this, 0, 4 * Math.PI, -1, 1, 58, ( x ) => {
+        await spline.functionDraw( this, Math.PI / 2, 4 * Math.PI, -1, 1, 58, ( x ) => {
           return Math.cos( x );
         }, [ 0.0, 1.0, 0.0, 1.0 ] );
-
         await spline.functionDraw( this, 10, 20, -50, 50, 58, ( x ) => {
           return 2 * x - 10;
         }, [ 0.0, 1.0, 1.0, 1.0 ] );
-
         ////////////////////////////////////////////////////////////////////////////
         // рисовать треугольниками ( нужно для отображения текстур )
         ////////////////////////////////////////////////////////////////////////////
+
         this.passEncoder.setPipeline(this.texturePipeline);
 
-        let text = new GText( 100, 10,'Verdana', 100, 70, 128, 128 );
+        let text = new GLabel( 100, 10,'Verdana', 100, 70, 128, 128 );
         await text.draw( this, 'rgba(0, 255, 0, 1.0)', 'rgba(255, 0, 0, 1.0)', 'another1  Hello World!!!', true );
         text.setX(100);
         text.setY(100);
