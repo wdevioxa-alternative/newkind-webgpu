@@ -102,38 +102,49 @@ export class GSpline extends GObject
         }
         return vertexcolor;
     }
-    getAxisPositions( instance, iterations )
+    getAxisPositions( instance, iterationsX, iterationsY )
     {
         //////////////////////////////////////////////////
         // количество линий
         //////////////////////////////////////////////////
-        let it = iterations & ~1;
+        let itX = iterationsX & ~1;
+        let itY = iterationsY & ~1;
         let objectwidth = this.getWidth();
         let objectheight = this.getHeight();
-        let offsetx = this.getX() + 1;
-        let offsety = this.getY() + 1;
-        let stepx = objectwidth / it;
+        let offsetX = this.getX() + 1;
+        let offsetY = this.getY() + 1;
+        let stepX = objectwidth / itX;
+        let stepY = objectheight / itY;
         let index = 0;
-        let vertex = new Float32Array( 3 * ( ( it + 2 ) * 2 ) );
-        for ( let i = 0; i < 3 * 2; i++ ) {
+        let vertex = new Float32Array( 3 * ( ( itX + itY + 2 ) * 2 ) );
+        for ( let i = 0; i < 3 * 4; i++ ) {
             vertex[index++] = [
-                instance.calcX( offsetx-1 ), instance.calcY( offsety + objectheight / 2 ), 0.0,
-                instance.calcX( objectwidth+offsetx ), instance.calcY( offsety + objectheight / 2 ), 0.0,
-                //instance.calcX( objectwidth / 2 + offsetx ), instance.calcY( offsety ), 0.0,
-                //instance.calcX( objectwidth / 2 + offsetx ), instance.calcY( objectheight + offsety ), 0.0 
+                instance.calcX( offsetX - 1 ), instance.calcY( offsetY + objectheight / 2 ), 0.0,
+                instance.calcX( objectwidth + offsetX ), instance.calcY( offsetY + objectheight / 2 ), 0.0,
+                instance.calcX( objectwidth / 2 + offsetX ), instance.calcY( offsetY ), 0.0,
+                instance.calcX( objectwidth / 2 + offsetX ), instance.calcY( objectheight + offsetY ), 0.0 
             ][i];
         }
-        for ( let i = 0; i < it; i++ ) {
+        for ( let i = 0; i < itX; i++ ) {
             for ( let j = 0; j < 6; j++ ) {
                 vertex[index++] = [ 
-                    instance.calcX( i * stepx + offsetx  ), instance.calcY( objectheight / 2 + offsety - 1 ), 0.0,
-                    instance.calcX( i * stepx + offsetx  ), instance.calcY( objectheight / 2 + offsety + 2 ), 0.0 
+                    instance.calcX( i * stepX + offsetX ), instance.calcY( objectheight / 2 + offsetY - 1 ), 0.0,
+                    instance.calcX( i * stepX + offsetX ), instance.calcY( objectheight / 2 + offsetY + 2 ), 0.0 
+                ][j];
+            }
+        }
+        for ( let i = 0; i < itY; i++ ) { 
+            for ( let j = 0; j < 6; j++ ) {
+                vertex[index++] = [
+                    instance.calcX( objectwidth / 2 + offsetX - 2 ), instance.calcY( i * stepY + offsetY ), 0.0,
+                    instance.calcX( objectwidth / 2 + offsetX + 1), instance.calcY( i * stepY + offsetY ), 0.0 
                 ][j];
             }
         }
         return vertex;
     }
-    async draw( instance, minX, maxX, iterations = 0, color = [ 1.0, 1.0, 1.0, 1.0 ]) {
+    async draw( instance, minX, maxX, iterationsX, minY, maxY, iterationsY, color = [ 1.0, 1.0, 1.0, 1.0 ]) 
+    {
         //////////////////////////////////
         // draw border
         //////////////////////////////////
@@ -142,29 +153,49 @@ export class GSpline extends GObject
         instance.passEncoder.setVertexBuffer(0, instance.positionBuffer);
         instance.passEncoder.setVertexBuffer(1, instance.colorBuffer);
         instance.passEncoder.draw( 8, 1, 0, 0 );
+
         //////////////////////////////////
         // draw axis
         //////////////////////////////////        
-        let positions = this.getAxisPositions(instance, iterations);
-        let colors = this.getAxisColors(instance, iterations, color);
+        let positions = this.getAxisPositions(instance, iterationsX, iterationsY);
+        let colors = this.getAxisColors(instance, iterationsX + iterationsY, color);
+
         let vertexCount = positions.length / 3;
+
         instance.positionBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX,instance.device);
         instance.colorBuffer = instance.createBuffer(colors, GPUBufferUsage.VERTEX,instance.device);
         instance.passEncoder.setVertexBuffer(0, instance.positionBuffer);
         instance.passEncoder.setVertexBuffer(1, instance.colorBuffer);
         instance.passEncoder.draw( vertexCount, 1, 0, 0 );
         instance.passEncoder.setPipeline(instance.texturePipeline);
-        //////////////////////////////////////////////////
-        // количество линий
-        //////////////////////////////////////////////////
-        let it = iterations & ~1;
-        let stepx = ( maxX - minX ) / it;
+
+        let itX = iterationsX & ~1;
+        let itY = iterationsY & ~1;
+
+        let stepX = ( maxX - minX ) / itX;
+        let stepY = ( maxY - minY ) / itY;
+
         let labelText = new GLabel( 100, 8,'Verdana', 0, 0, 128, 128 );
-        for ( let i = 6; i < positions.length; i = i + 24 ) {
+
+        let it = 0;
+
+        it = 0;
+        for ( let i = 12; i < 12 + itX * 3 * 2; i = i + 12 ) {
             labelText.setX(instance.calcRX( positions[i + 0] ));
             labelText.setY(instance.calcRY( positions[i + 1] ) + 2);
-            await labelText.draw( instance, 'rgba(255, 255, 255, 1.0)', 'rgba(0, 0, 0, 1.0)', ( minX + ( stepx * i ) / 6 ).toFixed(2).toString(), true );
+            await labelText.draw( instance, 'rgba(255, 255, 255, 1.0)', 'rgba(0, 0, 0, 1.0)', ( minX + ( stepX * it ) ).toFixed(2).toString(), true );
+            it++;
         }
+        it = itY;
+        for ( let i = 12 + itX * 3 * 2; i < 12 + ( itX + itY ) * 3 * 2; i = i + 6 ) {
+            labelText.setX(instance.calcRX( positions[i + 0] ) + 4);
+            labelText.setY(instance.calcRY( positions[i + 1] ) - 6);
+            if ( ( i <= ( 12 + itX * 3 * 2 + ( itY - 1 ) / 2 * 3 * 2 ) ) || ( i >= ( 12 + itX * 3 * 2 + ( itY + 1 ) / 2 * 3 * 2 ) ) )
+                if ( it != itY )
+                    await labelText.draw( instance, 'rgba(255, 255, 255, 1.0)', 'rgba(0, 0, 0, 1.0)', ( minY + ( stepY * it ) ).toFixed(2).toString(), true );
+            it--;                
+        }
+
         instance.passEncoder.setPipeline(instance.linePipeline);
     }
     async functionDraw( instance, beginX, endX, beginY, endY, iterations, func, color = [ 1.0, 1.0, 1.0, 1.0 ] ) {

@@ -370,22 +370,13 @@ export class Application
           return 2 * x - 10;
         }, [ 0.0, 1.0, 1.0, 1.0 ] );
 
-        await spline.draw( this, 0, 4 * Math.PI, iterations, [ 1.0, 1.0, 1.0, 1.0 ] );
+        await spline.draw( this, 0, 4 * Math.PI, iterations, -1.0, 1.0, 20, [ 1.0, 1.0, 1.0, 1.0 ] );
 
         ////////////////////////////////////////////////////////////////////////////
         // рисовать треугольниками ( нужно для отображения текстур )
         ////////////////////////////////////////////////////////////////////////////
         this.passEncoder.setPipeline(this.texturePipeline);
-/*
-        let text = new GLabel( 100, 10,'Verdana', 100, 70, 128, 128 );
-        await text.draw( this, 'rgba(0, 255, 0, 1.0)', 'rgba(255, 0, 0, 1.0)', 'another1  Hello World!!!', true );
-        text.setX(100);
-        text.setY(100);
-        await text.draw( this, 'black', 'gray',  'another2  Hello World!!!', true );
-        text.setX(100);
-        text.setY(130);
-        await text.draw( this, 'green', 'black', 'another3  Hello World!!!', true );
-*/
+
         this.passEncoder.end();
         this.queue.submit([this.commandEncoder.finish()]);
 
