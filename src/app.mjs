@@ -6,7 +6,6 @@ const renderer = new Application(canvas);
 function setCanvasSize(canvas)
 {
     const devicePixelRatio = window.devicePixelRatio || 1;
-
     const borderSize = (window.innerWidth * devicePixelRatio) / 6;
     canvas.width = ((window.innerWidth * devicePixelRatio) - borderSize) & ~3;
     canvas.height = ((window.innerHeight * devicePixelRatio) - borderSize) & ~3;

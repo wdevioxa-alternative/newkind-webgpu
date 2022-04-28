@@ -18,6 +18,16 @@ export class Application
     getCanvasHeight() {
         return this.canvas.height;
     }
+    calcRX( cx ) {
+        let cw = Math.fround(this.getCanvasWidth() / 2.0);
+        let it = 1.0 / cw;
+        return Math.round( ( cx + 1.0 ) / it );
+    }
+    calcRY( cy ) {
+        let ch = Math.fround(this.getCanvasHeight() / 2.0);
+        let it = 1.0 / ch;
+        return this.getCanvasHeight() - Math.round( ( cy + 1.0 ) / it );
+    }
     calcX( cx ) {
         let cw = Math.fround(this.getCanvasWidth() / 2.0);
         let it = 1.0 / cw;
@@ -29,9 +39,9 @@ export class Application
         let it = 1.0 / ch;
         return Math.fround(ccy) * it - 1.0;
     }
-    calcScale( maxsize, scalemaxsize, scaleitem )
+    calcScale( maxSize, scaleMaxSize, scaleItem )
     {
-        return ( ( maxsize * scaleitem ) / scalemaxsize );
+        return ( ( maxSize * scaleItem ) / scaleMaxSize );
     }    
     async start() 
     {
@@ -203,7 +213,7 @@ export class Application
             this.context.configure({
                 device: this.device,
                 format: presentationFormat,
-                size: [this.getCanvasWidth(), this.getCanvasHeight(), 1],
+                size: [ this.getCanvasWidth(), this.getCanvasHeight(), 1 ],
                 compositingAlphaMode: "opaque",
                 usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
             });
@@ -338,33 +348,35 @@ export class Application
         // рисовать линиями
         ////////////////////////////////////////////
         this.passEncoder.setPipeline(this.linePipeline);
-        
+/*        
         let box = new GBox( 1, 1, 126, 18 );
         await box.draw( this, [1.0,1.0,0.0,1.0] );
         box.setY(22);
         await box.draw( this, [1.0,0.0,1.0,1.0] );
+*/
+        let spline = new GSpline( 1, 1, this.getCanvasWidth() - 2, this.getCanvasHeight() - 2 );
 
-        let spline = new GSpline( 1, 43, this.getCanvasWidth() - 2, this.getCanvasHeight() - 45 );
+        const iterations = 58;
 
-        await spline.functionDraw( this, 0, 4 * Math.PI, -1, 1, 58, ( x ) => {
+        await spline.functionDraw( this, 0, 4 * Math.PI, -1, 1, iterations, ( x ) => {
           return Math.sin( x );
         }, [ 1.0, 0.0, 0.0, 1.0 ] );
 
-        await spline.functionDraw( this, 0, 4 * Math.PI, -1, 1, 58, ( x ) => {
+        await spline.functionDraw( this, 0, 4 * Math.PI, -1, 1, iterations, ( x ) => {
           return Math.cos( x );
         }, [ 0.0, 1.0, 0.0, 1.0 ] );
 
-        await spline.functionDraw( this, 10, 20, -50, 50, 58, ( x ) => {
+        await spline.functionDraw( this, 10, 20, -50, 50, iterations, ( x ) => {
           return 2 * x - 10;
         }, [ 0.0, 1.0, 1.0, 1.0 ] );
 
-        await spline.draw( this, [ 1.0, 1.0, 1.0, 1.0 ] );
+        await spline.draw( this, 0, 4 * Math.PI, iterations, [ 1.0, 1.0, 1.0, 1.0 ] );
 
         ////////////////////////////////////////////////////////////////////////////
         // рисовать треугольниками ( нужно для отображения текстур )
         ////////////////////////////////////////////////////////////////////////////
         this.passEncoder.setPipeline(this.texturePipeline);
-
+/*
         let text = new GLabel( 100, 10,'Verdana', 100, 70, 128, 128 );
         await text.draw( this, 'rgba(0, 255, 0, 1.0)', 'rgba(255, 0, 0, 1.0)', 'another1  Hello World!!!', true );
         text.setX(100);
@@ -373,7 +385,7 @@ export class Application
         text.setX(100);
         text.setY(130);
         await text.draw( this, 'green', 'black', 'another3  Hello World!!!', true );
-
+*/
         this.passEncoder.end();
         this.queue.submit([this.commandEncoder.finish()]);
 
