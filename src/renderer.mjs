@@ -358,13 +358,13 @@ export class Application
 
         const iterations = 58;
 
-        await spline.draw( this, 0, 4 * Math.PI, iterations, -1.0, 1.0, 20, [ 1.0, 1.0, 1.0, 1.0 ] );
-        
-        await spline.functionDraw( this, 0, 4 * Math.PI, -1, 1, iterations, ( x ) => {
+        await spline.draw( this, -2 * Math.PI, 2 * Math.PI, iterations, -1.0, 1.0, 20, [ 1.0, 1.0, 1.0, 1.0 ] );
+
+        await spline.functionDraw( this, -2 * Math.PI, 2 * Math.PI, -1, 1, iterations, ( x ) => {
           return Math.sin( x );
         }, [ 1.0, 0.0, 0.0, 1.0 ] );
 
-        await spline.functionDraw( this, 0, 4 * Math.PI, -1, 1, iterations, ( x ) => {
+        await spline.functionDraw( this, -2 * Math.PI, 2 * Math.PI, -1, 1, iterations, ( x ) => {
           return Math.cos( x );
         }, [ 0.0, 1.0, 0.0, 1.0 ] );
 

@@ -158,12 +158,6 @@ export class GSpline extends GObject
         //////////////////////////////////        
         let positions = this.getAxisPositions(instance, iterationsX, iterationsY);
         let colors = this.getAxisColors(instance, iterationsX + iterationsY, color);
-        let vertexCount = positions.length / 3;
-        instance.positionBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX,instance.device);
-        instance.colorBuffer = instance.createBuffer(colors, GPUBufferUsage.VERTEX,instance.device);
-        instance.passEncoder.setVertexBuffer(0, instance.positionBuffer);
-        instance.passEncoder.setVertexBuffer(1, instance.colorBuffer);
-        instance.passEncoder.draw( vertexCount, 1, 0, 0 );
         instance.passEncoder.setPipeline(instance.texturePipeline);
         let itX = iterationsX & ~1;
         let itY = iterationsY & ~1;
@@ -177,6 +171,7 @@ export class GSpline extends GObject
             labelText.setY(instance.calcRY( positions[i + 1] ) + 2);
             await labelText.draw( instance, 'rgba(255, 255, 255, 1.0)', 'rgba(0, 0, 0, 1.0)', ( minX + ( stepX * it ) ).toFixed(2).toString(), true );
             it++;
+            it++;
         }
         it = itY;
         for ( let i = 12 + itX * 3 * 2; i < 12 + ( itX + itY ) * 3 * 2; i = i + 6 ) {
@@ -188,6 +183,12 @@ export class GSpline extends GObject
             it--;                
         }
         instance.passEncoder.setPipeline(instance.linePipeline);
+        let vertexCount = positions.length / 3;
+        instance.positionBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX,instance.device);
+        instance.colorBuffer = instance.createBuffer(colors, GPUBufferUsage.VERTEX,instance.device);
+        instance.passEncoder.setVertexBuffer(0, instance.positionBuffer);
+        instance.passEncoder.setVertexBuffer(1, instance.colorBuffer);
+        instance.passEncoder.draw( vertexCount, 1, 0, 0 );
     }
     async functionDraw( instance, beginX, endX, beginY, endY, iterations, func, color = [ 1.0, 1.0, 1.0, 1.0 ] ) {
         let origWidth = this.getWidth();
