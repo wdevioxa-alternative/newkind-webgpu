@@ -88,32 +88,38 @@ export class GSpline extends GObject
     }
     getAxisColors( instance, iterations, color )
     {
-        let colors = new Float32Array( 4 * iterations );
+        let colors = new Float32Array( 4 * ( ( iterations + 2 ) * 2 ) );
         let index = 0;
-        for ( let i = 0; i < iterations; i++ )
+        for ( let i = 0; i < ( iterations + 2 ) * 2; i++ )
             for ( let j = 0; j < 4; j++ ) colors[index++] = color[j];
         return colors;
     }
     getAxisPositions( instance, iterations )
     {
-        let objectwidth = this.getWidth();
-        let objectheight = this.getHeight();
-        let offsetx = this.getX() + 1;
-        let offsety = this.getY() + 1;
-
         let iterationsX = 50;
         let iterationsY = 10;
+
+        let objectwidth = this.getWidth();
+        let objectheight = this.getHeight();
+
+        let offsetx = this.getX() + 1;
+        let offsety = this.getY() + 1;
 
         let stepX = objectwidth / iterationsX;
         let stepY = objectheight / iterationsY;
 
-        let axis = new Float32Array( 3 * iterations );
+        let axis = new Float32Array( 3 * ( ( iterations + 2 ) * 2 ) );
         
         let index = 0;
-        for ( let j = 0; j < 3; j++ ) axis[index++] = [ instance.calcX( offsetx-1 ), instance.calcY( offsety + objectheight / 2 ), 0.0 ][j];
-        for ( let j = 0; j < 3; j++ ) axis[index++] = [ instance.calcX( objectwidth+offsetx ), instance.calcY( offsety + objectheight / 2 ), 0.0 ][j];
-        for ( let j = 0; j < 3; j++ ) axis[index++] = [ instance.calcX( objectwidth / 2 + offsetx ), instance.calcY( offsety ), 0.0 ][j];
-        for ( let j = 0; j < 3; j++ ) axis[index++] = [ instance.calcX( objectwidth / 2 + offsetx ), instance.calcY( objectheight + offsety ), 0.0 ][j];
+        for ( let i = 0; i < 3 * 2 * 2; i++ )
+        {
+            axis[index++] = [ 
+                instance.calcX( offsetx-1 ), instance.calcY( offsety + objectheight / 2 ), 0.0,
+                instance.calcX( objectwidth+offsetx ), instance.calcY( offsety + objectheight / 2 ), 0.0,
+                instance.calcX( objectwidth / 2 + offsetx ), instance.calcY( offsety ), 0.0,
+                instance.calcX( objectwidth / 2 + offsetx ), instance.calcY( objectheight + offsety ), 0.0 
+            ][i];
+        }
 
 /*
         for ( let i = 0; i < iterationsX; i++ ) {
@@ -137,8 +143,8 @@ export class GSpline extends GObject
         //////////////////////////////////
         // draw axis
         //////////////////////////////////        
-        instance.positionBuffer = instance.createBuffer(this.getAxisPositions(instance, 4), GPUBufferUsage.VERTEX,instance.device);
-        instance.colorBuffer = instance.createBuffer(this.getAxisColors(instance, 4, color), GPUBufferUsage.VERTEX,instance.device);
+        instance.positionBuffer = instance.createBuffer(this.getAxisPositions(instance, 0), GPUBufferUsage.VERTEX,instance.device);
+        instance.colorBuffer = instance.createBuffer(this.getAxisColors(instance, 0, color), GPUBufferUsage.VERTEX,instance.device);
         instance.passEncoder.setVertexBuffer(0, instance.positionBuffer);
         instance.passEncoder.setVertexBuffer(1, instance.colorBuffer);
         instance.passEncoder.draw( 4, 1, 0, 0 );
