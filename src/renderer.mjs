@@ -303,16 +303,20 @@ export class Application
             magFilter: 'linear',
             minFilter: 'linear'
         });
+        this.spline = new GSpline( 1, 1, this.getCanvasWidth() - 2, this.getCanvasHeight() - 2 );
     }
     encodeFinish()
     {
         this.passEncoder.end();
         this.queue.submit([this.commandEncoder.finish()]);
-        for ( let i = 0; i < this.GPUbuffers.length; i++ ) this.GPUbuffers[i].destroy();
+
+        for ( let i = this.GPUbuffers.length - 1; i >= 0; i-- ) 
+            this.GPUbuffers[i].destroy();
     }
     encodeCreate() 
     {
         this.GPUbuffers = [];
+
         this.commandEncoder = this.device.createCommandEncoder();
         this.passEncoder = this.commandEncoder.beginRenderPass({
             colorAttachments: [{
@@ -353,29 +357,35 @@ export class Application
         // рисовать линиями
         ////////////////////////////////////////////
         this.passEncoder.setPipeline(this.linePipeline);
-/*        
-        let box = new GBox( 1, 1, 126, 18 );
+/*       
+        let box = new GBox( 2, 2, 126, 18 );
         await box.draw( this, [1.0,1.0,0.0,1.0] );
         box.setY(22);
         await box.draw( this, [1.0,0.0,1.0,1.0] );
 */
-        let spline = new GSpline( 1, 1, this.getCanvasWidth() - 2, this.getCanvasHeight() - 2 );
 
-        const iterations = 58;
+        const iterationsX = 58;
+        const iterationsY = 22;
 
-        await spline.draw( this, -2 * Math.PI, 2 * Math.PI, iterations, -1.0, 1.0, 20, [ 1.0, 1.0, 1.0, 1.0 ] );
+        await this.spline.draw( this, -2 * Math.PI, 2 * Math.PI, iterationsX, -1.0, 1.0, iterationsY, [ 1.0, 1.0, 1.0, 1.0 ] );
 
-        await spline.functionDraw( this, -2 * Math.PI, 2 * Math.PI, -1, 1, iterations, ( x ) => {
+        //alert( this.spline.getLabelsCount() );
+
+        await this.spline.functionDraw( this, -2 * Math.PI, 2 * Math.PI, -1, 1, iterationsX, ( x ) => {
           return Math.sin( x );
         }, [ 1.0, 0.0, 0.0, 1.0 ] );
 
-        await spline.functionDraw( this, -2 * Math.PI, 2 * Math.PI, -1, 1, iterations, ( x ) => {
+        //alert( this.spline.getLabelsCount() );
+
+        await this.spline.functionDraw( this, -2 * Math.PI, 2 * Math.PI, -1, 1, iterationsX, ( x ) => {
           return Math.cos( x );
         }, [ 0.0, 1.0, 0.0, 1.0 ] );
 
-        await spline.functionDraw( this, 10, 20, -50, 50, iterations, ( x ) => {
+        await this.spline.functionDraw( this, 10, 20, -50, 50, iterationsX, ( x ) => {
           return 2 * x - 10;
         }, [ 0.0, 1.0, 1.0, 1.0 ] );
+
+        //alert( this.spline.getLabelsCount() );
 
         ////////////////////////////////////////////////////////////////////////////
         // рисовать треугольниками ( нужно для отображения текстур )

@@ -50,11 +50,11 @@ export class GBox extends GObject
 
         instance.passEncoder.setPipeline(instance.linePipeline);
 
-        let positionBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX,instance.device);
+        var positionBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX,instance.device);
         instance.GPUbuffers.push( positionBuffer );
         let i1 = instance.GPUbuffers.length - 1;
 
-        let colorBuffer = instance.createBuffer(this.getColors(instance, color), GPUBufferUsage.VERTEX,instance.device);
+        var colorBuffer = instance.createBuffer(this.getColors(instance, color), GPUBufferUsage.VERTEX,instance.device);
         instance.GPUbuffers.push( colorBuffer );
         let i2 = instance.GPUbuffers.length - 1;
 
