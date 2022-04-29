@@ -47,10 +47,20 @@ export class GBox extends GObject
     }
     async draw( instance, color ) {
         this.rnd = Math.random() * 2.0 * Math.PI;
-        instance.positionBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX,instance.device);
-        instance.colorBuffer = instance.createBuffer(this.getColors(instance, color), GPUBufferUsage.VERTEX,instance.device);
-        instance.passEncoder.setVertexBuffer(0, instance.positionBuffer);
-        instance.passEncoder.setVertexBuffer(1, instance.colorBuffer);
+
+        instance.passEncoder.setPipeline(instance.linePipeline);
+
+        let positionBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX,instance.device);
+        instance.GPUbuffers.push( positionBuffer );
+        let i1 = instance.GPUbuffers.length - 1;
+
+        let colorBuffer = instance.createBuffer(this.getColors(instance, color), GPUBufferUsage.VERTEX,instance.device);
+        instance.GPUbuffers.push( colorBuffer );
+        let i2 = instance.GPUbuffers.length - 1;
+
+        instance.passEncoder.setVertexBuffer(0, instance.GPUbuffers[i1]);
+        instance.passEncoder.setVertexBuffer(1, instance.GPUbuffers[i2]);
+
         instance.passEncoder.draw( 8, 1, 0, 0 );
     }
 };

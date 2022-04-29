@@ -143,22 +143,36 @@ export class GSpline extends GObject
         }
         return vertex;
     }
+    free() {
+
+
+    }
     async draw( instance, minX, maxX, iterationsX, minY, maxY, iterationsY, color = [ 1.0, 1.0, 1.0, 1.0 ]) 
     {
         //////////////////////////////////
         // draw border
         //////////////////////////////////
-        instance.positionBuffer = instance.createBuffer(this.getBorderPositions(instance), GPUBufferUsage.VERTEX,instance.device);
-        instance.colorBuffer = instance.createBuffer(this.getBorderColors(instance), GPUBufferUsage.VERTEX,instance.device);
-        instance.passEncoder.setVertexBuffer(0, instance.positionBuffer);
-        instance.passEncoder.setVertexBuffer(1, instance.colorBuffer);
+
+        instance.passEncoder.setPipeline(instance.linePipeline);
+
+        let positionBuffer = instance.createBuffer(this.getBorderPositions(instance), GPUBufferUsage.VERTEX,instance.device);
+        instance.GPUbuffers.push( positionBuffer );
+        let i1 = instance.GPUbuffers.length - 1;
+
+        let colorBuffer = instance.createBuffer(this.getBorderColors(instance), GPUBufferUsage.VERTEX,instance.device);
+        instance.GPUbuffers.push( colorBuffer );
+        let i2 = instance.GPUbuffers.length - 1;
+
+        instance.passEncoder.setVertexBuffer(0, instance.GPUbuffers[i1]);
+        instance.passEncoder.setVertexBuffer(1, instance.GPUbuffers[i2]);
+
         instance.passEncoder.draw( 8, 1, 0, 0 );
+
         //////////////////////////////////
         // draw axis
         //////////////////////////////////        
         let positions = this.getAxisPositions(instance, iterationsX, iterationsY);
         let colors = this.getAxisColors(instance, iterationsX + iterationsY, color);
-        instance.passEncoder.setPipeline(instance.texturePipeline);
         let itX = iterationsX & ~1;
         let itY = iterationsY & ~1;
         let stepX = ( maxX - minX ) / itX;
@@ -182,12 +196,22 @@ export class GSpline extends GObject
                     await labelText.draw( instance, 'rgba(255, 255, 255, 1.0)', 'rgba(0, 0, 0, 1.0)', ( minY + ( stepY * it ) ).toFixed(2).toString(), true );
             it--;                
         }
+
         instance.passEncoder.setPipeline(instance.linePipeline);
+
         let vertexCount = positions.length / 3;
-        instance.positionBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX,instance.device);
-        instance.colorBuffer = instance.createBuffer(colors, GPUBufferUsage.VERTEX,instance.device);
-        instance.passEncoder.setVertexBuffer(0, instance.positionBuffer);
-        instance.passEncoder.setVertexBuffer(1, instance.colorBuffer);
+
+        positionBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX,instance.device);
+        instance.GPUbuffers.push( positionBuffer );
+        let i3 = instance.GPUbuffers.length - 1;
+
+        colorBuffer = instance.createBuffer(colors, GPUBufferUsage.VERTEX,instance.device);
+        instance.GPUbuffers.push( colorBuffer );
+        let i4 = instance.GPUbuffers.length - 1;
+
+        instance.passEncoder.setVertexBuffer(0, instance.GPUbuffers[i3]);
+        instance.passEncoder.setVertexBuffer(1, instance.GPUbuffers[i4]);
+
         instance.passEncoder.draw( vertexCount, 1, 0, 0 );
     }
     async functionDraw( instance, beginX, endX, beginY, endY, iterations, func, color = [ 1.0, 1.0, 1.0, 1.0 ] ) {
@@ -226,10 +250,20 @@ export class GSpline extends GObject
         let positions = this.getPositions(instance);
         let colors = this.getColors(instance);
         let vertexCount = positions.length / 3;
-        instance.positionBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX,instance.device);
-        instance.colorBuffer = instance.createBuffer(colors, GPUBufferUsage.VERTEX,instance.device);
-        instance.passEncoder.setVertexBuffer(0, instance.positionBuffer);
-        instance.passEncoder.setVertexBuffer(1, instance.colorBuffer);
+
+        instance.passEncoder.setPipeline(instance.linePipeline);
+
+        let positionBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX,instance.device);
+        instance.GPUbuffers.push( positionBuffer );
+        let i1 = instance.GPUbuffers.length - 1;
+        
+        let colorBuffer = instance.createBuffer(colors, GPUBufferUsage.VERTEX,instance.device);
+        instance.GPUbuffers.push( colorBuffer );
+        let i2 = instance.GPUbuffers.length - 1;
+
+        instance.passEncoder.setVertexBuffer(0, instance.GPUbuffers[i1]);
+        instance.passEncoder.setVertexBuffer(1, instance.GPUbuffers[i2]);
+
         instance.passEncoder.draw(vertexCount, 1, 0, 0 );
     }
 };

@@ -74,8 +74,9 @@ export class GLabel extends GObject
         let color = 'rgba(' + r + ',' + g + ',' + b + ',' + 1.0 + ')';
         ctx.fillStyle = color;
         ctx.fillText( textOut, fx, fy, fw );
+        instance.passEncoder.setPipeline(instance.texturePipeline);
         const imageBitmap = await createImageBitmap( cs );
-        const textureImage = instance.webGPUTextureFromImageBitmapOrCanvas( instance.device, imageBitmap, false );
+        const textureImage = instance.webGPUTextureFromImageBitmapOrCanvas( instance.device, imageBitmap, true );
         let bindGroup = instance.device.createBindGroup({
             layout: instance.texturePipeline.getBindGroupLayout(0),
             entries: [
@@ -89,11 +90,18 @@ export class GLabel extends GObject
               }
             ]
         });
-        instance.positionBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX, instance.device);
-        instance.fragUVBuffer = instance.createBuffer(this.getFragUV(instance), GPUBufferUsage.VERTEX, instance.device);
-        instance.passEncoder.setVertexBuffer(0, instance.positionBuffer);
-        instance.passEncoder.setVertexBuffer(1, instance.fragUVBuffer);
+        
+        let positionBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX, instance.device);
+        instance.GPUbuffers.push( positionBuffer );
+        let i1 = instance.GPUbuffers.length - 1;    
+
+        let fragUVBuffer = instance.createBuffer(this.getFragUV(instance), GPUBufferUsage.VERTEX, instance.device);
+        instance.GPUbuffers.push( fragUVBuffer );
+        let i2 = instance.GPUbuffers.length - 1;
+
         instance.passEncoder.setBindGroup(0, bindGroup);
+        instance.passEncoder.setVertexBuffer(0, instance.GPUbuffers[i1]);
+        instance.passEncoder.setVertexBuffer(1, instance.GPUbuffers[i2]);
         instance.passEncoder.draw(6, 1, 0, 0);
     }
     getColors( instance )

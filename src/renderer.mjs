@@ -174,21 +174,19 @@ export class Application
         }
         gpuDevice.queue.submit([commandEncoder.finish()]);
     }
-    createBuffer(arr, usage, device) 
+    createBuffer(source, usage, device) 
     {
-        let desc = {
-            size: (arr.byteLength + 3) & ~3,
-            usage,
-            mappedAtCreation: true
-        };
-        let buff = device.createBuffer(desc);
-        let wa =
-            arr instanceof Uint16Array
-                ? new Uint16Array(buff.getMappedRange())
-                : new Float32Array(buff.getMappedRange());
-        wa.set(arr);
-        buff.unmap();
-        return buff;
+        const gpuWriteBuffer = device.createBuffer({
+            mappedAtCreation: true,
+            size: source.byteLength,
+            usage: usage
+        });
+        const arrayBuffer = gpuWriteBuffer.getMappedRange();
+        (source instanceof Uint16Array)
+                ? (new Uint16Array(arrayBuffer)).set(source)
+                : (new Float32Array(arrayBuffer)).set(source)
+        gpuWriteBuffer.unmap();
+        return gpuWriteBuffer;
     }
     async initializeAPI() 
     {
@@ -306,8 +304,15 @@ export class Application
             minFilter: 'linear'
         });
     }
-    encodeCommands() 
+    encodeFinish()
     {
+        this.passEncoder.end();
+        this.queue.submit([this.commandEncoder.finish()]);
+        for ( let i = 0; i < this.GPUbuffers.length; i++ ) this.GPUbuffers[i].destroy();
+    }
+    encodeCreate() 
+    {
+        this.GPUbuffers = [];
         this.commandEncoder = this.device.createCommandEncoder();
         this.passEncoder = this.commandEncoder.beginRenderPass({
             colorAttachments: [{
@@ -316,11 +321,11 @@ export class Application
                 loadOp: 'clear',
                 storeOp: 'store'
             }]          
-        });    
+        }); 
         ////////////////////////////////////////
         // вписаться в размер браузера
-        ////////////////////////////////////////
-/*        
+        //////////////////////////////////////// 
+        /*   
         this.passEncoder.setViewport(
             0,
             0,
@@ -334,15 +339,15 @@ export class Application
             0,
             this.getCanvasWidth(),
             this.getCanvasHeight()
-        );  
-*/        
+        );
+        */        
     }
     render = async () => {
 
         this.colorTexture = this.context.getCurrentTexture();
         this.colorTextureView = this.colorTexture.createView();
 
-        this.encodeCommands();
+        this.encodeCreate();
 
         ////////////////////////////////////////////
         // рисовать линиями
@@ -375,14 +380,9 @@ export class Application
         ////////////////////////////////////////////////////////////////////////////
         // рисовать треугольниками ( нужно для отображения текстур )
         ////////////////////////////////////////////////////////////////////////////
-        this.passEncoder.setPipeline(this.texturePipeline);
+        //this.passEncoder.setPipeline(this.texturePipeline);
 
-        this.passEncoder.end();
-        this.queue.submit([this.commandEncoder.finish()]);
-
-        this.positionBuffer.destroy();
-        this.colorBuffer.destroy();
-        this.fragUVBuffer.destroy();
+        this.encodeFinish();
 
         requestAnimationFrame(this.render);
     }
