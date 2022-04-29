@@ -117,8 +117,8 @@ export class GSpline extends GObject
         //////////////////////////////////////////////////
         // количество линий
         //////////////////////////////////////////////////
-        let itX = iterationsX;
-        let itY = iterationsY;
+        let itX = (iterationsX + 1) & ~1;
+        let itY = (iterationsY + 1) & ~1;
         let objectwidth = this.getWidth();
         let objectheight = this.getHeight();
         let offsetX = this.getX() + 1;
@@ -177,8 +177,9 @@ export class GSpline extends GObject
         //////////////////////////////////
         // draw axis
         //////////////////////////////////        
-        let itX = iterationsX;
-        let itY = iterationsY;
+        let itX = (iterationsX + 1) & ~1;
+        let itY = (iterationsY + 1) & ~1;
+
         let stepX = ( maxX - minX ) / itX;
         let stepY = ( maxY - minY ) / itY;
 
@@ -190,7 +191,7 @@ export class GSpline extends GObject
             let it = 0;
             for ( let i = 12; i < 12 + itX * 3 * 2; i = i + 12 ) 
             {
-                var labelText = new GLabel( 100, 8,'Verdana', 0, 0, 128, 128 );
+                let labelText = new GLabel( 100, 8,'Verdana', 0, 0, 128, 128 );
                 labelText.setX(instance.calcRX( positions[i + 0] ));
                 labelText.setY(instance.calcRY( positions[i + 1] ) + 2);
                 this.appendLabel(labelText);
@@ -198,8 +199,9 @@ export class GSpline extends GObject
                 it++;
             }
             it = itY;
-            for ( let i = 12 + itX * 3 * 2; i < 12 + ( itX + itY ) * 3 * 2; i = i + 6 ) {
-                var labelText = new GLabel( 100, 8,'Verdana', 0, 0, 128, 128 );
+            for ( let i = 12 + itX * 3 * 2; i < 12 + ( itX + itY ) * 3 * 2; i = i + 6 ) 
+            {
+                let labelText = new GLabel( 100, 8,'Verdana', 0, 0, 128, 128 );
                 labelText.setX(instance.calcRX( positions[i + 0] ) + 4);
                 labelText.setY(instance.calcRY( positions[i + 1] ) - 6);
                 if ( ( i <= ( 12 + itX * 3 * 2 + ( itY - 1 ) / 2 * 3 * 2 ) ) || ( i >= ( 12 + itX * 3 * 2 + ( itY + 1 ) / 2 * 3 * 2 ) ) ) {
@@ -209,18 +211,19 @@ export class GSpline extends GObject
                 it--;                
             }
         }
-        
+
         let iteration = 0;
         for ( let i = 0; i < itX; i = i + 2 ) {
             this.getLabelAt(iteration).draw( instance, 'rgba(255, 255, 255, 1.0)', 'rgba(0, 0, 0, 1.0)', ( minX + ( stepX * i ) ).toFixed(2).toString(), true );
             iteration++;
         }
         for ( let i = itY - 1; i >= 1; i-- ) {        
-            if ( i != itY / 2 ) {
+            if ( i != itY / 2 ) {  
                 this.getLabelAt(iteration).draw( instance, 'rgba(255, 255, 255, 1.0)', 'rgba(0, 0, 0, 1.0)', ( minY + ( stepY * i ) ).toFixed(2).toString(), true );
                 iteration++;
             }
         }
+        
         instance.passEncoder.setPipeline(instance.linePipeline);
         let vertexCount = positions.length / 3;
         positionBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX,instance.device);
@@ -232,6 +235,7 @@ export class GSpline extends GObject
         instance.passEncoder.setVertexBuffer(0, instance.GPUbuffers[i3]);
         instance.passEncoder.setVertexBuffer(1, instance.GPUbuffers[i4]);
         instance.passEncoder.draw( vertexCount, 1, 0, 0 );
+
     }
     async functionDraw( instance, beginX, endX, beginY, endY, iterations, func, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
     {

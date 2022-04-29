@@ -46,7 +46,7 @@ export class GLabel extends GObject
     }    
     async draw( instance, textColor, backgroundColor, textOut, autoMeasure ) 
     {
-        if ( this.setTextureImage() == null ) 
+        if ( this.getTextureImage() == null ) 
         {
             const cs = document.createElement('canvas');
             var ctx = cs.getContext('2d');
@@ -116,7 +116,7 @@ export class GLabel extends GObject
               }
             ]
         });
-        
+       
         let positionBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX, instance.device);
         instance.GPUbuffers.push( positionBuffer );
         let i1 = instance.GPUbuffers.length - 1;        
