@@ -215,14 +215,12 @@ export class GSpline extends GObject
             this.getLabelAt(iteration).draw( instance, 'rgba(255, 255, 255, 1.0)', 'rgba(0, 0, 0, 1.0)', ( minX + ( stepX * i ) ).toFixed(2).toString(), true );
             iteration++;
         }
-        /*
         for ( let i = itY - 1; i >= 1; i-- ) {        
             if ( i != itY / 2 ) {
                 this.getLabelAt(iteration).draw( instance, 'rgba(255, 255, 255, 1.0)', 'rgba(0, 0, 0, 1.0)', ( minY + ( stepY * i ) ).toFixed(2).toString(), true );
                 iteration++;
             }
         }
-        */
         instance.passEncoder.setPipeline(instance.linePipeline);
         let vertexCount = positions.length / 3;
         positionBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX,instance.device);
