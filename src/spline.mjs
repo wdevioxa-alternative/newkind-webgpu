@@ -185,7 +185,6 @@ export class GSpline extends GObject
 
         let positions = this.getAxisPositions(instance, iterationsX, iterationsY);
         let colors = this.getAxisColors(instance, iterationsX + iterationsY, color);
-
         if ( this.getLabelsCount() == 0 )
         {
             let it = 0;
@@ -223,7 +222,7 @@ export class GSpline extends GObject
                 iteration++;
             }
         }
-        
+
         instance.passEncoder.setPipeline(instance.linePipeline);
         let vertexCount = positions.length / 3;
         positionBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX,instance.device);

@@ -365,17 +365,13 @@ export class Application
 */
 
         const iterationsX = 58;
-        const iterationsY = 22;
+        const iterationsY = 20;
 
         await this.spline.draw( this, -2 * Math.PI, 2 * Math.PI, iterationsX, -1.0, 1.0, iterationsY, [ 1.0, 1.0, 1.0, 1.0 ] );
-
-        //alert( this.spline.getLabelsCount() );
 
         await this.spline.functionDraw( this, -2 * Math.PI, 2 * Math.PI, -1, 1, iterationsX, ( x ) => {
           return Math.sin( x );
         }, [ 1.0, 0.0, 0.0, 1.0 ] );
-
-        //alert( this.spline.getLabelsCount() );
 
         await this.spline.functionDraw( this, -2 * Math.PI, 2 * Math.PI, -1, 1, iterationsX, ( x ) => {
           return Math.cos( x );
@@ -384,8 +380,6 @@ export class Application
         await this.spline.functionDraw( this, 10, 20, -50, 50, iterationsX, ( x ) => {
           return 2 * x - 10;
         }, [ 0.0, 1.0, 1.0, 1.0 ] );
-
-        //alert( this.spline.getLabelsCount() );
 
         ////////////////////////////////////////////////////////////////////////////
         // рисовать треугольниками ( нужно для отображения текстур )
