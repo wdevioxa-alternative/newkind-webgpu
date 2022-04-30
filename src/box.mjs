@@ -4,7 +4,37 @@ export class GBox extends GObject
 {
     constructor( x, y, width, height ) {
         super( x, y, width, height );
+        this.setColorsBuffer( null );
+        this.setPositionsBuffer( null );
     }  
+    destroy()
+    {
+        this.setColorsBuffer( null );
+        this.setPositionsBuffer( null );
+        this.setDuty( true );
+    }
+    setPositionsBuffer( positions )
+    {
+        if ( positions == null )
+            if ( this.positionsBuffer != null )
+                this.positionsBuffer.destroy();
+        this.positionsBuffer = positions;
+    }
+    getPositionsBuffer() 
+    {
+        return this.positionsBuffer;
+    }
+    setColorsBuffer( colors )
+    {
+        if ( colors == null )
+            if ( this.colorsBuffer != null )
+                this.colorsBuffer.destroy();
+        this.colorsBuffer = colors;
+    }
+    getColorsBuffer() 
+    {
+        return this.colorsBuffer;
+    }
     getColors( instance, color )
     {
         const now = Date.now();
@@ -16,51 +46,56 @@ export class GBox extends GObject
         let defaultColor2 = [ 0.0, ( g2 + 1.0 ) * 0.5, 0.0, 1.0 ];
         let defaultColor3 = [ 0.0, 0.0, ( g3 + 1.0 ) * 0.5, 1.0 ];
         let defaultColor4 = [ 0.0, ( g4 + 1.0 ) * 0.5, 0.0, 1.0 ];   
-        let colors = new Float32Array( 32 );
-        let index = 0;
-        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];
-        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];
-        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];
-        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];
-        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];            
-        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];
-        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];
-        for ( let i = 0; i < 4; i++ ) colors[index++] = color[i];
-        return colors;
+        let colorsBuffer = new Float32Array( 32 );
+        let objectIndex = 0;
+        for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
+        for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
+        for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
+        for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
+        for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];            
+        for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
+        for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
+        for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
+        return colorsBuffer;
     }
     getPositions( instance )
     {
-        let objectwidth = this.getWidth();
-        let objectheight = this.getHeight();
-        let offsetx = this.getX() + 1;
-        let offsety = this.getY() + 1;
+        let objectWidth = this.getWidth();
+        let objectHeight = this.getHeight();
+        let offsetX = this.getX() + 1;
+        let offsetY = this.getY() + 1;
         return new Float32Array([
-            instance.calcX(offsetx-1), instance.calcY(offsety), 0.0,
-            instance.calcX(objectwidth+offsetx), instance.calcY(offsety), 0.0,
-            instance.calcX(objectwidth+offsetx), instance.calcY(offsety), 0.0,
-            instance.calcX(objectwidth+offsetx), instance.calcY(objectheight+offsety), 0.0,
-            instance.calcX(objectwidth+offsetx), instance.calcY(objectheight+offsety), 0.0,
-            instance.calcX(offsetx), instance.calcY(objectheight+offsety), 0.0,
-            instance.calcX(offsetx), instance.calcY(objectheight+offsety), 0.0,
-            instance.calcX(offsetx), instance.calcY(offsety), 0.0
+            instance.calcX(offsetX-1), instance.calcY(offsetY), 0.0,
+            instance.calcX(objectWidth+offsetX), instance.calcY(offsetY), 0.0,
+            instance.calcX(objectWidth+offsetX), instance.calcY(offsetY), 0.0,
+            instance.calcX(objectWidth+offsetX), instance.calcY(objectHeight+offsetY), 0.0,
+            instance.calcX(objectWidth+offsetX), instance.calcY(objectHeight+offsetY), 0.0,
+            instance.calcX(offsetX), instance.calcY(objectHeight+offsetY), 0.0,
+            instance.calcX(offsetX), instance.calcY(objectHeight+offsetY), 0.0,
+            instance.calcX(offsetX), instance.calcY(offsetY), 0.0
         ]);
     }
-    async draw( instance, color ) {
-        this.rnd = Math.random() * 2.0 * Math.PI;
-
+    async draw( instance, color ) 
+    {
+        let objectRedraw = this.isDuty();
+        if ( objectRedraw == true ) {
+            this.setPositionsBuffer( null );
+            this.setColorsBuffer( null );
+            this.setDuty( false );
+        }
+        let positionsBuffer = this.getPositionsBuffer();
+        if ( positionsBuffer == null ) {
+            positionsBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX, instance.device);
+            this.setPositionsBuffer( positionsBuffer );
+        }
+        let colorsBuffer = this.getColorsBuffer();
+        if ( colorsBuffer == null ) {
+            colorsBuffer = instance.createBuffer(this.getColors(instance), GPUBufferUsage.VERTEX, instance.device);
+            this.setColorsBuffer( colorsBuffer );
+        }
         instance.passEncoder.setPipeline(instance.linePipeline);
-
-        var positionBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX,instance.device);
-        instance.GPUbuffers.push( positionBuffer );
-        let i1 = instance.GPUbuffers.length - 1;
-
-        var colorBuffer = instance.createBuffer(this.getColors(instance, color), GPUBufferUsage.VERTEX,instance.device);
-        instance.GPUbuffers.push( colorBuffer );
-        let i2 = instance.GPUbuffers.length - 1;
-
-        instance.passEncoder.setVertexBuffer(0, instance.GPUbuffers[i1]);
-        instance.passEncoder.setVertexBuffer(1, instance.GPUbuffers[i2]);
-
+        instance.passEncoder.setVertexBuffer(0, positionsBuffer);
+        instance.passEncoder.setVertexBuffer(1, colorsBuffer);
         instance.passEncoder.draw( 8, 1, 0, 0 );
     }
 };
