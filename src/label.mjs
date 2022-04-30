@@ -9,7 +9,28 @@ export class GLabel extends GObject
         this.setFontFamily( fontFamily );
         this.setImageBitmap( null );
         this.setTextureImage( null );
+        this.setPositionsBuffer( null );
+        this.setFragUVBuffer( null );
+        this.setTextureBindGroup( null );
+        this.setDuty( false );
     }  
+    destroy()
+    {
+        this.setImageBitmap( null );
+        this.setTextureImage( null );
+        this.setPositionsBuffer( null );
+        this.setFragUVBuffer( null );
+        this.setTextureBindGroup( null );
+        this.setDuty( true );
+    }
+    setTextureBindGroup( group )
+    {
+        this.textureBindGroup = group;
+    }
+    getTextureBindGroup() 
+    {
+        return this.textureBindGroup;
+    }    
     setTextureImage( texture )
     {
         this.textureImage = texture;
@@ -17,6 +38,28 @@ export class GLabel extends GObject
     getTextureImage() 
     {
         return this.textureImage;
+    }
+    setPositionsBuffer( positions )
+    {
+        if ( positions == null )
+            if ( this.positionsBuffer != null )
+                this.positionsBuffer.destroy();
+        this.positionsBuffer = positions;
+    }
+    getPositionsBuffer() 
+    {
+        return this.positionsBuffer;
+    }
+    getFragUVBuffer() 
+    {
+        return this.fragUVBuffer;
+    }
+    setFragUVBuffer( fragUV )
+    {
+        if ( fragUV == null )
+            if ( this.fragUVBuffer != null )
+                this.fragUVBuffer.destroy();
+        this.fragUVBuffer = fragUV;
     }
     setImageBitmap( bitmap ) 
     {
@@ -46,7 +89,17 @@ export class GLabel extends GObject
     }    
     async draw( instance, textColor, backgroundColor, textOut, autoMeasure ) 
     {
-        if ( this.getTextureImage() == null ) 
+        let objectRedraw = this.isDuty();
+        if ( objectRedraw == true ) {
+            this.setTextureImage( null );
+            this.setImageBitmap( null );
+            this.setTextureBindGroup( null );
+            this.setPositionsBuffer( null );
+            this.setFragUVBuffer( null );
+            this.setDuty( false );
+        }
+        let textureImage = this.getTextureImage();
+        if ( textureImage == null ) 
         {
             const cs = document.createElement('canvas');
             var ctx = cs.getContext('2d');
@@ -95,44 +148,43 @@ export class GLabel extends GObject
             let color = 'rgba(' + r + ',' + g + ',' + b + ',' + 1.0 + ')';
             ctx.fillStyle = color;
             ctx.fillText( textOut, fx, fy, fw );
-
             let imageBitmap = await createImageBitmap( cs );
             this.setImageBitmap( imageBitmap );
-
-            let textureImage = instance.webGPUTextureFromImageBitmapOrCanvas( instance.device, this.getImageBitmap(), true );
+            textureImage = instance.webGPUTextureFromImageBitmapOrCanvas( instance.device, this.getImageBitmap(), true );
             this.setTextureImage( textureImage );
         }
-
-        let bindGroup = instance.device.createBindGroup({
-            layout: instance.texturePipeline.getBindGroupLayout(0),
-            entries: [
-              {
-                binding: 0,
-                resource: instance.sampler,
-              },
-              {
-                binding: 1,
-                resource: this.getTextureImage().createView(),
-              }
-            ]
-        });
-       
-        let positionBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX, instance.device);
-        instance.GPUbuffers.push( positionBuffer );
-        let i1 = instance.GPUbuffers.length - 1;        
-
-        let fragUVBuffer = instance.createBuffer(this.getFragUV(instance), GPUBufferUsage.VERTEX, instance.device);
-        instance.GPUbuffers.push( fragUVBuffer );
-        let i2 = instance.GPUbuffers.length - 1;
-
+        let textureBindGroup = this.getTextureBindGroup();
+        if ( textureBindGroup == null ) {
+            textureBindGroup = instance.device.createBindGroup({
+                layout: instance.texturePipeline.getBindGroupLayout(0),
+                entries: [
+                {
+                    binding: 0,
+                    resource: instance.sampler,
+                },
+                {
+                    binding: 1,
+                    resource: textureImage.createView(),
+                }
+                ]
+            });
+            this.setTextureBindGroup( textureBindGroup );
+        };
+        let positionsBuffer = this.getPositionsBuffer();
+        if ( positionsBuffer == null ) {
+            positionsBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX, instance.device);
+            this.setPositionsBuffer( positionsBuffer );
+        }
+        let fragUVBuffer = this.getFragUVBuffer();
+        if ( fragUVBuffer == null ) {
+            fragUVBuffer = instance.createBuffer(this.getFragUV(instance), GPUBufferUsage.VERTEX, instance.device);
+            this.setFragUVBuffer( fragUVBuffer );
+        }
         instance.passEncoder.setPipeline(instance.texturePipeline);
-
-        instance.passEncoder.setBindGroup(0, bindGroup);
-        instance.passEncoder.setVertexBuffer(0, instance.GPUbuffers[i1]);
-        instance.passEncoder.setVertexBuffer(1, instance.GPUbuffers[i2]);
-
+        instance.passEncoder.setBindGroup(0, textureBindGroup);
+        instance.passEncoder.setVertexBuffer(0, positionsBuffer);
+        instance.passEncoder.setVertexBuffer(1, fragUVBuffer);
         instance.passEncoder.draw(6, 1, 0, 0);
-
         instance.passEncoder.setPipeline(instance.linePipeline);
     }
     getColors( instance )
@@ -166,7 +218,7 @@ export class GLabel extends GObject
         let offsetX = this.getX() + 1;
         let offsetY = this.getY() + 1;
         return new Float32Array([
-            instance.calcX(objectWidth+offsetX), instance.calcY(objectHeight+offsetY),
+            instance.calcX(objectWidth+offsetX-1), instance.calcY(objectHeight+offsetY),
             instance.calcX(objectWidth+offsetX), instance.calcY(offsetY),
             instance.calcX(offsetX), instance.calcY(offsetY),
             instance.calcX(objectWidth+offsetX), instance.calcY(objectHeight+offsetY), 

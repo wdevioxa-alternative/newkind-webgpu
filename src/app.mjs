@@ -13,7 +13,7 @@ function setCanvasSize(canvas)
 
 setCanvasSize(canvas);
 
-window.addEventListener('resize', async ()=>{
+window.addEventListener('resize', ()=>{
 	setCanvasSize(canvas);
     renderer.restart();
 }, true);

@@ -5,6 +5,18 @@ export class GObject
         this.setY(y);
         this.setWidth( width );
         this.setHeight( height );
+        this.setDuty( true );
+    }
+    setDuty( duty )
+    {
+        this.objectDuty = duty;
+    }
+    isDuty() {
+        return this.getDuty();
+    }
+    getDuty()
+    {
+        return this.objectDuty;
     }
     getX() {
         return this.x;
