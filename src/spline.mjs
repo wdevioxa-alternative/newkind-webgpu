@@ -213,13 +213,15 @@ export class GSpline extends GObject
             }
         }
         for ( let i = 0; i < itY; i++ ) { 
+            if ( i == itY / 2 - 1 ) continue;
             for ( let j = 0; j < 6; j++ ) {
                 axisPositions[objectIndex++] = [
-                    instance.calcX( objectWidth / 2 + offsetX - 2 ), instance.calcY( i * stepY + offsetY ), 0.0,
-                    instance.calcX( objectWidth / 2 + offsetX + 1), instance.calcY( i * stepY + offsetY ), 0.0 
+                    instance.calcX( objectWidth / 2 + offsetX - 2 ), instance.calcY( ( i + 1 ) * stepY + offsetY ), 0.0,
+                    instance.calcX( objectWidth / 2 + offsetX + 1), instance.calcY( ( i + 1 ) * stepY + offsetY ), 0.0 
                 ][j];
             }
         }
+
         return axisPositions;
     }
     getAxisColors( instance, iterations, color )
@@ -277,39 +279,37 @@ export class GSpline extends GObject
         let colors = this.getAxisColors(instance, iterationsX + iterationsY, color);
         if ( this.getLabelsCount() == 0 )
         {
-            let it = 0;
             for ( let i = 12; i < 12 + itX * 3 * 2; i = i + 12 ) 
             {
-                var label = new GLabel( 100, 8,'Verdana', 0, 0, 128, 128 );
+                let label = new GLabel( 100, 8,'Verdana', 0, 0, 128, 128 );
                 label.setX(instance.calcRX( positions[i + 0] ));
                 label.setY(instance.calcRY( positions[i + 1] ) + 2);
                 label.setDuty( true );
-                this.appendLabel(label);
-                it++;
-                it++;
+                this.appendLabel( label );
             }
-            it = itY;
             for ( let i = 12 + itX * 3 * 2; i < 12 + ( itX + itY ) * 3 * 2; i = i + 6 ) 
             {
-                var label = new GLabel( 100, 8,'Verdana', 0, 0, 128, 128 );
+                let label = new GLabel( 100, 8,'Verdana', 0, 0, 128, 128 );
                 label.setX(instance.calcRX( positions[i + 0] ) + 4);
                 label.setY(instance.calcRY( positions[i + 1] ) - 6);
                 label.setDuty( true );
-                if ( ( i <= ( 12 + itX * 3 * 2 + ( itY - 1 ) / 2 * 3 * 2 ) ) || ( i >= ( 12 + itX * 3 * 2 + ( itY + 1 ) / 2 * 3 * 2 ) ) ) {
-                    if ( it != itY ) 
-                        this.appendLabel(label);
-                }
-                it--;                
+                this.appendLabel( label );
             }
         }
         let iteration = 0;
         for ( let i = 0; i < itX; i = i + 2 ) {
-            this.getLabelAt(iteration).draw( instance, 'rgba(255, 255, 255, 1.0)', 'rgba(0, 0, 0, 1.0)', ( minX + ( stepX * i ) ).toFixed(2).toString(), true );
+            let stringValue = '';
+            let numberValue = ( minX + ( stepX * i ) );
+            ( numberValue > 0 ) ? stringValue = '+' : stringValue = '';
+            this.getLabelAt( iteration ).draw( instance, 'rgba(255, 255, 255, 1.0)', 'rgba(0, 0, 0, 1.0)', stringValue + numberValue.toFixed(2).toString(), true );
             iteration++;
         }
-        for ( let i = itY - 1; i >= 1; i-- ) {        
-            if ( i != itY / 2 ) {  
-                this.getLabelAt(iteration).draw( instance, 'rgba(255, 255, 255, 1.0)', 'rgba(0, 0, 0, 1.0)', ( minY + ( stepY * i ) ).toFixed(2).toString(), true );
+        for ( let i = 0; i < itY - 1; i++ ) {         
+            let stringValue = '';
+            let numberValue = ( maxY - ( stepY * (i + 1) ) );
+            ( numberValue > 0 ) ? stringValue = '+' : stringValue = '';
+            if ( i != itY / 2 - 1 ) {
+                this.getLabelAt( iteration ).draw( instance, 'rgba(255, 255, 255, 1.0)', 'rgba(0, 0, 0, 1.0)', stringValue + numberValue.toFixed(2).toString(), true );
                 iteration++;
             }
         }
