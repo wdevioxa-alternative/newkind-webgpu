@@ -6,6 +6,7 @@ export class GBox extends GObject
         super( x, y, width, height );
         this.setColorsBuffer( null );
         this.setPositionsBuffer( null );
+        this.setDuty( false );
     }  
     destroy()
     {
@@ -58,7 +59,7 @@ export class GBox extends GObject
         for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
         for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
         for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
-        
+
         return colorsBuffer;
     }
     getPositions( instance )

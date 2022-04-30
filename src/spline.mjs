@@ -6,6 +6,9 @@ export class GSpline extends GObject
     constructor( x, y, width, height ) {
         super( x, y, width, height );
         this.clearItems();
+        this.setColorsBuffer( null );
+        this.setPositionsBuffer( null );
+        this.setDuty( false );
         this.labels = [];
     }  
     destroy()
@@ -13,6 +16,79 @@ export class GSpline extends GObject
         for ( let i = this.labels.length - 1; i >= 0; i-- ) 
             this.labels[i].destroy();
         this.labels = [];
+        this.setBorderPositionsBuffer( null );
+        this.setBorderColorsBuffer( null );
+        this.setPositionsBuffer( null );
+        this.setColorsBuffer( null );
+        this.setAxisPositionsBuffer( null );
+        this.setAxisColorsBuffer( null );
+        this.setDuty( true );
+    }
+    setBorderPositionsBuffer( positions )
+    {
+        if ( positions == null )
+            if ( this.borderPositionsBuffer != null )
+                this.borderPositionsBuffer.destroy();
+        this.borderPositionsBuffer = positions;
+    }
+    getBorderPositionsBuffer() 
+    {
+        return this.borderPositionsBuffer;
+    }
+    setBorderColorsBuffer( colors )
+    {
+        if ( colors == null )
+            if ( this.borderColorsBuffer != null )
+                this.borderColorsBuffer.destroy();
+        this.borderColorsBuffer = colors;
+    }
+    getBorderColorsBuffer() 
+    {
+        return this.borderColorsBuffer;
+    }
+    setAxisPositionsBuffer( positions )
+    {
+        if ( positions == null )
+            if ( this.axisPositionsBuffer != null )
+                this.axisPositionsBuffer.destroy();
+        this.axisPositionsBuffer = positions;
+    }
+    getAxisPositionsBuffer() 
+    {
+        return this.axisPositionsBuffer;
+    }
+    setAxisColorsBuffer( colors )
+    {
+        if ( colors == null )
+            if ( this.axisColorsBuffer != null )
+                this.axisColorsBuffer.destroy();
+        this.axisColorsBuffer = colors;
+    }
+    getAxisColorsBuffer() 
+    {
+        return this.axisColorsBuffer;
+    }
+    setPositionsBuffer( positions )
+    {
+        if ( positions == null )
+            if ( this.positionsBuffer != null )
+                this.positionsBuffer.destroy();
+        this.positionsBuffer = positions;
+    }
+    getPositionsBuffer() 
+    {
+        return this.positionsBuffer;
+    }
+    setColorsBuffer( colors )
+    {
+        if ( colors == null )
+            if ( this.colorsBuffer != null )
+                this.colorsBuffer.destroy();
+        this.colorsBuffer = colors;
+    }
+    getColorsBuffer() 
+    {
+        return this.colorsBuffer;
     }
     appendItem( instance, position, color )
     {
@@ -39,8 +115,8 @@ export class GSpline extends GObject
     getLabelsCount() {
         return this.labels.length;
     }
-    getLabelAt( index ) {
-        return this.labels[ index ];
+    getLabelAt( objectIndex ) {
+        return this.labels[ objectIndex ];
     }
     appendLabel( label ) {
         this.labels.push( label );
@@ -165,31 +241,38 @@ export class GSpline extends GObject
         //////////////////////////////////
         // draw border
         //////////////////////////////////
-
+        let objectRedraw = this.isDuty();
+        if ( objectRedraw == true ) {
+            this.setPositionsBuffer( null );
+            this.setColorsBuffer( null );
+            this.setBorderPositionsBuffer( null );
+            this.setBorderColorsBuffer( null );
+            this.setAxisPositionsBuffer( null );
+            this.setAxisColorsBuffer( null );
+            this.setDuty( false );
+        }
+        let borderPositionsBuffer = this.getBorderPositionsBuffer();
+        if ( borderPositionsBuffer == null ) {
+            borderPositionsBuffer = instance.createBuffer(this.getBorderPositions(instance), GPUBufferUsage.VERTEX, instance.device);
+            this.setBorderPositionsBuffer( borderPositionsBuffer );
+        }
+        this.setBorderColorsBuffer( null );
+        let borderColorsBuffer = this.getBorderColorsBuffer();
+        if ( borderColorsBuffer == null ) {
+            borderColorsBuffer = instance.createBuffer(this.getBorderColors(instance), GPUBufferUsage.VERTEX, instance.device);
+            this.setBorderColorsBuffer( borderColorsBuffer );
+        }
         instance.passEncoder.setPipeline(instance.linePipeline);
-
-        var positionBuffer = instance.createBuffer(this.getBorderPositions(instance), GPUBufferUsage.VERTEX,instance.device);
-        instance.GPUbuffers.push( positionBuffer );
-        let i1 = instance.GPUbuffers.length - 1;
-
-        var colorBuffer = instance.createBuffer(this.getBorderColors(instance), GPUBufferUsage.VERTEX,instance.device);
-        instance.GPUbuffers.push( colorBuffer );
-        let i2 = instance.GPUbuffers.length - 1;
-
-        instance.passEncoder.setVertexBuffer(0, instance.GPUbuffers[i1]);
-        instance.passEncoder.setVertexBuffer(1, instance.GPUbuffers[i2]);
-
+        instance.passEncoder.setVertexBuffer(0, borderPositionsBuffer);
+        instance.passEncoder.setVertexBuffer(1, borderColorsBuffer);
         instance.passEncoder.draw( 8, 1, 0, 0 );
-
         //////////////////////////////////
         // draw axis
         //////////////////////////////////        
         let itX = (iterationsX + 1) & ~1;
         let itY = (iterationsY + 1) & ~1;
-
         let stepX = ( maxX - minX ) / itX;
         let stepY = ( maxY - minY ) / itY;
-
         let positions = this.getAxisPositions(instance, iterationsX, iterationsY);
         let colors = this.getAxisColors(instance, iterationsX + iterationsY, color);
         if ( this.getLabelsCount() == 0 )
@@ -230,16 +313,20 @@ export class GSpline extends GObject
                 iteration++;
             }
         }
-        instance.passEncoder.setPipeline(instance.linePipeline);
+        let axisPositionsBuffer = this.getAxisPositionsBuffer();
+        if ( axisPositionsBuffer == null ) {
+            axisPositionsBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX, instance.device);
+            this.setAxisPositionsBuffer( axisPositionsBuffer );
+        }
+        let axisColorsBuffer = this.getAxisColorsBuffer();
+        if ( axisColorsBuffer == null ) {
+            axisColorsBuffer = instance.createBuffer(colors, GPUBufferUsage.VERTEX, instance.device);
+            this.setAxisColorsBuffer( axisColorsBuffer );
+        }
         let vertexCount = positions.length / 3;
-        positionBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX,instance.device);
-        instance.GPUbuffers.push( positionBuffer );
-        let i3 = instance.GPUbuffers.length - 1;
-        colorBuffer = instance.createBuffer(colors, GPUBufferUsage.VERTEX,instance.device);
-        instance.GPUbuffers.push( colorBuffer );
-        let i4 = instance.GPUbuffers.length - 1;
-        instance.passEncoder.setVertexBuffer(0, instance.GPUbuffers[i3]);
-        instance.passEncoder.setVertexBuffer(1, instance.GPUbuffers[i4]);
+        instance.passEncoder.setPipeline(instance.linePipeline);
+        instance.passEncoder.setVertexBuffer(0, axisPositionsBuffer);
+        instance.passEncoder.setVertexBuffer(1, axisColorsBuffer);
         instance.passEncoder.draw( vertexCount, 1, 0, 0 );
     }
     async functionDraw( instance, beginX, endX, beginY, endY, iterations, func, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
@@ -280,21 +367,22 @@ export class GSpline extends GObject
         let positions = this.getPositions(instance);
         let colors = this.getColors(instance);
 
+        //let positionsBuffer = this.getPositionsBuffer();
+
+        let newPositionsBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX, instance.device);
+        instance.GPUbuffers.push(newPositionsBuffer);
+        //this.setPositionsBuffer( newPositionsBuffer );
+        //let colorsBuffer = this.getColorsBuffer();
+
+        let newColorsBuffer = instance.createBuffer(colors, GPUBufferUsage.VERTEX, instance.device);
+        instance.GPUbuffers.push(newColorsBuffer);
+        //this.setColorsBuffer( newColorsBuffer );
+
         let vertexCount = positions.length / 3;
 
         instance.passEncoder.setPipeline(instance.linePipeline);
-
-        var positionBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX,instance.device);
-        instance.GPUbuffers.push( positionBuffer );
-        let i1 = instance.GPUbuffers.length - 1;
-
-        var colorBuffer = instance.createBuffer(colors, GPUBufferUsage.VERTEX,instance.device);
-        instance.GPUbuffers.push( colorBuffer );
-        let i2 = instance.GPUbuffers.length - 1;
-
-        instance.passEncoder.setVertexBuffer(0, instance.GPUbuffers[i1]);
-        instance.passEncoder.setVertexBuffer(1, instance.GPUbuffers[i2]);
-
-        instance.passEncoder.draw(vertexCount, 1, 0, 0 );
+        instance.passEncoder.setVertexBuffer(0, newPositionsBuffer);
+        instance.passEncoder.setVertexBuffer(1, newColorsBuffer);
+        instance.passEncoder.draw( vertexCount, 1, 0, 0 );
     }
 };
