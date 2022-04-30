@@ -329,7 +329,6 @@ export class Application
         ////////////////////////////////////////
         // вписаться в размер браузера
         //////////////////////////////////////// 
-        /*   
         this.passEncoder.setViewport(
             0,
             0,
@@ -343,8 +342,7 @@ export class Application
             0,
             this.getCanvasWidth(),
             this.getCanvasHeight()
-        );
-        */        
+        );     
     }
     render = async () => {
 
