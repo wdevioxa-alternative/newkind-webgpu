@@ -1,6 +1,8 @@
 import path from "path";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+
 const __dirname = path.dirname(process.argv[1]);
+
 export default {
   entry: [ 'babel-polyfill', './src/app.mjs' ],
   plugins: [
@@ -12,8 +14,8 @@ export default {
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: "[name].bundle.mjs",
-    chunkFilename: "[id].bundle.mjs"
+    filename: "[name].bundle.js",
+    chunkFilename: "[id].bundle.js"
   },
   module: {
     rules: [

@@ -34,12 +34,12 @@ export class GObject
         return this.width;
     }
     setWidth(width) {
-        this.width = width; // | 1;
+        this.width = width;
     }
     getHeight() {
         return this.height;
     }
     setHeight(height) {
-        this.height = height; // | 1;
+        this.height = height;
     }
 };
