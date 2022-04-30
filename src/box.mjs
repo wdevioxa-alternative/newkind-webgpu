@@ -38,6 +38,7 @@ export class GBox extends GObject
     getColors( instance, color )
     {
         const now = Date.now();
+
         let g1 = Math.cos( now / 1000 );
         let g2 = Math.cos( now / 1000 + Math.PI / 2.0 );
         let g3 = Math.cos( now / 1000 + Math.PI );
@@ -45,9 +46,10 @@ export class GBox extends GObject
         let defaultColor1 = [ ( g1 + 1.0 ) * 0.5, 0.0, 0.0, 1.0 ];
         let defaultColor2 = [ 0.0, ( g2 + 1.0 ) * 0.5, 0.0, 1.0 ];
         let defaultColor3 = [ 0.0, 0.0, ( g3 + 1.0 ) * 0.5, 1.0 ];
-        let defaultColor4 = [ 0.0, ( g4 + 1.0 ) * 0.5, 0.0, 1.0 ];   
+        let defaultColor4 = [ 0.0, ( g4 + 1.0 ) * 0.5, 0.0, 1.0 ];
         let colorsBuffer = new Float32Array( 32 );
         let objectIndex = 0;
+
         for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
         for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
         for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
@@ -56,6 +58,7 @@ export class GBox extends GObject
         for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
         for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
         for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
+        
         return colorsBuffer;
     }
     getPositions( instance )
