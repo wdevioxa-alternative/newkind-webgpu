@@ -1,10 +1,11 @@
 import { GBox } from './box.mjs';
 import { GSpline } from './spline.mjs';
 import { GLabel } from './label.mjs';
+
 import vertexShaderWgslCode from './shaders/shader.vert.wgsl'
 import fragmentShaderWgslCode from './shaders/shader.frag.wgsl'
 
-export class Application
+export class GApplication
 {
     constructor(surface) {
         this.canvas = surface;
@@ -89,14 +90,14 @@ export class Application
               vec2<f32>(-1.0, 1.0), vec2<f32>(1.0, 1.0),
               vec2<f32>(-1.0, -1.0), vec2<f32>(1.0, -1.0));
       
-            struct VertexOutput {
-              @builtin(position) position : vec4<f32>;
-              @location(0) texCoord : vec2<f32>;
+            struct vertexOutput {
+              @builtin(position) position : vec4<f32>,
+              @location(0) texCoord : vec2<f32>
             };
       
             @stage(vertex)
-            fn vertexMain(@builtin(vertex_index) vertexIndex : u32) -> VertexOutput {
-              var output : VertexOutput;
+            fn vertexMain(@builtin(vertex_index) vertexIndex : u32) -> vertexOutput {
+              var output : vertexOutput;
               output.texCoord = pos[vertexIndex] * vec2<f32>(0.5, -0.5) + vec2<f32>(0.5);
               output.position = vec4<f32>(pos[vertexIndex], 0.0, 1.0);
               return output;
@@ -303,7 +304,7 @@ export class Application
             magFilter: 'linear',
             minFilter: 'linear'
         });
-        this.spline = new GSpline( 1, 1, this.getCanvasWidth() - 2, this.getCanvasHeight() - 2 );
+        this.spline = new GSpline( 0, 0, this.getCanvasWidth(), this.getCanvasHeight() );
     }
     encodeFinish()
     {
@@ -316,7 +317,6 @@ export class Application
     encodeCreate() 
     {
         this.GPUbuffers = [];
-
         this.commandEncoder = this.device.createCommandEncoder();
         this.passEncoder = this.commandEncoder.beginRenderPass({
             colorAttachments: [{

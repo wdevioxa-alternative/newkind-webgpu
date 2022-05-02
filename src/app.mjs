@@ -1,17 +1,12 @@
-import { Application } from './renderer.mjs';
-
-const canvas = document.getElementById('gfx');
-const renderer = new Application(canvas);
+import { GApplication } from './renderer.mjs';
 
 function setCanvasSize(canvas)
 {
-    const devicePixelRatio = window.devicePixelRatio || 1;
-    const borderSize = (window.innerWidth * devicePixelRatio) / 6;
-    canvas.width = ((window.innerWidth * devicePixelRatio) - borderSize) & ~3;
-    canvas.height = ((window.innerHeight * devicePixelRatio) - borderSize) & ~3;
+	const devicePixelRatio = window.devicePixelRatio || 1;
+	const size = window.innerWidth*devicePixelRatio & ~1;
+	canvas.width = (window.innerWidth*devicePixelRatio - size / 6) & ~1;
+	canvas.height = (window.innerHeight*devicePixelRatio - size / 6) & ~1;
 }
-
-setCanvasSize(canvas);
 
 /*
 window.addEventListener('resize', ()=>{
@@ -20,5 +15,11 @@ window.addEventListener('resize', ()=>{
 }, true);
 */
 
+const canvas = document.getElementById('gfx');
+
+setCanvasSize(canvas);
+const renderer = new GApplication(canvas);
+
 renderer.start();
+
 

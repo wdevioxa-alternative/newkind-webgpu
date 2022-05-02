@@ -87,7 +87,7 @@ export class GLabel extends GObject
     getFontFamily() {
         return this.fontFamily;
     }    
-    async draw( instance, textColor, backgroundColor, textOut, autoMeasure ) 
+    async draw( instance, textColor, backgroundColor, textOut, autoMeasure, calculate = false ) 
     {
         let objectRedraw = this.isDuty();
         if ( objectRedraw == true ) {
@@ -133,6 +133,7 @@ export class GLabel extends GObject
                 fx = ( this.getWidth() - fw ) / 2;
                 fy = this.getHeight() - ( this.getHeight() - fh ) / 2;
             }
+
             cs.height = this.getHeight();
             cs.width = this.getWidth();
             ctx.font = this.getFontWeight().toString() + 
@@ -141,17 +142,25 @@ export class GLabel extends GObject
 
             ctx.fillStyle = backgroundColor;
             ctx.fillRect( 0, 0, this.getWidth(), this.getHeight() );
+
             ctx.fillStyle = textColor;
+/*
             let r = parseInt(ctx.fillStyle.substring(1,3), 16);
             let g = parseInt(ctx.fillStyle.substring(3,5), 16);
             let b = parseInt(ctx.fillStyle.substring(5,7), 16);
-            let color = 'rgba(' + r + ',' + g + ',' + b + ',' + 1.0 + ')';
+            let color = 'rgba(' + r + ',' + g + ',' + b + ',' + 0.4 + ')';
             ctx.fillStyle = color;
+*/
             ctx.fillText( textOut, fx, fy, fw );
             let imageBitmap = await createImageBitmap( cs );
             this.setImageBitmap( imageBitmap );
             textureImage = instance.webGPUTextureFromImageBitmapOrCanvas( instance.device, this.getImageBitmap(), true );
             this.setTextureImage( textureImage );
+        }
+        if ( calculate == true ) {
+            let imageBitmap = this.getImageBitmap();
+            if ( imageBitmap == null ) return null;
+            return { x: this.getX(), y: this.getY(), width: imageBitmap.width, height: imageBitmap.height };
         }
         let textureBindGroup = this.getTextureBindGroup();
         if ( textureBindGroup == null ) {
@@ -164,7 +173,10 @@ export class GLabel extends GObject
                 },
                 {
                     binding: 1,
-                    resource: textureImage.createView(),
+                    resource: textureImage.createView({
+			baseMipLevel: 0,
+			mipLevelCount: 5
+		    }),
                 }
                 ]
             });
