@@ -89,12 +89,12 @@ export class GBox extends GObject
         }
         let positionsBuffer = this.getPositionsBuffer();
         if ( positionsBuffer == null ) {
-            positionsBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX, instance.device);
+            positionsBuffer = await instance.webGPUCreateBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX, instance.device);
             this.setPositionsBuffer( positionsBuffer );
         }
         let colorsBuffer = this.getColorsBuffer();
         if ( colorsBuffer == null ) {
-            colorsBuffer = instance.createBuffer(this.getColors(instance), GPUBufferUsage.VERTEX, instance.device);
+            colorsBuffer = await instance.webGPUCreateBuffer(this.getColors(instance), GPUBufferUsage.VERTEX, instance.device);
             this.setColorsBuffer( colorsBuffer );
         }
         instance.passEncoder.setPipeline(instance.linePipeline);

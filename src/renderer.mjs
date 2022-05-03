@@ -46,7 +46,7 @@ export class GApplication
     }    
     async start() 
     {
-        if (await this.initializeAPI()) 
+        if (await this.initializeWebGPU()) 
         {
             this.resizeBackings();
             await this.initializeResources();
@@ -157,11 +157,11 @@ export class GApplication
           const bindGroup = gpuDevice.createBindGroup({
             layout: pipeline.getBindGroupLayout(0),
             entries: [{
-              binding: 0,
-              resource: sampler,
+               binding: 0,
+               resource: sampler,
             }, {
-              binding: 1,
-              resource: srcView,
+               binding: 1,
+               resource: srcView,
             }],
           });
       
@@ -175,28 +175,29 @@ export class GApplication
         }
         gpuDevice.queue.submit([commandEncoder.finish()]);
     }
-    createBuffer(source, usage, device) 
+    async webGPUCreateBuffer(source, usage, device) 
     {
         const gpuWriteBuffer = device.createBuffer({
-            mappedAtCreation: true,
             size: source.byteLength,
-            usage: usage
+            usage: usage,
+            mappedAtCreation: true
         });
-        const arrayBuffer = gpuWriteBuffer.getMappedRange();
-        (source instanceof Uint16Array)
-                ? (new Uint16Array(arrayBuffer)).set(source)
-                : (new Float32Array(arrayBuffer)).set(source)
+        const boolType = (source instanceof Uint16Array);
+        if ( boolType ) new Uint16Array(gpuWriteBuffer.getMappedRange()).set(source);
+        else new Float32Array(gpuWriteBuffer.getMappedRange()).set(source);
         gpuWriteBuffer.unmap();
         return gpuWriteBuffer;
     }
-    async initializeAPI() 
+    async initializeWebGPU() 
     {
         try {
-            if (!navigator.gpu) 
-                throw('Your browser does`t support WebGPU or it is not enabled.');
+            if (!navigator.gpu) throw('Your browser does`t support WebGPU or it is not enabled.');
             this.adapter = await navigator.gpu.requestAdapter();
+            if (!this.adapter) throw('GPU adapter is null.');
             this.device = await this.adapter.requestDevice();
+            if (!this.device) throw('GPU adapter device is null.');
             this.queue = this.device.queue;
+            if (!this.queue) throw('Queue of GPU adapter device is null.');
         } catch (e) {
             console.error(e);
             return false;
@@ -208,13 +209,15 @@ export class GApplication
         const devicePixelRatio = window.devicePixelRatio || 1;
         if (!this.context) {
             this.context = this.canvas.getContext('webgpu');
+            const devicePixelRatio = window.devicePixelRatio || 1;
+            const presentationSize = [
+                this.getCanvasWidth() * devicePixelRatio,
+                this.getCanvasHeight() * devicePixelRatio
+            ];
             const presentationFormat = this.context.getPreferredFormat(this.adapter);
-            this.context.configure({
-                device: this.device,
+            this.context.configure({device: this.device,
                 format: presentationFormat,
-                size: [ this.getCanvasWidth(), this.getCanvasHeight(), 1 ],
-                compositingAlphaMode: "opaque",
-                usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
+                size: presentationSize
             });
         }       
     }
@@ -257,7 +260,8 @@ export class GApplication
                 }]
             },
             primitive: {
-                topology: 'triangle-list'
+                topology: 'triangle-list',
+                cullMode: 'back'
             }          
         });
         this.linePipeline = this.device.createRenderPipeline({
@@ -310,7 +314,6 @@ export class GApplication
     {
         this.passEncoder.end();
         this.queue.submit([this.commandEncoder.finish()]);
-
         for ( let i = this.GPUbuffers.length - 1; i >= 0; i-- ) 
             this.GPUbuffers[i].destroy();
     }

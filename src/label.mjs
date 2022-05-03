@@ -184,12 +184,12 @@ export class GLabel extends GObject
         };
         let positionsBuffer = this.getPositionsBuffer();
         if ( positionsBuffer == null ) {
-            positionsBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX, instance.device);
+            positionsBuffer = await instance.webGPUCreateBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX, instance.device);
             this.setPositionsBuffer( positionsBuffer );
         }
         let fragUVBuffer = this.getFragUVBuffer();
         if ( fragUVBuffer == null ) {
-            fragUVBuffer = instance.createBuffer(this.getFragUV(instance), GPUBufferUsage.VERTEX, instance.device);
+            fragUVBuffer = await instance.webGPUCreateBuffer(this.getFragUV(instance), GPUBufferUsage.VERTEX, instance.device);
             this.setFragUVBuffer( fragUVBuffer );
         }
         instance.passEncoder.setPipeline(instance.texturePipeline);

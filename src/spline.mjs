@@ -259,13 +259,13 @@ export class GSpline extends GObject
         //////////////////////////////////        
         let borderPositionsBuffer = this.getBorderPositionsBuffer();
         if ( borderPositionsBuffer == null ) {
-            borderPositionsBuffer = instance.createBuffer(this.getBorderPositions(instance), GPUBufferUsage.VERTEX, instance.device);
+            borderPositionsBuffer = await instance.webGPUCreateBuffer(this.getBorderPositions(instance), GPUBufferUsage.VERTEX, instance.device);
             this.setBorderPositionsBuffer( borderPositionsBuffer );
         }
         this.setBorderColorsBuffer( null );
         let borderColorsBuffer = this.getBorderColorsBuffer();
         if ( borderColorsBuffer == null ) {
-            borderColorsBuffer = instance.createBuffer(this.getBorderColors(instance), GPUBufferUsage.VERTEX, instance.device);
+            borderColorsBuffer = await instance.webGPUCreateBuffer(this.getBorderColors(instance), GPUBufferUsage.VERTEX, instance.device);
             this.setBorderColorsBuffer( borderColorsBuffer );
         }
         instance.passEncoder.setPipeline(instance.linePipeline);
@@ -363,12 +363,12 @@ export class GSpline extends GObject
         }
         let axisPositionsBuffer = this.getAxisPositionsBuffer();
         if ( axisPositionsBuffer == null ) {
-            axisPositionsBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX, instance.device);
+            axisPositionsBuffer = await instance.webGPUCreateBuffer(positions, GPUBufferUsage.VERTEX, instance.device);
             this.setAxisPositionsBuffer( axisPositionsBuffer );
         }
         let axisColorsBuffer = this.getAxisColorsBuffer();
         if ( axisColorsBuffer == null ) {
-            axisColorsBuffer = instance.createBuffer(colors, GPUBufferUsage.VERTEX, instance.device);
+            axisColorsBuffer = await instance.webGPUCreateBuffer(colors, GPUBufferUsage.VERTEX, instance.device);
             this.setAxisColorsBuffer( axisColorsBuffer );
         }
         let vertexCount = positions.length / 3;
@@ -424,12 +424,12 @@ export class GSpline extends GObject
 
         //let positionsBuffer = this.getPositionsBuffer();
 
-        let newPositionsBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX, instance.device);
+        let newPositionsBuffer = await instance.webGPUCreateBuffer(positions, GPUBufferUsage.VERTEX, instance.device);
         instance.GPUbuffers.push(newPositionsBuffer);
         //this.setPositionsBuffer( newPositionsBuffer );
         //let colorsBuffer = this.getColorsBuffer();
 
-        let newColorsBuffer = instance.createBuffer(colors, GPUBufferUsage.VERTEX, instance.device);
+        let newColorsBuffer = await instance.webGPUCreateBuffer(colors, GPUBufferUsage.VERTEX, instance.device);
         instance.GPUbuffers.push(newColorsBuffer);
         //this.setColorsBuffer( newColorsBuffer );
 
