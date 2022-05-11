@@ -11,15 +11,16 @@ export class GSpline extends GObject
         this.setColorsBuffer( null );
         this.setPositionsBuffer( null );
 
-	this.setMaxX( +Math.PI );
-	this.setMinX( -Math.PI );
-	this.setItX( 58 );
+        this.setMaxX( +Math.PI );
+        this.setMinX( -Math.PI );
+        this.setItX( 58 );
 
-	this.setMaxY( +1 );
-	this.setMinY( -1 );
-	this.setItY( 20 );
+        this.setMaxY( +1 );
+        this.setMinY( -1 );
+        this.setItY( 20 );
 
         this.setDuty( false );
+
         this.objectLabels = [];
     }  
     destroy()
@@ -169,7 +170,6 @@ export class GSpline extends GObject
             let y = this.getY() + this.positions[ i + 1 ] + 2;
             if ( y < this.getY() + 2 ) y = this.getY() + 2;
             if ( y > this.getY() + this.getHeight() - 1 ) y = this.getY() + this.getHeight() - 1;
-
 
             vpositions[ i + 0 ] = instance.calcX( ( i == 0 ) ? x - 1 : x );
             vpositions[ i + 1 ] = instance.calcY( y );
