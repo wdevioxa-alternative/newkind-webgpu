@@ -4,6 +4,6 @@ window.getDrawParams = function() {
 		draw: [
 			{ func: (x) => { return Math.cos(x) }, x: { min: -Math.PI, max: Math.PI }, forx: 58, color: [0.0,0.0,1.0,1.0] },
 			{ func: (x) => { return Math.sin(x) }, forx: 58, color: [0.0,1.0,0.0,1.0] }
-		]
+    	]
 	};
 }
