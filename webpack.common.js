@@ -1,13 +1,13 @@
-import path from "path";
-import HtmlWebpackPlugin from "html-webpack-plugin";
+const path = require('path');
+const webpack = require('webpack');
 
-const __dirname = path.dirname(process.argv[1]);
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-export default {
-  entry: [ 'babel-polyfill', './src/app.mjs' ],
+module.exports = {
+  entry: [ 'babel-polyfill', './src/app.js' ],
   plugins: [
     new HtmlWebpackPlugin({ 
-        title: 'NewKind Graph',
+        title: 'WebGPU Test Page',
         filename: 'index.html',
         template: './src/index.template'
     }),
@@ -20,13 +20,13 @@ export default {
   module: {
     rules: [
       { 
-        test: /\.(js|jsx|mjs)$/,
+        test: /\.(js|jsx|mjs)$/, 
         exclude: /node_modules/,
 	      use: { 
 		      loader: 'babel-loader',  
 		      options: {
 			      presets: ['@babel/preset-env']
-          } 
+                      } 
 	      },
       },
       { 

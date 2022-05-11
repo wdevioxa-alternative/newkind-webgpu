@@ -1,4 +1,4 @@
-import { GObject } from './object.mjs';
+import { GObject } from './object.js';
 
 export class GBox extends GObject
 {
@@ -89,12 +89,12 @@ export class GBox extends GObject
         }
         let positionsBuffer = this.getPositionsBuffer();
         if ( positionsBuffer == null ) {
-            positionsBuffer = await instance.webGPUCreateBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX, instance.device);
+            positionsBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX, instance.device);
             this.setPositionsBuffer( positionsBuffer );
         }
         let colorsBuffer = this.getColorsBuffer();
         if ( colorsBuffer == null ) {
-            colorsBuffer = await instance.webGPUCreateBuffer(this.getColors(instance), GPUBufferUsage.VERTEX, instance.device);
+            colorsBuffer = instance.createBuffer(this.getColors(instance), GPUBufferUsage.VERTEX, instance.device);
             this.setColorsBuffer( colorsBuffer );
         }
         instance.passEncoder.setPipeline(instance.linePipeline);

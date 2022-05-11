@@ -1,4 +1,4 @@
-import { GObject } from './object.mjs';
+import { GObject } from './object.js';
 
 export class GLabel extends GObject
 {
@@ -184,12 +184,12 @@ export class GLabel extends GObject
         };
         let positionsBuffer = this.getPositionsBuffer();
         if ( positionsBuffer == null ) {
-            positionsBuffer = await instance.webGPUCreateBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX, instance.device);
+            positionsBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX, instance.device);
             this.setPositionsBuffer( positionsBuffer );
         }
         let fragUVBuffer = this.getFragUVBuffer();
         if ( fragUVBuffer == null ) {
-            fragUVBuffer = await instance.webGPUCreateBuffer(this.getFragUV(instance), GPUBufferUsage.VERTEX, instance.device);
+            fragUVBuffer = instance.createBuffer(this.getFragUV(instance), GPUBufferUsage.VERTEX, instance.device);
             this.setFragUVBuffer( fragUVBuffer );
         }
         instance.passEncoder.setPipeline(instance.texturePipeline);

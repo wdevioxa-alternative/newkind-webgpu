@@ -26,14 +26,14 @@
             justify-content: center;
         }
     </style>
-<!--
 	<script type='text/javascript' src='jquery-3.5.1.min.js'></script>
+	<script type='text/javascript' src='controller.bundle.js'></script>
 	<script type='text/javascript'>
 		jQuery(document).ready(function () {
-			window.run();
+//			window.run();
 	        });
 	</script>
--->
+
 </head>
 <body>
 	<canvas id="gfx" style="border: 1px solid white; padding: 10px;"></canvas>

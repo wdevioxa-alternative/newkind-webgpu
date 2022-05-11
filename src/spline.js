@@ -1,13 +1,24 @@
-import { GObject } from './object.mjs';
-import { GLabel } from './label.mjs';
+import { GObject } from './object.js';
+import { GLabel } from './label.js';
 
 export class GSpline extends GObject
 {
-    constructor( x, y, width, height ) {
+    constructor( x, y, width, height ) 
+    {
         super( x, y, width, height );
+
         this.clearItems();
         this.setColorsBuffer( null );
         this.setPositionsBuffer( null );
+
+	this.setMaxX( +Math.PI );
+	this.setMinX( -Math.PI );
+	this.setItX( 58 );
+
+	this.setMaxY( +1 );
+	this.setMinY( -1 );
+	this.setItY( 20 );
+
         this.setDuty( false );
         this.objectLabels = [];
     }  
@@ -24,6 +35,31 @@ export class GSpline extends GObject
         this.setAxisColorsBuffer( null );
         this.setDuty( true );
     }
+    setItX( itX )
+    { this.itX = itX; }
+    getItX()
+    { return this.itX; }
+    setItY( itY )
+    { this.itY = itY; }
+    getItY()
+    { return this.itY; }
+    setMinX( x )
+    { this.minX = x; }
+    getMinX()
+    { return this.minX; }
+    setMaxX( x )
+    { this.maxX = x; }
+    getMaxX()
+    { return this.maxX; }
+    setMinY( y )
+    { this.minY = y; }
+    getMinY()
+    { return this.minY; }
+    setMaxY( y )
+    { this.maxY = y; }
+    getMaxY()
+    { return this.maxY; }
+
     setBorderPositionsBuffer( positions )
     {
         if ( positions == null )
@@ -241,6 +277,14 @@ export class GSpline extends GObject
     }
     async draw( instance, minX, maxX, iterationsX, minY, maxY, iterationsY, color = [ 1.0, 1.0, 1.0, 1.0 ]) 
     {
+	this.setMinX( minX );
+	this.setMaxX( maxX );
+	this.setItX( iterationsX );
+
+	this.setMinY( minY );
+	this.setMaxY( maxY );
+	this.setItY( iterationsY );
+	
         //////////////////////////////////
         // draw border
         //////////////////////////////////
@@ -259,13 +303,13 @@ export class GSpline extends GObject
         //////////////////////////////////        
         let borderPositionsBuffer = this.getBorderPositionsBuffer();
         if ( borderPositionsBuffer == null ) {
-            borderPositionsBuffer = await instance.webGPUCreateBuffer(this.getBorderPositions(instance), GPUBufferUsage.VERTEX, instance.device);
+            borderPositionsBuffer = instance.createBuffer(this.getBorderPositions(instance), GPUBufferUsage.VERTEX, instance.device);
             this.setBorderPositionsBuffer( borderPositionsBuffer );
         }
         this.setBorderColorsBuffer( null );
         let borderColorsBuffer = this.getBorderColorsBuffer();
         if ( borderColorsBuffer == null ) {
-            borderColorsBuffer = await instance.webGPUCreateBuffer(this.getBorderColors(instance), GPUBufferUsage.VERTEX, instance.device);
+            borderColorsBuffer = instance.createBuffer(this.getBorderColors(instance), GPUBufferUsage.VERTEX, instance.device);
             this.setBorderColorsBuffer( borderColorsBuffer );
         }
         instance.passEncoder.setPipeline(instance.linePipeline);
@@ -363,12 +407,12 @@ export class GSpline extends GObject
         }
         let axisPositionsBuffer = this.getAxisPositionsBuffer();
         if ( axisPositionsBuffer == null ) {
-            axisPositionsBuffer = await instance.webGPUCreateBuffer(positions, GPUBufferUsage.VERTEX, instance.device);
+            axisPositionsBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX, instance.device);
             this.setAxisPositionsBuffer( axisPositionsBuffer );
         }
         let axisColorsBuffer = this.getAxisColorsBuffer();
         if ( axisColorsBuffer == null ) {
-            axisColorsBuffer = await instance.webGPUCreateBuffer(colors, GPUBufferUsage.VERTEX, instance.device);
+            axisColorsBuffer = instance.createBuffer(colors, GPUBufferUsage.VERTEX, instance.device);
             this.setAxisColorsBuffer( axisColorsBuffer );
         }
         let vertexCount = positions.length / 3;
@@ -377,46 +421,67 @@ export class GSpline extends GObject
         instance.passEncoder.setVertexBuffer(1, axisColorsBuffer);
         instance.passEncoder.draw( vertexCount, 1, 0, 0 );
     }
-    async functionDraw( instance, beginX, endX, beginY, endY, iterations, func, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
+    async functionSimpleDraw( instance, func, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
+    {
+        await this.functionDraw( instance, this.getMinX(), this.getMaxX(), this.getItX(), func, color );
+    }
+    async functionDraw( instance, minX, maxX, itX, func, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
     {
         let origWidth = this.getWidth() - 2;
         let origHeight = this.getHeight() - 2;
-        let wholeWidth = endX - beginX;
-        let wholeHeight = endY - beginY ;
-        var itL = iterations | 1;
-        var wOffset = wholeWidth / ( itL - 1 );
-        var floatX = 0.0;
-        var floatY = 0.0;
-        this.clearItems();    
+
+//////////////////////////////////////////////////////
+//	let wOffset = this.getMinX() - minX;
+//////////////////////////////////////////////////////
+
+	let maxXX = ( maxX < this.getMaxX() ) ? maxX : this.getMaxX();
+	let minXX = ( minX > this.getMinX() ) ? minX : this.getMinX();
+
+        let wholeWidth = maxXX - minXX;
+//        let wholeHeight = this.getMaxY() - this.getMinY();
+
+        let itL = itX | 1;
+
+	let wOffset = this.getMinX() - minXX;
+        let wStep = wholeWidth / ( itL - 1 );
+
+        let floatX = 0.0;
+        let floatY = 0.0;
+
+        this.clearItems();
+
         for ( let i = 0; i < ( itL - 1); i++ ) 
         {  
-            floatX = i * wOffset;
-            floatY = func( floatX + beginX );
+            /////////////////////////////////////////////////////////////////////
+            // рисование точки
+            /////////////////////////////////////////////////////////////////////
+            floatX = i * wStep + minXX;
+            floatY = func( floatX );
 
-            let realX = instance.calcScale( origWidth, wholeWidth, floatX );
-            let realY = origHeight-instance.calcScale(origHeight,wholeHeight,floatY - beginY);
+            let realX = instance.calcScale( origWidth, this.getMaxX() - this.getMinX(), floatX - this.getMinX() );
+            let realY = origHeight - instance.calcScale( origHeight, this.getMaxY() - this.getMinY(), floatY - this.getMinY() );
 
-            this.appendItem(instance,[realX,realY,0.0],color);
+            this.appendItem( instance, [ realX, realY, 0.0 ], color );
 
-            floatX = ( i + 1 ) * wOffset;
-            floatY = func( floatX + beginX );
+            floatX = ( i + 1 ) * wStep + minXX;
+            floatY = func( floatX );
 
-            realX = instance.calcScale( origWidth, wholeWidth, floatX );
-            realY = origHeight - instance.calcScale(origHeight,wholeHeight,floatY - beginY);
+            realX = instance.calcScale( origWidth, this.getMaxX() - this.getMinX(), floatX - this.getMinX() );
+            realY = origHeight - instance.calcScale( origHeight, this.getMaxY() - this.getMinY(), floatY - this.getMinY() );
 
-            this.appendItem(instance,[realX,realY,0.0],color);
+            this.appendItem( instance, [ realX, realY, 0.0 ], color );
 
             /////////////////////////////////////////////////////////////////////
             // рисование точки
             /////////////////////////////////////////////////////////////////////
-            this.appendItem(instance,[realX-1,realY+1,0.0],color);
-            this.appendItem(instance,[realX-1,realY-1,0.0],color);
-            this.appendItem(instance,[realX-1,realY-1,0.0],color);
-            this.appendItem(instance,[realX+1,realY-1,0.0],color);
-            this.appendItem(instance,[realX+1,realY-1,0.0],color);
-            this.appendItem(instance,[realX+1,realY+1,0.0],color);
-            this.appendItem(instance,[realX+1,realY+1,0.0],color);
-            this.appendItem(instance,[realX-1,realY+1,0.0],color);
+            this.appendItem( instance, [ realX-1, realY+1, 0.0 ], color );
+            this.appendItem( instance, [ realX-1, realY-1, 0.0 ], color );
+            this.appendItem( instance, [ realX-1, realY-1, 0.0 ], color );
+            this.appendItem( instance, [ realX+1, realY-1, 0.0 ], color );
+            this.appendItem( instance, [ realX+1, realY-1, 0.0 ], color );
+            this.appendItem( instance, [ realX+1, realY+1, 0.0 ], color );
+            this.appendItem( instance, [ realX+1, realY+1, 0.0 ], color );
+            this.appendItem( instance, [ realX-1, realY+1, 0.0 ], color );
         }
 
         let positions = this.getPositions(instance);
@@ -424,12 +489,12 @@ export class GSpline extends GObject
 
         //let positionsBuffer = this.getPositionsBuffer();
 
-        let newPositionsBuffer = await instance.webGPUCreateBuffer(positions, GPUBufferUsage.VERTEX, instance.device);
+        let newPositionsBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX, instance.device);
         instance.GPUbuffers.push(newPositionsBuffer);
         //this.setPositionsBuffer( newPositionsBuffer );
         //let colorsBuffer = this.getColorsBuffer();
 
-        let newColorsBuffer = await instance.webGPUCreateBuffer(colors, GPUBufferUsage.VERTEX, instance.device);
+        let newColorsBuffer = instance.createBuffer(colors, GPUBufferUsage.VERTEX, instance.device);
         instance.GPUbuffers.push(newColorsBuffer);
         //this.setColorsBuffer( newColorsBuffer );
 

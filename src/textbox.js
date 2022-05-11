@@ -1,4 +1,4 @@
-import { GObject } from './label.mjs';
+import { GObject } from './label.js';
 
 export class GTextBox extends GLabel
 {

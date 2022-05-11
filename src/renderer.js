@@ -1,6 +1,6 @@
-import { GBox } from './box.mjs';
-import { GSpline } from './spline.mjs';
-import { GLabel } from './label.mjs';
+import { GBox } from './box.js';
+import { GSpline } from './spline.js';
+import { GLabel } from './label.js';
 
 import vertexShaderWgslCode from './shaders/shader.vert.wgsl'
 import fragmentShaderWgslCode from './shaders/shader.frag.wgsl'
@@ -40,13 +40,13 @@ export class GApplication
         let it = 1.0 / ch;
         return Math.fround(ccy) * it - 1.0;
     }
-    calcScale( maxSize, scaleMaxSize, scaleItem )
+    calcScale( origWholeSize, scaleWholeSize, scaleItem )
     {
-        return ( ( maxSize * scaleItem ) / scaleMaxSize );
+        return ( ( origWholeSize * scaleItem ) / scaleWholeSize );
     }    
     async start() 
     {
-        if (await this.initializeWebGPU()) 
+        if ( await this.initializeAPI() ) 
         {
             this.resizeBackings();
             await this.initializeResources();
@@ -156,16 +156,15 @@ export class GApplication
           });
           const bindGroup = gpuDevice.createBindGroup({
             layout: pipeline.getBindGroupLayout(0),
-            entries: [{
-               binding: 0,
-               resource: sampler,
+            entries: [ {
+              binding: 0,
+              resource: sampler,
             }, {
-               binding: 1,
-               resource: srcView,
-            }],
+              binding: 1,
+              resource: srcView,
+            } ],
           });
       
-          // Render
           passEncoder.setPipeline(pipeline);
           passEncoder.setBindGroup(0, bindGroup);
           passEncoder.draw(4);
@@ -175,29 +174,28 @@ export class GApplication
         }
         gpuDevice.queue.submit([commandEncoder.finish()]);
     }
-    async webGPUCreateBuffer(source, usage, device) 
+    createBuffer(source, usage, device) 
     {
         const gpuWriteBuffer = device.createBuffer({
+            mappedAtCreation: true,
             size: source.byteLength,
-            usage: usage,
-            mappedAtCreation: true
+            usage: usage
         });
-        const boolType = (source instanceof Uint16Array);
-        if ( boolType ) new Uint16Array(gpuWriteBuffer.getMappedRange()).set(source);
-        else new Float32Array(gpuWriteBuffer.getMappedRange()).set(source);
+        const arrayBuffer = gpuWriteBuffer.getMappedRange();
+        (source instanceof Uint16Array)
+                ? (new Uint16Array(arrayBuffer)).set(source)
+                : (new Float32Array(arrayBuffer)).set(source)
         gpuWriteBuffer.unmap();
         return gpuWriteBuffer;
     }
-    async initializeWebGPU() 
+    async initializeAPI() 
     {
         try {
-            if (!navigator.gpu) throw('Your browser does`t support WebGPU or it is not enabled.');
+            if (!navigator.gpu) 
+                throw('Your browser does`t support WebGPU or it is not enabled.');
             this.adapter = await navigator.gpu.requestAdapter();
-            if (!this.adapter) throw('GPU adapter is null.');
             this.device = await this.adapter.requestDevice();
-            if (!this.device) throw('GPU adapter device is null.');
             this.queue = this.device.queue;
-            if (!this.queue) throw('Queue of GPU adapter device is null.');
         } catch (e) {
             console.error(e);
             return false;
@@ -209,15 +207,13 @@ export class GApplication
         const devicePixelRatio = window.devicePixelRatio || 1;
         if (!this.context) {
             this.context = this.canvas.getContext('webgpu');
-            const devicePixelRatio = window.devicePixelRatio || 1;
-            const presentationSize = [
-                this.getCanvasWidth() * devicePixelRatio,
-                this.getCanvasHeight() * devicePixelRatio
-            ];
             const presentationFormat = this.context.getPreferredFormat(this.adapter);
-            this.context.configure({device: this.device,
+            this.context.configure({
+                device: this.device,
                 format: presentationFormat,
-                size: presentationSize
+                size: [ this.getCanvasWidth(), this.getCanvasHeight(), 1 ],
+                compositingAlphaMode: "opaque",
+                usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
             });
         }       
     }
@@ -260,8 +256,7 @@ export class GApplication
                 }]
             },
             primitive: {
-                topology: 'triangle-list',
-                cullMode: 'back'
+                topology: 'triangle-list'
             }          
         });
         this.linePipeline = this.device.createRenderPipeline({
@@ -314,6 +309,7 @@ export class GApplication
     {
         this.passEncoder.end();
         this.queue.submit([this.commandEncoder.finish()]);
+
         for ( let i = this.GPUbuffers.length - 1; i >= 0; i-- ) 
             this.GPUbuffers[i].destroy();
     }
@@ -365,22 +361,31 @@ export class GApplication
         await box.draw( this, [1.0,0.0,1.0,1.0] );
 */
 
-        const iterationsX = 58;
-        const iterationsY = 20;
+	const objectparam = window.getDrawParams.call();
 
-        await this.spline.draw( this, -2 * Math.PI, 2 * Math.PI, iterationsX, -1.0, 1.0, iterationsY, [ 1.0, 1.0, 1.0, 1.0 ] );
+        await this.spline.draw( this, objectparam.coords.x.min, objectparam.coords.x.max,
+		objectparam.coords.forx, objectparam.coords.y.min, objectparam.coords.y.max,
+		objectparam.coords.fory, objectparam.coords.color );
 
-        await this.spline.functionDraw( this, -2 * Math.PI, 2 * Math.PI, -1, 1, iterationsX, ( x ) => {
-          return Math.sin( x );
-        }, [ 1.0, 0.0, 0.0, 1.0 ] );
+	for ( let i = 0; i < objectparam.draw.length; i++ ) 
+        {
+            if ( objectparam.draw[i].x )
+                await this.spline.functionDraw( this, objectparam.draw[i].x.min, objectparam.draw[i].x.max, objectparam.draw[i].forx, objectparam.draw[i].func, objectparam.draw[i].color );
+            else
+                await this.spline.functionSimpleDraw( this, objectparam.draw[i].func, objectparam.draw[i].color );
+	}
 
-        await this.spline.functionDraw( this, -2 * Math.PI, 2 * Math.PI, -1, 1, iterationsX, ( x ) => {
-          return Math.cos( x );
+/*
+        await this.spline.functionSimpleDraw( this, ( x ) => {
+            return Math.sin( x );
         }, [ 0.0, 1.0, 0.0, 1.0 ] );
+*/
 
-        await this.spline.functionDraw( this, 10, 20, -50, 50, iterationsX, ( x ) => {
+/*
+        await this.spline.functionDraw( this, 10, 20, -50, 50, itX, ( x ) => {
           return 2 * x - 10;
         }, [ 0.0, 1.0, 1.0, 1.0 ] );
+*/
 
         ////////////////////////////////////////////////////////////////////////////
         // рисовать треугольниками ( нужно для отображения текстур )
