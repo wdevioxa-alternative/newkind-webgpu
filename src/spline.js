@@ -491,14 +491,14 @@ export class GSpline extends GObject
             /////////////////////////////////////////////////////////////////////
             // рисование точки
             /////////////////////////////////////////////////////////////////////
-            this.appendItem( instance, [ realX-1, realY+1, 0.0 ], color );
-            this.appendItem( instance, [ realX-1, realY-1, 0.0 ], color );
-            this.appendItem( instance, [ realX-1, realY-1, 0.0 ], color );
-            this.appendItem( instance, [ realX+1, realY-1, 0.0 ], color );
-            this.appendItem( instance, [ realX+1, realY-1, 0.0 ], color );
-            this.appendItem( instance, [ realX+1, realY+1, 0.0 ], color );
-            this.appendItem( instance, [ realX+1, realY+1, 0.0 ], color );
-            this.appendItem( instance, [ realX-1, realY+1, 0.0 ], color );
+            this.appendItem( instance, [ realX - 1, realY + 1, 0.0 ], color );
+            this.appendItem( instance, [ realX - 1, realY - 1, 0.0 ], color );
+            this.appendItem( instance, [ realX - 1, realY - 1, 0.0 ], color );
+            this.appendItem( instance, [ realX + 1, realY - 1, 0.0 ], color );
+            this.appendItem( instance, [ realX + 1, realY - 1, 0.0 ], color );
+            this.appendItem( instance, [ realX + 1, realY + 1, 0.0 ], color );
+            this.appendItem( instance, [ realX + 1, realY + 1, 0.0 ], color );
+            this.appendItem( instance, [ realX - 1, realY + 1, 0.0 ], color );
         }
 
         let positions = this.getPositions(instance);
