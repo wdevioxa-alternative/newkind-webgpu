@@ -466,7 +466,6 @@ export class GSpline extends GObject
             /////////////////////////////////////////////////////////////////////////////
             // axis coordinates in center
             /////////////////////////////////////////////////////////////////////////////
-
             let floatXX = floatX - this.getMinX();
             let floatYY = floatY - this.getMinY();
 
@@ -481,7 +480,6 @@ export class GSpline extends GObject
             /////////////////////////////////////////////////////////////////////////////
             // axis coordinates in center
             /////////////////////////////////////////////////////////////////////////////
-
             floatXX = floatX - this.getMinX();
             floatYY = floatY - this.getMinY();
 
