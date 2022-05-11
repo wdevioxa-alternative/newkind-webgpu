@@ -335,22 +335,26 @@ export class GSpline extends GObject
             for ( let i = 0; i < itX; i++ ) 
             {
                 let label = new GLabel( 'lighter', 10,'Segoe UI Light', 0, 0, 128, 128 );
+
                 label.setX( instance.calcRX( positions[12 + i * 6 + 0] ) );
                 label.setY( instance.calcRY( positions[12 + i * 6 + 1] ) + 4 );
                 label.setDuty( true );
+
                 this.appendLabel( label );
             }
             for ( let i = 0; i < itY; i++ ) 
             {
-                let label = new GLabel( 'lighter', 10,'Segoe UI Light', 0, 0, 128, 128 );
+                let label = new GLabel( 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
+
                 label.setX( instance.calcRX( positions[12 + (itX + i) * 6 + 0] ) + 4);
                 label.setY( instance.calcRY( positions[12 + (itX + i) * 6 + 1] ) );
                 label.setDuty( true );
+
                 this.appendLabel( label );
             }
         }
         let itL = 0;
-	let storedDesc = null;
+        let storedDesc = null;
         for ( let i = 0; i < itX; i++ ) 
         {
             let stringValue = '';
@@ -358,13 +362,13 @@ export class GSpline extends GObject
             ( numberValue > 0 ) ? stringValue = '+' : stringValue = '';
             if ( i != ( itX - 1 ) / 2 ) 
             {
-		let oldDesc = storedDesc;
+		        let oldDesc = storedDesc;
                 let textOut = stringValue + numberValue.toFixed(2).toString();
-	        let textColor = 'rgba(255, 255, 255, 0.6)';
-	        let backgroundColor = 'rgba(0, 0, 0, 1.0)';
-		let objectLabel = this.getLabelAt( itL );
+	            let textColor = 'rgba(255, 255, 255, 0.6)';
+	            let backgroundColor = 'rgba(0, 0, 0, 1.0)';
+		        let objectLabel = this.getLabelAt( itL );
                 let newDesc = await objectLabel.draw( instance, textColor, backgroundColor, textOut, true, true );
-		if ( newDesc != null ) {
+		        if ( newDesc != null ) {
                     if ( oldDesc == null ) oldDesc = newDesc;
                     if ( ( oldDesc == newDesc ) || 
                         ( ( newDesc.x - oldDesc.x ) > ( 2 * newDesc.width ) && 
@@ -372,36 +376,36 @@ export class GSpline extends GObject
                     {
                         await objectLabel.draw( instance, textColor, backgroundColor, textOut, true, false );
                         storedDesc = newDesc;
-		    }
+		            }
                 }
             }
             itL++;
         }
-	storedDesc = null;
+	    storedDesc = null;
         for ( let i = 0; i < itY; i++ ) 
         {
             let stringValue = '';
             let numberValue = ( maxY - ( stepY * i ) );
             ( numberValue > 0 ) ? stringValue = '+' : stringValue = '';
-            if ( i != ( itY - 1 ) / 2 ) {
-		let oldDesc = storedDesc;
-		let textOut = stringValue + numberValue.toFixed(2).toString();
-		let textColor = 'rgba(255, 255, 255, 0.6)';
-		let backgroundColor = 'rgba(0, 0, 0, 1.0)';
-		let objectLabel = this.getLabelAt( itL );
+            if ( i != ( itY - 1 ) / 2 ) 
+            {
+                let oldDesc = storedDesc;
+                let textOut = stringValue + numberValue.toFixed(2).toString();
+                let textColor = 'rgba(255, 255, 255, 0.6)';
+                let backgroundColor = 'rgba(0, 0, 0, 1.0)';
+                let objectLabel = this.getLabelAt( itL );
                 let newDesc = await objectLabel.draw( instance, textColor, backgroundColor, textOut, true, true );
-		if ( newDesc != null ) 
+                if ( newDesc != null ) 
                 {
                     if ( ( ( newDesc.y - this.getY() ) > ( newDesc.height ) ) &&
-			 ( ( this.getHeight() + this.getY() - newDesc.y ) > ( newDesc.height ) ) )
+                            ( ( this.getHeight() + this.getY() - newDesc.y ) > ( newDesc.height ) ) )
                     {
-                        objectLabel.setY( newDesc.y - newDesc.height / 2 - 1 );
-                        await objectLabel.draw( instance, textColor, backgroundColor, textOut, true, false );
-                        objectLabel.setY( newDesc.y );
-                        storedDesc = newDesc;
-		    }
+                            objectLabel.setY( newDesc.y - newDesc.height / 2 - 1 );
+                            await objectLabel.draw( instance, textColor, backgroundColor, textOut, true, false );
+                            objectLabel.setY( newDesc.y );
+                            storedDesc = newDesc;
+                    }
                 }
-
             }
             itL++;
         }
@@ -434,16 +438,17 @@ export class GSpline extends GObject
 //	let wOffset = this.getMinX() - minX;
 //////////////////////////////////////////////////////
 
-	let maxXX = ( maxX < this.getMaxX() ) ? maxX : this.getMaxX();
-	let minXX = ( minX > this.getMinX() ) ? minX : this.getMinX();
+        let maxXX = ( maxX < this.getMaxX() ) ? maxX : this.getMaxX();
+        let minXX = ( minX > this.getMinX() ) ? minX : this.getMinX();
 
-        let wholeWidth = maxXX - minXX;
-//        let wholeHeight = this.getMaxY() - this.getMinY();
+        let drawWidth = maxXX - minXX;
+
+        let wholeWidth = this.getMaxX() - this.getMinX();
+        let wholeHeight = this.getMaxY() - this.getMinY();
 
         let itL = itX | 1;
 
-	let wOffset = this.getMinX() - minXX;
-        let wStep = wholeWidth / ( itL - 1 );
+        let wStep = drawWidth / ( itL - 1 );
 
         let floatX = 0.0;
         let floatY = 0.0;
@@ -458,16 +463,30 @@ export class GSpline extends GObject
             floatX = i * wStep + minXX;
             floatY = func( floatX );
 
-            let realX = instance.calcScale( origWidth, this.getMaxX() - this.getMinX(), floatX - this.getMinX() );
-            let realY = origHeight - instance.calcScale( origHeight, this.getMaxY() - this.getMinY(), floatY - this.getMinY() );
+            /////////////////////////////////////////////////////////////////////////////
+            // axis coordinates in center
+            /////////////////////////////////////////////////////////////////////////////
+
+            let floatXX = floatX - this.getMinX();
+            let floatYY = floatY - this.getMinY();
+
+            let realX = instance.calcScale( origWidth, wholeWidth, floatXX );
+            let realY = origHeight - instance.calcScale( origHeight, wholeHeight, floatYY );
 
             this.appendItem( instance, [ realX, realY, 0.0 ], color );
 
             floatX = ( i + 1 ) * wStep + minXX;
             floatY = func( floatX );
 
-            realX = instance.calcScale( origWidth, this.getMaxX() - this.getMinX(), floatX - this.getMinX() );
-            realY = origHeight - instance.calcScale( origHeight, this.getMaxY() - this.getMinY(), floatY - this.getMinY() );
+            /////////////////////////////////////////////////////////////////////////////
+            // axis coordinates in center
+            /////////////////////////////////////////////////////////////////////////////
+
+            floatXX = floatX - this.getMinX();
+            floatYY = floatY - this.getMinY();
+
+            realX = instance.calcScale( origWidth, wholeWidth, floatXX );
+            realY = origHeight - instance.calcScale( origHeight, wholeHeight, floatYY );
 
             this.appendItem( instance, [ realX, realY, 0.0 ], color );
 
