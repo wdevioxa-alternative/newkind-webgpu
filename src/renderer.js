@@ -353,27 +353,29 @@ export class GApplication
         ////////////////////////////////////////////
         // рисовать линиями
         ////////////////////////////////////////////
-        this.passEncoder.setPipeline(this.linePipeline);
+        this.passEncoder.setPipeline( this.linePipeline );
 /*       
         let box = new GBox( 2, 2, 126, 18 );
         await box.draw( this, [1.0,1.0,0.0,1.0] );
         box.setY(22);
         await box.draw( this, [1.0,0.0,1.0,1.0] );
 */
+        const objectparam = window.getDrawParams.call();
 
-	const objectparam = window.getDrawParams.call();
-
-        await this.spline.draw( this, objectparam.coords.x.min, objectparam.coords.x.max,
-		objectparam.coords.forx, objectparam.coords.y.min, objectparam.coords.y.max,
-		objectparam.coords.fory, objectparam.coords.color );
-
-	for ( let i = 0; i < objectparam.draw.length; i++ ) 
+        await this.spline.draw( this );
+        for ( let i = 0; i < objectparam.draw.length; i++ ) 
         {
-            if ( objectparam.draw[i].x )
-                await this.spline.functionDraw( this, objectparam.draw[i].x.min, objectparam.draw[i].x.max, objectparam.draw[i].forx, objectparam.draw[i].func, objectparam.draw[i].color );
-            else
+            if ( objectparam.draw[i].coords.visibility ) {
+                await this.spline.axisDraw( this, objectparam.draw[i].coords.x.min, objectparam.draw[i].coords.x.max,
+                    objectparam.draw[i].coords.x.repeats, objectparam.draw[i].coords.y.min, objectparam.draw[i].coords.y.max,
+                    objectparam.draw[i].coords.y.repeats, objectparam.draw[i].color );
+            }
+            if ( objectparam.draw[i].range ) {
+                await this.spline.functionDraw( this, objectparam.draw[i].range.min, objectparam.draw[i].range.max, objectparam.draw[i].range.repeats, objectparam.draw[i].func, objectparam.draw[i].color );
+            } else {
                 await this.spline.functionSimpleDraw( this, objectparam.draw[i].func, objectparam.draw[i].color );
-	}
+            }
+        }
 
 /*
         await this.spline.functionSimpleDraw( this, ( x ) => {
