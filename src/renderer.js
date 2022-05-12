@@ -362,10 +362,12 @@ export class GApplication
 */
         const objectparam = window.getDrawParams.call();
 
+        let drawn = false;
+
         await this.spline.draw( this );
         for ( let i = 0; i < objectparam.draw.length; i++ ) 
         {
-            if ( objectparam.draw[i].coords.visibility ) {
+            if ( ( objectparam.draw[i].coords.visibility ) && ( drawn == false ) ) {
                 await this.spline.axisDraw( this, objectparam.draw[i].coords.x.min, objectparam.draw[i].coords.x.max,
                     objectparam.draw[i].coords.x.repeats, objectparam.draw[i].coords.y.min, objectparam.draw[i].coords.y.max,
                     objectparam.draw[i].coords.y.repeats, objectparam.draw[i].coords.color );
