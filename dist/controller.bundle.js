@@ -49,7 +49,7 @@ window.getDrawParams = function() {
 				}, 
 				coords: { 
 					x: { 
-						min: -2 * Math.PI, 
+						min: -Math.PI, 
 						max: 2 * Math.PI,
 						repeats: 56
 					}, 
