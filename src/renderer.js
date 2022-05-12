@@ -112,23 +112,24 @@ export class GApplication
             }
           `
         });
-      
+
         const pipeline = gpuDevice.createRenderPipeline({
-          vertex: {
-            module: mipmapShaderModule,
-            entryPoint: 'vertexMain',
-          },
-          fragment: {
-            module: mipmapShaderModule,
-            entryPoint: 'fragmentMain',
-            targets: [{
-              format: textureDescriptor.format // Make sure to use the same format as the texture
-            }],
-          },
-          primitive: {
-            topology: 'triangle-strip',
-            stripIndexFormat: 'uint32',
-          },
+            layout: { label: 'auto' },
+            vertex: {
+                module: mipmapShaderModule,
+                entryPoint: 'vertexMain',
+            },
+            fragment: {
+                module: mipmapShaderModule,
+                entryPoint: 'fragmentMain',
+                targets: [{
+                    format: textureDescriptor.format // Make sure to use the same format as the texture
+                }],
+            },
+            primitive: {
+                topology: 'triangle-strip',
+                stripIndexFormat: 'uint32',
+            },
         });
       
         const sampler = gpuDevice.createSampler({ minFilter: 'linear' });
@@ -220,6 +221,7 @@ export class GApplication
     async initializeResources()
     {
         this.texturePipeline = this.device.createRenderPipeline({
+            layout: { label: 'auto' },
             vertex: {
                 module: this.device.createShaderModule({
                     code: vertexShaderWgslCode
@@ -260,6 +262,7 @@ export class GApplication
             }          
         });
         this.linePipeline = this.device.createRenderPipeline({
+            layout: { label: 'auto' },
             vertex: {
                 module: this.device.createShaderModule({
                     code: vertexShaderWgslCode
