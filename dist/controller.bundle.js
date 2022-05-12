@@ -16,7 +16,7 @@ window.getDrawParams = function() {
 						max: 1.0,
 						repeats: 20
 					}, 
-					visibility: true,
+					visibility: false,
 					color: [ 1.0, 1.0, 0.0, 1.0 ] 
 				},
 				range: { min: -Math.PI, max: Math.PI, repeats: 56 }, 
@@ -49,7 +49,7 @@ window.getDrawParams = function() {
 				}, 
 				coords: { 
 					x: { 
-						min: -Math.PI, 
+						min: -2 * Math.PI, 
 						max: 2 * Math.PI,
 						repeats: 56
 					}, 
@@ -79,8 +79,8 @@ window.getDrawParams = function() {
 						max: 1.0,
 						repeats: 20
 					}, 
-					visibility: false,
-					color: [ 0.0, 1.0, 0.0, 1.0 ] 
+					visibility: true,
+					color: [ 1.0, 0.0, 1.0, 1.0 ] 
 				},
 				color: [ 0.0, 1.0, 0.0, 1.0 ] 
 			}

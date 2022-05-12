@@ -368,7 +368,7 @@ export class GApplication
             if ( objectparam.draw[i].coords.visibility ) {
                 await this.spline.axisDraw( this, objectparam.draw[i].coords.x.min, objectparam.draw[i].coords.x.max,
                     objectparam.draw[i].coords.x.repeats, objectparam.draw[i].coords.y.min, objectparam.draw[i].coords.y.max,
-                    objectparam.draw[i].coords.y.repeats, objectparam.draw[i].color );
+                    objectparam.draw[i].coords.y.repeats, objectparam.draw[i].coords.color );
             }
             if ( objectparam.draw[i].range ) {
                 await this.spline.functionDraw( this, objectparam.draw[i].range.min, objectparam.draw[i].range.max, objectparam.draw[i].range.repeats, objectparam.draw[i].func, objectparam.draw[i].color );
