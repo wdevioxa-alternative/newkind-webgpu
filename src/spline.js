@@ -277,13 +277,13 @@ export class GSpline extends GObject
     }
     async draw( instance, minX, maxX, iterationsX, minY, maxY, iterationsY, color = [ 1.0, 1.0, 1.0, 1.0 ]) 
     {
-	this.setMinX( minX );
-	this.setMaxX( maxX );
-	this.setItX( iterationsX );
+        this.setMinX( minX );
+        this.setMaxX( maxX );
+        this.setItX( iterationsX );
 
-	this.setMinY( minY );
-	this.setMaxY( maxY );
-	this.setItY( iterationsY );
+        this.setMinY( minY );
+        this.setMaxY( maxY );
+        this.setItY( iterationsY );
 	
         //////////////////////////////////
         // draw border
@@ -329,7 +329,7 @@ export class GSpline extends GObject
         let positions = this.getAxisPositions(instance, itX, itY);
         let colors = this.getAxisColors(instance, itX + itY, color);
 
-	let labelsCount = this.getLabelsCount()
+	    let labelsCount = this.getLabelsCount()
         if ( labelsCount == 0 )
         {
             for ( let i = 0; i < itX; i++ ) 
@@ -368,7 +368,8 @@ export class GSpline extends GObject
 	            let backgroundColor = 'rgba(0, 0, 0, 1.0)';
 		        let objectLabel = this.getLabelAt( itL );
                 let newDesc = await objectLabel.draw( instance, textColor, backgroundColor, textOut, true, true );
-		        if ( newDesc != null ) {
+		        if ( newDesc != null ) 
+                {
                     if ( oldDesc == null ) oldDesc = newDesc;
                     if ( ( oldDesc == newDesc ) || 
                         ( ( newDesc.x - oldDesc.x ) > ( 2 * newDesc.width ) && 
@@ -433,14 +434,12 @@ export class GSpline extends GObject
     {
         let origWidth = this.getWidth() - 2;
         let origHeight = this.getHeight() - 2;
-
 //////////////////////////////////////////////////////
 //	let wOffset = this.getMinX() - minX;
 //////////////////////////////////////////////////////
-
         let maxXX = ( maxX < this.getMaxX() ) ? maxX : this.getMaxX();
         let minXX = ( minX > this.getMinX() ) ? minX : this.getMinX();
-
+        
         let drawWidth = maxXX - minXX;
 
         let wholeWidth = this.getMaxX() - this.getMinX();
