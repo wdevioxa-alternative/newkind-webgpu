@@ -112,9 +112,8 @@ export class GApplication
             }
           `
         });
-
+      
         const pipeline = gpuDevice.createRenderPipeline({
-            layout: { label: 'auto' },
             vertex: {
                 module: mipmapShaderModule,
                 entryPoint: 'vertexMain',
@@ -221,7 +220,6 @@ export class GApplication
     async initializeResources()
     {
         this.texturePipeline = this.device.createRenderPipeline({
-            layout: { label: 'auto' },
             vertex: {
                 module: this.device.createShaderModule({
                     code: vertexShaderWgslCode
@@ -262,7 +260,6 @@ export class GApplication
             }          
         });
         this.linePipeline = this.device.createRenderPipeline({
-            layout: { label: 'auto' },
             vertex: {
                 module: this.device.createShaderModule({
                     code: vertexShaderWgslCode
