@@ -32,7 +32,7 @@
         }
 
     </style>
-    <script type='text/javascript' src='controller.bundle.js'></script>
+    <script type='text/javascript' src='config/controller.bundle.js'></script>
 
 </head>
 	<body>

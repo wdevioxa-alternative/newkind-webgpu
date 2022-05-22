@@ -1,9 +1,10 @@
-import HtmlWebpackPlugin from "html-webpack-plugin";
-import CopyWebpackPlugin from "copy-webpack-plugin";
+import path from 'path';
+import webpack from 'webpack';
 
-import path from "path";
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
-const __dirname = path.dirname(process.argv[1]);
+const __dirname = path.dirname( process.argv[1] );
 
 export default {
   entry: [ 'babel-polyfill', './src/app.mjs' ],
@@ -16,30 +17,39 @@ export default {
     }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: "./src/fonts/segoeuil.ttf", to: "[path]fonts/segoeuil.ttf" },
+        { from: "src/fonts/segoeuil.ttf", to: "[path]fonts/segoeuil.ttf" },
+        { from: "src/config/controller.bundle.js", to: "[path]config/controller.bundle.js" },
       ],
     }),
   ],
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: "[name].bundle.mjs",
-    chunkFilename: "[id].bundle.mjs"
+    path: path.resolve(__dirname, '../../../dist'),
+    filename: "[name].bundle.js",
+    chunkFilename: "[id].bundle.js",
+    assetModuleFilename: "[path][name].[ext]"
   },
   module: {
     rules: [
       { 
-        test: /\.(js|jsx|mjs)$/,
-        exclude: /node_modules/,
+        test: /\.(jsx|mjs)$/, 
+        exclude: /\.(node_modules|js)$/,
 	      use: { 
 		      loader: 'babel-loader',  
 		      options: {
 			      presets: ['@babel/preset-env']
-          } 
+                      } 
 	      },
       },
       { 
         test: /\.wgsl/,
         type: 'asset/source' 
+      },
+      { 
+	test: /\.(eot|svg|ttf|woff|woff2)$/,
+        type: 'asset/resource',
+	generator: {
+		filename: '[path][name].[ext]'
+	}
       }
     ]
   },

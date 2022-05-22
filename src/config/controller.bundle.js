@@ -1,4 +1,4 @@
-export const getDrawParams = () => {
+window.getDrawParams = () => {
 	return {
 		draw: [
 			{ 
