@@ -4,8 +4,8 @@
     "description": "WebGPU graph example",
     "main": "app.js",
     "scripts": {
-        "start": "webpack serve --open --config webpack.dev.js && babel dist -d dist/es5",
-        "build": "webpack --config webpack.prod.js && babel dist -d dist/es5",
+        "start": "webpack serve --open --config webpack.dev.js",
+        "build": "webpack --config webpack.prod.js",
         "es5": "babel dist -d dist/es5"
     },
     "keywords": [
