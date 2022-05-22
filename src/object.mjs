@@ -1,6 +1,6 @@
 export class GObject
 {
-    constructor( x, y, width, height )
+    constructor( x, y, width, height ) 
     {
         this.setX(x);
         this.setY(y);

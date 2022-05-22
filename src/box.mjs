@@ -7,7 +7,7 @@ export class GBox extends GObject
         this.setColorsBuffer( null );
         this.setPositionsBuffer( null );
         this.setDuty( false );
-    }
+    }  
     destroy()
     {
         this.setColorsBuffer( null );
@@ -21,7 +21,7 @@ export class GBox extends GObject
                 this.positionsBuffer.destroy();
         this.positionsBuffer = positions;
     }
-    getPositionsBuffer()
+    getPositionsBuffer() 
     {
         return this.positionsBuffer;
     }
@@ -32,7 +32,7 @@ export class GBox extends GObject
                 this.colorsBuffer.destroy();
         this.colorsBuffer = colors;
     }
-    getColorsBuffer()
+    getColorsBuffer() 
     {
         return this.colorsBuffer;
     }
@@ -55,7 +55,7 @@ export class GBox extends GObject
         for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
         for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
         for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
-        for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
+        for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];            
         for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
         for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
         for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
@@ -79,7 +79,7 @@ export class GBox extends GObject
             instance.calcX(offsetX), instance.calcY(offsetY), 0.0
         ]);
     }
-    async draw( instance, color )
+    async draw( instance, color ) 
     {
         let objectRedraw = this.isDuty();
         if ( objectRedraw == true ) {

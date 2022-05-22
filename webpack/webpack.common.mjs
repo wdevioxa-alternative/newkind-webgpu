@@ -1,13 +1,22 @@
 import path from "path";
 import HtmlWebpackPlugin from "html-webpack-plugin";
+import CopyWebpackPlugin from "copy-webpack-plugin";
+
 const __dirname = path.dirname(process.argv[1]);
+
 export default {
   entry: [ 'babel-polyfill', './src/app.mjs' ],
   plugins: [
     new HtmlWebpackPlugin({ 
-        title: 'NewKind Graph',
+        title: 'WebGPU Test Page',
         filename: 'index.html',
-        template: './src/index.html'
+        template: './src/index.template',
+        font: 'fonts/segoeuil.ttf'
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: "./src/fonts/segoeuil.ttf", to: "[path]fonts/segoeuil.ttf" },
+      ],
     }),
   ],
   output: {

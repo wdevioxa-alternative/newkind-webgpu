@@ -2,7 +2,7 @@ import { GObject } from './object.mjs';
 
 export class GLabel extends GObject
 {
-    constructor( fontWeight, fontSize, fontFamily, x, y, width, height ) {
+    constructor( fontWeight, fontSize, fontFamily, x, y, width, height ) {        
         super( x, y, width, height );
         this.setFontWeight( fontWeight );
         this.setFontSize( fontSize );
