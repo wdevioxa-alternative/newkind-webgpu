@@ -1,6 +1,7 @@
-import path from "path";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import CopyWebpackPlugin from "copy-webpack-plugin";
+
+import path from "path";
 
 const __dirname = path.dirname(process.argv[1]);
 
@@ -33,7 +34,7 @@ export default {
 		      loader: 'babel-loader',  
 		      options: {
 			      presets: ['@babel/preset-env']
-                      } 
+          } 
 	      },
       },
       { 
