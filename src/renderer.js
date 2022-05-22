@@ -1,6 +1,6 @@
-import { GBox } from './box.mjs';
-import { GSpline } from './spline.mjs';
-import { GLabel } from './label.mjs';
+import { GBox } from './box.js';
+import { GSpline } from './spline.js';
+import { GLabel } from './label.js';
 
 import vertexShaderWgslCode from './shaders/shader.vert.wgsl'
 import fragmentShaderWgslCode from './shaders/shader.frag.wgsl'

@@ -1,4 +1,4 @@
-import { GObject } from './object.mjs';
+import { GObject } from './object.js';
 
 export class GBox extends GObject
 {

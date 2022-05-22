@@ -4,7 +4,7 @@
 logs
 *.log
 npm-debug.log*
-/dist
+
 # Runtime data
 pids
 *.pid
@@ -25,11 +25,13 @@ bin
 *.bat
 *.ssh
 *.sh
-package-lock.json
+
 # Editors
 .vscode
-yarn.lock
+.markdownlint.json
+
 # Build Files
 temp
 *.map
 node_modules
+

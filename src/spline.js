@@ -1,5 +1,5 @@
-import { GObject } from './object.mjs';
-import { GLabel } from './label.mjs';
+import { GObject } from './object.js';
+import { GLabel } from './label.js';
 
 export class GSpline extends GObject
 {
