@@ -197,7 +197,8 @@ export class GSpline extends GObject
             instance.calcX(offsetX), instance.calcY(offsetY), 0.0
         ]);
     }
-    getBorderColors( instance ) {
+    getBorderColors( instance ) 
+    {
         const now = Date.now();
         let g1 = Math.cos( now / 1000 );
         let g2 = Math.cos( now / 1000 + Math.PI / 2.0  );
@@ -466,15 +467,9 @@ export class GSpline extends GObject
 
         for ( let i = 0; i < ( itL - 1); i++ ) 
         {  
-            /////////////////////////////////////////////////////////////////////
-            // рисование точки
-            /////////////////////////////////////////////////////////////////////
             floatX = i * wStep + minXX;
             floatY = func( floatX );
 
-            /////////////////////////////////////////////////////////////////////////////
-            // axis coordinates in center
-            /////////////////////////////////////////////////////////////////////////////
             let floatXX = floatX - this.getMinX();
             let floatYY = floatY - this.getMinY();
 
