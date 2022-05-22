@@ -1,4 +1,4 @@
-import { GObject } from './object.js';
+import { GObject } from './object.mjs';
 
 export class GLabel extends GObject
 {

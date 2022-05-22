@@ -1,4 +1,4 @@
-import { GApplication } from './renderer.js';
+import { GApplication } from './renderer.mjs';
 
 function setCanvasSize(canvas)
 {

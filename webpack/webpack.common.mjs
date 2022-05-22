@@ -1,11 +1,13 @@
-const path = require('path');
-const webpack = require('webpack');
+import path from 'path';
+import webpack from 'webpack';
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
-module.exports = {
-  entry: [ 'babel-polyfill', './src/app.js' ],
+const __dirname = path.dirname( process.argv[1] );
+
+export default {
+  entry: [ 'babel-polyfill', './src/app.mjs' ],
   plugins: [
     new HtmlWebpackPlugin({ 
         title: 'WebGPU Test Page',
@@ -16,11 +18,12 @@ module.exports = {
     new CopyWebpackPlugin({
       patterns: [
         { from: "src/fonts/segoeuil.ttf", to: "[path]fonts/segoeuil.ttf" },
+        { from: "src/config/controller.bundle.js", to: "[path]config/controller.bundle.js" },
       ],
     }),
   ],
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, '../../../dist'),
     filename: "[name].bundle.js",
     chunkFilename: "[id].bundle.js",
     assetModuleFilename: "[path][name].[ext]"
@@ -28,7 +31,7 @@ module.exports = {
   module: {
     rules: [
       { 
-        test: /\.(js|jsx|mjs)$/, 
+        test: /\.(jsx|mjs)$/, 
         exclude: /\.(node_modules|js)$/,
 	      use: { 
 		      loader: 'babel-loader',  
