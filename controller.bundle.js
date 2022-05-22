@@ -1,4 +1,4 @@
-window.getDrawParams = function() {
+window.getDrawParams = () => {
 	return {
 		draw: [
 			{ 

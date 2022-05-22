@@ -340,20 +340,22 @@ export class GSpline extends GObject
         {
             for ( let i = 0; i < itX; i++ ) 
             {
-                let label = new GLabel( 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
+                let label = new GLabel( 'lighter', 10, 'UL Segoe UI Light', 0, 0, 128, 128 );
 
                 label.setX( instance.calcRX( positions[12 + i * 6 + 0] ) );
                 label.setY( instance.calcRY( positions[12 + i * 6 + 1] ) + 4 );
+
                 label.setDuty( true );
 
                 this.appendLabel( label );
             }
             for ( let i = 0; i < itY; i++ ) 
             {
-                let label = new GLabel( 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
+                let label = new GLabel( 'lighter', 10, 'UL Segoe UI Light', 0, 0, 128, 128 );
 
                 label.setX( instance.calcRX( positions[12 + (itX + i) * 6 + 0] ) + 4);
                 label.setY( instance.calcRY( positions[12 + (itX + i) * 6 + 1] ) );
+
                 label.setDuty( true );
 
                 this.appendLabel( label );

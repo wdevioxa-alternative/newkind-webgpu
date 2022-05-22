@@ -25,15 +25,14 @@
             align-items: center;
             justify-content: center;
         }
-    </style>
 
-    <script type='text/javascript' src='jquery-3.5.1.min.js'></script>
+	@font-face {
+            font-family: 'UL Segoe UI Light';
+            src: url( <%= htmlWebpackPlugin.options.font %> ) format( 'truetype' );
+        }
+
+    </style>
     <script type='text/javascript' src='controller.bundle.js'></script>
-    <script type='text/javascript'>
-		jQuery(document).ready(function () {
-//			window.run();
-        });
-    </script>
 
 </head>
 	<body>
