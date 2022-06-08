@@ -435,11 +435,11 @@ export class GSpline extends GObject
         instance.passEncoder.setVertexBuffer(1, axisColorsBuffer);
         instance.passEncoder.draw( vertexCount, 1, 0, 0 );
     }
-    async functionSimpleDraw( instance, func, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
+    async functionSimpleDraw( instance, func, drawpoints, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
     {
-        await this.functionDraw( instance, this.getMinX(), this.getMaxX(), this.getItX(), func, color );
+        await this.functionDraw( instance, this.getMinX(), this.getMaxX(), this.getItX(), func, drawpoints, color );
     }
-    async functionDraw( instance, minX, maxX, itX, func, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
+    async functionDraw( instance, minX, maxX, itX, func, drawpoints, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
     {
         let origWidth = this.getWidth() - 2;
         let origHeight = this.getHeight() - 2;
@@ -494,15 +494,17 @@ export class GSpline extends GObject
 
             /////////////////////////////////////////////////////////////////////
             // рисование точки
-            /////////////////////////////////////////////////////////////////////
-            this.appendItem( instance, [ realX - 1, realY + 1, 0.0 ], color );
-            this.appendItem( instance, [ realX - 1, realY - 1, 0.0 ], color );
-            this.appendItem( instance, [ realX - 1, realY - 1, 0.0 ], color );
-            this.appendItem( instance, [ realX + 1, realY - 1, 0.0 ], color );
-            this.appendItem( instance, [ realX + 1, realY - 1, 0.0 ], color );
-            this.appendItem( instance, [ realX + 1, realY + 1, 0.0 ], color );
-            this.appendItem( instance, [ realX + 1, realY + 1, 0.0 ], color );
-            this.appendItem( instance, [ realX - 1, realY + 1, 0.0 ], color );
+            /////////////////////////////////////////////////////////////////////    
+            if ( drawpoints ) {
+                this.appendItem( instance, [ realX - 1, realY + 1, 0.0 ], color );
+                this.appendItem( instance, [ realX - 1, realY - 1, 0.0 ], color );
+                this.appendItem( instance, [ realX - 1, realY - 1, 0.0 ], color );
+                this.appendItem( instance, [ realX + 1, realY - 1, 0.0 ], color );
+                this.appendItem( instance, [ realX + 1, realY - 1, 0.0 ], color );
+                this.appendItem( instance, [ realX + 1, realY + 1, 0.0 ], color );
+                this.appendItem( instance, [ realX + 1, realY + 1, 0.0 ], color );
+                this.appendItem( instance, [ realX - 1, realY + 1, 0.0 ], color );
+            }
         }
 
         let positions = this.getPositions(instance);

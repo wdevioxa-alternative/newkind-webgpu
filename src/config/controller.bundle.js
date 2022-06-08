@@ -19,7 +19,8 @@ window.getDrawParams = () => {
 					visibility: false,
 					color: [ 1.0, 1.0, 0.0, 1.0 ] 
 				},
-				range: { min: -Math.PI, max: Math.PI, repeats: 56 }, 
+				range: { min: -Math.PI, max: Math.PI, repeats: 56 },
+				drawpoints: true,
 				color: [ 1.0, 1.0, 0.0, 1.0 ] 
 			},
 			{ 

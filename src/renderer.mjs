@@ -374,10 +374,17 @@ export class GApplication
         }
         for ( let i = 0; i < objectparam.draw.length; i++ ) 
         {
+	    let drawpoints = false;
+
+            if ( objectparam.draw[i].drawpoints === 'undefined' )
+                drawpoints = false;
+            else
+                drawpoints = objectparam.draw[i].drawpoints;
+
             if ( objectparam.draw[i].range ) {
-                await this.spline.functionDraw( this, objectparam.draw[i].range.min, objectparam.draw[i].range.max, objectparam.draw[i].range.repeats, objectparam.draw[i].func, objectparam.draw[i].color );
+                await this.spline.functionDraw( this, objectparam.draw[i].range.min, objectparam.draw[i].range.max, objectparam.draw[i].range.repeats, objectparam.draw[i].func, drawpoints, objectparam.draw[i].color );
             } else {
-                await this.spline.functionSimpleDraw( this, objectparam.draw[i].func, objectparam.draw[i].color );
+                await this.spline.functionSimpleDraw( this, objectparam.draw[i].func, drawpoints, objectparam.draw[i].color );
             }
         }
 
