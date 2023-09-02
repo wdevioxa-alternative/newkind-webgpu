@@ -23,13 +23,13 @@
 	<script type='text/javascript' src="config/controller.bundle.js"></script>
 	<script type='text/javascript'>
 		jQuery(document).ready(function () {
-			try {
-				window.run();
-			} 
-			catch (e) 
-			{
-				$("#error").text("[ " + e + " ]");
-			}
+//			try {
+//				window.run();
+//			} 
+//			catch (e) 
+//			{
+//				$("#error").text("[ " + e + " ]");
+//			}
 		});
 	</script>
 	</head>
