@@ -1,4 +1,17 @@
-# New Kind
+# Тестирование проекта
 
-## Graph
-График использует новую технологию web gpu
+- Клонирование:
+
+```bash
+git clone https://github.com/wdevioxa-alternative/newkind-webgpu.git
+```
+
+- Установка модулей:
+```bash
+npm install
+```
+
+- Запуск сервера разработки:
+```bash
+npm run start
+```
