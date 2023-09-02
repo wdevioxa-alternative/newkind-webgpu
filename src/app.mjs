@@ -1,25 +1,21 @@
-import { GApplication } from './renderer.mjs';
 
-function setCanvasSize(canvas)
-{
-	const devicePixelRatio = window.devicePixelRatio || 1;
-	const size = window.innerWidth*devicePixelRatio & ~1;
-	canvas.width = (window.innerWidth*devicePixelRatio - size / 6) & ~1;
-	canvas.height = (window.innerHeight*devicePixelRatio - size / 6) & ~1;
+import { WDevApplication } from './renderer.mjs';
+
+try {
+	const renderer = new WDevApplication();
+	renderer.check();
+
+	const canvas = renderer.getCanvas();
+        const devicePixelRatio = window.devicePixelRatio || 1;
+
+	const width = window.innerWidth * devicePixelRatio;
+	const height = window.innerHeight * devicePixelRatio;
+
+        canvas.width = Math.max( canvas.clientWidth * devicePixelRatio, width );
+        canvas.height = Math.max( canvas.clientHeight * devicePixelRatio, height );
+
+	renderer.start();
+
+} catch( e ) {
+	throw(e);
 }
-
-/*
-window.addEventListener('resize', ()=>{
-	setCanvasSize(canvas);
-    renderer.restart();
-}, true);
-*/
-
-const canvas = document.getElementById('gfx');
-
-setCanvasSize(canvas);
-const renderer = new GApplication(canvas);
-
-renderer.start();
-
-

@@ -69,27 +69,33 @@ export class GLabel extends GObject
     {
         return this.imageBitmap;
     }
-    setFontWeight( fontWeight ) {
+    setFontWeight( fontWeight ) 
+    {
         this.fontWeight = fontWeight;
     }
-    getFontWeight() {
+    getFontWeight() 
+    {
         return this.fontWeight;
     }
-    setFontSize( fontSize ) {
+    setFontSize( fontSize ) 
+    {
         this.fontSize = fontSize;
     }
-    getFontSize() {
+    getFontSize() 
+    {
         return this.fontSize;
     }
-    setFontFamily( fontFamily ) {
+    setFontFamily( fontFamily ) 
+    {
         this.fontFamily = fontFamily;
     }
-    getFontFamily() {
+    getFontFamily() 
+    {
         return this.fontFamily;
     }    
     async draw( instance, textColor, backgroundColor, textOut, autoMeasure, calculate = false ) 
     {
-        let objectRedraw = this.isDuty();
+        const objectRedraw = this.isDuty();
         if ( objectRedraw == true ) {
             this.setTextureImage( null );
             this.setImageBitmap( null );
@@ -98,14 +104,12 @@ export class GLabel extends GObject
             this.setFragUVBuffer( null );
             this.setDuty( false );
         }
-        let textureImage = this.getTextureImage();
+        var textureImage = this.getTextureImage();
         if ( textureImage == null ) 
         {
             const cs = document.createElement('canvas');
             var ctx = cs.getContext('2d');
-            ctx.font = this.getFontWeight().toString() +
-                ' ' + this.getFontSize().toString() + 
-                'px ' + this.getFontFamily();
+            ctx.font = this.getFontWeight().toString() + ' ' + this.getFontSize().toString() + 'pt ' + this.getFontFamily();
             var fh = this.getHeight();
             var fw = this.getWidth();
             var fx = 0;
@@ -114,55 +118,55 @@ export class GLabel extends GObject
                 ////////////////////////////////////
                 // автоматическая подгонка контура
                 ////////////////////////////////////            
-                let mesure = ctx.measureText( textOut );
+                var mesure = ctx.measureText( textOut );
+
                 fh = mesure.fontBoundingBoxAscent + mesure.fontBoundingBoxDescent;
                 fw = mesure.width;
+
                 this.setWidth(Math.ceil(fw));
                 this.setHeight(Math.ceil(fh)); 
+
                 fh = this.getHeight();
                 fw = this.getWidth();
+
                 fx = 0;
                 fy = this.getFontSize();
             } else {
                 ////////////////////////////////////
                 // по центру указанного контура
                 ////////////////////////////////////
-                let mesure = ctx.measureText( textOut );
+                var mesure = ctx.measureText( textOut );
+
                 fh = mesure.fontBoundingBoxAscent + mesure.fontBoundingBoxDescent;
                 fw = mesure.width;
+
                 fx = ( this.getWidth() - fw ) / 2;
                 fy = this.getHeight() - ( this.getHeight() - fh ) / 2;
             }
 
             cs.height = this.getHeight();
             cs.width = this.getWidth();
-            ctx.font = this.getFontWeight().toString() + 
-                ' ' + this.getFontSize().toString() + 
-                'px ' + this.getFontFamily();
+
+            ctx.font = this.getFontWeight().toString() + ' ' + this.getFontSize().toString() + 'pt ' + this.getFontFamily();
 
             ctx.fillStyle = backgroundColor;
             ctx.fillRect( 0, 0, this.getWidth(), this.getHeight() );
-
+            
             ctx.fillStyle = textColor;
-/*
-            let r = parseInt(ctx.fillStyle.substring(1,3), 16);
-            let g = parseInt(ctx.fillStyle.substring(3,5), 16);
-            let b = parseInt(ctx.fillStyle.substring(5,7), 16);
-            let color = 'rgba(' + r + ',' + g + ',' + b + ',' + 0.4 + ')';
-            ctx.fillStyle = color;
-*/
             ctx.fillText( textOut, fx, fy, fw );
-            let imageBitmap = await createImageBitmap( cs );
+
+            var imageBitmap = await createImageBitmap( cs ); //, { colorSpaceConversion: 'default', resizeQuality: 'pixelated' } );
             this.setImageBitmap( imageBitmap );
+
             textureImage = instance.webGPUTextureFromImageBitmapOrCanvas( instance.device, this.getImageBitmap(), true );
             this.setTextureImage( textureImage );
         }
         if ( calculate == true ) {
-            let imageBitmap = this.getImageBitmap();
+            var imageBitmap = this.getImageBitmap();
             if ( imageBitmap == null ) return null;
             return { x: this.getX(), y: this.getY(), width: imageBitmap.width, height: imageBitmap.height };
         }
-        let textureBindGroup = this.getTextureBindGroup();
+        var textureBindGroup = this.getTextureBindGroup();
         if ( textureBindGroup == null ) {
             textureBindGroup = instance.device.createBindGroup({
                 layout: instance.texturePipeline.getBindGroupLayout(0),
@@ -175,19 +179,19 @@ export class GLabel extends GObject
                     binding: 1,
                     resource: textureImage.createView({
 			baseMipLevel: 0,
-			mipLevelCount: 5
+			mipLevelCount: 3
 		    }),
                 }
                 ]
             });
             this.setTextureBindGroup( textureBindGroup );
         };
-        let positionsBuffer = this.getPositionsBuffer();
+        var positionsBuffer = this.getPositionsBuffer();
         if ( positionsBuffer == null ) {
             positionsBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX, instance.device);
             this.setPositionsBuffer( positionsBuffer );
         }
-        let fragUVBuffer = this.getFragUVBuffer();
+        var fragUVBuffer = this.getFragUVBuffer();
         if ( fragUVBuffer == null ) {
             fragUVBuffer = instance.createBuffer(this.getFragUV(instance), GPUBufferUsage.VERTEX, instance.device);
             this.setFragUVBuffer( fragUVBuffer );
@@ -197,7 +201,6 @@ export class GLabel extends GObject
         instance.passEncoder.setVertexBuffer(0, positionsBuffer);
         instance.passEncoder.setVertexBuffer(1, fragUVBuffer);
         instance.passEncoder.draw(6, 1, 0, 0);
-        instance.passEncoder.setPipeline(instance.linePipeline);
     }
     getColors( instance )
     {
@@ -225,17 +228,19 @@ export class GLabel extends GObject
     }    
     getPositions( instance )
     {
-        let objectWidth = this.getWidth();
-        let objectHeight = this.getHeight();
-        let offsetX = this.getX() + 1;
-        let offsetY = this.getY() + 1;
-        return new Float32Array([
-            instance.calcX(objectWidth+offsetX-1), instance.calcY(objectHeight+offsetY),
+        var objectWidth = this.getWidth();
+        var objectHeight = this.getHeight();
+
+        var offsetX = this.getX() + 1;
+        var offsetY = this.getY() + 1;
+
+        return new Float32Array( [
+            instance.calcX(objectWidth+offsetX), instance.calcY(objectHeight+offsetY),
             instance.calcX(objectWidth+offsetX), instance.calcY(offsetY),
-            instance.calcX(offsetX), instance.calcY(offsetY),
-            instance.calcX(objectWidth+offsetX), instance.calcY(objectHeight+offsetY), 
-            instance.calcX(offsetX), instance.calcY(offsetY), 
+	    instance.calcX(offsetX), instance.calcY(offsetY),
+            instance.calcX(objectWidth+offsetX), instance.calcY(objectHeight+offsetY),
+	    instance.calcX(offsetX), instance.calcY(offsetY),
             instance.calcX(offsetX), instance.calcY(objectHeight+offsetY)
-        ]);
+        ] );
     }
 }

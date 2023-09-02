@@ -7,21 +7,20 @@ window.getDrawParams = () => {
 				}, 
 				coords: { 
 					x: { 
-						min: -2 * Math.PI, 
-						max: 2 * Math.PI,
-						repeats: 56
+						min: -2.0 * Math.PI, 
+						max: 2.0 * Math.PI,
+						dprepeats: 56
 					}, 
 					y: { 
 						min: -1.0, 
 						max: 1.0,
-						repeats: 20
+						dprepeats: 20
 					}, 
 					visibility: false,
-					color: [ 1.0, 1.0, 0.0, 1.0 ] 
+					color: [ 1.0, 1.0, 0.0, 1.0 ],
 				},
-				range: { min: -Math.PI, max: Math.PI, repeats: 56 },
-				drawpoints: true,
-				color: [ 1.0, 1.0, 0.0, 1.0 ] 
+				dpoints: true,
+				color: [ 1.0, 0.0, 0.0, 1.0 ],
 			},
 			{ 
 				func: (x) => { 
@@ -29,20 +28,20 @@ window.getDrawParams = () => {
 				}, 
 				coords: { 
 					x: { 
-						min: -2 * Math.PI, 
-						max: 2 * Math.PI,
-						repeats: 56
+						min: -2.0 * Math.PI, 
+						max: 2.0 * Math.PI,
+						dprepeats: 56
 					}, 
 					y: { 
 						min: -1.0, 
 						max: 1.0,
-						repeats: 20
+						dprepeats: 20
 					}, 
 					visibility: false,
-					color: [ 0.0, 1.0, 1.0, 1.0 ] 
+					color: [ 0.0, 1.0, 1.0, 1.0 ],
 				},
-				range: { min: -Math.PI, max: Math.PI, repeats: 56 }, 
-				color: [ 0.0, 1.0, 1.0, 1.0 ] 
+				dpoints: false,
+				color: [ 0.0, 1.0, 1.0, 1.0 ],
 			},
 			{ 
 				func: (x) => { 
@@ -52,18 +51,18 @@ window.getDrawParams = () => {
 					x: { 
 						min: -2 * Math.PI, 
 						max: 2 * Math.PI,
-						repeats: 56
+						dprepeats: 56
 					}, 
 					y: { 
 						min: -1.0, 
 						max: 1.0,
-						repeats: 20
+						dprepeats: 20
 					}, 
 					visibility: false,
-					color: [ 1.0, 0.0, 1.0, 1.0 ] 
+					color: [ 1.0, 0.0, 1.0, 1.0 ],
 				},
-				range: { min: -Math.PI, max: Math.PI, repeats: 56 }, 
-				color: [ 0.1, 0.0, 1.0, 1.0 ] 
+				dpoints: false,
+				color: [ 0.1, 0.0, 1.0, 1.0 ],
 			},
 			{ 
 				func: (x) => { 
@@ -71,19 +70,20 @@ window.getDrawParams = () => {
 				}, 
 				coords: { 
 					x: { 
-						min: -2 * Math.PI, 
-						max: 2 * Math.PI,
-						repeats: 58
+						min: -2.0 * Math.PI, 
+						max: 2.0 * Math.PI,
+						dprepeats: 100
 					}, 
 					y: { 
 						min: -1.0, 
 						max: 1.0,
-						repeats: 20
+						dprepeats: 50
 					}, 
 					visibility: true,
-					color: [ 1.0, 0.0, 1.0, 1.0 ] 
+					color: [ 1.0, 0.0, 1.0, 1.0 ],
 				},
-				color: [ 0.0, 1.0, 0.0, 1.0 ] 
+				dpoints: true,
+				color: [ 0.0, 1.0, 0.0, 1.0 ],
 			}
 		]
 	};

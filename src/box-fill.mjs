@@ -1,15 +1,10 @@
 import { GObject } from './object.mjs';
-import { GLine } from './line.mjs';
 
 export class GBox extends GObject
 {
-    constructor( instance, x, y, width, height, weight = 1 ) 
+    constructor( instance, x, y, width, height ) 
     {	
         super( instance, x, y, width, height );
-	this.line1 = new GLine( instance, x, y, width, weight );
-	this.line2 = new GLine( instance, x + width, y, width, weight );
-	this.line3 = new GLine( instance, x, y, width, weight );
-	this.line4 = new GLine( instance, x, y, width, weight );
     }  
     destroy()
     {
