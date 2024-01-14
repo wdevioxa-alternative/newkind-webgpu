@@ -2,6 +2,9 @@ import { GBox } from './box';
 import { GSpline } from './spline';
 import { GText } from './text';
 
+// const vertexShaderWgslCode = require('./shaders/triangle.vert.wgsl');
+// const fragmentShaderWgslCode = require('./shaders/triangle.frag.wgsl');
+
 const vertexShaderWgslCode = require('./shaders/triangle.vert.wgsl');
 const fragmentShaderWgslCode = require('./shaders/triangle.frag.wgsl');
 
@@ -80,7 +83,8 @@ export class Application
         const devicePixelRatio = window.devicePixelRatio || 1;
         if (!this.context) {
             this.context = this.canvas.getContext('webgpu');
-            const presentationFormat = this.context.getPreferredFormat(this.adapter);
+            console.log('sssssssssss', this.context, navigator.gpu.getPreferredCanvasFormat)
+            const presentationFormat = navigator.gpu.getPreferredCanvasFormat(this.adapter);
             this.context.configure({
                 device: this.device,
                 format: presentationFormat,
