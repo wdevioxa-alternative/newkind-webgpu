@@ -25,7 +25,7 @@ bin
 *.bat
 *.ssh
 *.sh
-
+package-lock.json
 # Editors
 .vscode
 yarn.lock
