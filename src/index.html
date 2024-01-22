@@ -1,33 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Graph</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Origin-Trial" content="AmFwS4TeLqOllYz1LkiXDrx5rEWal518/yovDku8mn78T0dVCa+QOWEHO1C97fY7Frc+ZqUFtnjSaR2EJ1ERqwoAAABOeyJvcmlnaW4iOiJodHRwczovLzE3OC40NC4xMTQuMTUwOjQ0MyIsImZlYXR1cmUiOiJXZWJHUFUiLCJleHBpcnkiOjE2NjM3MTgzOTl9" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
     <link rel="shortcut icon" href="data:image/png;base64, AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbbv+DGW3/mRlt/5kZbf+ZGq6/hIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGa3/ohkt/7/Zbj//2S3/v9lt/6WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGm5/iRlt/74Zbj//2W4//9luP//Zbf++mi4/i4gIPciGhr24hsb9uwbG/bsGhr24CEh9xoAAAAAAAAAAAAAAABnuP5mZLf+/2W4//9luP//Zbj//2S3/v9muP5yGBj2rhMT9v8TE/b/ExP2/xMT9f8YGPWkAAAAAAAAAAAAAAAAb7z/BGW3/tZluP//Zbj//2W4//9lt/7gJzH3ShMT9f8TE/b/ExP2/xMT9v8TE/b/ExP1/CAg9joAAAAAAAAAAAAAAABmuP5GZLf+6GS3/uhkt/7oZbf+UhgY9YQSEvX/ExP2/xMT9v8TE/b/ExP2/xIS9f8aGvZ8AAAAAD4++gQgIPZ6IiL2hiIi9oYgIPZ8KCj5BAAAAAAtLfgUFBT17BMT9v8TE/b/ExP2/xMT9v8VFfXoLCz4DgAAAAAaGvZqEhL1/xMT9v8TE/b/EhL1/xsb9nIAAAAAAAAAABwc9m4SEvX/ExP2/xMT9v8SEvX/HR32ZAAAAAAnJ/gSFRX16hMT9v8TE/b/ExP2/xMT9v8UFPXuJyf4Fp2xlAKNnqUYLC/mfhYW83ATE/VuFxf1aDc3+gIAAAAAGBj1fhIS9f8TE/b/ExP2/xMT9v8TE/b/ExP1/xkZ9YaGn3yIhZ57/4Wee/+Gn3yKAAAAAAAAAAAAAAAAAAAAACMj9zYTE/X8ExP2/xMT9v8TE/b/ExP2/xMT9f9JUshihZ57+IaffP+Gn3z/hZ579oigfiYAAAAAAAAAAAAAAAAAAAAAGBj1oBIS9f8TE/b/ExP2/xMT9f8YGPWmiKB+PIWee/+Gn3z/hp98/4Wee/+HoH06AAAAAAAAAAAAAAAAAAAAACUl9xgVFfXOExP11BMT9dQUFPXQJib3HgAAAACGn3ymhp98/4affP+Gn3ymAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiKB+EIihf0CIoX9AiKB+EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAP//AADg/wAA4MMAAOCBAADggQAA8QEAAOeBAADDwwAAgf8AAIAPAACBDwAAgQ8AAMMPAAD//wAA//8AAA==" type="image/png">
     <style>
         * {
             -moz-box-sizing: border-box;
             box-sizing: border-box;
         }
-        html,
-        body {
+        html, body
+        {
             margin: 0;
             padding: 0;
             border: 0;
             font-size: 100%;
             font: inherit;
             vertical-align: baseline;
-            background: #000;
             width: 100%;
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: #ecfbf68a;
         }
+
+        canvas {
+            padding: 16px 0 0 0;
+        }
+
+        .settings {
+            display: flex;
+            flex-direction: row;
+            gap: 16px;
+        }
+
+        .waves {
+            display: flex;
+            flex-direction: row;
+            gap: 16px;
+        }
+
+        .zoom, .scale {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .zoomValue, .scaleValue {
+            width: 102%;
+        }
+
+        @font-face {
+            font-family: 'UL Segoe UI Light';
+            src: url( <%= htmlWebpackPlugin.options.font %> ) format( 'truetype' );
+        }
+
     </style>
+    <script type='text/javascript' src='config/controller.bundle.js'></script>
+
 </head>
 <body>
-    <canvas id="gfx" style="border: 1px solid gray;"></canvas>
-    <div id="wa" style="display: block"></div>
+    <div class="container">
+        <div class="settings">
+            <div class="waves">
+               <label for="sampling">Частота дескритизации: <input id="sampling" class="Sampling" type="number" value="44100"/></label>
+               <label for="time"> Ось Y: <input id="time" class="sampling" type="number" value="60"/> секунд</label>
+            </div>
+            <div class="zoom">
+                <div class="xZoom zoom">
+                    <label class="xZoomValue zoomValue" for="xZoom">Зум по оси X</label>
+                    <input type="range" id="xZoom" name="xZoom" value="0" min="0" max="100" />
+                </div>
+                <div class="yZoom zoom">
+                    <label class="yZoomValue zoomValue" for="yZoom">Зум по оси Y</label>
+                    <input type="range" id="yZoom" name="yZoom" value="0" min="0" max="100" />
+                </div>
+            </div>
+            <div class="scale">
+                <div class="xScale scale">
+                    <label class="xScaleValue scaleValue" for="xScale">Колличество делений по оси X</label>
+                    <input type="range" id="xScale" name="xScale" value="30" min="0" max="100" />
+                </div>
+                <div class="yScale scale">
+                    <label class="yScaleValue scaleValue" for="yScale">Колличество делений по оси Y</label>
+                    <input type="range" id="yScale" name="yScale" value="10" min="0" max="100" />
+                </div>
+            </div>
+        </div>
+        <canvas id="gfx"></canvas>
+    </div>
 </body>
+<script type="module">
+    const xZoom = document.querySelector('#xZoom')
+    const yZoom = document.querySelector('#yZoom')
+    const yZoomValue = document.querySelector('.yZoomValue')
+    const xZoomValue = document.querySelector('.xZoomValue')
+
+    const xScale = document.querySelector('#xScale')
+    const yScale = document.querySelector('#yScale')
+    const xScaleValue = document.querySelector('.xScaleValue')
+    const yScaleValue = document.querySelector('.yScaleValue')
+
+    xScaleValue.textContent = `Колличество делений по оси X ${xScale.value}`
+    yScaleValue.textContent = `Колличество делений по оси Y ${yScale.value}`
+
+    xZoomValue.textContent = `Зум по оси X: ${xZoom.value}`
+    yZoomValue.textContent = `Зум по оси Y: ${yZoom.value}`
+
+    xZoom.addEventListener('input', function() {
+        xZoomValue.textContent = `Зум по оси X: ${xZoom.value}`
+    }, false);
+
+    yZoom.addEventListener('input', function() {
+        yZoomValue.textContent = `Зум по оси Y: ${yZoom.value}`
+    }, false);
+
+    xScale.addEventListener('input', function() {
+        xScaleValue.textContent = `Колличество делений по оси X ${xScale.value}`
+    }, false);
+
+    yScale.addEventListener('input', function() {
+        yScaleValue.textContent =  `Колличество делений по оси Y ${yScale.value}`
+    }, false);
+</script>
 </html>
