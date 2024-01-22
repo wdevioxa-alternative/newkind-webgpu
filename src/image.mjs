@@ -1,10 +1,10 @@
-import { GObject } from './object.mjs';
+import { wDObject } from './object.mjs';
 
-export class GImage extends GObject
+export class wDImage extends wDObject
 {
-    constructor( instance, url, x, y, width, height ) 
+    constructor( instance, url ) 
     {
-        super( instance, x, y, width, height );
+        super( instance, 0, 0, 0, 0 );
 	this.setURL( url );
     }  
     destroy() {
@@ -12,9 +12,9 @@ export class GImage extends GObject
         this.setFragUVBuffer( null );
         this.setVertexBuffer( null );
 	this.setTextureImage( null );
-	this.setShaderFlagBuffer( null );
+	this.setUniformShaderLocation( null );
     }
-    async initialize() {
+    async init() {
 	let instance = this.getInstance();
         this.setColorsBuffer( null );
         this.setFragUVBuffer( null );
@@ -23,11 +23,18 @@ export class GImage extends GObject
 	this.setTextureImage( 
 		await this.loadTextureImage( instance.device, this.getURL() )
 	);
-        this.setShaderFlagBuffer( 
-		this.createOnlyBuffer( 4, GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC, instance.device ) 
+	this.setUniformShaderLocation( 
+		this.setUniformShaderFlag( instance.device, 10 ) 
 	);
-        this.setShaderFlag( true, 10 );
         this.setDuty( false );
+    }
+    set( x, y, width, height )
+    {
+    	this.setX(x);
+	this.setY(y);
+	this.setWidth( width );
+	this.setHeight( height );
+	this.setDuty( true );
     }
     getURL() { 
         return this.locationURL;
@@ -156,7 +163,8 @@ export class GImage extends GObject
     async loadTextureImage( device, url ) {
 
         let response = await fetch(
-            new URL( "./" + url, window.location.href ).toString()
+//            new URL( "webgpu/dist/" + url, window.location.href ).toString()
+            new URL( url, window.location.href ).toString()
         );
 	
         let source = await createImageBitmap( await response.blob() );
@@ -178,17 +186,18 @@ export class GImage extends GObject
 
 	return texture;
     }
-    setTextureImage( textureImage ) {
+    setTextureImage( textureImage ) 
+    {
         this.textureImage = textureImage;
     }
-    getTextureImage() {
+    getTextureImage() 
+    {
         return this.textureImage;
     }
     setVertexBuffer( vertex )
     {
-        if ( vertex == null )
-            if ( this.vertexBuffer != null )
-                this.vertexBuffer.destroy();
+        if ( this.vertexBuffer != null )
+            this.vertexBuffer.destroy();
         this.vertexBuffer = vertex;
     }
     getVertexBuffer() 
@@ -197,9 +206,8 @@ export class GImage extends GObject
     }
     setFragUVBuffer( fragUV )
     {
-        if ( fragUV == null )
-            if ( this.fragUVBuffer != null )
-                this.fragUVBuffer.destroy();
+        if ( this.fragUVBuffer != null )
+            this.fragUVBuffer.destroy();
         this.fragUVBuffer = fragUV;
     }
     getFragUVBuffer()
@@ -208,9 +216,8 @@ export class GImage extends GObject
     }
     setColorsBuffer( colors )
     {
-        if ( colors == null )
-            if ( this.colorsBuffer != null )
-                this.colorsBuffer.destroy();
+        if ( this.colorsBuffer != null )
+            this.colorsBuffer.destroy();
         this.colorsBuffer = colors;
     }
     getColorsBuffer() 
@@ -263,7 +270,7 @@ export class GImage extends GObject
             this.setColorsBuffer( null );
             this.setFragUVBuffer( null );
             this.setVertexBuffer( null );
-            this.setTextureImage( null );
+//            this.setTextureImage( null );
             this.setDuty( false );
         }
 	let textureImage = this.getTextureImage();
@@ -291,7 +298,7 @@ export class GImage extends GObject
 		entries: [ {
 			binding: 0,
 			resource: {
-				buffer: this.shaderFlagBuffer,
+				buffer: this.uniformlShaderLocation
 			}
 		} ]
 	} );
