@@ -1,16 +1,13 @@
-import { mat4, vec3 } from 'wgpu-matrix';
-import { wDCircle } from './circle.mjs';
-import { wDLine } from './line.mjs';
-import { wDDot } from './dot.mjs';
-import { wDBox } from './box.mjs';
-import { wDSpline } from './spline.mjs';
-import { wDLabel } from './label.mjs';
-import { wDImage } from './image.mjs';
+import { GLine } from './line.mjs';
+import { GBox } from './box.mjs';
+import { GSpline } from './spline.mjs';
+import { GLabel } from './label.mjs';
+import { GImage } from './image.mjs';
 
 import vertexShaderWgslCode from './shaders/shader.vert.wgsl'
 import fragmentShaderWgslCode from './shaders/shader.frag.wgsl'
 
-export class wDApplication
+export class WDevApplication
 {
     constructor() 
     {
@@ -45,37 +42,46 @@ export class wDApplication
     }
     calcX( cx ) 
     {
-	let cw = this.getCanvasWidth();
-	let translate = 2.0 * cx / cw - 1.0;
-	return translate;
+        let cw = Math.fround(this.getCanvasWidth() / 2.0);
+        let it = 1.0 / cw;
+        return Math.fround(cx) * it - 1.0;
     }
     calcY( cy ) 
     {
-        let ch = this.getCanvasHeight();
-	let translate = -( 2.0 * cy / ch - 1);
-	return translate;
+        let ccy = this.getCanvasHeight() - cy;
+        let ch = Math.fround(this.getCanvasHeight() / 2.0);
+        let it = 1.0 / ch;
+        return Math.fround(ccy) * it - 1.0;
     }
-    setUniformShaderLocation( uniform )
+    calcScale( origWholeSize, scaleWholeSize, scaleItem )
     {
-	if ( this.uniformlShaderLocation != null ) 
-		this.uniformlShaderLocation.destroy();
-	this.uniformlShaderLocation = uniform;
+        return ( ( origWholeSize * scaleItem ) / scaleWholeSize );
+    }    
+    setShaderFlag( setFlag, shaderValue, flagBuffer = null )
+    {
+	if ( setFlag == true ) {
+            let source = new Uint32Array(1);
+            source[0] = shaderValue;
+            if ( flagBuffer == null )
+                this.attachBuffer( source, this.shaderFlagBuffer );
+            else this.attachBuffer( source, flagBuffer );
+        } else {
+            if ( flagBuffer == null ) {
+                this.shaderFlagBuffer.destroy();
+                this.shaderFlagBuffer = null;
+            } else flagBuffer.destroy();
+	}
     }
-    getUniformShaderLocation()
+    setShaderFlagBuffer( shaderFlagBuffer )
     {
-    	return this.uniformlShaderLocation;
+	if ( this.shaderFlagBuffer != null ) {
+            this.shaderFlagBuffer.destroy();
+        }
+	this.shaderFlagBuffer = shaderFlagBuffer;
     }
-    setUniformShaderFlag( device, shaderValue )
+    getShaderFlagBuffer()
     {
-        let source = new Uint32Array(1);
-        source[0] = shaderValue;
-        const uniformBuffer = device.createBuffer( {
-            label: 'uniform flag buffer',
-            size: source.byteLength,
-            usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC,
-        } );
-        device.queue.writeBuffer(uniformBuffer, 0, source);
-	return uniformBuffer;
+        return this.shaderFlagBuffer;
     }
     attachBuffer(source, destination) 
     {
@@ -138,7 +144,7 @@ export class wDApplication
                 device: this.device,
                 format: 'bgra8unorm',
                 size: [ this.getCanvasWidth(), this.getCanvasHeight(), 1 ],
-                compositingAlphaMode: "premultiplied", // "opaque",
+                compositingAlphaMode: "opaque",
                 usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
             });
 
@@ -206,13 +212,14 @@ export class wDApplication
 //              },
             } } );
 
-            this.setUniformShaderLocation (
-                this.setUniformShaderFlag( this.device, 0 )
+            this.setShaderFlagBuffer( 
+		this.createOnlyBuffer( 4, GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC, this.device ) 
             );
+            this.setShaderFlag( true, 0 );
 
             this.sampler = this.device.createSampler({
-                magFilter: 'nearest',  // linear
-                minFilter: 'nearest'   // linear
+                magFilter: 'linear',  // linear
+                minFilter: 'linear'   // linear
             });
 
             this.emptyTexture = this.device.createTexture({
@@ -235,14 +242,14 @@ export class wDApplication
 	}
 	catch (e)
 	{
-            console.error(e);
+            alert(e);
 	}
     }
 
     start = async() => {
 	await this.init();
         await this.resources();
-	return requestAnimationFrame( this.render );    
+	await this.render();
     }
 
     async resources()
@@ -250,23 +257,12 @@ export class wDApplication
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 //        this.spline = new GSpline( 0, 0, this.getCanvasWidth(), this.getCanvasHeight() );
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-	this.line = new wDLine( this );
-	await this.line.init();
-
-	this.box = new wDBox( this );
-	await this.box.init();
-
-	this.image = new wDImage( this, "assets/Di-3d.png" );
-	await this.image.init();
-
-	this.circle = new wDCircle( this );
-	await this.circle.init();
-
-	this.dot = new wDCircle( this );
-	await this.dot.init();
-
-	this.color = 0.0;
-	this.color_it = 0.01;
+	this.line = new GLine( this, 10, 140, 200, 1 );
+	await this.line.initialize();
+	this.box = new GBox( this, 10, 10, 100, 100 );
+	await this.box.initialize();
+	this.image = new GImage( this, "assets/Di-3d.png", 150, 10, 100, 100 );
+	await this.image.initialize();
     }
 
     render = async() => {
@@ -298,7 +294,7 @@ export class wDApplication
 		entries: [ {
 			binding: 0,
 			resource: {
-				buffer: this.uniformlShaderLocation,
+				buffer: this.shaderFlagBuffer,
 			}
 		} ]
 	} );
@@ -324,59 +320,9 @@ export class wDApplication
         this.passEncoder.setBindGroup( 0, shaderBindGroup );
         this.passEncoder.setBindGroup( 1, textureBindGroup );
 
-	this.color += this.color_it;
-
-	if ( this.color >= 1.0 ) {
-		this.color_it = -0.01;
-		this.color = 1.0;
-	} else if ( this.color < 0 ) { 
-		this.color_it = +0.01; 
-		this.color = 0;
-	}
-
-	this.line.append( 20, 20, 220, 220, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-	this.line.append( 220, 20, 20, 220, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-
-	this.line.append( 240, 220, 40, 20, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-	this.line.append( 40, 220, 240, 20, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-
-	this.line.append( 80, 30, 260, 30, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-	this.line.append( 260, 40, 80, 40, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-
-	this.line.append( 30, 260, 30, 60, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-	this.line.append( 40, 60, 40, 260, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-
-	await this.line.draw( this );
-	this.line.clear();
-
-	let sW = this.getCanvasWidth();
-	let sH = this.getCanvasHeight();
-
-	let iW = 100 * this.color * 4;
-	let iH = 100 * this.color * 4;
-	
-	let iX = ( sW - iW ) / 2.0;
-	let iY = ( sH - iH ) / 2.0;
-
-	this.image.set( iX, iY, iW, iH );
+	await this.box.draw( this, [ 0.0, 1.0, 0.0, 1.0 ] );
+	await this.line.draw( this, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
 	await this.image.draw( this );
-
-	let bW = sW - 40;
-	let bH = sH - 40;
-
-	this.box.set( 20, 20, bW, bH, 1 );
-	await this.box.draw( this, [                         
-		{ from: [ this.color, 1.0 - this.color, this.color, 1.0 ], to: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ] },
-		{ from: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ], to: [ this.color, 1.0 - this.color, this.color, 1.0 ] },
-		{ from: [ this.color, 1.0 - this.color, this.color, 1.0 ], to: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ] },
-		{ from: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ], to: [ this.color, 1.0 - this.color, this.color, 1.0 ] } ] );
-
-	this.circle.set( sW / 2.0, sH / 2.0, 100 * ( 1.0 - this.color ) * 2, 2 );
-	await this.circle.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
-
-	this.dot.set( 11, 11, 6, 1 );
-	await this.dot.draw( this, [ 0.0, 1.0, 0.0, 1.0 ] );
-
 
 /*       
 	var objectparam = window.getDrawParams.call();
@@ -394,7 +340,6 @@ export class wDApplication
             await this.spline.functionDraw( this, objectparam.draw[i].coords.x.min, objectparam.draw[i].coords.x.max, objectparam.draw[i].coords.x.dprepeats, objectparam.draw[i].dpoints, objectparam.draw[i].func, objectparam.draw[i].color );
 	}
 */
-
         this.passEncoder.end();
         this.device.queue.submit( [ this.commandEncoder.finish() ] );
 

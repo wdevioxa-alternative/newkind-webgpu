@@ -1,7 +1,7 @@
-import { GObject } from './object.mjs';
-import { GLabel } from './label.mjs';
+import { wDObject } from './object.mjs';
+import { wDLabel } from './label.mjs';
 
-export class GSpline extends GObject
+export class wDSpline extends wDObject
 {
     constructor( x, y, width, height ) 
     {

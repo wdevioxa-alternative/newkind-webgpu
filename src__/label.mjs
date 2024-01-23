@@ -1,6 +1,6 @@
-import { GObject } from './object.mjs';
+import { wDObject } from './object.mjs';
 
-export class GLabel extends GObject
+export class wDLabel extends wDObject
 {
     constructor( fontWeight, fontSize, fontFamily, x, y, width, height ) {        
         super( x, y, width, height );
