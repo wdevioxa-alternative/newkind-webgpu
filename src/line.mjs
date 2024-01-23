@@ -13,47 +13,47 @@ export class wDLine extends wDObject
     constructor( instance ) 
     {
         super( instance, 0, 0, 0, 0 );
-	this.setX2(0);
-	this.setY2(0);
-	this.setLines( [] );
+	    this.setX2(0);
+	    this.setY2(0);
+	    this.setLines( [] );
     }
     destroy()
     {
         this.setColorsBuffer( null );
         this.setVertexBuffer( null );
         this.setFragUVBuffer( null );
-	this.setUniformShaderLocation( null ); 
-	this.setShaderBindGroup( null );
+	    this.setUniformShaderLocation( null ); 
+	    this.setShaderBindGroup( null );
     }  
     async init() 
     {
-	let instance = this.getInstance();
+	    let instance = this.getInstance();
         this.setVertexBuffer( null );
         this.setFragUVBuffer( null );
         this.setColorsBuffer( null );
-	this.setShaderBindGroup( null );
-	this.setUniformShaderLocation( 
+	    this.setShaderBindGroup( null );
+	    this.setUniformShaderLocation( 
 		this.setUniformShaderFlag( instance.device, 0 ) 
 	);
         this.setDuty( false );
     }
     getLinesCount()
     {
-	return this.lines.length;
+	    return this.lines.length;
     }
     getLines() {
     	return this.lines;
     }
     setLines( lines ) {
-	this.setDuty(true);
+	    this.setDuty(true);
     	this.lines = lines;
     }
     clearLines() {
-	this.setDuty(true);
-	this.setLines( [] );
+	    this.setDuty(true);
+	    this.setLines( [] );
     }
     appendLine( line ) {
-	this.setDuty(true);
+	    this.setDuty(true);
     	this.lines.push( line );
     }
     getX1() 
@@ -68,7 +68,7 @@ export class wDLine extends wDObject
     {
 	return this.getY();
     }
-    setY1(y) 
+    setY1( y ) 
     {
         this.setY(y);
     }
@@ -76,7 +76,7 @@ export class wDLine extends wDObject
     {
         return this.x2;
     }
-    setX2(x) 
+    setX2( x ) 
     {
         this.x2 = x;
     }
@@ -84,7 +84,7 @@ export class wDLine extends wDObject
     {
         return this.y2;
     }
-    setY2(y) 
+    setY2( y ) 
     {
         this.y2 = y;
     }
@@ -175,9 +175,9 @@ export class wDLine extends wDObject
 //                    Xf = ( Math.cos( Math.PI - alpha ) * vW < vW ) ? vW : ( Math.cos( Math.PI - alpha ) * vW );
                 }
             } else if ( vX >= 0 && vY < 0 ) { 
-		//////////////////////////////////
-		// To up; right up;
-		//////////////////////////////////
+		        //////////////////////////////////
+		        // To up; right up;
+		        //////////////////////////////////
                 if ( vX == 0 ) {              
                     Yf = 0.0;  
                     Xf = vW;   
