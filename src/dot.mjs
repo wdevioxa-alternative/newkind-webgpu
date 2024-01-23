@@ -13,31 +13,31 @@ export class wDDot extends wDObject
     constructor( instance ) 
     {
         super( instance, 0, 0, 0, 0 );
-	this.setDots( [] );
+	    this.setDots( [] );
     }
     destroy()
     {
         this.setColorsBuffer( null );
         this.setVertexBuffer( null );
         this.setFragUVBuffer( null );
-	this.setUniformShaderLocation( null ); 
-	this.setShaderBindGroup( null );
+	    this.setUniformShaderLocation( null ); 
+	    this.setShaderBindGroup( null );
     }  
     async init() 
     {
-	let instance = this.getInstance();
+	    let instance = this.getInstance();
         this.setVertexBuffer( null );
         this.setFragUVBuffer( null );
         this.setColorsBuffer( null );
-	this.setShaderBindGroup( null );
-	this.setUniformShaderLocation( 
-		this.setUniformShaderFlag( instance.device, 0 ) 
-	);
+	    this.setShaderBindGroup( null );
+	    this.setUniformShaderLocation( 
+		    this.setUniformShaderFlag( instance.device, 0 ) 
+	    );
         this.setDuty( false );
     }
     getDotsCount()
     {
-	return this.dots.length;
+	    return this.dots.length;
     }
     getDots() {
     	return this.dots;
@@ -47,10 +47,10 @@ export class wDDot extends wDObject
     	this.dots = dots;
     }
     clearDots() {
-	this.setDots( [] );
+	    this.setDots( [] );
     }
     appendDot( dot ) {
-	this.setDuty(true);
+	    this.setDuty(true);
     	this.dots.push( dot );
     }
     setWeight( weight )
@@ -103,14 +103,14 @@ export class wDDot extends wDObject
     {
         let instance = this.getInstance();
 
-	let dots = this.getDots();
-	let count = this.getDotsCount();
+        let dots = this.getDots();
+        let count = this.getDotsCount();
 
-	let vb = new Float32Array( 12 * count );
-	let ii = 0;
+        let vb = new Float32Array( 12 * count );
+        let ii = 0;
 
-	for (let cj = 0; cj < count; cj++ )        
-	{
+        for (let cj = 0; cj < count; cj++ )        
+        {
             let vX = dots[ cj ].x;
             let vY = dots[ cj ].y;
 
@@ -142,109 +142,113 @@ export class wDDot extends wDObject
             vb[ii++] = instance.calcX( vX - Xh );
             vb[ii++] = instance.calcY( vY + Yh ); // 0 1
         }
-	return vb;
+
+	    return vb;
     }
 
     getFragUV()
     {   
-	let dots = this.getDots();
-	let count = this.getDotsCount();
-	let fb = new Float32Array(12 * count);
-	let ii = 0;
-	for (let cj = 0; cj < count; cj++ )        
-	{	
-		fb[ii++] = 1.0; // ( 1; 1 )
-		fb[ii++] = 1.0;
+        let dots = this.getDots();
+        let count = this.getDotsCount();
 
-		fb[ii++] = 1.0; // ( 1; 0 )
-		fb[ii++] = 0.0;
+        let fb = new Float32Array(12 * count);
+        let ii = 0;
 
-		fb[ii++] = 0.0; // ( 0; 0 )
-		fb[ii++] = 0.0;
+        for (let cj = 0; cj < count; cj++ )        
+        {	
+            fb[ii++] = 1.0; // ( 1; 1 )
+            fb[ii++] = 1.0;
 
-	       	for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 0 * 2 + k + cj * 12 ];
+            fb[ii++] = 1.0; // ( 1; 0 )
+            fb[ii++] = 0.0;
 
-	        for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 2 * 2 + k + cj * 12 ];
+            fb[ii++] = 0.0; // ( 0; 0 )
+            fb[ii++] = 0.0;
 
-		fb[ii++] = 0.0;  // ( 0; 1 )
-		fb[ii++] = 1.0;
-	}
-	return fb;
+                for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 0 * 2 + k + cj * 12 ];
+
+                for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 2 * 2 + k + cj * 12 ];
+
+            fb[ii++] = 0.0;  // ( 0; 1 )
+            fb[ii++] = 1.0;
+        }
+        return fb;
     }
+
     getColors()
     {
-	let dots = this.getDots();
-	let count = this.getDotsCount();
+        let dots = this.getDots();
+        let count = this.getDotsCount();
         let cb = new Float32Array( 24 * count );
-	let ii = 0;	
-	for (let cj = 0; cj < count; cj++ ) {
-		let color = dots[cj].color;
+        let ii = 0;
+        for (let cj = 0; cj < count; cj++ ) {
+		    let color = dots[cj].color;
 	        for ( let k = 0; k < 4; k++ ) cb[ii++] = color[k];
 	        for ( let k = 0; k < 4; k++ ) cb[ii++] = color[k];
 	        for ( let k = 0; k < 4; k++ ) cb[ii++] = color[k];
         	for ( let k = 0; k < 4; k++ ) cb[ii++] = cb[ 0 * 4 + k + cj * 24];
 	        for ( let k = 0; k < 4; k++ ) cb[ii++] = cb[ 2 * 4 + k + cj * 24 ];
 	        for ( let k = 0; k < 4; k++ ) cb[ii++] = color[k];
-	}
+	    }
         return cb;
     }
 
     clear()
     {
-	this.clearDots();
+	    this.clearDots();
     }
 
     append( x, y, weight, color = [ 1.0, 1.0, 1.0, 1.0 ] )
     {
-	this.appendDot( { 'x': x, 'y': y, 'weight': weight, 'color' : color } );
+	    this.appendDot( { 'x': x, 'y': y, 'weight': weight, 'color' : color } );
     }
 
     async draw( instance ) 
     {
         let flag = this.isDuty();
         if ( flag == true ) 
-	{
+	    {
             this.setColorsBuffer( null );
             this.setFragUVBuffer( null );
             this.setVertexBuffer( null );
             this.setDuty( false );
         }
-	let vertexBuffer = this.getVertexBuffer();
+	    let vertexBuffer = this.getVertexBuffer();
         if ( vertexBuffer == null ) {
-		vertexBuffer = instance.createBuffer(this.getVertex(), GPUBufferUsage.VERTEX, instance.device );
-                this.setVertexBuffer( vertexBuffer );
+		    vertexBuffer = instance.createBuffer(this.getVertex(), GPUBufferUsage.VERTEX, instance.device );
+            this.setVertexBuffer( vertexBuffer );
         }
         let fragUVBuffer = this.getFragUVBuffer();
         if ( fragUVBuffer == null ) {
-		fragUVBuffer = instance.createBuffer( this.getFragUV(), GPUBufferUsage.VERTEX, instance.device );
-                this.setFragUVBuffer( fragUVBuffer );
+		    fragUVBuffer = instance.createBuffer( this.getFragUV(), GPUBufferUsage.VERTEX, instance.device );
+            this.setFragUVBuffer( fragUVBuffer );
         }
         let colorsBuffer = this.getColorsBuffer();
         if ( colorsBuffer == null ) {
-		colorsBuffer = instance.createBuffer( this.getColors(), GPUBufferUsage.VERTEX, instance.device );
-                this.setColorsBuffer( colorsBuffer );
+		    colorsBuffer = instance.createBuffer( this.getColors(), GPUBufferUsage.VERTEX, instance.device );
+            this.setColorsBuffer( colorsBuffer );
         }	    
         let shaderBindGroup = this.getShaderBindGroup();
-	if ( shaderBindGroup == null ) {
-		shaderBindGroup = instance.device.createBindGroup( {
-			layout: instance.pipeline.getBindGroupLayout(0),
-			entries: [ {
-				binding: 0,
-				resource: {
-					buffer: this.uniformlShaderLocation
-				}
-			} ]
-		} );
-		this.setShaderBindGroup( shaderBindGroup );
+	    if ( shaderBindGroup == null ) {
+		    shaderBindGroup = instance.device.createBindGroup( {
+			    layout: instance.pipeline.getBindGroupLayout(0),
+			    entries: [ {
+				    binding: 0,
+				    resource: {
+					    buffer: this.uniformlShaderLocation
+				    }
+			    } ]
+		    } );
+		    this.setShaderBindGroup( shaderBindGroup );
         }
 
-	let count = this.getDotsCount();
+	    let count = this.getDotsCount();
 
         instance.passEncoder.setBindGroup( 0, shaderBindGroup );
         instance.passEncoder.setVertexBuffer( 0, vertexBuffer );
         instance.passEncoder.setVertexBuffer( 1, fragUVBuffer );
         instance.passEncoder.setVertexBuffer( 2, colorsBuffer );
 
-        instance.passEncoder.draw(6 * count, 1, 0, 0 );
+        instance.passEncoder.draw( 6 * count, 1, 0, 0 );
     }
 };

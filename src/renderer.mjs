@@ -75,7 +75,7 @@ export class wDApplication
             usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC,
         } );
         device.queue.writeBuffer(uniformBuffer, 0, source);
-	return uniformBuffer;
+	    return uniformBuffer;
     }
     attachBuffer(source, destination) 
     {
@@ -95,7 +95,7 @@ export class wDApplication
             size: source.byteLength,
             usage: usage
         } );
-	return this.attachBuffer(source, destination) 
+	    return this.attachBuffer(source, destination) 
     }
     createOnlyBuffer(size, usage, device) 
     {
@@ -271,8 +271,8 @@ export class wDApplication
 
     render = async() => {
 
-	let texture = this.context.getCurrentTexture();
-	this.renderPassDesc.colorAttachments[0].view = texture.createView();
+	    let texture = this.context.getCurrentTexture();
+	    this.renderPassDesc.colorAttachments[0].view = texture.createView();
 
         this.commandEncoder = this.device.createCommandEncoder();
         this.passEncoder = this.commandEncoder.beginRenderPass( this.renderPassDesc ); 
@@ -302,6 +302,7 @@ export class wDApplication
 			}
 		} ]
 	} );
+
         let textureBindGroup = this.device.createBindGroup( {
 		layout: this.pipeline.getBindGroupLayout( 1 ),
 		entries: [ 
@@ -321,8 +322,8 @@ export class wDApplication
 
 	this.passEncoder.setPipeline( this.pipeline );
 
-        this.passEncoder.setBindGroup( 0, shaderBindGroup );
-        this.passEncoder.setBindGroup( 1, textureBindGroup );
+    this.passEncoder.setBindGroup( 0, shaderBindGroup );
+    this.passEncoder.setBindGroup( 1, textureBindGroup );
 
 	this.color += this.color_it;
 
