@@ -15,6 +15,7 @@ export class wDLine extends wDObject
         super( instance, 0, 0, 0, 0 );
 	this.setX2(0);
 	this.setY2(0);
+	this.setIndexes( [ 0, 1, 2, 3 ] );
 	this.setLines( [] );
     }
     destroy()
@@ -45,7 +46,6 @@ export class wDLine extends wDObject
     	return this.lines;
     }
     setLines( lines ) {
-	this.setDuty(true);
     	this.lines = lines;
     }
     clearLines() {
@@ -96,6 +96,14 @@ export class wDLine extends wDObject
     {
 	return this.weight;
     }
+    setIndexes( indexes )
+    {
+	this.iterationIndexes = indexes;
+    }
+    getIndexes()
+    {
+	return this.iterationIndexes;
+    }
     setShaderBindGroup( shaderBind ) 
     {
         this.shaderBindGroup = shaderBind;
@@ -106,8 +114,9 @@ export class wDLine extends wDObject
     }
     setVertexBuffer( vertex )
     {
-        if ( this.vertexBuffer != null )
-            this.vertexBuffer.destroy();
+        if ( vertex == null )
+            if ( this.vertexBuffer != null )
+                this.vertexBuffer.destroy();
         this.vertexBuffer = vertex;
     }
     getVertexBuffer() 
@@ -116,8 +125,9 @@ export class wDLine extends wDObject
     }
     setFragUVBuffer( fragUV )
     {
-        if ( this.fragUVBuffer != null )
-            this.fragUVBuffer.destroy();
+        if ( fragUV == null )
+            if ( this.fragUVBuffer != null )
+                this.fragUVBuffer.destroy();
         this.fragUVBuffer = fragUV;
     }
     getFragUVBuffer()
@@ -126,8 +136,9 @@ export class wDLine extends wDObject
     }
     setColorsBuffer( colors )
     {
-        if ( this.colorsBuffer != null )
-            this.colorsBuffer.destroy();
+        if ( colors == null )
+            if ( this.colorsBuffer != null )
+                this.colorsBuffer.destroy();
         this.colorsBuffer = colors;
     }
     getColorsBuffer() 
@@ -163,7 +174,7 @@ export class wDLine extends wDObject
 		//////////////////////////////////
 		// To right; right down;
 		//////////////////////////////////
-                if ( vY == 0 ) {
+                if ( vY <= vW ) {
                     Yf = vW;
                     Xf = 0.0;
                 } else {
@@ -178,7 +189,7 @@ export class wDLine extends wDObject
 		//////////////////////////////////
 		// To up; right up;
 		//////////////////////////////////
-                if ( vX == 0 ) {              
+                if ( vX <= vW ) {              
                     Yf = 0.0;  
                     Xf = vW;   
                 } else {
@@ -193,7 +204,7 @@ export class wDLine extends wDObject
 		//////////////////////////////////
 		// To left; left up;
 		//////////////////////////////////
-                if ( vY == 0 ) {
+                if ( vY <= vW ) {
                     Yf = vW;
                     Xf = 0.0;
                 } else {
@@ -208,7 +219,7 @@ export class wDLine extends wDObject
 		//////////////////////////////////
 		// To down; left down;
 		//////////////////////////////////
-                if ( vX == 0 ) {
+                if ( vX <= vW ) {
                     Xf = vW;
                     Yf = 0.0;
                 } else {
@@ -261,15 +272,13 @@ export class wDLine extends wDObject
 	for (let cj = 0; cj < count; cj++ )        
 	{	
 		fb[ii++] = 1.0;
-		fb[ii++] = 1.0;
-		fb[ii++] = 1.0;
 		fb[ii++] = 0.0;
 		fb[ii++] = 0.0;
 		fb[ii++] = 0.0;
 	       	for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 0 * 2 + k + cj * 12 ];
 	        for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 2 * 2 + k + cj * 12 ];
 		fb[ii++] = 0.0;
-		fb[ii++] = 1.0;
+		fb[ii++] = 0.1;
 	}
 
 	return fb;
@@ -285,6 +294,7 @@ export class wDLine extends wDObject
 	for (let cj = 0; cj < count; cj++ )        
 	{
 		let colors = lines[cj].colors;
+
 	        for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.to[k];
 	        for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.to[k];
 	        for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.from[k];
