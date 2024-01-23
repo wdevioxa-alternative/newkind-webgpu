@@ -1,0 +1,366 @@
+import { wDObject } from './object.mjs';
+
+//////////////////////////////
+//        
+// (0;0) 2---------1 (1;0)
+//       |         |
+// (0;1) 3---------0 (1;1)
+//
+//////////////////////////////
+
+export class wDLine extends wDObject
+{
+    constructor( instance ) 
+    {
+        super( instance, 0, 0, 0, 0 );
+	this.setX2(0);
+	this.setY2(0);
+	this.setIndexes( [ 0, 1, 2, 3 ] );
+	this.setLines( [] );
+    }
+    destroy()
+    {
+        this.setColorsBuffer( null );
+        this.setVertexBuffer( null );
+        this.setFragUVBuffer( null );
+	this.setUniformShaderLocation( null ); 
+	this.setShaderBindGroup( null );
+    }  
+    async init() 
+    {
+	let instance = this.getInstance();
+        this.setVertexBuffer( null );
+        this.setFragUVBuffer( null );
+        this.setColorsBuffer( null );
+	this.setShaderBindGroup( null );
+	this.setUniformShaderLocation( 
+		this.setUniformShaderFlag( instance.device, 0 ) 
+	);
+        this.setDuty( false );
+    }
+    getLinesCount()
+    {
+	return this.lines.length;
+    }
+    getLines() {
+    	return this.lines;
+    }
+    setLines( lines ) {
+    	this.lines = lines;
+    }
+    clearLines() {
+	this.setDuty(true);
+	this.setLines( [] );
+    }
+    appendLine( line ) {
+	this.setDuty(true);
+    	this.lines.push( line );
+    }
+    getX1() 
+    {
+        return this.getX();
+    }
+    setX1(x) 
+    {
+        this.setX(x);
+    }
+    getY1() 
+    {
+	return this.getY();
+    }
+    setY1(y) 
+    {
+        this.setY(y);
+    }
+    getX2() 
+    {
+        return this.x2;
+    }
+    setX2(x) 
+    {
+        this.x2 = x;
+    }
+    getY2() 
+    {
+        return this.y2;
+    }
+    setY2(y) 
+    {
+        this.y2 = y;
+    }
+    setWeight( weight )
+    {
+	this.weight = weight;
+    }
+    getWeight()
+    {
+	return this.weight;
+    }
+    setIndexes( indexes )
+    {
+	this.iterationIndexes = indexes;
+    }
+    getIndexes()
+    {
+	return this.iterationIndexes;
+    }
+    setShaderBindGroup( shaderBind ) 
+    {
+        this.shaderBindGroup = shaderBind;
+    }
+    getShaderBindGroup() 
+    {
+        return this.shaderBindGroup;
+    }
+    setVertexBuffer( vertex )
+    {
+        if ( vertex == null )
+            if ( this.vertexBuffer != null )
+                this.vertexBuffer.destroy();
+        this.vertexBuffer = vertex;
+    }
+    getVertexBuffer() 
+    {
+        return this.vertexBuffer;
+    }
+    setFragUVBuffer( fragUV )
+    {
+        if ( fragUV == null )
+            if ( this.fragUVBuffer != null )
+                this.fragUVBuffer.destroy();
+        this.fragUVBuffer = fragUV;
+    }
+    getFragUVBuffer()
+    {
+        return this.fragUVBuffer;
+    }
+    setColorsBuffer( colors )
+    {
+        if ( colors == null )
+            if ( this.colorsBuffer != null )
+                this.colorsBuffer.destroy();
+        this.colorsBuffer = colors;
+    }
+    getColorsBuffer() 
+    {
+        return this.colorsBuffer;
+    }
+    getVertex()
+    {
+        let instance = this.getInstance();
+
+	let lines = this.getLines();
+	let count = this.getLinesCount();
+
+	let vb = new Float32Array( 12 * count );
+	let ii = 0;
+
+	for (let cj = 0; cj < count; cj++ )        
+	{
+            let vX1 = lines[ cj ].x1;
+            let vY1 = lines[ cj ].y1;
+            let vX2 = lines[ cj ].x2;
+            let vY2 = lines[ cj ].y2;
+
+            let vW = lines[ cj ].weight;
+	
+            let vY = vY2 - vY1;
+            let vX = vX2 - vX1;
+
+            let Xf = 0.0;
+            let Yf = 0.0;
+
+            if ( vX > 0 && vY >= 0 ) { 
+		//////////////////////////////////
+		// To right; right down;
+		//////////////////////////////////
+                if ( vY <= vW ) {
+                    Yf = vW;
+                    Xf = 0.0;
+                } else {
+                    let alpha = Math.atan2( Math.abs(vY), Math.abs(vX) );
+                    Yf = -Math.sin( Math.PI - alpha ) * vW;
+                    Xf = Math.cos( Math.PI - alpha ) * vW;
+
+//                    Yf = ( Math.sin( Math.PI - alpha ) * vW < vW ) ? -vW : -( Math.cos( Math.PI - alpha ) * vW );
+//                    Xf = ( Math.cos( Math.PI - alpha ) * vW < vW ) ? vW : ( Math.cos( Math.PI - alpha ) * vW );
+                }
+            } else if ( vX >= 0 && vY < 0 ) { 
+		//////////////////////////////////
+		// To up; right up;
+		//////////////////////////////////
+                if ( vX <= vW ) {              
+                    Yf = 0.0;  
+                    Xf = vW;   
+                } else {
+                    let alpha = Math.atan2( Math.abs(vY), Math.abs(vX) );
+                    Yf = Math.sin( Math.PI - alpha ) * vW;
+                    Xf = Math.cos( Math.PI - alpha ) * vW;
+
+//                    Yf = ( Math.sin( Math.PI - alpha ) * vW < vW ) ? vW : ( Math.cos( Math.PI - alpha ) * vW );
+//                    Xf = ( Math.cos( Math.PI - alpha ) * vW < vW ) ? vW : ( Math.cos( Math.PI - alpha ) * vW );
+                }
+           } else if ( vX < 0 && vY <= 0 ) {
+		//////////////////////////////////
+		// To left; left up;
+		//////////////////////////////////
+                if ( vY <= vW ) {
+                    Yf = vW;
+                    Xf = 0.0;
+                } else {
+                    let alpha = Math.atan2( Math.abs(vY), Math.abs(vX) );
+                    Yf = -Math.sin( Math.PI - alpha ) * vW;
+                    Xf = Math.cos( Math.PI - alpha ) * vW;
+
+//                    Yf = ( Math.sin( Math.PI - alpha ) * vW < vW ) ? -vW : -( Math.cos( Math.PI - alpha ) * vW );
+//                    Xf = ( Math.cos( Math.PI - alpha ) * vW < vW ) ? vW : ( Math.cos( Math.PI - alpha ) * vW );
+                }
+           } else if ( vX <= 0 && vY > 0 ) {
+		//////////////////////////////////
+		// To down; left down;
+		//////////////////////////////////
+                if ( vX <= vW ) {
+                    Xf = vW;
+                    Yf = 0.0;
+                } else {
+                    let alpha = Math.atan2( Math.abs(vY), Math.abs(vX) );
+                    Yf = Math.sin( Math.PI - alpha ) * vW;
+                    Xf = Math.cos( Math.PI - alpha ) * vW;
+
+//                    Yf = ( Math.sin( Math.PI - alpha ) * vW < vW ) ? vW : ( Math.cos( Math.PI - alpha ) * vW );
+//                    Xf = ( Math.cos( Math.PI - alpha ) * vW < vW ) ? vW : ( Math.cos( Math.PI - alpha ) * vW );
+                }
+            }
+
+            let Xh = Xf / 2.0;
+            let Yh = Yf / 2.0;
+
+//////////////////////////////
+//        
+// (0;0) 2---------1 (1;0)
+//       |         |
+// (0;1) 3---------0 (1;1)
+//
+//////////////////////////////
+
+            vb[ii++] = instance.calcX( vX2 - Xh );
+            vb[ii++] = instance.calcY( vY2 + Yh ); // 1 1
+
+            vb[ii++] = instance.calcX( vX2 + Xh );
+            vb[ii++] = instance.calcY( vY2 - Yh ); // 1 0
+
+            vb[ii++] = instance.calcX( vX1 + Xh );
+            vb[ii++] = instance.calcY( vY1 - Yh ); // 0 0
+
+            for ( let k = 0; k < 2; k++ ) vb[ii++] = vb[ 0 * 2 + k + cj * 12 ];
+            for ( let k = 0; k < 2; k++ ) vb[ii++] = vb[ 2 * 2 + k + cj * 12 ];
+
+            vb[ii++] = instance.calcX( vX1 - Xh );
+            vb[ii++] = instance.calcY( vY1 + Yh ); // 0 1
+        }
+	return vb;
+    }
+
+    getFragUV()
+    {   
+	let lines = this.getLines();
+	let count = this.getLinesCount();
+
+	let fb = new Float32Array(12 * count);
+	let ii = 0;
+
+	for (let cj = 0; cj < count; cj++ )        
+	{	
+		fb[ii++] = 1.0;
+		fb[ii++] = 0.0;
+		fb[ii++] = 0.0;
+		fb[ii++] = 0.0;
+	       	for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 0 * 2 + k + cj * 12 ];
+	        for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 2 * 2 + k + cj * 12 ];
+		fb[ii++] = 0.0;
+		fb[ii++] = 0.1;
+	}
+
+	return fb;
+    }
+    getColors()
+    {
+	let lines = this.getLines();
+	let count = this.getLinesCount();
+
+        let cb = new Float32Array( 24 * count );
+	let ii = 0;
+	
+	for (let cj = 0; cj < count; cj++ )        
+	{
+		let colors = lines[cj].colors;
+
+	        for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.to[k];
+	        for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.to[k];
+	        for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.from[k];
+        	for ( let k = 0; k < 4; k++ ) cb[ii++] = cb[ 0 * 4 + k + cj * 24];
+	        for ( let k = 0; k < 4; k++ ) cb[ii++] = cb[ 2 * 4 + k + cj * 24 ];
+	        for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.from[k];
+	}
+        return cb;
+    }
+
+    clear()
+    {
+	this.clearLines();
+    }
+
+    append( x1, y1, x2, y2, weight, colors = { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } )
+    {
+	this.appendLine( { 'x1': x1, 'y1': y1, 'x2': x2, 'y2': y2, 'weight': weight, 'colors' : colors } );
+    }
+
+    async draw( instance ) 
+    {
+        let flag = this.isDuty();
+        if ( flag == true ) 
+	{
+            this.setColorsBuffer( null );
+            this.setFragUVBuffer( null );
+            this.setVertexBuffer( null );
+            this.setDuty( false );
+        }
+	let vertexBuffer = this.getVertexBuffer();
+        if ( vertexBuffer == null ) {
+		vertexBuffer = instance.createBuffer(this.getVertex(), GPUBufferUsage.VERTEX, instance.device );
+                this.setVertexBuffer( vertexBuffer );
+        }
+        let fragUVBuffer = this.getFragUVBuffer();
+        if ( fragUVBuffer == null ) {
+		fragUVBuffer = instance.createBuffer( this.getFragUV(), GPUBufferUsage.VERTEX, instance.device );
+                this.setFragUVBuffer( fragUVBuffer );
+        }
+        let colorsBuffer = this.getColorsBuffer();
+        if ( colorsBuffer == null ) {
+		colorsBuffer = instance.createBuffer( this.getColors(), GPUBufferUsage.VERTEX, instance.device );
+                this.setColorsBuffer( colorsBuffer );
+        }	    
+        let shaderBindGroup = this.getShaderBindGroup();
+	if ( shaderBindGroup == null ) {
+		shaderBindGroup = instance.device.createBindGroup( {
+			layout: instance.pipeline.getBindGroupLayout(0),
+			entries: [ {
+				binding: 0,
+				resource: {
+					buffer: this.uniformlShaderLocation
+				}
+			} ]
+		} );
+		this.setShaderBindGroup( shaderBindGroup );
+        }
+
+	let count = this.getLinesCount();
+
+        instance.passEncoder.setBindGroup( 0, shaderBindGroup );
+        instance.passEncoder.setVertexBuffer( 0, vertexBuffer );
+        instance.passEncoder.setVertexBuffer( 1, fragUVBuffer );
+        instance.passEncoder.setVertexBuffer( 2, colorsBuffer );
+
+        instance.passEncoder.draw(6 * count, 1, 0, 0 );
+    }
+};
