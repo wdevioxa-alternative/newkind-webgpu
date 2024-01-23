@@ -60,7 +60,6 @@ export class wDSpline extends wDObject
     { this.maxY = y; }
     getMaxY()
     { return this.maxY; }
-
     setBorderPositionsBuffer( positions )
     {
         if ( positions == null )

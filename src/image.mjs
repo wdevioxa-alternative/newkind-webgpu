@@ -184,7 +184,7 @@ export class wDImage extends wDObject
             [ source.width, source.height]
         );
 
-	return texture;
+	    return texture;
     }
     setTextureImage( textureImage ) 
     {
@@ -252,7 +252,7 @@ export class wDImage extends wDObject
     }
     getColors( color = [ 0.0, 1.0, 1.0, 1.0 ] )
     {
-	let transparentColor = [ 0.0, 0.0, 0.0, 0.0 ];
+	    let transparentColor = [ 0.0, 0.0, 0.0, 0.0 ];
         let colorsBuffer = new Float32Array( 24 );
         let objectIndex = 0;
         for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];
@@ -273,12 +273,12 @@ export class wDImage extends wDObject
 //            this.setTextureImage( null );
             this.setDuty( false );
         }
-	let textureImage = this.getTextureImage();
-        if ( textureImage == null ) {
-		textureImage = await this.loadTextureImage( instance.device, this.getURL() );
-		this.setTextureImage( textureImage );
-	}
-	let vertexBuffer = this.getVertexBuffer();
+        let textureImage = this.getTextureImage();
+            if ( textureImage == null ) {
+            textureImage = await this.loadTextureImage( instance.device, this.getURL() );
+            this.setTextureImage( textureImage );
+        }
+	    let vertexBuffer = this.getVertexBuffer();
         if ( vertexBuffer == null ) {
 		vertexBuffer = this.instance.createBuffer(this.getVertex(), GPUBufferUsage.VERTEX, this.instance.device );
                 this.setVertexBuffer( vertexBuffer );

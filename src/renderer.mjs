@@ -107,166 +107,166 @@ export class wDApplication
     }
     check()
     {
-	try {
-            if (!navigator.gpu) 
-                throw('Your browser does`t support WebGPU or it is not enabled.');
+        try {
+                if (!navigator.gpu) 
+                    throw('Your browser does`t support WebGPU or it is not enabled.');
 
-            const wgerr = document.getElementById('error');
-            wgerr.style.display = 'none';
+                const wgerr = document.getElementById('error');
+                wgerr.style.display = 'none';
 
-            const wgfx = document.getElementById('gfx');
-            wgfx.style.display = 'block';
+                const wgfx = document.getElementById('gfx');
+                wgfx.style.display = 'block';
 
-            this.setCanvas( wgfx );
-	} catch ( e ) {
-	    throw( e );
+                this.setCanvas( wgfx );
+        } catch ( e ) {
+            throw( e );
         }
     }
     async init()
     {	
-	try {
+        try {
 
-            this.adapter = await navigator.gpu.requestAdapter();
-            this.device = await this.adapter.requestDevice();
+                this.adapter = await navigator.gpu.requestAdapter();
+                this.device = await this.adapter.requestDevice();
 
-            if (!this.context)
-                this.context = this.canvas.getContext('webgpu');
+                if (!this.context)
+                    this.context = this.canvas.getContext('webgpu');
 
-            this.presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+                this.presentationFormat = navigator.gpu.getPreferredCanvasFormat();
 
-            this.context.configure({
-                device: this.device,
-                format: 'bgra8unorm',
-                size: [ this.getCanvasWidth(), this.getCanvasHeight(), 1 ],
-                compositingAlphaMode: "premultiplied", // "opaque",
-                usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
-            });
+                this.context.configure({
+                    device: this.device,
+                    format: 'bgra8unorm',
+                    size: [ this.getCanvasWidth(), this.getCanvasHeight(), 1 ],
+                    compositingAlphaMode: "premultiplied", // "opaque",
+                    usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
+                });
 
-            this.pipeline = this.device.createRenderPipeline( {
-                layout: 'auto',
-                vertex: {
+                this.pipeline = this.device.createRenderPipeline( {
+                    layout: 'auto',
+                    vertex: {
+                        module: this.device.createShaderModule({
+                            code: vertexShaderWgslCode
+                        }),
+                        entryPoint: 'main',
+                        buffers: [
+                        {
+                            attributes: [{
+                                shaderLocation: 0, // [[location(0)]]
+                                offset: 0,
+                                format: 'float32x2'
+                            }],
+                            arrayStride: 4 * 2, // sizeof(float) * 3
+                            stepMode: 'vertex'
+                        }, 
+                        {
+                            attributes: [{
+                                shaderLocation: 1, // [[location(0)]]
+                                offset: 0,
+                                format: 'float32x2'
+                            }],
+                            arrayStride: 4 * 2, // sizeof(float) * 3
+                            stepMode: 'vertex'
+                        }, 
+                        {
+                            attributes: [{
+                                shaderLocation: 2, // [[location(0)]]
+                                offset: 0,
+                                format: 'float32x4'
+                            }],
+                            arrayStride: 4 * 4, // sizeof(float) * 3
+                            stepMode: 'vertex'
+                        } ]
+                },
+                fragment: {
                     module: this.device.createShaderModule({
-                        code: vertexShaderWgslCode
+                        code: fragmentShaderWgslCode
                     }),
                     entryPoint: 'main',
-                    buffers: [
-                    {
-                        attributes: [{
-                            shaderLocation: 0, // [[location(0)]]
-                            offset: 0,
-                            format: 'float32x2'
-                        }],
-                        arrayStride: 4 * 2, // sizeof(float) * 3
-                        stepMode: 'vertex'
-                    }, 
-                    {
-                        attributes: [{
-                            shaderLocation: 1, // [[location(0)]]
-                            offset: 0,
-                            format: 'float32x2'
-                        }],
-                        arrayStride: 4 * 2, // sizeof(float) * 3
-                        stepMode: 'vertex'
-                    }, 
-                    {
-                        attributes: [{
-                            shaderLocation: 2, // [[location(0)]]
-                            offset: 0,
-                            format: 'float32x4'
-                        }],
-                        arrayStride: 4 * 4, // sizeof(float) * 3
-                        stepMode: 'vertex'
-                    } ]
-            },
-            fragment: {
-                module: this.device.createShaderModule({
-                    code: fragmentShaderWgslCode
-                }),
-                entryPoint: 'main',
-                targets: [{
-                    format: 'bgra8unorm'
-                }]
-            },
-            primitive: {
-                topology: 'triangle-list',
-/////////////////////////////////////////////////////////////////////////
-// Backface culling since the cube is solid piece of geometry.
-// Faces pointing away from the camera will be occluded by faces
-// pointing toward the camera.
-/////////////////////////////////////////////////////////////////////////
-//                cullMode: 'back',
-/////////////////////////////////////////////////////////////////////////
-// Enable depth testing so that the fragment closest to the camera
-// is rendered in front.
-/////////////////////////////////////////////////////////////////////////
-//              depthStencil: {
-//                  depthWriteEnabled: true,
-//                  depthCompare: 'less',
-//                  format: 'depth24plus',
-//              },
-            } } );
+                    targets: [{
+                        format: 'bgra8unorm'
+                    }]
+                },
+                primitive: {
+                    topology: 'triangle-list',
+    /////////////////////////////////////////////////////////////////////////
+    // Backface culling since the cube is solid piece of geometry.
+    // Faces pointing away from the camera will be occluded by faces
+    // pointing toward the camera.
+    /////////////////////////////////////////////////////////////////////////
+    //                cullMode: 'back',
+    /////////////////////////////////////////////////////////////////////////
+    // Enable depth testing so that the fragment closest to the camera
+    // is rendered in front.
+    /////////////////////////////////////////////////////////////////////////
+    //              depthStencil: {
+    //                  depthWriteEnabled: true,
+    //                  depthCompare: 'less',
+    //                  format: 'depth24plus',
+    //              },
+                } } );
 
-            this.setUniformShaderLocation (
-                this.setUniformShaderFlag( this.device, 0 )
-            );
+                this.setUniformShaderLocation (
+                    this.setUniformShaderFlag( this.device, 0 )
+                );
 
-            this.sampler = this.device.createSampler({
-                magFilter: 'nearest',  // linear
-                minFilter: 'nearest'   // linear
-            });
+                this.sampler = this.device.createSampler({
+                    magFilter: 'nearest',  // linear
+                    minFilter: 'nearest'   // linear
+                });
 
-            this.emptyTexture = this.device.createTexture({
-                size: [ 10, 10, 1 ],
-                format: 'rgba8unorm',
-                usage:
-                    GPUTextureUsage.TEXTURE_BINDING |
-                    GPUTextureUsage.COPY_DST |
-                    GPUTextureUsage.RENDER_ATTACHMENT,
-            });
+                this.emptyTexture = this.device.createTexture({
+                    size: [ 10, 10, 1 ],
+                    format: 'rgba8unorm',
+                    usage:
+                        GPUTextureUsage.TEXTURE_BINDING |
+                        GPUTextureUsage.COPY_DST |
+                        GPUTextureUsage.RENDER_ATTACHMENT,
+                });
 
-            this.renderPassDesc = {
-                colorAttachments: [ {
-                    view: null,
-                    clearValue: [ 0.0, 0.0, 0.0, 1.0 ],
-                    loadOp: 'clear',
-                    storeOp: 'store'
-               }]          
-            };
-	}
-	catch (e)
-	{
-            console.error(e);
-	}
+                this.renderPassDesc = {
+                    colorAttachments: [ {
+                        view: null,
+                        clearValue: [ 0.0, 0.0, 0.0, 1.0 ],
+                        loadOp: 'clear',
+                        storeOp: 'store'
+                }]          
+                };
+        }
+        catch (e)
+        {
+                console.error(e);
+        }
     }
 
     start = async() => {
-	await this.init();
-        await this.resources();
-	return requestAnimationFrame( this.render );    
+        await this.init();
+            await this.resources();
+        return requestAnimationFrame( this.render );    
     }
 
     async resources()
     {
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-//        this.spline = new GSpline( 0, 0, this.getCanvasWidth(), this.getCanvasHeight() );
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-	this.line = new wDLine( this );
-	await this.line.init();
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //        this.spline = new GSpline( 0, 0, this.getCanvasWidth(), this.getCanvasHeight() );
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////
+        this.line = new wDLine( this );
+        await this.line.init();
 
-	this.box = new wDBox( this );
-	await this.box.init();
+        this.box = new wDBox( this );
+        await this.box.init();
 
-	this.image = new wDImage( this, "assets/Di-3d.png" );
-	await this.image.init();
+        this.image = new wDImage( this, "assets/Di-3d.png" );
+        await this.image.init();
 
-	this.circle = new wDCircle( this );
-	await this.circle.init();
+        this.circle = new wDCircle( this );
+        await this.circle.init();
 
-	this.dot = new wDCircle( this );
-	await this.dot.init();
+        this.dot = new wDCircle( this );
+        await this.dot.init();
 
-	this.color = 0.0;
-	this.color_it = 0.01;
+        this.color = 0.0;
+        this.color_it = 0.01;
     }
 
     render = async() => {
