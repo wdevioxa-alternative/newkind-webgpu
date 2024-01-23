@@ -19,17 +19,23 @@
 		}
 	</style>
 
-	<script type='text/javascript' src="js/jquery-3.7.1.min.js"></script>
+	<script type='text/javascript' src="js/jquery-3.5.1.min.js"></script>
 	<script type='text/javascript' src="config/controller.bundle.js"></script>
 	<script type='text/javascript'>
 		jQuery(document).ready(function () {
-			window.run();
+//			try {
+//				window.run();
+//			} 
+//			catch (e) 
+//			{
+//				$("#error").text("[ " + e + " ]");
+//			}
 		});
 	</script>
 	</head>
 
 	<body>
-		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
+		<div id="error">&nbsp;</div>
 		<canvas id="gfx">&nbsp;</canvas>
 	</body>
 </html>

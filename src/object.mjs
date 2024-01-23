@@ -1,13 +1,16 @@
-export class wDObject
+export class GObject
 {
     constructor( instance, x, y, width, height ) 
     {
-	this.setInstance( instance );
         this.setX( x );
         this.setY( y );
         this.setWidth( width );
         this.setHeight( height );
         this.setDuty( true );
+	this.setInstance( instance );
+    }
+    instance() {
+	return this.instance;
     }
     setInstance( instance )
     {
@@ -34,10 +37,7 @@ export class wDObject
     }
     setX(x) 
     {
-	if ( this.x != x ) {
-		this.setDuty( true );
-	        this.x = x;
-	}
+        this.x = x;
     }
     getY() 
     {
@@ -45,10 +45,7 @@ export class wDObject
     }
     setY(y) 
     {
-	if ( this.y != y ) {
-		this.setDuty( true );
-	        this.y = y;
-	}
+        this.y = y;
     }
     getWidth() 
     {
@@ -56,10 +53,7 @@ export class wDObject
     }
     setWidth(width) 
     {
-	if ( this.width != width ) {
-		this.setDuty( true );
-	        this.width = width;
-	}
+        this.width = width;
     }
     getHeight() 
     {
@@ -67,31 +61,67 @@ export class wDObject
     }
     setHeight(height) 
     {
-	if ( this.height != height ) {
-		this.setDuty( true );
-	        this.height = height;
+        this.height = height;
+    }
+
+    setShaderFlag( setFlag, shaderValue, flagBuffer = null )
+    {
+	if ( setFlag == true ) {
+            let source = new Uint32Array(1);
+            source[0] = shaderValue;
+            if ( flagBuffer == null )
+                this.attachBuffer( source, this.shaderFlagBuffer );
+            else this.attachBuffer( source, flagBuffer );
+        } else {
+            if ( flagBuffer == null ) {
+                this.shaderFlagBuffer.destroy();
+                this.shaderFlagBuffer = null;
+            } else flagBuffer.destroy();
 	}
     }
-    setUniformShaderLocation( uniform )
+
+    setShaderFlagBuffer( shaderFlagBuffer )
     {
-	if ( this.uniformlShaderLocation != null ) 
-		this.uniformlShaderLocation.destroy();
-	this.uniformlShaderLocation = uniform;
+	if ( this.shaderFlagBuffer != null ) {
+            this.shaderFlagBuffer.destroy();
+        }
+	this.shaderFlagBuffer = shaderFlagBuffer;
     }
-    getUniformShaderLocation()
+
+    getShaderFlagBuffer()
     {
-    	return this.uniformlShaderLocation;
+        return this.shaderFlagBuffer;
     }
-    setUniformShaderFlag( device, shaderValue )
+
+    attachBuffer(source, destination) 
     {
-        let source = new Uint32Array(1);
-        source[0] = shaderValue;
-        const uniformBuffer = device.createBuffer( {
-            label: 'uniform flag buffer',
+        let arrayBuffer = destination.getMappedRange();
+        ( source instanceof Uint16Array )
+                ? (new Uint16Array(arrayBuffer)).set(source)
+                : (source instanceof Uint32Array) 
+			? (new Uint32Array(arrayBuffer)).set(source)
+			: (new Float32Array(arrayBuffer)).set(source)
+        destination.unmap();
+        return destination;
+    }
+
+    createBuffer(source, usage, device) 
+    {
+        let destination = device.createBuffer( {
+            mappedAtCreation: true,
             size: source.byteLength,
-            usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+            usage: usage
         } );
-        device.queue.writeBuffer(uniformBuffer, 0, source);
-	return uniformBuffer;
+	return this.attachBuffer(source, destination) 
     }
+
+    createOnlyBuffer(size, usage, device) 
+    {
+        return device.createBuffer( {
+            mappedAtCreation: true,
+            size: size,
+            usage: usage
+        } );
+    }
+
 };

@@ -1,6 +1,6 @@
-import { wDObject } from './label.mjs';
+import { GObject } from './label.mjs';
 
-export class wDTextBox extends wDLabel
+export class GTextBox extends GLabel
 {
     constructor( x, y, width, height ) {
         super( x, y, width, height );
