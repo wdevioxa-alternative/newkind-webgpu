@@ -55,6 +55,8 @@
 					$( "#dialog" ).dialog( "open" );
 					event.preventDefault();
 				});
+
+				
 				window.run();
 			});
 		</script>
@@ -62,6 +64,18 @@
 
 	<body>
 		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
+		<div class="ui-widget">
+			<p>
+				x:<hr class="ui-widget"/>
+				min:
+				<br/>
+				max:
+				<br/>
+				iterations:
+				<br/>
+			</p>
+		</div>
+
 		<div id="accordion">
 			<h3>First</h3>
 			<div>Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet.</div>
