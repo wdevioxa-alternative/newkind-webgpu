@@ -3,8 +3,8 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		
-		<link href="js/themes/dot-luv/jquery-ui.css" rel="stylesheet">
-		<link href="js/themes/dot-luv/theme.css" rel="stylesheet">
+		<link href="js/themes/dark-hive/jquery-ui.css" rel="stylesheet">
+		<link href="js/themes/dark-hive/theme.css" rel="stylesheet">
 
 		<script type="text/javascript" src="js/jquery-3.7.1.min.js"></script>
 		<script type="text/javascript" src="js/external/jquery/jquery.js"></script>
@@ -26,11 +26,87 @@
         	    color: red;
         	    display: block;
 			}
+			.ui-input {
+				padding: .4em 1em;
+				display: inline-block;
+				position: relative;
+				line-height: normal;
+				margin-right: .1em;
+				cursor: pointer;
+				vertical-align: middle;
+				text-align: left;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+
+				/* Support: IE <= 11 */
+				overflow: visible;
+			}
+			.ui-input,
+			.ui-input:link,
+			.ui-input:visited,
+			.ui-input:hover,
+			.ui-input:active {
+				text-decoration: none;
+			}
+
 		</style>
 
 		<script type='text/javascript' src="config/controller.bundle.js"></script>
 		<script type='text/javascript'>
+
+			(function($)
+			{
+				$.fn.input = function (css)
+				{
+					if (!css)
+						css = {};
+					return this.each(function ()
+					{
+						$(this).addClass("ui-widget ui-widget-content ui-corner-all ui-input");
+						$(this).css(css);
+					});
+				}
+			})(jQuery);
+			// and labels
+			(function ($)
+			{
+				$.fn.label = function (css)
+				{
+					if (!css)
+						css = {};
+					return this.each(function ()
+					{
+						$(this).addClass("ui-widget ui-input");
+						$(this).css(css);
+					});
+				}
+			})(jQuery);
+
 			jQuery(document).ready(function () {
+				$( "#volume-rate" ).spinner();
+				$( "#sample-rate" ).input();
+
+				$( "#zoom-x" ).slider({
+					range: false,
+					values: 0
+				});
+
+				$( "#minimum-x" ).slider({
+					range: false,
+					values: 0
+				});
+				
+				$( "#zoom-y" ).slider({
+					range: true,
+					values: 0	
+				});
+				$( "#minimum-y" ).slider({
+					range: true,
+					values: 0		
+				});
+
 				$( "#accordion" ).accordion();
 				$( "#dialog" ).dialog({
 					autoOpen: false,
@@ -55,7 +131,6 @@
 					$( "#dialog" ).dialog( "open" );
 					event.preventDefault();
 				});
-
 				
 				window.run();
 			});
@@ -65,18 +140,22 @@
 	<body>
 		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
 		<div class="ui-widget">
-			<p>
-				<label for="horizontal-rule-x">x:</label>
-				<hr id="horizontal-rule-x" class="ui-controlgroup-label ui-widget"/>
-				<label for="minimum-x" class="ui-controlgroup-label">min:</label>
-				<input id="minimum-x" class="ui-input">
+				<label for="sample-rate" class="ui-controlgroup-label">Частота дискретизации:</label>
+				<input id="sample-rate" />
+				<label for="volume-rate" class="ui-controlgroup-label">Ось Y:</label>
+				<input id="volume-rate" />
+				<br />
+				<br />
+				<label for="zoom-x" class="ui-controlgroup-label">Увеличение по x:</label>
+				<div id="zoom-x"></div>
+				<label for="minimum-x" class="ui-controlgroup-label">Счетное множество: x</label>
+				<div id="minimum-x"></div>
 				<br/>
-				<label for="maximum-x" class="ui-controlgroup-label">max:</label>
-				<input id="maximum-x" class="ui-input">
-				<br/>
-				<label for="iteration-x" class="ui-controlgroup-label">iteration:</label>
-				<input id="iteration-x" class="ui-input">
-			</p>
+				<label for="zoom-y" class="ui-controlgroup-label">Увеличение по y:</label>
+				<div id="zoom-y"></div>
+				<label for="minimum-y" class="ui-controlgroup-label">Счетное множество: y</label>
+				<div id="minimum-y"></div>
+				<br />
 		</div>
 
 		<div id="accordion">
