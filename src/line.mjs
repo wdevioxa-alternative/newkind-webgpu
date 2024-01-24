@@ -146,10 +146,10 @@ export class wDLine extends wDObject
 
 	for (let cj = 0; cj < count; cj++ )        
 	{
-            let vX1 = lines[ cj ].x1;
-            let vY1 = lines[ cj ].y1;
-            let vX2 = lines[ cj ].x2;
-            let vY2 = lines[ cj ].y2;
+        let vX1 = lines[ cj ].x1;
+        let vY1 = lines[ cj ].y1;
+        let vX2 = lines[ cj ].x2;
+        let vY2 = lines[ cj ].y2;
 
             let vW = lines[ cj ].weight;
 	
