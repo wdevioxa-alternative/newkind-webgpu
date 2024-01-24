@@ -66,13 +66,16 @@
 		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
 		<div class="ui-widget">
 			<p>
-				x:<hr class="ui-widget"/>
-				min:
+				<label for="horizontal-rule-x">x:</label>
+				<hr id="horizontal-rule-x" class="ui-controlgroup-label ui-widget"/>
+				<label for="minimum-x" class="ui-controlgroup-label">min:</label>
+				<input id="minimum-x" class="ui-input">
 				<br/>
-				max:
+				<label for="maximum-x" class="ui-controlgroup-label">max:</label>
+				<input id="maximum-x" class="ui-input">
 				<br/>
-				iterations:
-				<br/>
+				<label for="iteration-x" class="ui-controlgroup-label">iteration:</label>
+				<input id="iteration-x" class="ui-input">
 			</p>
 		</div>
 
