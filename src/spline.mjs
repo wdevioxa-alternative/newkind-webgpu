@@ -36,6 +36,13 @@ export class wDSpline extends wDObject
         this.setAxisColorsBuffer( null );
         this.setDuty( true );
     }
+    async init() 
+    {
+	    // let instance = this.getInstance();
+	    // this.borders = new wDLine( instance );
+	    // await this.borders.init();
+        // this.setDuty( false );
+    }
     setItX( itX )
     { this.itX = itX; }
     getItX()

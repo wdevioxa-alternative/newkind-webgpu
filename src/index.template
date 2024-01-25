@@ -28,6 +28,10 @@
 		    	width: 100%;
 	            display: none;
 			}
+			#controlgroup {
+		    	width: 100%;
+	            display: none;
+			}
 			#error {
         	    text-align: center;
 	            width: 100%;

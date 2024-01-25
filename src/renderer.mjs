@@ -114,6 +114,9 @@ export class wDApplication
                 const wgerr = document.getElementById('error');
                 wgerr.style.display = 'none';
 
+                const wcg = document.getElementById('controlgroup');
+                wcg.style.display = 'block';
+
                 const wgfx = document.getElementById('gfx');
                 wgfx.style.display = 'block';
 
@@ -250,8 +253,8 @@ export class wDApplication
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
         //        this.spline = new GSpline( 0, 0, this.getCanvasWidth(), this.getCanvasHeight() );
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
-        this.line = new wDLine( this );
-        await this.line.init();
+        // this.line = new wDLine( this );
+        // await this.line.init();
 
         this.box = new wDBox( this );
         await this.box.init();
@@ -259,11 +262,14 @@ export class wDApplication
         this.image = new wDImage( this, "assets/Di-3d.png" );
         await this.image.init();
 
-        this.circle = new wDCircle( this );
-        await this.circle.init();
+        this.spline = new wDSpline( 0, 0, this.getCanvasWidth(), this.getCanvasHeight() );
+        await this.spline.init();
 
-        this.dot = new wDCircle( this );
-        await this.dot.init();
+        // this.circle = new wDCircle( this );
+        // await this.circle.init();
+
+        // this.dotcircle = new wDCircle( this );
+        // await this.dotcircle.init();
 
         this.color = 0.0;
         this.color_it = 0.01;
@@ -294,107 +300,107 @@ export class wDApplication
         );     
 
         let shaderBindGroup = this.device.createBindGroup( {
-		layout: this.pipeline.getBindGroupLayout(0),
-		entries: [ {
-			binding: 0,
-			resource: {
-				buffer: this.uniformlShaderLocation,
-			}
-		} ]
-	} );
+            layout: this.pipeline.getBindGroupLayout(0),
+            entries: [ {
+                binding: 0,
+                resource: {
+                    buffer: this.uniformlShaderLocation,
+                }
+            } ]
+	    } );
 
         let textureBindGroup = this.device.createBindGroup( {
-		layout: this.pipeline.getBindGroupLayout( 1 ),
-		entries: [ 
-                    {
-			binding: 0,
-			resource: this.sampler,
-		    },
-		    {
-			binding: 1,
-			resource: this.emptyTexture.createView( {
-                            baseMipLevel: 0,
-                            mipLevelCount: 1
-                        } ) ,
-		    } 
-                ]
-	} );
+            layout: this.pipeline.getBindGroupLayout( 1 ),
+            entries: [ 
+                {
+                    binding: 0,
+                    resource: this.sampler,
+                },
+                {
+                    binding: 1,
+                    resource: this.emptyTexture.createView( {
+                                baseMipLevel: 0,
+                                mipLevelCount: 1
+                    } ) ,
+                } 
+            ]
+	    } );
 
-	this.passEncoder.setPipeline( this.pipeline );
+        this.passEncoder.setPipeline( this.pipeline );
 
-    this.passEncoder.setBindGroup( 0, shaderBindGroup );
-    this.passEncoder.setBindGroup( 1, textureBindGroup );
+        this.passEncoder.setBindGroup( 0, shaderBindGroup );
+        this.passEncoder.setBindGroup( 1, textureBindGroup );
 
-	this.color += this.color_it;
+        this.color += this.color_it;
 
-	if ( this.color >= 1.0 ) {
-		this.color_it = -0.01;
-		this.color = 1.0;
-	} else if ( this.color < 0 ) { 
-		this.color_it = +0.01; 
-		this.color = 0;
-	}
+        if ( this.color >= 1.0 ) {
+            this.color_it = -0.01;
+            this.color = 1.0;
+        } else if ( this.color < 0 ) { 
+            this.color_it = +0.01; 
+            this.color = 0;
+        }
 
-	this.line.append( 20, 20, 220, 220, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-	this.line.append( 220, 20, 20, 220, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
+        // this.line.append( 20, 20, 220, 220, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
+        // this.line.append( 220, 20, 20, 220, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
 
-	this.line.append( 240, 220, 40, 20, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-	this.line.append( 40, 220, 240, 20, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
+        // this.line.append( 240, 220, 40, 20, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
+        // this.line.append( 40, 220, 240, 20, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
 
-	this.line.append( 80, 30, 260, 30, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-	this.line.append( 260, 40, 80, 40, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
+        // this.line.append( 80, 30, 260, 30, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
+        // this.line.append( 260, 40, 80, 40, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
 
-	this.line.append( 30, 260, 30, 60, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-	this.line.append( 40, 60, 40, 260, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
+        // this.line.append( 30, 260, 30, 60, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
+        // this.line.append( 40, 60, 40, 260, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
 
-	await this.line.draw( this );
-	this.line.clear();
+        // await this.line.draw( this );
+        // this.line.clear();
 
-	let sW = this.getCanvasWidth();
-	let sH = this.getCanvasHeight();
+        ////////////////////////////////////////////////////////////////////////////////
+        // Draw image
+        ////////////////////////////////////////////////////////////////////////////////
+        let sW = this.getCanvasWidth();
+        let sH = this.getCanvasHeight();
 
-	let iW = 100 * this.color * 4;
-	let iH = 100 * this.color * 4;
-	
-	let iX = ( sW - iW ) / 2.0;
-	let iY = ( sH - iH ) / 2.0;
+        let iW = 100 * this.color * 4;
+        let iH = 100 * this.color * 4;
+        
+        let iX = ( sW - iW ) / 2.0;
+        let iY = ( sH - iH ) / 2.0;
 
-	this.image.set( iX, iY, iW, iH );
-	await this.image.draw( this );
+        this.image.set( iX, iY, iW, iH );
+        await this.image.draw( this );
 
-	let bW = sW - 40;
-	let bH = sH - 40;
+        let bW = sW - 40;
+        let bH = sH - 40;
 
-	this.box.set( 20, 20, bW, bH, 1 );
-	await this.box.draw( this, [                         
-		{ from: [ this.color, 1.0 - this.color, this.color, 1.0 ], to: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ] },
-		{ from: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ], to: [ this.color, 1.0 - this.color, this.color, 1.0 ] },
-		{ from: [ this.color, 1.0 - this.color, this.color, 1.0 ], to: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ] },
-		{ from: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ], to: [ this.color, 1.0 - this.color, this.color, 1.0 ] } ] );
+        this.box.set( 20, 20, bW, bH, 1 );
+        await this.box.draw( this, [                         
+            { from: [ this.color, 1.0 - this.color, this.color, 1.0 ], to: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ] },
+            { from: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ], to: [ this.color, 1.0 - this.color, this.color, 1.0 ] },
+            { from: [ this.color, 1.0 - this.color, this.color, 1.0 ], to: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ] },
+            { from: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ], to: [ this.color, 1.0 - this.color, this.color, 1.0 ] } ] );
 
-	this.circle.set( sW / 2.0, sH / 2.0, 100 * ( 1.0 - this.color ) * 2, 2 );
-	await this.circle.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
+        // this.circle.set( sW / 2.0, sH / 2.0, 100 * ( 1.0 - this.color ) * 2, 2 );
+        // await this.circle.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
 
-	this.dot.set( 11, 11, 6, 1 );
-	await this.dot.draw( this, [ 0.0, 1.0, 0.0, 1.0 ] );
-
-
-/*       
-	var objectparam = window.getDrawParams.call();
+        // this.dotcircle.set( 11, 11, 6, 1 );
+        // await this.dotcircle.draw( this, [ 0.0, 1.0, 0.0, 1.0 ] );
+    
+        var objectparam = window.getDrawParams.call();
 
         for ( var i = 0; i < objectparam.draw.length; i++ ) 
         {
             if ( objectparam.draw[i].coords.visibility === true ) {
                 await this.spline.draw( this, objectparam.draw[i].coords.x.min, objectparam.draw[i].coords.x.max, objectparam.draw[i].coords.x.dprepeats, objectparam.draw[i].coords.y.min, objectparam.draw[i].coords.y.max, objectparam.draw[i].coords.y.dprepeats, objectparam.draw[i].coords.color );
-		break;
+	    	    break;
             }
         }
 
-	for ( var i = 0; i < objectparam.draw.length; i++ ) 
+	    for ( var i = 0; i < objectparam.draw.length; i++ ) 
         {
             await this.spline.functionDraw( this, objectparam.draw[i].coords.x.min, objectparam.draw[i].coords.x.max, objectparam.draw[i].coords.x.dprepeats, objectparam.draw[i].dpoints, objectparam.draw[i].func, objectparam.draw[i].color );
-	}
-*/
+	    }
 
         this.passEncoder.end();
         this.device.queue.submit( [ this.commandEncoder.finish() ] );
