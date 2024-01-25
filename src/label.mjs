@@ -172,7 +172,7 @@ export class wDLabel extends wDObject
                 //////////////////////////////////////////////////////
                 let mesure = context.measureText( textOut );
 
-                fw = mesure.width; // mesure.actualBoundingBoxLeft + mesure.actualBoundingBoxRight;
+                fw = mesure.width;
                 fh = mesure.fontBoundingBoxAscent + mesure.fontBoundingBoxDescent;
             
                 this.setWidth( fw );
