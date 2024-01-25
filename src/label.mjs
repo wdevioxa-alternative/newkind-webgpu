@@ -2,26 +2,66 @@ import { wDObject } from './object.mjs';
 
 export class wDLabel extends wDObject
 {
-    constructor( fontWeight, fontSize, fontFamily, x, y, width, height ) {        
-        super( x, y, width, height );
+    constructor( instance, fontWeight, fontSize, fontFamily, x, y, _width, _height ) 
+    {        
+        super( instance, x, y, _width, _height );
         this.setFontWeight( fontWeight );
         this.setFontSize( fontSize );
         this.setFontFamily( fontFamily );
         this.setImageBitmap( null );
         this.setTextureImage( null );
-        this.setPositionsBuffer( null );
+        this.setPositionBuffer( null );
         this.setFragUVBuffer( null );
         this.setTextureBindGroup( null );
+        this.setUniformShaderLocation( null );
         this.setDuty( false );
     }  
     destroy()
     {
         this.setImageBitmap( null );
         this.setTextureImage( null );
-        this.setPositionsBuffer( null );
+        this.setPositionBuffer( null );
         this.setFragUVBuffer( null );
         this.setTextureBindGroup( null );
+        this.setUniformShaderLocation( null );
         this.setDuty( true );
+    }
+    async init() {
+        let instance = this.getInstance();
+        this.setFragUVBuffer( null );
+        this.setPositionBuffer( null );
+        this.setTextureImage( null );
+        this.setUniformShaderLocation( 
+            this.setUniformShaderFlag( instance.device, 10 ) 
+        );
+        this.setDuty( false );
+    }
+    set( fs, x , y, _width = -1, _height = -1 )
+    {
+        if ( this.getFontSize() != fs ) {
+            this.setFontSize( fs );
+            this.setDuty( true );
+        }
+        if ( this.getX() != x ) {
+            this.setX( x );
+            this.setDuty( true );
+        }
+        if ( this.getY() != y ) {
+            this.setY( y );
+            this.setDuty( true );
+        }
+        if ( _width != -1 ) {
+            if ( this.getWidth() != _width ) {
+                this.setWidth( _width );
+                this.setDuty( true );
+            }
+        }
+        if ( _height != -1 ) { 
+            if ( this.getHeight() != _height ) {
+                this.setHeight( _height );
+                this.setDuty( true );
+            }
+        }
     }
     setTextureBindGroup( group )
     {
@@ -31,6 +71,14 @@ export class wDLabel extends wDObject
     {
         return this.textureBindGroup;
     }    
+    setShaderBindGroup( group )
+    {
+        this.shaderBindGroup = group;
+    }
+    getShaderBindGroup() 
+    {
+        return this.shaderBindGroup;
+    }    
     setTextureImage( texture )
     {
         this.textureImage = texture;
@@ -39,14 +87,14 @@ export class wDLabel extends wDObject
     {
         return this.textureImage;
     }
-    setPositionsBuffer( positions )
+    setPositionBuffer( positions )
     {
         if ( positions == null )
             if ( this.positionsBuffer != null )
                 this.positionsBuffer.destroy();
         this.positionsBuffer = positions;
     }
-    getPositionsBuffer() 
+    getPositionBuffer() 
     {
         return this.positionsBuffer;
     }
@@ -93,113 +141,146 @@ export class wDLabel extends wDObject
     {
         return this.fontFamily;
     }    
-    async draw( instance, textColor, backgroundColor, textOut, autoMeasure, calculate = false ) 
+    async draw( instance, textColor, backgroundColor, textOut, autoMeasure, calculateOnly = false ) 
     {
-        const objectRedraw = this.isDuty();
-        if ( objectRedraw == true ) {
+        let flag = this.isDuty();
+        if ( flag == true ) {
             this.setTextureImage( null );
             this.setImageBitmap( null );
-            this.setTextureBindGroup( null );
-            this.setPositionsBuffer( null );
+            this.setPositionBuffer( null );
             this.setFragUVBuffer( null );
+            this.setTextureBindGroup( null );
+            this.setShaderBindGroup( null );
             this.setDuty( false );
         }
-        var textureImage = this.getTextureImage();
+
+        let textureImage = this.getTextureImage();
         if ( textureImage == null ) 
         {
-            const cs = document.createElement('canvas');
-            var ctx = cs.getContext('2d');
-            ctx.font = this.getFontWeight().toString() + ' ' + this.getFontSize().toString() + 'pt ' + this.getFontFamily();
-            var fh = this.getHeight();
-            var fw = this.getWidth();
-            var fx = 0;
-            var fy = 0;
+            let canvas = document.createElement('canvas');
+            let context = canvas.getContext('2d');
+
+            let fh = this.getHeight();
+            let fw = this.getWidth();
+
+            let fx = 0;
+            let fy = 0;
+
             if ( autoMeasure == true ) {
-                ////////////////////////////////////
+                //////////////////////////////////////////////////////
                 // автоматическая подгонка контура
-                ////////////////////////////////////            
-                var mesure = ctx.measureText( textOut );
+                //////////////////////////////////////////////////////
+                let mesure = context.measureText( textOut );
 
+                fw = mesure.width; // mesure.actualBoundingBoxLeft + mesure.actualBoundingBoxRight;
                 fh = mesure.fontBoundingBoxAscent + mesure.fontBoundingBoxDescent;
-                fw = mesure.width;
-
-                this.setWidth(Math.ceil(fw));
-                this.setHeight(Math.ceil(fh)); 
-
-                fh = this.getHeight();
-                fw = this.getWidth();
+            
+                this.setWidth( fw );
+                this.setHeight( fh ); 
 
                 fx = 0;
-                fy = this.getFontSize();
+                fy = mesure.fontBoundingBoxAscent;
             } else {
                 ////////////////////////////////////
                 // по центру указанного контура
                 ////////////////////////////////////
-                var mesure = ctx.measureText( textOut );
+                let mesure = context.measureText( textOut );
 
-                fh = mesure.fontBoundingBoxAscent + mesure.fontBoundingBoxDescent;
                 fw = mesure.width;
+                fh = mesure.fontBoundingBoxAscent + mesure.fontBoundingBoxDescent;
 
                 fx = ( this.getWidth() - fw ) / 2;
                 fy = this.getHeight() - ( this.getHeight() - fh ) / 2;
             }
 
-            cs.height = this.getHeight();
-            cs.width = this.getWidth();
+            canvas.height = this.getHeight();
+            canvas.width = this.getWidth();
 
-            ctx.font = this.getFontWeight().toString() + ' ' + this.getFontSize().toString() + 'pt ' + this.getFontFamily();
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.font = this.getFontWeight().toString() + ' ' + this.getFontSize().toString() + 'pt ' + this.getFontFamily();
 
-            ctx.fillStyle = backgroundColor;
-            ctx.fillRect( 0, 0, this.getWidth(), this.getHeight() );
+            context.fillStyle = backgroundColor;
+            context.fillRect( 0, 0, this.getWidth(), this.getHeight() );
             
-            ctx.fillStyle = textColor;
-            ctx.fillText( textOut, fx, fy, fw );
+            context.fillStyle = textColor;
+            context.fillText( textOut, fx, fy, fw );
 
-            var imageBitmap = await createImageBitmap( cs ); //, { colorSpaceConversion: 'default', resizeQuality: 'pixelated' } );
-            this.setImageBitmap( imageBitmap );
+            let bitmap = await createImageBitmap( canvas ); //, { colorSpaceConversion: 'default', resizeQuality: 'pixelated' } );
+            this.setImageBitmap( bitmap );
 
-            textureImage = instance.webGPUTextureFromImageBitmapOrCanvas( instance.device, this.getImageBitmap(), true );
-            this.setTextureImage( textureImage );
-        }
-        if ( calculate == true ) {
-            var imageBitmap = this.getImageBitmap();
-            if ( imageBitmap == null ) return null;
-            return { x: this.getX(), y: this.getY(), width: imageBitmap.width, height: imageBitmap.height };
-        }
-        var textureBindGroup = this.getTextureBindGroup();
-        if ( textureBindGroup == null ) {
-            textureBindGroup = instance.device.createBindGroup({
-                layout: instance.texturePipeline.getBindGroupLayout(0),
-                entries: [
-                {
-                    binding: 0,
-                    resource: instance.sampler,
-                },
-                {
-                    binding: 1,
-                    resource: textureImage.createView({
-			baseMipLevel: 0,
-			mipLevelCount: 3
-		    }),
-                }
-                ]
+            textureImage = instance.device.createTexture({
+                size: [ canvas.width, canvas.height, 1 ],
+                format: 'rgba8unorm',
+                usage:
+                    GPUTextureUsage.TEXTURE_BINDING |
+                    GPUTextureUsage.COPY_DST |
+                    GPUTextureUsage.RENDER_ATTACHMENT,
             });
-            this.setTextureBindGroup( textureBindGroup );
-        };
-        var positionsBuffer = this.getPositionsBuffer();
-        if ( positionsBuffer == null ) {
-            positionsBuffer = instance.createBuffer(this.getPositions(instance), GPUBufferUsage.VERTEX, instance.device);
-            this.setPositionsBuffer( positionsBuffer );
+            
+            instance.device.queue.copyExternalImageToTexture(
+                { source: canvas },
+                { texture: textureImage },
+                [ canvas.width, canvas.height ]
+            );
+        
+            this.setTextureImage( textureImage );
+            canvas.remove();
         }
-        var fragUVBuffer = this.getFragUVBuffer();
+
+        if ( calculateOnly == true ) {
+            let bitmap = this.getImageBitmap();
+            if ( bitmap == null ) return null;
+            return { x: this.getX(), y: this.getY(), width: bitmap.width, height: bitmap.height };
+        }
+
+        let positionBuffer = this.getPositionBuffer();
+        if ( positionBuffer == null ) {
+            positionBuffer = instance.createBuffer( this.getPositions( instance ), GPUBufferUsage.VERTEX, instance.device );
+            this.setPositionBuffer( positionBuffer );
+        }
+
+        let fragUVBuffer = this.getFragUVBuffer();
         if ( fragUVBuffer == null ) {
-            fragUVBuffer = instance.createBuffer(this.getFragUV(instance), GPUBufferUsage.VERTEX, instance.device);
+            fragUVBuffer = instance.createBuffer( this.getFragUV( instance ), GPUBufferUsage.VERTEX, instance.device );
             this.setFragUVBuffer( fragUVBuffer );
         }
-        instance.passEncoder.setPipeline(instance.texturePipeline);
-        instance.passEncoder.setBindGroup(0, textureBindGroup);
-        instance.passEncoder.setVertexBuffer(0, positionsBuffer);
+
+        let shaderBindGroup = this.getShaderBindGroup();
+        if ( shaderBindGroup == null ) {
+            shaderBindGroup = instance.device.createBindGroup( {
+                layout: instance.pipeline.getBindGroupLayout( 0 ),
+                entries: [ {
+                    binding: 0,
+                    resource: {
+                        buffer: this.uniformlShaderLocation
+                    }
+                } ]
+            } );
+        }
+
+        let textureBindGroup = this.getTextureBindGroup();
+        if ( textureBindGroup == null ) {
+            textureBindGroup = instance.device.createBindGroup( {
+		        layout: instance.pipeline.getBindGroupLayout(1),
+		        entries: [ {
+		            binding: 0,
+		            resource: instance.sampler,
+		        }, {
+		            binding: 1,
+		            resource: this.textureImage.createView({
+                        baseMipLevel: 0,
+                        mipLevelCount: 1
+                    }),
+		        } ]
+	        } );
+        }
+
+        instance.passEncoder.setBindGroup( 0, shaderBindGroup );
+        instance.passEncoder.setBindGroup( 1, textureBindGroup );
+
+        instance.passEncoder.setVertexBuffer(0, positionBuffer);
         instance.passEncoder.setVertexBuffer(1, fragUVBuffer);
+
         instance.passEncoder.draw(6, 1, 0, 0);
     }
     getColors( instance )
@@ -225,7 +306,7 @@ export class wDLabel extends wDObject
             0.0, 0.0,
             0.0, 1.0
         ]);
-    }    
+    }
     getPositions( instance )
     {
         var objectWidth = this.getWidth();
@@ -237,9 +318,9 @@ export class wDLabel extends wDObject
         return new Float32Array( [
             instance.calcX(objectWidth+offsetX), instance.calcY(objectHeight+offsetY),
             instance.calcX(objectWidth+offsetX), instance.calcY(offsetY),
-	    instance.calcX(offsetX), instance.calcY(offsetY),
+            instance.calcX(offsetX), instance.calcY(offsetY),
             instance.calcX(objectWidth+offsetX), instance.calcY(objectHeight+offsetY),
-	    instance.calcX(offsetX), instance.calcY(offsetY),
+            instance.calcX(offsetX), instance.calcY(offsetY),
             instance.calcX(offsetX), instance.calcY(objectHeight+offsetY)
         ] );
     }

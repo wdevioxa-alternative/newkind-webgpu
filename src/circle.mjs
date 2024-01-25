@@ -10,41 +10,42 @@ export class wDCircle extends wDObject
     }  
     destroy()
     {
-	this.vertex.destroy();
+	    this.vertex.destroy();
     }
-    async init() {
-	let instance = this.getInstance();
-	this.vertex = new wDDot( instance );
-	await this.vertex.init();
+    async init() 
+    {
+	    let instance = this.getInstance();
+	    this.vertex = new wDDot( instance );
+	    await this.vertex.init();
     }
     setWeight( weight )
     {
-	if ( this.weight != weight ) {
-		this.setDuty( true );
-		this.weight = weight;
-	}
+	    if ( this.weight != weight ) {
+		    this.setDuty( true );
+		    this.weight = weight;
+	    }
     }
     getWeight()
     {
-	return this.weight;
+	    return this.weight;
     }
     setRadius( radius )
     {
-	if ( this.radius != radius ) {
-		this.setDuty( true );
-		this.radius = radius;
-	}
+        if ( this.radius != radius ) {
+            this.setDuty( true );
+            this.radius = radius;
+        }
     }
     getRadius()
     {
-	return this.radius;
+    	return this.radius;
     }
     set( x, y, radius, weight )
     {
     	this.setX(x);
-	this.setY(y);
-	this.setRadius( radius );
-	this.setWeight( weight );
+        this.setY(y);
+        this.setRadius( radius );
+        this.setWeight( weight );
     }
     async draw( instance, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
     {
@@ -170,7 +171,7 @@ export class wDCircle extends wDObject
                     this.vertex.append( x0 - 0, y0 + 1, w, color );
 
             } else {
-		let ang = 0;
+        		let ang = 0;
                 while ( ang < ( Math.PI / 2.0 ) ) {
                     let x1 = Math.trunc ( r * Math.sin( ang ) );
                     let y1 = Math.trunc ( r * Math.cos( ang ) );
@@ -178,8 +179,8 @@ export class wDCircle extends wDObject
                     this.vertex.append( x0 - y1, y0 + x1, w, color );
                     this.vertex.append( x0 - x1, y0 - y1, w, color );
                     this.vertex.append( x0 + y1, y0 - x1, w, color );
-		    ang = ang + Math.asin( 1.0 / ( 2.0 * r ) );
-		} 
+		            ang = ang + Math.asin( 1.0 / ( 2.0 * r ) );
+		        } 
             }
             this.setDuty( false );
         }

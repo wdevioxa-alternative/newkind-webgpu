@@ -8,7 +8,7 @@ fn main( @location(0) inFragUV : vec2<f32>, @location(1) inColor : vec4<f32> ) -
 {
     var color: vec4<f32> = inColor;
     if ( bindShaderFlag == u32( 10 ) ) {
-	color = textureSample( bindTexture, bindSampler, inFragUV );
+        color = textureSample( bindTexture, bindSampler, inFragUV );
     }
     return color;
 }

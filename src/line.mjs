@@ -41,18 +41,22 @@ export class wDLine extends wDObject
     {
 	    return this.lines.length;
     }
-    getLines() {
+    getLines() 
+    {
     	return this.lines;
     }
-    setLines( lines ) {
+    setLines( lines ) 
+    {
 	    this.setDuty(true);
     	this.lines = lines;
     }
-    clearLines() {
+    clearLines() 
+    {
 	    this.setDuty(true);
 	    this.setLines( [] );
     }
-    appendLine( line ) {
+    appendLine( line ) 
+    {
 	    this.setDuty(true);
     	this.lines.push( line );
     }
@@ -247,110 +251,109 @@ export class wDLine extends wDObject
             vb[ii++] = instance.calcX( vX1 - Xh );
             vb[ii++] = instance.calcY( vY1 + Yh ); // 0 1
         }
-	return vb;
+	    return vb;
     }
 
     getFragUV()
     {   
-	let lines = this.getLines();
-	let count = this.getLinesCount();
+        let lines = this.getLines();
+        let count = this.getLinesCount();
 
-	let fb = new Float32Array(12 * count);
-	let ii = 0;
+        let fb = new Float32Array(12 * count);
+        let ii = 0;
 
-	for (let cj = 0; cj < count; cj++ )        
-	{	
-		fb[ii++] = 1.0;
-		fb[ii++] = 1.0;
-		fb[ii++] = 1.0;
-		fb[ii++] = 0.0;
-		fb[ii++] = 0.0;
-		fb[ii++] = 0.0;
-	       	for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 0 * 2 + k + cj * 12 ];
-	        for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 2 * 2 + k + cj * 12 ];
-		fb[ii++] = 0.0;
-		fb[ii++] = 1.0;
-	}
+        for (let cj = 0; cj < count; cj++ )        
+        {	
+            fb[ii++] = 1.0;
+            fb[ii++] = 1.0;
+            fb[ii++] = 1.0;
+            fb[ii++] = 0.0;
+            fb[ii++] = 0.0;
+            fb[ii++] = 0.0;
+            for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 0 * 2 + k + cj * 12 ];
+            for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 2 * 2 + k + cj * 12 ];
+            fb[ii++] = 0.0;
+            fb[ii++] = 1.0;
+        }
 
-	return fb;
+        return fb;
     }
+
     getColors()
     {
-	let lines = this.getLines();
-	let count = this.getLinesCount();
+        let lines = this.getLines();
+        let count = this.getLinesCount();
 
         let cb = new Float32Array( 24 * count );
-	let ii = 0;
+	    let ii = 0;
 	
-	for (let cj = 0; cj < count; cj++ )        
-	{
-		let colors = lines[cj].colors;
-	        for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.to[k];
-	        for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.to[k];
-	        for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.from[k];
-        	for ( let k = 0; k < 4; k++ ) cb[ii++] = cb[ 0 * 4 + k + cj * 24];
-	        for ( let k = 0; k < 4; k++ ) cb[ii++] = cb[ 2 * 4 + k + cj * 24 ];
-	        for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.from[k];
-	}
+        for (let cj = 0; cj < count; cj++ )        
+        {
+            let colors = lines[cj].colors;
+            for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.to[k];
+            for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.to[k];
+            for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.from[k];
+            for ( let k = 0; k < 4; k++ ) cb[ii++] = cb[ 0 * 4 + k + cj * 24];
+            for ( let k = 0; k < 4; k++ ) cb[ii++] = cb[ 2 * 4 + k + cj * 24 ];
+            for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.from[k];
+        }
+
         return cb;
     }
 
     clear()
     {
-	this.clearLines();
+	    this.clearLines();
     }
 
     append( x1, y1, x2, y2, weight, colors = { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } )
     {
-	this.appendLine( { 'x1': x1, 'y1': y1, 'x2': x2, 'y2': y2, 'weight': weight, 'colors' : colors } );
+	    this.appendLine( { 'x1': x1, 'y1': y1, 'x2': x2, 'y2': y2, 'weight': weight, 'colors' : colors } );
     }
 
     async draw( instance ) 
     {
         let flag = this.isDuty();
         if ( flag == true ) 
-	{
+	    {
             this.setColorsBuffer( null );
             this.setFragUVBuffer( null );
             this.setVertexBuffer( null );
             this.setDuty( false );
         }
-	let vertexBuffer = this.getVertexBuffer();
+	    let vertexBuffer = this.getVertexBuffer();
         if ( vertexBuffer == null ) {
-		vertexBuffer = instance.createBuffer(this.getVertex(), GPUBufferUsage.VERTEX, instance.device );
-                this.setVertexBuffer( vertexBuffer );
+		    vertexBuffer = instance.createBuffer(this.getVertex(), GPUBufferUsage.VERTEX, instance.device );
+            this.setVertexBuffer( vertexBuffer );
         }
         let fragUVBuffer = this.getFragUVBuffer();
         if ( fragUVBuffer == null ) {
-		fragUVBuffer = instance.createBuffer( this.getFragUV(), GPUBufferUsage.VERTEX, instance.device );
-                this.setFragUVBuffer( fragUVBuffer );
+		    fragUVBuffer = instance.createBuffer( this.getFragUV(), GPUBufferUsage.VERTEX, instance.device );
+            this.setFragUVBuffer( fragUVBuffer );
         }
         let colorsBuffer = this.getColorsBuffer();
         if ( colorsBuffer == null ) {
-		colorsBuffer = instance.createBuffer( this.getColors(), GPUBufferUsage.VERTEX, instance.device );
-                this.setColorsBuffer( colorsBuffer );
+		    colorsBuffer = instance.createBuffer( this.getColors(), GPUBufferUsage.VERTEX, instance.device );
+            this.setColorsBuffer( colorsBuffer );
         }	    
         let shaderBindGroup = this.getShaderBindGroup();
-	if ( shaderBindGroup == null ) {
-		shaderBindGroup = instance.device.createBindGroup( {
-			layout: instance.pipeline.getBindGroupLayout(0),
-			entries: [ {
-				binding: 0,
-				resource: {
-					buffer: this.uniformlShaderLocation
-				}
-			} ]
-		} );
-		this.setShaderBindGroup( shaderBindGroup );
+	    if ( shaderBindGroup == null ) {
+		    shaderBindGroup = instance.device.createBindGroup( {
+			    layout: instance.pipeline.getBindGroupLayout(0),
+			    entries: [ {
+				    binding: 0,
+				    resource: {
+					    buffer: this.uniformlShaderLocation
+    				}
+	    		} ]
+		    } );
+		    this.setShaderBindGroup( shaderBindGroup );
         }
-
-	let count = this.getLinesCount();
-
+	    let count = this.getLinesCount();
         instance.passEncoder.setBindGroup( 0, shaderBindGroup );
         instance.passEncoder.setVertexBuffer( 0, vertexBuffer );
         instance.passEncoder.setVertexBuffer( 1, fragUVBuffer );
         instance.passEncoder.setVertexBuffer( 2, colorsBuffer );
-
         instance.passEncoder.draw(6 * count, 1, 0, 0 );
     }
 };

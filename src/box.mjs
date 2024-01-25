@@ -6,6 +6,7 @@ export class wDBox extends wDObject
     constructor( instance ) 
     {	
         super( instance, 0, 0, 0, 0 );
+        this.setDuty( false );
     }  
     destroy()
     {
@@ -30,8 +31,8 @@ export class wDBox extends wDObject
     }
     set( x, y, width, height, weight )
     {
-    	this.setX(x);
-	    this.setY(y);
+    	this.setX( x );
+	    this.setY( y );
 	    this.setWidth( width );
 	    this.setHeight( height );
 	    this.setWeight( weight );
@@ -39,6 +40,7 @@ export class wDBox extends wDObject
     async draw( instance, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ]) 
     {
         let flag = this.isDuty();
+
         if ( flag == true ) {
             this.borders.clear();
             this.borders.setDuty( flag );
@@ -65,6 +67,7 @@ export class wDBox extends wDObject
         this.borders.append( x, y + _height, x + _width, y + _height, _weight, colors[3] );
 
         await this.borders.draw( instance );
+        
 	    this.setDuty( true );
     }
 };

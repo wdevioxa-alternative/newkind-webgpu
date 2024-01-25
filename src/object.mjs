@@ -2,7 +2,7 @@ export class wDObject
 {
     constructor( instance, x, y, width, height ) 
     {
-	this.setInstance( instance );
+    	this.setInstance( instance );
         this.setX( x );
         this.setY( y );
         this.setWidth( width );
@@ -21,7 +21,8 @@ export class wDObject
     {
         this.objectDuty = duty;
     }
-    isDuty() {
+    isDuty() 
+    {
         return this.getDuty();
     }
     getDuty()
@@ -34,10 +35,10 @@ export class wDObject
     }
     setX(x) 
     {
-	if ( this.x != x ) {
-		this.setDuty( true );
-	        this.x = x;
-	}
+        if ( this.x != x ) {
+            this.setDuty( true );
+                this.x = x;
+        }
     }
     getY() 
     {
@@ -45,10 +46,10 @@ export class wDObject
     }
     setY(y) 
     {
-	if ( this.y != y ) {
-		this.setDuty( true );
-	        this.y = y;
-	}
+    	if ( this.y != y ) {
+	    	this.setDuty( true );
+	            this.y = y;
+	    }
     }
     getWidth() 
     {
@@ -56,10 +57,10 @@ export class wDObject
     }
     setWidth(width) 
     {
-	if ( this.width != width ) {
-		this.setDuty( true );
-	        this.width = width;
-	}
+	    if ( this.width != width ) {
+		    this.setDuty( true );
+	            this.width = width;
+	    }
     }
     getHeight() 
     {
@@ -67,16 +68,16 @@ export class wDObject
     }
     setHeight(height) 
     {
-	if ( this.height != height ) {
-		this.setDuty( true );
-	        this.height = height;
-	}
+	    if ( this.height != height ) {
+		    this.setDuty( true );
+	            this.height = height;
+	    }
     }
     setUniformShaderLocation( uniform )
     {
-	if ( this.uniformlShaderLocation != null ) 
-		this.uniformlShaderLocation.destroy();
-	this.uniformlShaderLocation = uniform;
+	    if ( this.uniformlShaderLocation != null ) 
+		    this.uniformlShaderLocation.destroy();
+	    this.uniformlShaderLocation = uniform;
     }
     getUniformShaderLocation()
     {
@@ -92,6 +93,6 @@ export class wDObject
             usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
         } );
         device.queue.writeBuffer(uniformBuffer, 0, source);
-	return uniformBuffer;
+    	return uniformBuffer;
     }
 };

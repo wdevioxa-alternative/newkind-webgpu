@@ -45,21 +45,21 @@ export class wDApplication
     }
     calcX( cx ) 
     {
-	let cw = this.getCanvasWidth();
-	let translate = 2.0 * cx / cw - 1.0;
-	return translate;
+        let cw = this.getCanvasWidth();
+        let translate = 2.0 * cx / cw - 1.0;
+        return translate;
     }
     calcY( cy ) 
     {
         let ch = this.getCanvasHeight();
-	let translate = -( 2.0 * cy / ch - 1);
-	return translate;
+        let translate = -( 2.0 * cy / ch - 1);
+        return translate;
     }
     setUniformShaderLocation( uniform )
     {
-	if ( this.uniformlShaderLocation != null ) 
-		this.uniformlShaderLocation.destroy();
-	this.uniformlShaderLocation = uniform;
+        if ( this.uniformlShaderLocation != null ) 
+            this.uniformlShaderLocation.destroy();
+                this.uniformlShaderLocation = uniform;
     }
     getUniformShaderLocation()
     {
@@ -108,19 +108,19 @@ export class wDApplication
     check()
     {
         try {
-                if (!navigator.gpu) 
-                    throw('Your browser does`t support WebGPU or it is not enabled.');
+            if (!navigator.gpu) 
+                throw('Your browser does`t support WebGPU or it is not enabled.');
 
-                const wgerr = document.getElementById('error');
-                wgerr.style.display = 'none';
+            const wgerr = document.getElementById('error');
+            wgerr.style.display = 'none';
 
-                const wcg = document.getElementById('controlgroup');
-                wcg.style.display = 'block';
+            const wcg = document.getElementById('controlgroup');
+            wcg.style.display = 'block';
 
-                const wgfx = document.getElementById('gfx');
-                wgfx.style.display = 'block';
+            const wgfx = document.getElementById('gfx');
+            wgfx.style.display = 'block';
 
-                this.setCanvas( wgfx );
+            this.setCanvas( wgfx );
         } catch ( e ) {
             throw( e );
         }
@@ -129,11 +129,11 @@ export class wDApplication
     {	
         try {
 
-                this.adapter = await navigator.gpu.requestAdapter();
-                this.device = await this.adapter.requestDevice();
+            this.adapter = await navigator.gpu.requestAdapter();
+            this.device = await this.adapter.requestDevice();
 
-                if (!this.context)
-                    this.context = this.canvas.getContext('webgpu');
+            if (!this.context)
+                this.context = this.canvas.getContext('webgpu');
 
                 this.presentationFormat = navigator.gpu.getPreferredCanvasFormat();
 
@@ -262,8 +262,11 @@ export class wDApplication
         this.image = new wDImage( this, "assets/Di-3d.png" );
         await this.image.init();
 
-        this.spline = new wDSpline( 0, 0, this.getCanvasWidth(), this.getCanvasHeight() );
-        await this.spline.init();
+        // this.spline = new wDSpline( this, 0, 0, this.getCanvasWidth(), this.getCanvasHeight() );
+        // await this.spline.init();
+        
+        this.label = new wDLabel( this, 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
+        await this.label.init();
 
         // this.circle = new wDCircle( this );
         // await this.circle.init();
@@ -381,22 +384,30 @@ export class wDApplication
             { from: [ this.color, 1.0 - this.color, this.color, 1.0 ], to: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ] },
             { from: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ], to: [ this.color, 1.0 - this.color, this.color, 1.0 ] } 
         ] );
-        
+
         // this.circle.set( sW / 2.0, sH / 2.0, 100 * ( 1.0 - this.color ) * 2, 2 );
         // await this.circle.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
 
         // this.dotcircle.set( 11, 11, 6, 1 );
         // await this.dotcircle.draw( this, [ 0.0, 1.0, 0.0, 1.0 ] );
 
+        let textColor = "rgb(255, 255, 255)";
+        let backgroundColor = "rgb(0, 0, 0)";
+        
+        this.label.set( 10, 320, 320 );
+        this.label.draw( this, textColor, backgroundColor, "100.001", true, false );
+
+/*        
         var objectparam = window.getDrawParams.call();
 
         for ( var i = 0; i < objectparam.draw.length; i++ ) 
         {
             if ( objectparam.draw[i].coords.visibility === true ) {
-                await this.spline.draw( this, objectparam.draw[i].coords.x.min, objectparam.draw[i].coords.x.max, objectparam.draw[i].coords.x.dprepeats, objectparam.draw[i].coords.y.min, objectparam.draw[i].coords.y.max, objectparam.draw[i].coords.y.dprepeats, objectparam.draw[i].coords.color );
+                await this.spline.draw( this, objectparam.draw[i].coords.x.min, objectparam.draw[i].coords.y.min, objectparam.draw[i].coords.x.max, objectparam.draw[i].coords.y.max, objectparam.draw[i].coords.x.dprepeats, objectparam.draw[i].coords.y.dprepeats, objectparam.draw[i].coords.color );
 	    	    break;
             }
         }
+*/
 /*
 	    for ( var i = 0; i < objectparam.draw.length; i++ ) 
         {

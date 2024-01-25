@@ -5,36 +5,36 @@ export class wDImage extends wDObject
     constructor( instance, url ) 
     {
         super( instance, 0, 0, 0, 0 );
-	this.setURL( url );
+	    this.setURL( url );
     }  
     destroy() {
         this.setColorsBuffer( null );
         this.setFragUVBuffer( null );
         this.setVertexBuffer( null );
-	this.setTextureImage( null );
-	this.setUniformShaderLocation( null );
+	    this.setTextureImage( null );
+	    this.setUniformShaderLocation( null );
     }
     async init() {
-	let instance = this.getInstance();
+	    let instance = this.getInstance();
         this.setColorsBuffer( null );
         this.setFragUVBuffer( null );
         this.setVertexBuffer( null );
         this.setTextureImage( null );
-	this.setTextureImage( 
-		await this.loadTextureImage( instance.device, this.getURL() )
-	);
-	this.setUniformShaderLocation( 
-		this.setUniformShaderFlag( instance.device, 10 ) 
-	);
+        this.setTextureImage( 
+            await this.loadTextureImage( instance.device, this.getURL() )
+        );
+        this.setUniformShaderLocation( 
+            this.setUniformShaderFlag( instance.device, 10 ) 
+        );
         this.setDuty( false );
     }
-    set( x, y, width, height )
+    set( x, y, _width, _height )
     {
-    	this.setX(x);
-	this.setY(y);
-	this.setWidth( width );
-	this.setHeight( height );
-	this.setDuty( true );
+    	this.setX( x );
+        this.setY( y );
+        this.setWidth( _width );
+        this.setHeight( _height );
+        this.setDuty( true );
     }
     getURL() { 
         return this.locationURL;
@@ -178,6 +178,7 @@ export class wDImage extends wDObject
                 GPUTextureUsage.COPY_DST |
                 GPUTextureUsage.RENDER_ATTACHMENT,
         });
+        
         device.queue.copyExternalImageToTexture(
             { source: source },
             { texture: texture },
@@ -186,44 +187,53 @@ export class wDImage extends wDObject
 
 	    return texture;
     }
+
     setTextureImage( textureImage ) 
     {
         this.textureImage = textureImage;
     }
+
     getTextureImage() 
     {
         return this.textureImage;
     }
+
     setVertexBuffer( vertex )
     {
         if ( this.vertexBuffer != null )
             this.vertexBuffer.destroy();
         this.vertexBuffer = vertex;
     }
+
     getVertexBuffer() 
     {
         return this.vertexBuffer;
     }
+
     setFragUVBuffer( fragUV )
     {
         if ( this.fragUVBuffer != null )
             this.fragUVBuffer.destroy();
         this.fragUVBuffer = fragUV;
     }
+
     getFragUVBuffer()
     {
         return this.fragUVBuffer;
     }
+
     setColorsBuffer( colors )
     {
         if ( this.colorsBuffer != null )
             this.colorsBuffer.destroy();
         this.colorsBuffer = colors;
     }
+
     getColorsBuffer() 
     {
         return this.colorsBuffer;
     }
+
     getVertex()
     {
         let objectWidth = this.getWidth();
@@ -239,6 +249,7 @@ export class wDImage extends wDObject
             this.instance.calcX( offsetX ), this.instance.calcY( objectHeight + offsetY )
         ] );
     }
+
     getFragUV()
     {
         return new Float32Array([
@@ -250,6 +261,7 @@ export class wDImage extends wDObject
             0.0, 1.0
         ]);
     }
+
     getColors( color = [ 0.0, 1.0, 1.0, 1.0 ] )
     {
 	    let transparentColor = [ 0.0, 0.0, 0.0, 0.0 ];
@@ -263,63 +275,72 @@ export class wDImage extends wDObject
         for ( let i = 0; i < 4; i++ ) colorsBuffer[objectIndex++] = color[i];	
         return colorsBuffer;
     }
+
     async draw( instance, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
     {
-        let objectRedraw = this.isDuty();
-        if ( objectRedraw == true ) {
+        let flag = this.isDuty();
+        if ( flag == true ) {
             this.setColorsBuffer( null );
             this.setFragUVBuffer( null );
             this.setVertexBuffer( null );
-//            this.setTextureImage( null );
             this.setDuty( false );
         }
+
         let textureImage = this.getTextureImage();
-            if ( textureImage == null ) {
+        if ( textureImage == null ) {
             textureImage = await this.loadTextureImage( instance.device, this.getURL() );
             this.setTextureImage( textureImage );
         }
+
 	    let vertexBuffer = this.getVertexBuffer();
         if ( vertexBuffer == null ) {
-		vertexBuffer = this.instance.createBuffer(this.getVertex(), GPUBufferUsage.VERTEX, this.instance.device );
-                this.setVertexBuffer( vertexBuffer );
+		    vertexBuffer = this.instance.createBuffer(this.getVertex(), GPUBufferUsage.VERTEX, this.instance.device );
+            this.setVertexBuffer( vertexBuffer );
         }
+        
         let fragUVBuffer = this.getFragUVBuffer();
         if ( fragUVBuffer == null ) {
-		fragUVBuffer = this.instance.createBuffer( this.getFragUV(), GPUBufferUsage.VERTEX, this.instance.device );
-                this.setFragUVBuffer( fragUVBuffer );
+		    fragUVBuffer = this.instance.createBuffer( this.getFragUV(), GPUBufferUsage.VERTEX, this.instance.device );
+            this.setFragUVBuffer( fragUVBuffer );
         }
+
         let colorsBuffer = this.getColorsBuffer();
         if ( colorsBuffer == null ) {
-		colorsBuffer = this.instance.createBuffer( this.getColors( color ), GPUBufferUsage.VERTEX, this.instance.device );
-                this.setColorsBuffer( colorsBuffer );
+		    colorsBuffer = this.instance.createBuffer( this.getColors( color ), GPUBufferUsage.VERTEX, this.instance.device );
+            this.setColorsBuffer( colorsBuffer );
         }
+
         let shaderBindGroup = instance.device.createBindGroup( {
-		layout: instance.pipeline.getBindGroupLayout( 0 ),
-		entries: [ {
-			binding: 0,
-			resource: {
-				buffer: this.uniformlShaderLocation
-			}
-		} ]
-	} );
+		    layout: instance.pipeline.getBindGroupLayout( 0 ),
+		    entries: [ {
+			    binding: 0,
+			    resource: {
+				    buffer: this.uniformlShaderLocation
+			    }
+		    } ]
+	    } );
+
         let textureBindGroup = instance.device.createBindGroup( {
-		layout: instance.pipeline.getBindGroupLayout(1),
-		entries: [ {
-		    binding: 0,
-		    resource: instance.sampler,
-		}, {
-		    binding: 1,
-		    resource: this.textureImage.createView({
-                        baseMipLevel: 0,
-                        mipLevelCount: 1
-                    }),
-		} ]
-	} );
+		    layout: instance.pipeline.getBindGroupLayout(1),
+		    entries: [ {
+		        binding: 0,
+		        resource: instance.sampler,
+		    }, {
+		        binding: 1,
+		        resource: this.textureImage.createView({
+                    baseMipLevel: 0,
+                    mipLevelCount: 1
+                }),
+		    } ]
+	    } );
+
         instance.passEncoder.setBindGroup( 0, shaderBindGroup );
         instance.passEncoder.setBindGroup( 1, textureBindGroup );
+
         instance.passEncoder.setVertexBuffer( 0, vertexBuffer );
         instance.passEncoder.setVertexBuffer( 1, fragUVBuffer );
         instance.passEncoder.setVertexBuffer( 2, colorsBuffer );
+
         instance.passEncoder.draw( 6, 1, 0, 0 );
     }
 };

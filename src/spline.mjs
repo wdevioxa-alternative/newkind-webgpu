@@ -3,24 +3,20 @@ import { wDLabel } from './label.mjs';
 
 export class wDSpline extends wDObject
 {
-    constructor( x, y, _width, _height ) 
+    constructor( instance, x, y, _width, _height ) 
     {
-        super( x, y, _width, _height );
-
+        super( instance, x, y, _width, _height );
+        this.setMinX( -Math.PI );
+        this.setMinY( -1 );
+        this.setMaxX( +Math.PI );
+        this.setMaxY( +1 );
+        this.setItX( 58 );
+        this.setItY( 20 );
         this.clearItems();
         this.setColorsBuffer( null );
         this.setPositionsBuffer( null );
-
-        this.setMaxX( +Math.PI );
-        this.setMinX( -Math.PI );
-        this.setItX( 58 );
-
-        this.setMaxY( +1 );
-        this.setMinY( -1 );
-        this.setItY( 20 );
-
+        this.setShaderBindGroup( null );
         this.setDuty( false );
-
         this.objectLabels = [];
     }  
     destroy()
@@ -34,39 +30,74 @@ export class wDSpline extends wDObject
         this.setColorsBuffer( null );
         this.setAxisPositionsBuffer( null );
         this.setAxisColorsBuffer( null );
+        this.setShaderBindGroup( null );
         this.setDuty( true );
     }
     async init() 
     {
-	    // let instance = this.getInstance();
-	    // this.borders = new wDLine( instance );
-	    // await this.borders.init();
-        // this.setDuty( false );
+        let instance = this.getInstance();
+        this.setShaderBindGroup( null );
+        this.setUniformShaderLocation( 
+            this.setUniformShaderFlag( instance.device, 0 ) 
+        );
+        this.setDuty( false );
     }
     setItX( itX )
-    { this.itX = itX; }
+    { 
+        this.itX = itX; 
+    }
     getItX()
-    { return this.itX; }
+    { 
+        return this.itX; 
+    }
     setItY( itY )
-    { this.itY = itY; }
+    { 
+        this.itY = itY; 
+    }
     getItY()
-    { return this.itY; }
+    { 
+        return this.itY; 
+    }
     setMinX( x )
-    { this.minX = x; }
+    { 
+        this.minX = x; 
+    }
     getMinX()
-    { return this.minX; }
+    { 
+        return this.minX; 
+    }
     setMaxX( x )
-    { this.maxX = x; }
+    { 
+        this.maxX = x; 
+    }
     getMaxX()
-    { return this.maxX; }
+    { 
+        return this.maxX; 
+    }
     setMinY( y )
-    { this.minY = y; }
+    { 
+        this.minY = y; 
+    }
     getMinY()
-    { return this.minY; }
+    { 
+        return this.minY; 
+    }
     setMaxY( y )
-    { this.maxY = y; }
+    { 
+        this.maxY = y; 
+    }
     getMaxY()
-    { return this.maxY; }
+    { 
+        return this.maxY; 
+    }
+    setShaderBindGroup( shaderBind ) 
+    {
+        this.shaderBindGroup = shaderBind;
+    }
+    getShaderBindGroup() 
+    {
+        return this.shaderBindGroup;
+    }    
     setBorderPositionsBuffer( positions )
     {
         if ( positions == null )
@@ -293,26 +324,27 @@ export class wDSpline extends wDObject
         return axisColors;
     }
 	
-    async draw( instance, minX, maxX, itX, minY, maxY, itY, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
+    async draw( instance, minX, minY, maxX, maxY, itX, itY, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
     {
-        await this.borderDraw( instance, minX, maxX, itX, minY, maxY, itY, color );
-        // await this.axisDraw( instance, minX, maxX, iterationsX, minY, maxY, iterationsY, color );
+        await this.borderDraw( instance, minX, minY, maxX, maxY, itX, itY, color );
+        await this.axisDraw( instance, minX, maxX, itX, minY, maxY, itY, color );
     }
 
-    async borderDraw( instance, minX, maxX, itX, minY, maxY, itY, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
+    async borderDraw( instance, minX, minY, maxX, maxY, itX, itY, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
     {
+        //////////////////////////////////
+        // set border initial values
+        //////////////////////////////////
         this.setMinX( minX );
-        this.setMaxX( maxX );
-        this.setItX( itX );
-
         this.setMinY( minY );
+        this.setMaxX( maxX );
         this.setMaxY( maxY );
+        this.setItX( itX );
         this.setItY( itY );
-	
-        //////////////////////////////////
-        // draw border
-        //////////////////////////////////
-        var objectRedraw = this.isDuty();
+        ////////////////////////////////////////////////////////////////
+        // recreate border buffers
+        ////////////////////////////////////////////////////////////////
+        let objectRedraw = this.isDuty();
         if ( objectRedraw == true ) {
             this.setPositionsBuffer( null );
             this.setColorsBuffer( null );
@@ -322,33 +354,48 @@ export class wDSpline extends wDObject
             this.setAxisColorsBuffer( null );
             this.setDuty( false );
         }
-        //////////////////////////////////
-        // draw borders
-        //////////////////////////////////        
-        var borderPositionsBuffer = this.getBorderPositionsBuffer();
+        ////////////////////////////////////////////////////////////////
+        // create border buffers if not created
+        ////////////////////////////////////////////////////////////////
+        let borderPositionsBuffer = this.getBorderPositionsBuffer();
         if ( borderPositionsBuffer == null ) {
-            borderPositionsBuffer = instance.createBuffer(this.getBorderPositions(instance), GPUBufferUsage.VERTEX, instance.device);
+            borderPositionsBuffer = instance.createBuffer( this.getBorderPositions( instance ), GPUBufferUsage.VERTEX, instance.device );
             this.setBorderPositionsBuffer( borderPositionsBuffer );
         }
+        ////////////////////////////////////////////////////////////////
+        // recreate border colors buffer ( animation )
+        ////////////////////////////////////////////////////////////////
         this.setBorderColorsBuffer( null );
-        var borderColorsBuffer = this.getBorderColorsBuffer();
-        if ( borderColorsBuffer == null ) {
-            borderColorsBuffer = instance.createBuffer(this.getBorderColors(instance), GPUBufferUsage.VERTEX, instance.device);
-            this.setBorderColorsBuffer( borderColorsBuffer );
+        let borderColorsBuffer = instance.createBuffer( this.getBorderColors( instance ), GPUBufferUsage.VERTEX, instance.device );
+        this.setBorderColorsBuffer( borderColorsBuffer );
+
+        let shaderBindGroup = this.getShaderBindGroup();
+	    if ( shaderBindGroup == null ) {
+		    shaderBindGroup = instance.device.createBindGroup( {
+			    layout: instance.pipeline.getBindGroupLayout(0),
+			    entries: [ {
+				    binding: 0,
+				    resource: {
+					    buffer: this.uniformlShaderLocation
+    				}
+	    		} ]
+		    } );
+		    this.setShaderBindGroup( shaderBindGroup );
         }
-        instance.passEncoder.setPipeline(instance.linePipeline);
-        instance.passEncoder.setVertexBuffer(0, borderPositionsBuffer);
-        instance.passEncoder.setVertexBuffer(1, borderColorsBuffer);
+
+        instance.passEncoder.setBindGroup( 0, shaderBindGroup );
+        instance.passEncoder.setVertexBuffer(0, borderPositionsBuffer );
+        instance.passEncoder.setVertexBuffer(1, borderColorsBuffer );
         instance.passEncoder.draw( 8, 1, 0, 0 );
     }
 
-    async axisDraw( instance, minX, maxX, iterationsX, minY, maxY, iterationsY, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
+    async axisDraw( instance, minX, minY, maxX, maxY, itX, itY, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
     {
         //////////////////////////////////
         // draw axis
         //////////////////////////////////        
-        var itX = iterationsX | 1;
-        var itY = iterationsY | 1;
+        var itX = itX | 1;
+        var itY = itY | 1;
 
         var stepX = ( maxX - minX ) / ( itX - 1 );
         var stepY = ( maxY - minY ) / ( itY - 1 );
@@ -361,7 +408,7 @@ export class wDSpline extends wDObject
         {
             for ( var i = 0; i < itX; i++ ) 
             {
-                var label = new GLabel( 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
+                var label = new wDLabel( 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
 
                 label.setX( instance.calcRX( positions[12 + i * 6 + 0] ) + 0 );
                 label.setY( instance.calcRY( positions[12 + i * 6 + 1] ) + 4 );
@@ -371,7 +418,7 @@ export class wDSpline extends wDObject
             }
             for ( var i = 0; i < itY; i++ ) 
             {
-                var label = new GLabel( 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
+                var label = new wDLabel( 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
 
                 label.setX( instance.calcRX( positions[12 + (itX + i) * 6 + 0] ) + 4 );
                 label.setY( instance.calcRY( positions[12 + (itX + i) * 6 + 1] ) + 0 );
@@ -453,7 +500,23 @@ export class wDSpline extends wDObject
             this.setAxisColorsBuffer( axisColorsBuffer );
         }
         var vertexCount = positions.length / 3;
-        instance.passEncoder.setPipeline(instance.linePipeline);
+        
+        let shaderBindGroup = this.getShaderBindGroup();
+	    if ( shaderBindGroup == null ) {
+		    shaderBindGroup = instance.device.createBindGroup( {
+			    layout: instance.pipeline.getBindGroupLayout(0),
+			    entries: [ {
+				    binding: 0,
+				    resource: {
+					    buffer: this.uniformlShaderLocation
+    				}
+	    		} ]
+		    } );
+		    this.setShaderBindGroup( shaderBindGroup );
+        }
+
+        instance.passEncoder.setBindGroup( 0, shaderBindGroup );
+
         instance.passEncoder.setVertexBuffer(0, axisPositionsBuffer);
         instance.passEncoder.setVertexBuffer(1, axisColorsBuffer);
         instance.passEncoder.draw( vertexCount, 1, 0, 0 );
@@ -552,9 +615,9 @@ export class wDSpline extends wDObject
 
         var vertexCount = positions.length / 3;
 
-        instance.passEncoder.setPipeline(instance.linePipeline);
-        instance.passEncoder.setVertexBuffer(0, newPositionsBuffer);
-        instance.passEncoder.setVertexBuffer(1, newColorsBuffer);
-        instance.passEncoder.draw(vertexCount, 1, 0, 0);
+        instance.passEncoder.setPipeline( instance.linePipeline );
+        instance.passEncoder.setVertexBuffer( 0, newPositionsBuffer );
+        instance.passEncoder.setVertexBuffer( 1, newColorsBuffer );
+        instance.passEncoder.draw( vertexCount, 1, 0, 0 );
     }
 };
