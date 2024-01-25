@@ -93,69 +93,97 @@
 			})(jQuery);
 
 			jQuery(document).ready(function () {
-				$( "#volume-rate" ).spinner();
-				$( "#sample-rate" ).input();
+				$( "#sample-rate" ).spinner({
+					create: function( event, ui ) {
+						$("#sample-rate").spinner( "value", 44100 );
+					},
+					change: function( event, ui ) {
+						if ( parseFloat(ui.value) != ui.value ) {
+							$("#sample-rate").spinner( "value", 44100 );
+						} else {
+							$("#sample-rate").spinner( "value", ui.value );
+						}
+					},
+					min: 200,
+					max: 96000,
+					step: 100,
+					value: 44100,
+				});
+				$( "#volume-rate" ).spinner({
+					create: function( event, ui ) {
+						$("#volume-rate").spinner( "value", 1.0 );
+					},
+					change: function( event, ui ) {
+						if ( parseFloat(ui.value) != ui.value ) {
+							$("#volume-rate").spinner( "value", 1.0 );
+						} else {
+							$("#volume-rate").spinner( "value", ui.value );
+						}
+					},
+					min: 0.000,
+					max: 1.999,
+					step: 0.001,
+					value: 1.0,
+				});
 				$( "#zoom-x" ).slider({
+					create: function( event, ui ) {
+						$("#zoom-x").slider( "value", 100 );
+					},
+					change: function( event, ui ) {
+						$("#zoom-x-value").text( ui.value );
+					},					
 					slide: function( event, ui ) {
-						$("#zoom-x-value").text(ui.value);
+						$("#zoom-x-value").text( ui.value );
 					},
 					range: false,
-					min: 0,
-					max: 100,
-					values: 0
+					min: 100,
+					max: 400,
+					step: 1
 				});
 				$( "#minimum-x" ).slider({
+					create: function( event, ui ) {
+						$("#minimum-x").slider( "value", 30 );
+					},
+					change: function( event, ui ) {
+						$("#minimum-x-value").text( ui.value );
+					},
 					slide: function( event, ui ) {
-						$("#minimum-x-value").text(ui.value);
+						$("#minimum-x-value").text( ui.value );
 					},
 					range: false,
 					min: 0,
-					max: 100,
-					values: 0
+					max: 1000
 				});
 				$( "#zoom-y" ).slider({
+					create: function( event, ui ) {
+						$("#zoom-y").slider( "value", 100 );
+					},
+					change: function( event, ui ) {
+						$("#zoom-y-value").text( ui.value );
+					},
 					slide: function( event, ui ) {
-						$("#zoom-y-value").text(ui.value);
+						$("#zoom-y-value").text( ui.value );
 					},
 					range: false,
-					min: 0,
-					max: 100,
-					values: 0	
+					min: 100,
+					max: 400,
+					step: 1
 				});
 				$( "#minimum-y" ).slider({
+					create: function( event, ui ) {
+						$("#minimum-y").slider( "value", 10 );
+					},
+					change: function( event, ui ) {
+						$("#minimum-y-value").text( ui.value );
+					},
 					slide: function( event, ui ) {
-						$("#minimum-y-value").text(ui.value);
+						$("#minimum-y-value").text( ui.value );
 					},
 					range: false,
 					min: 0,
-					max: 100,
-					values: 0		
+					max: 1000
 				});
 				$( "#controlgroup" ).controlgroup();
-				$( "#accordion" ).accordion();
-				$( "#dialog" ).dialog({
-					autoOpen: false,
-					width: 400,
-					buttons: [
-						{
-							text: "Ok",
-							click: function() {
-								$( this ).dialog( "close" );
-							}
-						},
-						{
-							text: "Cancel",
-							click: function() {
-								$( this ).dialog( "close" );
-							}
-						}
-					]
-				});
-				// Link to open the dialog
-				$( "#dialog-link" ).click(function( event ) {
-					$( "#dialog" ).dialog( "open" );
-					event.preventDefault();
-				});
 				
 				window.run();
 			});
@@ -166,10 +194,10 @@
 		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
 		<div id="controlgroup">
 			<label for="sample-rate">Частота дискретизации:</label>
-			<div><input style="width:250px;" id="sample-rate" value="44100"/></div>
+			<div><input style="width:150px;" id="sample-rate"/></div>
 			<br />
 			<label for="volume-rate">Ось Y:</label>
-			<div><input style="width:150px;" id="volume-rate"  value="100"/></div>
+			<div><input style="width:150px;" id="volume-rate"/></div>
 			<br />
 			<label for="zoom-x">Масштаб по x:&nbsp;<span id="zoom-x-value">0</span></label>
 			<div style="width:450px;" id="zoom-x"></div>
