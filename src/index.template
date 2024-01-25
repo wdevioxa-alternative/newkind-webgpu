@@ -113,17 +113,17 @@
 				});
 				$( "#volume-rate" ).spinner({
 					create: function( event, ui ) {
-						$("#volume-rate").spinner( "value", 1.0 );
+						$("#volume-rate").spinner( "value", 1.000 );
 					},
 					change: function( event, ui ) {
 						if ( parseFloat(ui.value) != ui.value ) {
-							$("#volume-rate").spinner( "value", 1.0 );
+							$("#volume-rate").spinner( "value", 1.000 );
 						} else {
 							$("#volume-rate").spinner( "value", ui.value );
 						}
 					},
 					min: 0.000,
-					max: 1.999,
+					max: 1.000,
 					step: 0.001,
 					value: 1.0,
 				});
@@ -198,7 +198,7 @@
 			<label for="sample-rate">Частота дискретизации:</label>
 			<div><input style="width:150px;" id="sample-rate"/></div>
 			<br />
-			<label for="volume-rate">Громкость:</label>
+			<label for="volume-rate">Ось Y:</label>
 			<div><input style="width:150px;" id="volume-rate"/></div>
 			<br />
 			<label for="zoom-x">Масштаб по x:&nbsp;<span id="zoom-x-value">0</span></label>
