@@ -386,7 +386,7 @@ export class wDApplication
 
         // this.dotcircle.set( 11, 11, 6, 1 );
         // await this.dotcircle.draw( this, [ 0.0, 1.0, 0.0, 1.0 ] );
-    
+/*
         var objectparam = window.getDrawParams.call();
 
         for ( var i = 0; i < objectparam.draw.length; i++ ) 
@@ -401,7 +401,7 @@ export class wDApplication
         {
             await this.spline.functionDraw( this, objectparam.draw[i].coords.x.min, objectparam.draw[i].coords.x.max, objectparam.draw[i].coords.x.dprepeats, objectparam.draw[i].dpoints, objectparam.draw[i].func, objectparam.draw[i].color );
 	    }
-
+*/
         this.passEncoder.end();
         this.device.queue.submit( [ this.commandEncoder.finish() ] );
 
