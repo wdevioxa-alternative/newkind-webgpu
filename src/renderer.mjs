@@ -141,7 +141,7 @@ export class wDApplication
                     device: this.device,
                     format: 'bgra8unorm',
                     size: [ this.getCanvasWidth(), this.getCanvasHeight(), 1 ],
-                    compositingAlphaMode: "premultiplied", // "opaque",
+                    compositingAlphaMode: "opaque", // "premultiplied",
                     usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
                 });
 
@@ -214,12 +214,12 @@ export class wDApplication
                 );
 
                 this.sampler = this.device.createSampler({
-                    magFilter: 'nearest',  // linear
-                    minFilter: 'nearest'   // linear
+                    magFilter: 'linear',  // linear
+                    minFilter: 'linear'   // linear
                 });
 
                 this.emptyTexture = this.device.createTexture({
-                    size: [ 10, 10, 1 ],
+                    size: [ 1, 1, 1 ],
                     format: 'rgba8unorm',
                     usage:
                         GPUTextureUsage.TEXTURE_BINDING |
@@ -233,7 +233,7 @@ export class wDApplication
                         clearValue: [ 0.0, 0.0, 0.0, 1.0 ],
                         loadOp: 'clear',
                         storeOp: 'store'
-                }]          
+                    }]          
                 };
         }
         catch (e)
@@ -265,7 +265,7 @@ export class wDApplication
         // this.spline = new wDSpline( this, 0, 0, this.getCanvasWidth(), this.getCanvasHeight() );
         // await this.spline.init();
         
-        this.label = new wDLabel( this, 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
+        this.label = new wDLabel( this, 'lighter', 16, 'Segoe UI Light', 0, 0, 128, 128 );
         await this.label.init();
 
         // this.circle = new wDCircle( this );
@@ -322,8 +322,8 @@ export class wDApplication
                 {
                     binding: 1,
                     resource: this.emptyTexture.createView( {
-                                baseMipLevel: 0,
-                                mipLevelCount: 1
+                        baseMipLevel: 0,
+                        mipLevelCount: 1
                     } ) ,
                 } 
             ]
