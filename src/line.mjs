@@ -33,8 +33,8 @@ export class wDLine extends wDObject
         this.setColorsBuffer( null );
 	    this.setShaderBindGroup( null );
 	    this.setUniformShaderLocation( 
-		this.setUniformShaderFlag( instance.device, 0 ) 
-	);
+		    this.setUniformShaderFlag( instance.device, 0 ) 
+	    );
         this.setDuty( false );
     }
     getLinesCount()
@@ -138,18 +138,18 @@ export class wDLine extends wDObject
     {
         let instance = this.getInstance();
 
-	let lines = this.getLines();
-	let count = this.getLinesCount();
+        let lines = this.getLines();
+        let count = this.getLinesCount();
 
-	let vb = new Float32Array( 12 * count );
-	let ii = 0;
+        let vb = new Float32Array( 12 * count );
+        let ii = 0;
 
-	for (let cj = 0; cj < count; cj++ )        
-	{
-        let vX1 = lines[ cj ].x1;
-        let vY1 = lines[ cj ].y1;
-        let vX2 = lines[ cj ].x2;
-        let vY2 = lines[ cj ].y2;
+    	for (let cj = 0; cj < count; cj++ )        
+    	{
+            let vX1 = lines[ cj ].x1;
+            let vY1 = lines[ cj ].y1;
+            let vX2 = lines[ cj ].x2;
+            let vY2 = lines[ cj ].y2;
 
             let vW = lines[ cj ].weight;
 	
@@ -160,9 +160,9 @@ export class wDLine extends wDObject
             let Yf = 0.0;
 
             if ( vX > 0 && vY >= 0 ) { 
-		//////////////////////////////////
-		// To right; right down;
-		//////////////////////////////////
+                //////////////////////////////////
+                // To right; right down;
+                //////////////////////////////////
                 if ( vY == 0 ) {
                     Yf = vW;
                     Xf = 0.0;

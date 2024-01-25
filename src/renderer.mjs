@@ -379,14 +379,15 @@ export class wDApplication
             { from: [ this.color, 1.0 - this.color, this.color, 1.0 ], to: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ] },
             { from: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ], to: [ this.color, 1.0 - this.color, this.color, 1.0 ] },
             { from: [ this.color, 1.0 - this.color, this.color, 1.0 ], to: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ] },
-            { from: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ], to: [ this.color, 1.0 - this.color, this.color, 1.0 ] } ] );
-
+            { from: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ], to: [ this.color, 1.0 - this.color, this.color, 1.0 ] } 
+        ] );
+        
         // this.circle.set( sW / 2.0, sH / 2.0, 100 * ( 1.0 - this.color ) * 2, 2 );
         // await this.circle.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
 
         // this.dotcircle.set( 11, 11, 6, 1 );
         // await this.dotcircle.draw( this, [ 0.0, 1.0, 0.0, 1.0 ] );
-/*
+
         var objectparam = window.getDrawParams.call();
 
         for ( var i = 0; i < objectparam.draw.length; i++ ) 
@@ -396,7 +397,7 @@ export class wDApplication
 	    	    break;
             }
         }
-
+/*
 	    for ( var i = 0; i < objectparam.draw.length; i++ ) 
         {
             await this.spline.functionDraw( this, objectparam.draw[i].coords.x.min, objectparam.draw[i].coords.x.max, objectparam.draw[i].coords.x.dprepeats, objectparam.draw[i].dpoints, objectparam.draw[i].func, objectparam.draw[i].color );

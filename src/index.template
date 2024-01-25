@@ -199,7 +199,7 @@
 			<div><input style="width:150px;" id="sample-rate"/></div>
 			<br />
 			<label for="volume-rate">Ось Y:</label>
-			<div><input style="width:150px;" id="volume-rate"/></div>
+			<div><input style="width:60px;" id="volume-rate"/></div>
 			<br />
 			<label for="zoom-x">Масштаб по x:&nbsp;<span id="zoom-x-value">0</span></label>
 			<div style="width:450px;" id="zoom-x"></div>

@@ -3,9 +3,9 @@ import { wDLabel } from './label.mjs';
 
 export class wDSpline extends wDObject
 {
-    constructor( x, y, width, height ) 
+    constructor( x, y, _width, _height ) 
     {
-        super( x, y, width, height );
+        super( x, y, _width, _height );
 
         this.clearItems();
         this.setColorsBuffer( null );
@@ -135,7 +135,7 @@ export class wDSpline extends wDObject
     }
     appendItem( instance, position, color )
     {
-        var vpositions = new Float32Array(this.positions.length + position.length);
+        let vpositions = new Float32Array(this.positions.length + position.length);
         for (let i = 0; i < this.positions.length; i++) 
             vpositions[i] = this.positions[i];
         vpositions[0 + this.positions.length] = position[0];
@@ -143,7 +143,7 @@ export class wDSpline extends wDObject
         vpositions[2 + this.positions.length] = position[2];
         this.positions = vpositions;
         var vcolors = new Float32Array(this.colors.length + color.length);
-        for (var i = 0; i < this.colors.length; i++) 
+        for (let i = 0; i < this.colors.length; i++) 
             vcolors[i] = this.colors[i];
         vcolors[0 + this.colors.length] = color[0];
         vcolors[1 + this.colors.length] = color[1];
@@ -293,21 +293,21 @@ export class wDSpline extends wDObject
         return axisColors;
     }
 	
-    async draw( instance, minX, maxX, iterationsX, minY, maxY, iterationsY, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
+    async draw( instance, minX, maxX, itX, minY, maxY, itY, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
     {
-        await this.borderDraw( instance, minX, maxX, iterationsX, minY, maxY, iterationsY, color );
-        await this.axisDraw( instance, minX, maxX, iterationsX, minY, maxY, iterationsY, color );
+        await this.borderDraw( instance, minX, maxX, itX, minY, maxY, itY, color );
+        // await this.axisDraw( instance, minX, maxX, iterationsX, minY, maxY, iterationsY, color );
     }
 
-    async borderDraw( instance, minX, maxX, iterationsX, minY, maxY, iterationsY, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
+    async borderDraw( instance, minX, maxX, itX, minY, maxY, itY, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
     {
         this.setMinX( minX );
         this.setMaxX( maxX );
-        this.setItX( iterationsX );
+        this.setItX( itX );
 
         this.setMinY( minY );
         this.setMaxY( maxY );
-        this.setItY( iterationsY );
+        this.setItY( itY );
 	
         //////////////////////////////////
         // draw border

@@ -45,26 +45,26 @@ export class wDBox extends wDObject
             this.setDuty( false );
         }
 
-	let x = this.getX();
-	let y = this.getY();
+        let x = this.getX();
+        let y = this.getY();
 
-	let width = this.getWidth();
-	let height = this.getHeight();
-	let weight = this.getWeight();	
+        let _width = this.getWidth();
+        let _height = this.getHeight();
+        let _weight = this.getWeight();	
 
-	if ( colors.length == 1 )
-	{
-       	    colors.push( colors[0] );
+        if ( colors.length == 1 )
+        {
             colors.push( colors[0] );
-       	    colors.push( colors[0] );
-	}
+            colors.push( colors[0] );
+            colors.push( colors[0] );
+        }
 
-	this.borders.append( x + width, y + height, x + width, y, weight, colors[0] );
-	this.borders.append( x + width, y, x, y, weight, colors[1] );
-	this.borders.append( x, y, x, y + height, weight, colors[2] );
-	this.borders.append( x, y + height, x + width, y + height, weight, colors[3] );
+        this.borders.append( x + _width, y + _height, x + _width, y, _weight, colors[0] );
+        this.borders.append( x + _width, y, x, y, _weight, colors[1] );
+        this.borders.append( x, y, x, y + _height, _weight, colors[2] );
+        this.borders.append( x, y + _height, x + _width, y + _height, _weight, colors[3] );
 
         await this.borders.draw( instance );
-	this.setDuty( true );
+	    this.setDuty( true );
     }
 };
