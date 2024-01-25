@@ -72,8 +72,7 @@
 			{
 				$.fn.input = function (css)
 				{
-					if (!css)
-						css = {};
+					if (!css) css = {};
 					return this.each(function ()
 					{
 						$(this).addClass("ui-widget ui-widget-content ui-corner-all ui-input");
@@ -81,13 +80,12 @@
 					});
 				}
 			})(jQuery);
-			// and labels
+
 			(function ($)
 			{
 				$.fn.label = function (css)
 				{
-					if (!css)
-						css = {};
+					if (!css) css = {};
 					return this.each(function ()
 					{
 						$(this).addClass("ui-widget ui-input");
@@ -200,7 +198,7 @@
 			<label for="sample-rate">Частота дискретизации:</label>
 			<div><input style="width:150px;" id="sample-rate"/></div>
 			<br />
-			<label for="volume-rate">Ось Y:</label>
+			<label for="volume-rate">Громкость:</label>
 			<div><input style="width:150px;" id="volume-rate"/></div>
 			<br />
 			<label for="zoom-x">Масштаб по x:&nbsp;<span id="zoom-x-value">0</span></label>
