@@ -114,6 +114,9 @@ export class wDLabel extends wDObject
     }
     setImageBitmap( bitmap ) 
     {
+        if ( bitmap == null )
+            if ( this.imageBitmap != null )
+                this.imageBitmap.destroy();
         this.imageBitmap = bitmap;
     }
     getImageBitmap()
@@ -148,8 +151,8 @@ export class wDLabel extends wDObject
     {
         let flag = this.isDuty();
         if ( flag == true ) {
-            this.setTextureImage( null );
             this.setImageBitmap( null );
+            this.setTextureImage( null );
             this.setPositionBuffer( null );
             this.setFragUVBuffer( null );
             this.setTextureBindGroup( null );
