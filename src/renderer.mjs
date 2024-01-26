@@ -256,20 +256,20 @@ export class wDApplication
         // this.line = new wDLine( this );
         // await this.line.init();
 
-        this.box = new wDBox( this );
-        await this.box.init();
+        // this.box = new wDBox( this );
+        // await this.box.init();
 
         this.image = new wDImage( this, "assets/Di-3d.png" );
         await this.image.init();
 
-        // this.spline = new wDSpline( this, 0, 0, this.getCanvasWidth(), this.getCanvasHeight() );
-        // await this.spline.init();
+        this.spline = new wDSpline( this, 10, 10, this.getCanvasWidth() - 20, this.getCanvasHeight() - 20 );
+        await this.spline.init();
         
         // this.label = new wDLabel( this, 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
         // await this.label.init();
 
-        this.circle = new wDCircle( this );
-        await this.circle.init();
+        // this.circle = new wDCircle( this );
+        // await this.circle.init();
 
         // this.dotcircle = new wDCircle( this );
         // await this.dotcircle.init();
@@ -377,24 +377,21 @@ export class wDApplication
         let bW = sW - 40;
         let bH = sH - 40;
 
-        this.box.set( 20, 20, bW, bH, 1 );
-        await this.box.draw( this, [                         
-            { from: [ this.color, 1.0 - this.color, this.color, 1.0 ], to: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ] },
-            { from: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ], to: [ this.color, 1.0 - this.color, this.color, 1.0 ] },
-            { from: [ this.color, 1.0 - this.color, this.color, 1.0 ], to: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ] },
-            { from: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ], to: [ this.color, 1.0 - this.color, this.color, 1.0 ] } 
-        ] );
-
+        // this.box.set( 20, 20, bW, bH, 1 );
+        // await this.box.draw( this, [                         
+        //     { from: [ this.color, 1.0 - this.color, this.color, 1.0 ], to: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ] },
+        //     { from: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ], to: [ this.color, 1.0 - this.color, this.color, 1.0 ] },
+        //     { from: [ this.color, 1.0 - this.color, this.color, 1.0 ], to: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ] },
+        //     { from: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ], to: [ this.color, 1.0 - this.color, this.color, 1.0 ] } 
+        // ] );
         
         ////////////////////////////////////////////////////////////////////////////////////
         // wDCircle example is completed
         ////////////////////////////////////////////////////////////////////////////////////
+        // // this.circle.set( 10, 10, 6, 1 );
         // this.circle.set( sW / 2.0, sH / 2.0, 100 * ( 1.0 - this.color ) * 2, 2 );
         // await this.circle.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
         ////////////////////////////////////////////////////////////////////////////////////
-
-        this.circle.set( 10, 10, 6, 1 );
-        await this.circle.draw( this, [ 0.0, 1.0, 0.0, 1.0 ] );
 
         ////////////////////////////////////////////////////////////////////////////////////
         // wDLabel example is completed
@@ -406,17 +403,18 @@ export class wDApplication
         // this.label.draw( this, textColor, backgroundColor, "100.001N", true, false );
         ////////////////////////////////////////////////////////////////////////////////////
 
-/*        
+        this.spline.set( 10, 10, sW - 20, sH - 20 );
+
         var objectparam = window.getDrawParams.call();
 
         for ( var i = 0; i < objectparam.draw.length; i++ ) 
         {
             if ( objectparam.draw[i].coords.visibility === true ) {
-                await this.spline.draw( this, objectparam.draw[i].coords.x.min, objectparam.draw[i].coords.y.min, objectparam.draw[i].coords.x.max, objectparam.draw[i].coords.y.max, objectparam.draw[i].coords.x.dprepeats, objectparam.draw[i].coords.y.dprepeats, objectparam.draw[i].coords.color );
+                await this.spline.draw( this, objectparam.draw[i].coords.x.min, objectparam.draw[i].coords.y.min, objectparam.draw[i].coords.x.max, objectparam.draw[i].coords.y.max, objectparam.draw[i].coords.x.dprepeats, objectparam.draw[i].coords.y.dprepeats, 1, objectparam.draw[i].coords.color );
 	    	    break;
             }
         }
-*/
+
 /*
 	    for ( var i = 0; i < objectparam.draw.length; i++ ) 
         {

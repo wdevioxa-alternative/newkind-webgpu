@@ -18,17 +18,6 @@ export class wDCircle extends wDObject
 	    this.vertex = new wDDot( instance );
 	    await this.vertex.init();
     }
-    setWeight( weight )
-    {
-	    if ( this.weight != weight ) {
-		    this.setDuty( true );
-		    this.weight = weight;
-	    }
-    }
-    getWeight()
-    {
-	    return this.weight;
-    }
     setRadius( radius )
     {
         if ( this.radius != radius ) {
@@ -40,14 +29,7 @@ export class wDCircle extends wDObject
     {
     	return this.radius;
     }
-    set( x, y, radius, weight )
-    {
-    	this.setX(x);
-        this.setY(y);
-        this.setRadius( radius );
-        this.setWeight( weight );
-    }
-    set( x , y, radius, weight )
+    set( x, y, _radius = -1, _weight = -1 )
     {
         if ( this.getX() != x ) {
             this.setX( x );
@@ -57,14 +39,18 @@ export class wDCircle extends wDObject
             this.setY( y );
             this.setDuty( true );
         }
-        if ( this.getRadius() != radius ) {
-            this.setRadius( radius );
-            this.setDuty( true );
+        if ( _radius != -1 ) {
+            if ( this.getRadius() != _radius ) {
+                this.setRadius( _radius );
+                this.setDuty( true );
+            }
         }
-        if ( this.getWeight() != weight ) {
-            this.setWeight( weight );
-            this.setDuty( true );
-        }
+        if ( _weight != -1 ) { 
+            if ( this.getWeight() != _weight ) {
+                this.setWeight( _weight );
+                this.setDuty( true );
+            }
+        }      
     }
     async draw( instance, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
     {

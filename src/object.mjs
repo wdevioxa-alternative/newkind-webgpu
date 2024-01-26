@@ -1,12 +1,13 @@
 export class wDObject
 {
-    constructor( instance, x, y, width, height ) 
+    constructor( instance, x, y, width, height, weight = -1 ) 
     {
     	this.setInstance( instance );
         this.setX( x );
         this.setY( y );
         this.setWidth( width );
         this.setHeight( height );
+        this.setWeight( weight );
         this.setDuty( true );
     }
     setInstance( _instance )
@@ -19,7 +20,7 @@ export class wDObject
     }
     setDuty( _duty )
     {
-        this.objectDuty = _duty;
+        this.recreate = _duty;
     }
     isDuty() 
     {
@@ -27,16 +28,23 @@ export class wDObject
     }
     getDuty()
     {
-        return this.objectDuty;
+        return this.recreate;
     }
+    getWeight() 
+    {
+        return this.weight;
+    }
+    setWeight(_w) 
+    {
+        this.weight = _w;
+    }    
     getX() 
     {
         return this.x;
     }
     setX(_x) 
     {
-        if ( this.x != _x )
-            this.x = _x;
+        this.x = _x;
     }
     getY() 
     {
@@ -44,26 +52,23 @@ export class wDObject
     }
     setY(_y) 
     {
-    	if ( this.y != _y )
-	        this.y = _y;
+	    this.y = _y;
     }
     getWidth() 
     {
         return this.width;
     }
-    setWidth(_width) 
+    setWidth(_w) 
     {
-	    if ( this.width != _width )
-	        this.width = _width;
+	    this.width = _w;
     }
     getHeight() 
     {
         return this.height;
     }
-    setHeight(_height) 
+    setHeight(_h) 
     {
-	    if ( this.height != _height )
-	        this.height = _height;
+	    this.height = _h;
     }
     setUniformShaderLocation( _uniform )
     {

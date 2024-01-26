@@ -53,14 +53,6 @@ export class wDDot extends wDObject
 	    this.setDuty(true);
     	this.dots.push( dot );
     }
-    setWeight( weight )
-    {
-	this.weight = weight;
-    }
-    getWeight()
-    {
-	return this.weight;
-    }
     setShaderBindGroup( shaderBind ) 
     {
         this.shaderBindGroup = shaderBind;

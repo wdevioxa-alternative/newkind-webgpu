@@ -19,23 +19,32 @@ export class wDBox extends wDObject
 	    await this.borders.init();
         this.setDuty( false );
     }
-    setWeight( weight )
+    set( x, y, _width = -1, _height = -1, _weight = -1 )
     {
-	    if ( this.weight != weight ) {
-		    this.weight = weight;
-	    }
-    }
-    getWeight()
-    {
-	    return this.weight;
-    }
-    set( x, y, width, height, weight )
-    {
-    	this.setX( x );
-	    this.setY( y );
-	    this.setWidth( width );
-	    this.setHeight( height );
-	    this.setWeight( weight );
+        if ( this.getX() != x ) {
+            this.setX( x );
+            this.setDuty( true );
+        }
+        if ( this.getY() != y ) {
+            this.setY( y );
+            this.setDuty( true );
+        }
+        if ( _width != -1 ) {
+            if ( this.getWidth() != _width ) {
+                this.setWidth( _width );
+                this.setDuty( true );
+            }
+        }
+        if ( _height != -1 ) { 
+            if ( this.getHeight() != _height ) {
+                this.setHeight( _height );
+                this.setDuty( true );
+            }
+        }
+        if ( this.getWeight() != _weight ) {
+            this.setWeight( _weight );
+            this.setDuty( true );
+        }
     }
     async draw( instance, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ]) 
     {

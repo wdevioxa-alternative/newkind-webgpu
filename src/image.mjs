@@ -28,13 +28,28 @@ export class wDImage extends wDObject
         );
         this.setDuty( false );
     }
-    set( x, y, _width, _height )
+    set( x, y, _width = -1, _height = -1)
     {
-    	this.setX( x );
-        this.setY( y );
-        this.setWidth( _width );
-        this.setHeight( _height );
-        this.setDuty( true );
+        if ( this.getX() != x ) {
+            this.setX( x );
+            this.setDuty( true );
+        }
+        if ( this.getY() != y ) {
+            this.setY( y );
+            this.setDuty( true );
+        }
+        if ( _width != -1 ) {
+            if ( this.getWidth() != _width ) {
+                this.setWidth( _width );
+                this.setDuty( true );
+            }
+        }
+        if ( _height != -1 ) { 
+            if ( this.getHeight() != _height ) {
+                this.setHeight( _height );
+                this.setDuty( true );
+            }
+        }
     }
     getURL() { 
         return this.locationURL;

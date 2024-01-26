@@ -92,14 +92,6 @@ export class wDLine extends wDObject
     {
         this.y2 = y;
     }
-    setWeight( weight )
-    {
-	this.weight = weight;
-    }
-    getWeight()
-    {
-	return this.weight;
-    }
     setShaderBindGroup( shaderBind ) 
     {
         this.shaderBindGroup = shaderBind;

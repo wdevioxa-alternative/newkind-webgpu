@@ -1,11 +1,12 @@
 import { wDObject } from './object.mjs';
 import { wDLabel } from './label.mjs';
+import { wDBox } from './box.mjs';
 
 export class wDSpline extends wDObject
 {
-    constructor( instance, x, y, _width, _height ) 
+    constructor( instance, x, y, _width, _height, _weight = -1 ) 
     {
-        super( instance, x, y, _width, _height );
+        super( instance, x, y, _width, _height, _weight );
         this.setMinX( -Math.PI );
         this.setMinY( -1 );
         this.setMaxX( +Math.PI );
@@ -31,17 +32,55 @@ export class wDSpline extends wDObject
         this.setAxisPositionsBuffer( null );
         this.setAxisColorsBuffer( null );
         this.setShaderBindGroup( null );
+        this.border.destroy();
         this.setDuty( true );
     }
     async init() 
     {
         let instance = this.getInstance();
+        
+        this.border = new wDBox( instance );
+        await this.border.init();
+
+        this.defaultcolor = 0.1;
+        this.coloriteration = 0.01;
+
         this.setShaderBindGroup( null );
         this.setUniformShaderLocation( 
             this.setUniformShaderFlag( instance.device, 0 ) 
         );
+
         this.setDuty( false );
     }
+    set( x, y, _width = -1, _height = -1, _weight = -1 )
+    {
+        if ( this.getX() != x ) {
+            this.setX( x );
+            this.setDuty( true );
+        }
+        if ( this.getY() != y ) {
+            this.setY( y );
+            this.setDuty( true );
+        }
+        if ( _width != -1 ) {
+            if ( this.getWidth() != _width ) {
+                this.setWidth( _width );
+                this.setDuty( true );
+            }
+        }
+        if ( _height != -1 ) { 
+            if ( this.getHeight() != _height ) {
+                this.setHeight( _height );
+                this.setDuty( true );
+            }
+        }
+        if ( _weight != -1 ) { 
+            if ( this.getWeight() != _weight ) {
+                this.setWeight( _weight );
+                this.setDuty( true );
+            }
+        }
+    }   
     setItX( itX )
     { 
         this.itX = itX; 
@@ -324,69 +363,33 @@ export class wDSpline extends wDObject
         return axisColors;
     }
 	
-    async draw( instance, minX, minY, maxX, maxY, itX, itY, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
+    async draw( instance, minX, minY, maxX, maxY, itX, itY, _t = 1, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
     {
-        await this.borderDraw( instance, minX, minY, maxX, maxY, itX, itY, color );
-        await this.axisDraw( instance, minX, maxX, itX, minY, maxY, itY, color );
+        await this.borderDraw( instance, this.getX(), this.getY(), this.getWidth(), this.getHeight(), _t, color );
+        // await this.axisDraw( instance, minX, maxX, itX, minY, maxY, itY, color );
     }
 
-    async borderDraw( instance, minX, minY, maxX, maxY, itX, itY, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
+    async borderDraw( instance, x, y, _w, _h, _t = 1, color = [ 1.0, 0.0, 1.0, 1.0 ] ) 
     {
-        //////////////////////////////////
-        // set border initial values
-        //////////////////////////////////
-        this.setMinX( minX );
-        this.setMinY( minY );
-        this.setMaxX( maxX );
-        this.setMaxY( maxY );
-        this.setItX( itX );
-        this.setItY( itY );
-        ////////////////////////////////////////////////////////////////
-        // recreate border buffers
-        ////////////////////////////////////////////////////////////////
-        let objectRedraw = this.isDuty();
-        if ( objectRedraw == true ) {
-            this.setPositionsBuffer( null );
-            this.setColorsBuffer( null );
-            this.setBorderPositionsBuffer( null );
-            this.setBorderColorsBuffer( null );
-            this.setAxisPositionsBuffer( null );
-            this.setAxisColorsBuffer( null );
-            this.setDuty( false );
-        }
-        ////////////////////////////////////////////////////////////////
-        // create border buffers if not created
-        ////////////////////////////////////////////////////////////////
-        let borderPositionsBuffer = this.getBorderPositionsBuffer();
-        if ( borderPositionsBuffer == null ) {
-            borderPositionsBuffer = instance.createBuffer( this.getBorderPositions( instance ), GPUBufferUsage.VERTEX, instance.device );
-            this.setBorderPositionsBuffer( borderPositionsBuffer );
-        }
-        ////////////////////////////////////////////////////////////////
-        // recreate border colors buffer ( animation )
-        ////////////////////////////////////////////////////////////////
-        this.setBorderColorsBuffer( null );
-        let borderColorsBuffer = instance.createBuffer( this.getBorderColors( instance ), GPUBufferUsage.VERTEX, instance.device );
-        this.setBorderColorsBuffer( borderColorsBuffer );
+        this.border.set( x, y, _w, _h, _t );
 
-        let shaderBindGroup = this.getShaderBindGroup();
-	    if ( shaderBindGroup == null ) {
-		    shaderBindGroup = instance.device.createBindGroup( {
-			    layout: instance.pipeline.getBindGroupLayout(0),
-			    entries: [ {
-				    binding: 0,
-				    resource: {
-					    buffer: this.uniformlShaderLocation
-    				}
-	    		} ]
-		    } );
-		    this.setShaderBindGroup( shaderBindGroup );
+        this.defaultcolor += this.coloriteration;
+
+        if ( this.defaultcolor >= 1.0 ) {
+            this.coloriteration = -0.01;
+            this.defaultcolor = 1.0;
+        } else if ( this.defaultcolor < 0 ) { 
+            this.coloriteration = +0.01; 
+            this.defaultcolor = 0;
         }
 
-        instance.passEncoder.setBindGroup( 0, shaderBindGroup );
-        instance.passEncoder.setVertexBuffer(0, borderPositionsBuffer );
-        instance.passEncoder.setVertexBuffer(1, borderColorsBuffer );
-        instance.passEncoder.draw( 8, 1, 0, 0 );
+        await this.border.draw( instance, 
+        [   
+            { from: [ this.defaultcolor, 1.0 - this.defaultcolor, this.defaultcolor, 1.0 ], to: [ 1.0 - this.defaultcolor, this.defaultcolor, 1.0 - this.defaultcolor, 1.0 ] },
+            { from: [ 1.0 - this.defaultcolor, this.defaultcolor, 1.0 - this.defaultcolor, 1.0 ], to: [ this.defaultcolor, 1.0 - this.defaultcolor, this.defaultcolor, 1.0 ] },
+            { from: [ this.defaultcolor, 1.0 - this.defaultcolor, this.defaultcolor, 1.0 ], to: [ 1.0 - this.defaultcolor, this.defaultcolor, 1.0 - this.defaultcolor, 1.0 ] },
+            { from: [ 1.0 - this.defaultcolor, this.defaultcolor, 1.0 - this.defaultcolor, 1.0 ], to: [ this.defaultcolor, 1.0 - this.defaultcolor, this.defaultcolor, 1.0 ] } 
+        ] );
     }
 
     async axisDraw( instance, minX, minY, maxX, maxY, itX, itY, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
