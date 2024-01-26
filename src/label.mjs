@@ -81,6 +81,9 @@ export class wDLabel extends wDObject
     }    
     setTextureImage( texture )
     {
+        if ( texture == null )
+            if ( this.textureImage != null )
+                this.textureImage.destroy();
         this.textureImage = texture;
     }
     getTextureImage() 
