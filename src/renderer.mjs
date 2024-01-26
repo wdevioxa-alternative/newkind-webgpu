@@ -70,7 +70,7 @@ export class wDApplication
         let source = new Uint32Array(1);
         source[0] = shaderValue;
         const uniformBuffer = device.createBuffer( {
-            label: 'uniform flag buffer',
+            label: 'Uniform flag buffer',
             size: source.byteLength,
             usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC,
         } );
@@ -141,7 +141,7 @@ export class wDApplication
                     device: this.device,
                     format: 'bgra8unorm',
                     size: [ this.getCanvasWidth(), this.getCanvasHeight(), 1 ],
-                    compositingAlphaMode: "opaque", // "premultiplied",
+                    compositingAlphaMode: "premultiplied", // "opaque",
                     usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
                 });
 
@@ -238,13 +238,13 @@ export class wDApplication
         }
         catch (e)
         {
-                console.error(e);
+            console.error(e);
         }
     }
 
     start = async() => {
         await this.init();
-            await this.resources();
+        await this.resources();
         return requestAnimationFrame( this.render );    
     }
 
@@ -275,7 +275,7 @@ export class wDApplication
         // await this.dotcircle.init();
 
         this.color = 0.0;
-        this.color_it = 0.01;
+        this.coloriterator = 0.01;
     }
 
     render = async() => {
@@ -334,30 +334,23 @@ export class wDApplication
         this.passEncoder.setBindGroup( 0, shaderBindGroup );
         this.passEncoder.setBindGroup( 1, textureBindGroup );
 
-        this.color += this.color_it;
+        let samplerate = $("#sample-rate").spinner( "value" );
+        let volumerate = $("#volume-rate").spinner( "value" );
+
+        let zoomX = $("#zoom-x").slider( "value" );
+        let zoomY = $("#zoom-y").slider( "value" );
+        let kdX = $("#minimum-x").slider( "value" );
+        let kdY = $("#minimum-y").slider( "value" );
+
+        this.color += this.coloriterator;
 
         if ( this.color >= 1.0 ) {
-            this.color_it = -0.01;
+            this.coloriterator = -0.01;
             this.color = 1.0;
         } else if ( this.color < 0 ) { 
-            this.color_it = +0.01; 
+            this.coloriterator = +0.01; 
             this.color = 0;
         }
-
-        // this.line.append( 20, 20, 220, 220, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-        // this.line.append( 220, 20, 20, 220, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-
-        // this.line.append( 240, 220, 40, 20, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-        // this.line.append( 40, 220, 240, 20, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-
-        // this.line.append( 80, 30, 260, 30, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-        // this.line.append( 260, 40, 80, 40, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-
-        // this.line.append( 30, 260, 30, 60, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-        // this.line.append( 40, 60, 40, 260, 6, { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] } );
-
-        // await this.line.draw( this );
-        // this.line.clear();
 
         ////////////////////////////////////////////////////////////////////////////////
         // Draw image
@@ -403,17 +396,22 @@ export class wDApplication
         // this.label.draw( this, textColor, backgroundColor, "100.001N", true, false );
         ////////////////////////////////////////////////////////////////////////////////////
 
+//        let objectparam = window.getDrawParams.call();
+
         this.spline.set( 10, 10, sW - 20, sH - 20 );
 
-        var objectparam = window.getDrawParams.call();
+        //console.log( "SR: " + samplerate +"; kdX: " + kdX + "; kdY: " + kdY );
 
-        for ( var i = 0; i < objectparam.draw.length; i++ ) 
-        {
-            if ( objectparam.draw[i].coords.visibility === true ) {
-                await this.spline.draw( this, objectparam.draw[i].coords.x.min, objectparam.draw[i].coords.y.min, objectparam.draw[i].coords.x.max, objectparam.draw[i].coords.y.max, objectparam.draw[i].coords.x.dprepeats, objectparam.draw[i].coords.y.dprepeats, 1, objectparam.draw[i].coords.color );
-	    	    break;
-            }
-        }
+        //await this.spline.draw( this, kdX, kdY, zoomX, zoomY );
+
+
+//        for ( var i = 0; i < objectparam.draw.length; i++ ) 
+//        {
+//            if ( objectparam.draw[i].coords.visibility === true ) {
+//                await this.spline.draw( this, objectparam.draw[i].coords.x.min, objectparam.draw[i].coords.y.min, objectparam.draw[i].coords.x.max, objectparam.draw[i].coords.y.max, objectparam.draw[i].coords.x.dprepeats, objectparam.draw[i].coords.y.dprepeats, 1, objectparam.draw[i].coords.color );
+//	    	    break;
+//            }
+//        }
 
 /*
 	    for ( var i = 0; i < objectparam.draw.length; i++ ) 
@@ -423,6 +421,9 @@ export class wDApplication
 */
         this.passEncoder.end();
         this.device.queue.submit( [ this.commandEncoder.finish() ] );
+
+        // shaderBindGroup
+        // textureBindGroup
 
         requestAnimationFrame( this.render );
     }

@@ -4,7 +4,7 @@ import { wDBox } from './box.mjs';
 
 export class wDSpline extends wDObject
 {
-    constructor( instance, x, y, _width, _height, _weight = -1 ) 
+    constructor( instance, x, y, _width, _height, _weight = 1 ) 
     {
         super( instance, x, y, _width, _height, _weight );
         this.setMinX( -Math.PI );

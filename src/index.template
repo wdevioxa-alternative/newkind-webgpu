@@ -106,7 +106,7 @@
 							$("#sample-rate").spinner( "value", ui.value );
 						}
 					},
-					min: 200,
+					min: 2000,
 					max: 96000,
 					step: 100,
 					value: 44100,
@@ -183,7 +183,7 @@
 					},
 					range: false,
 					min: 0,
-					max: 1000
+					max: 560
 				});
 				$( "#controlgroup" ).controlgroup();
 				window.run();
