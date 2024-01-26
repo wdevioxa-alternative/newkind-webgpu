@@ -158,55 +158,59 @@ export class wDLabel extends wDObject
         if ( textureImage == null ) 
         {
             let canvas = document.createElement('canvas');
+
             let context = canvas.getContext('2d');
+            let fontstring = this.getFontWeight().toString() + ' ' + this.getFontSize().toString() + 'px ' + this.getFontFamily();
+
+            context.font = fontstring;
 
             let fh = this.getHeight();
             let fw = this.getWidth();
 
             let fx = 0;
             let fy = 0;
+            
+            let mesure = context.measureText( textOut );
+
+            fw = mesure.width;
+            fh = mesure.fontBoundingBoxAscent + mesure.fontBoundingBoxDescent;
 
             if ( autoMeasure == true ) {
                 //////////////////////////////////////////////////////
                 // автоматическая подгонка контура
-                //////////////////////////////////////////////////////
-                let mesure = context.measureText( textOut );
-
-                fw = mesure.width;
-                fh = mesure.fontBoundingBoxAscent + mesure.fontBoundingBoxDescent;
-            
-                this.setWidth( fw );
-                this.setHeight( fh ); 
-
+                //////////////////////////////////////////////////////            
                 fx = 0;
                 fy = mesure.fontBoundingBoxAscent;
+
+                this.setWidth( fw );
+                this.setHeight( fh ); 
             } else {
                 ////////////////////////////////////
                 // по центру указанного контура
                 ////////////////////////////////////
-                let mesure = context.measureText( textOut );
-
-                fw = mesure.width;
-                fh = mesure.fontBoundingBoxAscent + mesure.fontBoundingBoxDescent;
-
                 fx = ( this.getWidth() - fw ) / 2;
                 fy = this.getHeight() - ( this.getHeight() - fh ) / 2;
+
+                fw = this.getWidth();
+                fh = this.getHeight();
             }
 
-            canvas.height = this.getHeight();
-            canvas.width = this.getWidth();
+            canvas.width = fw;
+            canvas.height = fh;
 
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            context.font = this.getFontWeight().toString() + ' ' + this.getFontSize().toString() + 'pt ' + this.getFontFamily();
+            context.imageSmoothingEnabled= false;
+
+            context.clearRect( 0, 0, canvas.width, canvas.height );
+            context.font = fontstring;
 
             context.fillStyle = backgroundColor;
-            context.fillRect( 0, 0, this.getWidth(), this.getHeight() );
+            context.fillRect( 0, 0, fw, fh );
             
             context.fillStyle = textColor;
             context.fillText( textOut, fx, fy, fw );
 
-            let bitmap = await createImageBitmap( canvas ); //, { colorSpaceConversion: 'default', resizeQuality: 'pixelated' } );
-            this.setImageBitmap( bitmap );
+            let image = await createImageBitmap( canvas ); //, { colorSpaceConversion: 'default', resizeQuality: 'pixelated' } );
+            this.setImageBitmap( image );
 
             textureImage = instance.device.createTexture({
                 size: [ canvas.width, canvas.height, 1 ],
@@ -228,9 +232,9 @@ export class wDLabel extends wDObject
         }
 
         if ( calculateOnly == true ) {
-            let bitmap = this.getImageBitmap();
-            if ( bitmap == null ) return null;
-            return { x: this.getX(), y: this.getY(), width: bitmap.width, height: bitmap.height };
+            let image = this.getImageBitmap();
+            if ( image == null ) return null;
+            return { x: this.getX(), y: this.getY(), width: image.width, height: image.height };
         }
 
         let positionBuffer = this.getPositionBuffer();
@@ -278,10 +282,10 @@ export class wDLabel extends wDObject
         instance.passEncoder.setBindGroup( 0, shaderBindGroup );
         instance.passEncoder.setBindGroup( 1, textureBindGroup );
 
-        instance.passEncoder.setVertexBuffer(0, positionBuffer);
-        instance.passEncoder.setVertexBuffer(1, fragUVBuffer);
+        instance.passEncoder.setVertexBuffer( 0, positionBuffer );
+        instance.passEncoder.setVertexBuffer( 1, fragUVBuffer );
 
-        instance.passEncoder.draw(6, 1, 0, 0);
+        instance.passEncoder.draw( 6, 1, 0, 0 );
     }
     getColors( instance )
     {

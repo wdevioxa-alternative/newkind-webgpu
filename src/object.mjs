@@ -9,17 +9,17 @@ export class wDObject
         this.setHeight( height );
         this.setDuty( true );
     }
-    setInstance( instance )
+    setInstance( _instance )
     {
-        this.instance = instance;
+        this.instance = _instance;
     }
     getInstance()
     {
         return this.instance;
     }
-    setDuty( duty )
+    setDuty( _duty )
     {
-        this.objectDuty = duty;
+        this.objectDuty = _duty;
     }
     isDuty() 
     {
@@ -33,66 +33,58 @@ export class wDObject
     {
         return this.x;
     }
-    setX(x) 
+    setX(_x) 
     {
-        if ( this.x != x ) {
-            this.setDuty( true );
-                this.x = x;
-        }
+        if ( this.x != _x )
+            this.x = _x;
     }
     getY() 
     {
         return this.y;
     }
-    setY(y) 
+    setY(_y) 
     {
-    	if ( this.y != y ) {
-	    	this.setDuty( true );
-	            this.y = y;
-	    }
+    	if ( this.y != _y )
+	        this.y = _y;
     }
     getWidth() 
     {
         return this.width;
     }
-    setWidth(width) 
+    setWidth(_width) 
     {
-	    if ( this.width != width ) {
-		    this.setDuty( true );
-	            this.width = width;
-	    }
+	    if ( this.width != _width )
+	        this.width = _width;
     }
     getHeight() 
     {
         return this.height;
     }
-    setHeight(height) 
+    setHeight(_height) 
     {
-	    if ( this.height != height ) {
-		    this.setDuty( true );
-	            this.height = height;
-	    }
+	    if ( this.height != _height )
+	        this.height = _height;
     }
-    setUniformShaderLocation( uniform )
+    setUniformShaderLocation( _uniform )
     {
 	    if ( this.uniformlShaderLocation != null ) 
 		    this.uniformlShaderLocation.destroy();
-	    this.uniformlShaderLocation = uniform;
+	    this.uniformlShaderLocation = _uniform;
     }
     getUniformShaderLocation()
     {
     	return this.uniformlShaderLocation;
     }
-    setUniformShaderFlag( device, shaderValue )
+    setUniformShaderFlag( device, _shaderValue )
     {
-        let source = new Uint32Array(1);
-        source[0] = shaderValue;
+        let source = new Uint32Array( 1 );
+        source[0] = _shaderValue;
         const uniformBuffer = device.createBuffer( {
             label: 'uniform flag buffer',
             size: source.byteLength,
             usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
         } );
-        device.queue.writeBuffer(uniformBuffer, 0, source);
+        device.queue.writeBuffer( uniformBuffer, 0, source );
     	return uniformBuffer;
     }
 };

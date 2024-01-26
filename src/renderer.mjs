@@ -108,7 +108,7 @@ export class wDApplication
     check()
     {
         try {
-            if (!navigator.gpu) 
+            if ( !navigator.gpu ) 
                 throw('Your browser does`t support WebGPU or it is not enabled.');
 
             const wgerr = document.getElementById('error');
@@ -265,7 +265,7 @@ export class wDApplication
         // this.spline = new wDSpline( this, 0, 0, this.getCanvasWidth(), this.getCanvasHeight() );
         // await this.spline.init();
         
-        this.label = new wDLabel( this, 'lighter', 16, 'Segoe UI Light', 0, 0, 128, 128 );
+        this.label = new wDLabel( this, 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
         await this.label.init();
 
         // this.circle = new wDCircle( this );
@@ -395,7 +395,7 @@ export class wDApplication
         let backgroundColor = "rgb(0, 0, 0)";
         
         this.label.set( 10, 320, 320 );
-        this.label.draw( this, textColor, backgroundColor, "100.001", true, false );
+        this.label.draw( this, textColor, backgroundColor, "100.001N", true, false );
 
 /*        
         var objectparam = window.getDrawParams.call();
