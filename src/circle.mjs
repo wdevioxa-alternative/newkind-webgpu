@@ -47,6 +47,25 @@ export class wDCircle extends wDObject
         this.setRadius( radius );
         this.setWeight( weight );
     }
+    set( x , y, radius, weight )
+    {
+        if ( this.getX() != x ) {
+            this.setX( x );
+            this.setDuty( true );
+        }
+        if ( this.getY() != y ) {
+            this.setY( y );
+            this.setDuty( true );
+        }
+        if ( this.getRadius() != radius ) {
+            this.setRadius( radius );
+            this.setDuty( true );
+        }
+        if ( this.getWeight() != weight ) {
+            this.setWeight( weight );
+            this.setDuty( true );
+        }
+    }
     async draw( instance, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
     {
         let flag = this.isDuty();

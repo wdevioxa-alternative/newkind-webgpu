@@ -265,11 +265,11 @@ export class wDApplication
         // this.spline = new wDSpline( this, 0, 0, this.getCanvasWidth(), this.getCanvasHeight() );
         // await this.spline.init();
         
-        this.label = new wDLabel( this, 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
-        await this.label.init();
+        // this.label = new wDLabel( this, 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
+        // await this.label.init();
 
-        // this.circle = new wDCircle( this );
-        // await this.circle.init();
+        this.circle = new wDCircle( this );
+        await this.circle.init();
 
         // this.dotcircle = new wDCircle( this );
         // await this.dotcircle.init();
@@ -385,17 +385,26 @@ export class wDApplication
             { from: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ], to: [ this.color, 1.0 - this.color, this.color, 1.0 ] } 
         ] );
 
+        
+        ////////////////////////////////////////////////////////////////////////////////////
+        // wDCircle example is completed
+        ////////////////////////////////////////////////////////////////////////////////////
         // this.circle.set( sW / 2.0, sH / 2.0, 100 * ( 1.0 - this.color ) * 2, 2 );
         // await this.circle.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
+        ////////////////////////////////////////////////////////////////////////////////////
 
-        // this.dotcircle.set( 11, 11, 6, 1 );
-        // await this.dotcircle.draw( this, [ 0.0, 1.0, 0.0, 1.0 ] );
+        this.circle.set( 10, 10, 6, 1 );
+        await this.circle.draw( this, [ 0.0, 1.0, 0.0, 1.0 ] );
 
-        let textColor = "rgb(255, 255, 255)";
-        let backgroundColor = "rgb(0, 0, 0)";
-        
-        this.label.set( 10, 320, 320 );
-        this.label.draw( this, textColor, backgroundColor, "100.001N", true, false );
+        ////////////////////////////////////////////////////////////////////////////////////
+        // wDLabel example is completed
+        ////////////////////////////////////////////////////////////////////////////////////
+        // let textColor = "rgb(255, 255, 255)";
+        // let backgroundColor = "rgb(0, 0, 0)";
+        //
+        // this.label.set( 10, 320, 320 );
+        // this.label.draw( this, textColor, backgroundColor, "100.001N", true, false );
+        ////////////////////////////////////////////////////////////////////////////////////
 
 /*        
         var objectparam = window.getDrawParams.call();
