@@ -102,8 +102,10 @@ export class wDLine extends wDObject
     }
     setVertexBuffer( vertex )
     {
-        if ( this.vertexBuffer != null )
-            this.vertexBuffer.destroy();
+        if ( vertex == null ) {
+            if ( this.vertexBuffer != null )
+                this.vertexBuffer.destroy();
+        }
         this.vertexBuffer = vertex;
     }
     getVertexBuffer() 
@@ -112,8 +114,10 @@ export class wDLine extends wDObject
     }
     setFragUVBuffer( fragUV )
     {
-        if ( this.fragUVBuffer != null )
-            this.fragUVBuffer.destroy();
+        if ( fragUV == null ) {        
+            if ( this.fragUVBuffer != null )
+                this.fragUVBuffer.destroy();
+        }
         this.fragUVBuffer = fragUV;
     }
     getFragUVBuffer()
@@ -122,8 +126,10 @@ export class wDLine extends wDObject
     }
     setColorsBuffer( colors )
     {
-        if ( this.colorsBuffer != null )
-            this.colorsBuffer.destroy();
+        if ( colors == null ) {        
+            if ( this.colorsBuffer != null )
+                this.colorsBuffer.destroy();
+        }
         this.colorsBuffer = colors;
     }
     getColorsBuffer() 

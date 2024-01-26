@@ -41,9 +41,11 @@ export class wDBox extends wDObject
                 this.setDuty( true );
             }
         }
-        if ( this.getWeight() != _weight ) {
-            this.setWeight( _weight );
-            this.setDuty( true );
+        if ( _weight != -1 ) { 
+            if ( this.getWeight() != _weight ) {
+                this.setWeight( _weight );
+                this.setDuty( true );
+            }
         }
     }
     async draw( instance, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ]) 
