@@ -67,7 +67,6 @@
 
 		<script type='text/javascript' src="config/controller.bundle.js"></script>
 		<script type='text/javascript'>
-
 			(function($)
 			{
 				$.fn.input = function (css)
@@ -94,17 +93,32 @@
 				}
 			})(jQuery);
 
-			jQuery(document).ready(function () {
+			window["isNumber"] = function(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
+
+			jQuery(document).ready(function () 
+			{
+				$( "#sample-rate" ).keyup( function(event) {
+    				if (event.keyCode === 13) {
+						let value = $("#sample-rate").spinner( "value" );
+						value = window.isNumber( value ) ? value : 44100;						
+						$("#sample-rate").spinner( "value", value );
+						window.samplerate = parseFloat( value );
+    				}
+				});
+
 				$( "#sample-rate" ).spinner({
 					create: function( event, ui ) {
 						$("#sample-rate").spinner( "value", 44100 );
+						window.samplerate = 44100;
 					},
 					change: function( event, ui ) {
-						if ( parseFloat(ui.value) != ui.value ) {
-							$("#sample-rate").spinner( "value", 44100 );
-						} else {
-							$("#sample-rate").spinner( "value", ui.value );
-						}
+						let value = $("#sample-rate").spinner( "value" );
+						value = window.isNumber( value ) ? value : 44100;
+						$("#sample-rate").spinner( "value", value );
+						window.samplerate = parseFloat( value );
+					},
+					spin: function( event, ui ) {
+						window.samplerate = ui.value;
 					},
 					min: 2000,
 					max: 96000,
@@ -114,13 +128,15 @@
 				$( "#volume-rate" ).spinner({
 					create: function( event, ui ) {
 						$("#volume-rate").spinner( "value", 1.000 );
+						window.volumerate = 1.000;
 					},
 					change: function( event, ui ) {
-						if ( parseFloat(ui.value) != ui.value ) {
-							$("#volume-rate").spinner( "value", 1.000 );
-						} else {
-							$("#volume-rate").spinner( "value", ui.value );
+						if ( $( "#volume-rate" ).spinner( "isValid" ) != true ) {
+							window.volumerate = 1.000;
 						}
+					},					
+					spin: function( event, ui ) {
+						window.volumerate = ui.value;
 					},
 					min: 0.000,
 					max: 1.000,
@@ -130,12 +146,15 @@
 				$( "#zoom-x" ).slider({
 					create: function( event, ui ) {
 						$("#zoom-x").slider( "value", 100 );
+						window.zoomX = 100;
 					},
 					change: function( event, ui ) {
 						$("#zoom-x-value").text( ui.value );
+						window.zoomX = ui.value;
 					},					
 					slide: function( event, ui ) {
 						$("#zoom-x-value").text( ui.value );
+						window.zoomX = ui.value;
 					},
 					range: false,
 					min: 100,
@@ -145,12 +164,15 @@
 				$( "#minimum-x" ).slider({
 					create: function( event, ui ) {
 						$("#minimum-x").slider( "value", 30 );
+						window.kdX = 30;
 					},
 					change: function( event, ui ) {
 						$("#minimum-x-value").text( ui.value );
+						window.kdX = ui.value;
 					},
 					slide: function( event, ui ) {
 						$("#minimum-x-value").text( ui.value );
+						window.kdX = ui.value;
 					},
 					range: false,
 					min: 0,
@@ -159,12 +181,15 @@
 				$( "#zoom-y" ).slider({
 					create: function( event, ui ) {
 						$("#zoom-y").slider( "value", 100 );
+						window.zoomY = 100;
 					},
 					change: function( event, ui ) {
 						$("#zoom-y-value").text( ui.value );
+						window.zoomY = ui.value;
 					},
 					slide: function( event, ui ) {
 						$("#zoom-y-value").text( ui.value );
+						window.zoomY = ui.value;
 					},
 					range: false,
 					min: 100,
@@ -174,12 +199,15 @@
 				$( "#minimum-y" ).slider({
 					create: function( event, ui ) {
 						$("#minimum-y").slider( "value", 10 );
+						window.kdY = 10;
 					},
 					change: function( event, ui ) {
 						$("#minimum-y-value").text( ui.value );
+						window.kdY = ui.value;
 					},
 					slide: function( event, ui ) {
 						$("#minimum-y-value").text( ui.value );
+						window.kdY = ui.value;
 					},
 					range: false,
 					min: 0,

@@ -334,14 +334,6 @@ export class wDApplication
         this.passEncoder.setBindGroup( 0, shaderBindGroup );
         this.passEncoder.setBindGroup( 1, textureBindGroup );
 
-        let samplerate = $("#sample-rate").spinner( "value" );
-        let volumerate = $("#volume-rate").spinner( "value" );
-
-        let zoomX = $("#zoom-x").slider( "value" );
-        let zoomY = $("#zoom-y").slider( "value" );
-        let kdX = $("#minimum-x").slider( "value" );
-        let kdY = $("#minimum-y").slider( "value" );
-
         this.color += this.coloriterator;
 
         if ( this.color >= 1.0 ) {
@@ -400,9 +392,9 @@ export class wDApplication
 
         this.spline.set( 10, 10, sW - 20, sH - 20 );
 
-        //console.log( "SR: " + samplerate +"; kdX: " + kdX + "; kdY: " + kdY );
+        console.log( "SR: " + window.samplerate +"; kdX: " + window.kdX + "; kdY: " + window.kdY );
 
-        //await this.spline.draw( this, kdX, kdY, zoomX, zoomY );
+        await this.spline.draw( this, window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY );
 
 
 //        for ( var i = 0; i < objectparam.draw.length; i++ ) 
