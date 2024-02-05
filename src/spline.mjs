@@ -406,14 +406,17 @@ export class wDSpline extends wDObject
     {
         let flag = this.isDuty();
 
+        let kX = zoomX / 100.0;
+        let kY = zoomY / 100.0;
+
         if ( flag == true ) {
             this.lines.clear();
             this.lines.setDuty( flag );
             this.setDuty( false );
         }
 
-        let offX = 10;
-        let offY = 10;
+        let offX = 10.0;
+        let offY = 10.0;
 
         if ( colors.length == 1 )
         {
@@ -436,39 +439,47 @@ export class wDSpline extends wDObject
             y - offY + _height,
             _t, colors[1] );
         
-        let cX = _width / window.kdX;
-        let cY = _height / window.kdY;
+        let cX = _width * kX / window.kdX;
+        let cY = _height * kY / window.kdY;
 
         for ( let i = 0; i < kdX / 2.0; i++ ) 
         {
+            if ( ( x + _width / 2.0 + i * cX ) > _width ) continue;
+            if ( ( x + _width / 2.0 - i * cX ) < 0 ) continue;
+            
             this.lines.append( 
                 x + _width / 2.0 + i * cX, 
                 y + _height / 2.0 - 5,
                 x + _width / 2.0 + i * cX, 
                 y + _height / 2.0 + 5,
-                _t, colors[1] );    
+                _t, colors[0] );    
+
             this.lines.append( 
                 x + _width / 2.0 - i * cX, 
                 y + _height / 2.0 - 5,
                 x + _width / 2.0 - i * cX, 
                 y + _height / 2.0 + 5,
-                _t, colors[1] );        
+                _t, colors[0] );        
         }
 
         for ( let i = 0; i < kdY / 2.0; i++ ) 
         {
+            if ( ( y + _height / 2.0 + i * cY ) > _height ) continue;
+            if ( ( y + _height / 2.0 - i * cY ) < 0 ) continue;
+
             this.lines.append( 
                 x + _width / 2.0 - 5, 
                 y + _height / 2.0 + i * cY,
                 x + _width / 2.0 + 5, 
                 y + _height / 2.0 + i * cY,
-                _t, colors[1] ); 
+                _t, colors[0] ); 
+                
             this.lines.append( 
                 x + _width / 2.0 - 5, 
                 y + _height / 2.0 - i * cY,
                 x + _width / 2.0 + 5, 
                 y + _height / 2.0 - i * cY,
-                _t, colors[1] ); 
+                _t, colors[0] ); 
         }
 
         await this.lines.draw( instance );
