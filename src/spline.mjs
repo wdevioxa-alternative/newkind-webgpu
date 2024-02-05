@@ -373,15 +373,15 @@ export class wDSpline extends wDObject
         return axisColors;
     }
 	
-    async draw( instance, minX, minY, maxX, maxY, itX, itY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
+    async draw( instance, samplerate, volumerate, kdX, kdY, zoomX, zoomY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
     {
         await this.borderDraw( instance, this.getX(), this.getY(), this.getWidth(), this.getHeight(), _t, colors );
-        await this.axisDraw( instance, minX, minY, maxX, maxY, itX, itY, _t, colors );
+        await this.axisDraw( instance, this.getX(), this.getY(), this.getWidth(), this.getHeight(), kdX, kdY, zoomX, zoomY, _t, colors );
     }
 
-    async borderDraw( instance, x, y, _w, _h, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
+    async borderDraw( instance, x, y, _width, _height, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
     {
-        this.border.set( x, y, _w, _h, _t );
+        this.border.set( x, y, _width, _height, _t );
 
         this.defaultcolor += this.coloriteration;
 
@@ -402,7 +402,7 @@ export class wDSpline extends wDObject
         ] );
     }
 
-    async axisDraw( instance, minX, minY, maxX, maxY, itX, itY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
+    async axisDraw( instance, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
     {
         let flag = this.isDuty();
 
@@ -412,14 +412,8 @@ export class wDSpline extends wDObject
             this.setDuty( false );
         }
 
-        let x = this.getX();
-        let y = this.getY();
-
         let offX = 10;
         let offY = 10;
-
-        let _width = this.getWidth();
-        let _height = this.getHeight();
 
         if ( colors.length == 1 )
         {
@@ -445,7 +439,7 @@ export class wDSpline extends wDObject
         let cX = _width / window.kdX;
         let cY = _height / window.kdY;
 
-        for ( let i = 0; i < window.kdX / 2.0; i++ ) 
+        for ( let i = 0; i < kdX / 2.0; i++ ) 
         {
             this.lines.append( 
                 x + _width / 2.0 + i * cX, 
@@ -461,7 +455,7 @@ export class wDSpline extends wDObject
                 _t, colors[1] );        
         }
 
-        for ( let i = 0; i < window.kdY / 2.0; i++ ) 
+        for ( let i = 0; i < kdY / 2.0; i++ ) 
         {
             this.lines.append( 
                 x + _width / 2.0 - 5, 
@@ -469,7 +463,6 @@ export class wDSpline extends wDObject
                 x + _width / 2.0 + 5, 
                 y + _height / 2.0 + i * cY,
                 _t, colors[1] ); 
-
             this.lines.append( 
                 x + _width / 2.0 - 5, 
                 y + _height / 2.0 - i * cY,
@@ -478,11 +471,7 @@ export class wDSpline extends wDObject
                 _t, colors[1] ); 
         }
 
-        console.log( "SR: " + window.samplerate + "; VR: " + window.volumerate + "; kdX: " + window.kdX + "; kdY: " + window.kdY + "; zoomX: " + window.zoomX + "; zoomY: " + window.zoomY );
-
-
         await this.lines.draw( instance );
-        
 	    this.setDuty( true );
 
         return;

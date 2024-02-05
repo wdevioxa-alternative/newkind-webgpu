@@ -392,8 +392,6 @@ export class wDApplication
 
         this.spline.set( 10, 10, sW - 20, sH - 20 );
 
-        console.log( "SR: " + window.samplerate + "; VR: " + window.volumerate + "; kdX: " + window.kdX + "; kdY: " + window.kdY + "; zoomX: " + window.zoomX + "; zoomY: " + window.zoomY );
-
         await this.spline.draw( this, window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY );
 
 
