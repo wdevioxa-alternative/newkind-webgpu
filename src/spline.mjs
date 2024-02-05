@@ -477,7 +477,7 @@ export class wDSpline extends wDObject
                 y + offY,
                 x + _width / 2.0,
                 y - offY + _height,
-                _t, colors[1] );
+                _t, colors[0] );
 
             ////////////////////////////////////////////////////////////////////
             // x delimeters
@@ -501,6 +501,10 @@ export class wDSpline extends wDObject
 
                 Rlabel.set( 10, x + _width / 2.0 + i * cX, y + _height / 2.0 + 10 );
                 Rlabel.draw( instance, textColor, backgroundColor, (i * sX).toFixed(1), true, true );
+                
+                let _w = Rlabel.getWidth();
+                let _x = Rlabel.getX();
+                Rlabel.setX( _x - _w / 2.0 );
 
                 this.appendLabel( Rlabel );
 
@@ -516,7 +520,11 @@ export class wDSpline extends wDObject
     
                 Llabel.set( 10, x + _width / 2.0 - i * cX, y + _height / 2.0 + 10 );
                 Llabel.draw( instance, textColor, backgroundColor, (-i * sX).toFixed(1), true, true );
-    
+
+                _w = Llabel.getWidth();
+                _x = Llabel.getX();
+                Llabel.setX( _x - _w / 2.0 );
+
                 this.appendLabel( Llabel );                         
             }
 
@@ -524,7 +532,7 @@ export class wDSpline extends wDObject
             // y delimeters
             for ( let i = stepY; i < kdY / 2.0; i = i + stepY ) 
             {
-                if ( ( y + _height / 2.0 + i * cY ) > _height - cY * 1.5 ) 
+                if ( ( y + _height / 2.0 + i * cY ) > _height ) 
                     continue;
                 if ( ( y + _height / 2.0 - i * cY ) < y ) 
                     continue;
@@ -539,8 +547,12 @@ export class wDSpline extends wDObject
                 let Rlabel = new wDLabel( instance, 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
                 await Rlabel.init();
 
-                Rlabel.set( 10, x + _width / 2.0 + 5, y + _height / 2.0 + i * cY );
+                Rlabel.set( 10, x + _width / 2.0 + 6, y + _height / 2.0 + i * cY );
                 Rlabel.draw( instance, textColor, backgroundColor, (-i * vY ).toFixed(3), true, true );
+
+                let _h = Rlabel.getHeight();
+                let _y = Rlabel.getY();
+                Rlabel.setY( _y - _h / 2.0 );
 
                 this.appendLabel( Rlabel );
 
@@ -554,8 +566,13 @@ export class wDSpline extends wDObject
                 let Llabel = new wDLabel( instance, 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
                 await Llabel.init();
 
-                Llabel.set( 10, x + _width / 2.0 + 5, y + _height / 2.0 - i * cY );
+                Llabel.set( 10, x + _width / 2.0 + 6, y + _height / 2.0 - i * cY );
+
                 Llabel.draw( instance, textColor, backgroundColor, (i * vY).toFixed(3), true, true );
+
+                _h = Llabel.getHeight();
+                _y = Llabel.getY();
+                Llabel.setY( _y - _h / 2.0 );
 
                 this.appendLabel( Llabel );
             }
