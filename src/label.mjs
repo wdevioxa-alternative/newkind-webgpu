@@ -13,7 +13,7 @@ export class wDLabel extends wDObject
         this.setPositionBuffer( null );
         this.setFragUVBuffer( null );
         this.setTextureBindGroup( null );
-        this.setUniformShaderLocation( null );
+        this.setShaderBindGroup( null );
         this.setDuty( false );
     }  
     destroy()
@@ -23,6 +23,7 @@ export class wDLabel extends wDObject
         this.setPositionBuffer( null );
         this.setFragUVBuffer( null );
         this.setTextureBindGroup( null );
+        this.setShaderBindGroup( null );
         this.setUniformShaderLocation( null );
         this.setDuty( true );
     }
@@ -36,7 +37,7 @@ export class wDLabel extends wDObject
         );
         this.setDuty( false );
     }
-    set( fs, x , y, _width = -1, _height = -1 )
+    set( fs, x, y, _width = -1, _height = -1 )
     {
         if ( this.getFontSize() != fs ) {
             this.setFontSize( fs );
@@ -114,9 +115,6 @@ export class wDLabel extends wDObject
     }
     setImageBitmap( bitmap ) 
     {
-        if ( bitmap == null )
-            if ( this.imageBitmap != null )
-                this.imageBitmap.destroy();
         this.imageBitmap = bitmap;
     }
     getImageBitmap()
@@ -150,6 +148,7 @@ export class wDLabel extends wDObject
     async draw( instance, textColor, backgroundColor, textOut, autoMeasure, calculateOnly = false ) 
     {
         let flag = this.isDuty();
+
         if ( flag == true ) {
             this.setImageBitmap( null );
             this.setTextureImage( null );
@@ -187,9 +186,6 @@ export class wDLabel extends wDObject
                 //////////////////////////////////////////////////////            
                 fx = 0;
                 fy = mesure.fontBoundingBoxAscent;
-
-                this.setWidth( fw );
-                this.setHeight( fh ); 
             } else {
                 ////////////////////////////////////
                 // по центру указанного контура
@@ -200,6 +196,9 @@ export class wDLabel extends wDObject
                 fw = this.getWidth();
                 fh = this.getHeight();
             }
+
+            this.setWidth( fw );
+            this.setHeight( fh ); 
 
             canvas.width = fw;
             canvas.height = fh;
@@ -234,64 +233,73 @@ export class wDLabel extends wDObject
             );
         
             this.setTextureImage( textureImage );
+
             canvas.remove();
+
+            if ( calculateOnly == true ) {
+                if ( image == null ) return null;
+                return { x: this.getX(), y: this.getY(), width: this.getWidth(), height: this.getHeight() };
+            }
         }
 
-        if ( calculateOnly == true ) {
-            let image = this.getImageBitmap();
-            if ( image == null ) return null;
-            return { x: this.getX(), y: this.getY(), width: image.width, height: image.height };
+        await this.render( instance );
+    }
+
+    async render( instance )
+    {
+        let textureImage = this.getTextureImage();
+        if ( textureImage != null ) 
+        {
+            let positionBuffer = this.getPositionBuffer();
+            if ( positionBuffer == null ) {
+                positionBuffer = instance.createBuffer( this.getPositions( instance ), GPUBufferUsage.VERTEX, instance.device );
+                this.setPositionBuffer( positionBuffer );
+            }
+
+            let fragUVBuffer = this.getFragUVBuffer();
+            if ( fragUVBuffer == null ) {
+                fragUVBuffer = instance.createBuffer( this.getFragUV( instance ), GPUBufferUsage.VERTEX, instance.device );
+                this.setFragUVBuffer( fragUVBuffer );
+            }
+
+            let shaderBindGroup = this.getShaderBindGroup();
+            if ( shaderBindGroup == null ) {
+                shaderBindGroup = instance.device.createBindGroup( {
+                    layout: instance.pipeline.getBindGroupLayout( 0 ),
+                    entries: [ {
+                        binding: 0,
+                        resource: {
+                            buffer: this.uniformShaderLocation
+                        }
+                    } ]
+                } );
+            }
+
+            let textureBindGroup = this.getTextureBindGroup();
+            if ( textureBindGroup == null ) {
+                textureBindGroup = instance.device.createBindGroup( {
+                    layout: instance.pipeline.getBindGroupLayout(1),
+                    entries: [ {
+                        binding: 0,
+                        resource: instance.sampler,
+                    }, {
+                        binding: 1,
+                        resource: textureImage.createView( {
+                            baseMipLevel: 0,
+                            mipLevelCount: 1
+                        } ),
+                    } ]
+                } );
+            }
+
+            instance.passEncoder.setBindGroup( 0, shaderBindGroup );
+            instance.passEncoder.setBindGroup( 1, textureBindGroup );
+
+            instance.passEncoder.setVertexBuffer( 0, positionBuffer );
+            instance.passEncoder.setVertexBuffer( 1, fragUVBuffer );
+
+            instance.passEncoder.draw( 6, 1, 0, 0 );
         }
-
-        let positionBuffer = this.getPositionBuffer();
-        if ( positionBuffer == null ) {
-            positionBuffer = instance.createBuffer( this.getPositions( instance ), GPUBufferUsage.VERTEX, instance.device );
-            this.setPositionBuffer( positionBuffer );
-        }
-
-        let fragUVBuffer = this.getFragUVBuffer();
-        if ( fragUVBuffer == null ) {
-            fragUVBuffer = instance.createBuffer( this.getFragUV( instance ), GPUBufferUsage.VERTEX, instance.device );
-            this.setFragUVBuffer( fragUVBuffer );
-        }
-
-        let shaderBindGroup = this.getShaderBindGroup();
-        if ( shaderBindGroup == null ) {
-            shaderBindGroup = instance.device.createBindGroup( {
-                layout: instance.pipeline.getBindGroupLayout( 0 ),
-                entries: [ {
-                    binding: 0,
-                    resource: {
-                        buffer: this.uniformlShaderLocation
-                    }
-                } ]
-            } );
-        }
-
-        let textureBindGroup = this.getTextureBindGroup();
-        if ( textureBindGroup == null ) {
-            textureBindGroup = instance.device.createBindGroup( {
-		        layout: instance.pipeline.getBindGroupLayout(1),
-		        entries: [ {
-		            binding: 0,
-		            resource: instance.sampler,
-		        }, {
-		            binding: 1,
-		            resource: this.textureImage.createView({
-                        baseMipLevel: 0,
-                        mipLevelCount: 1
-                    }),
-		        } ]
-	        } );
-        }
-
-        instance.passEncoder.setBindGroup( 0, shaderBindGroup );
-        instance.passEncoder.setBindGroup( 1, textureBindGroup );
-
-        instance.passEncoder.setVertexBuffer( 0, positionBuffer );
-        instance.passEncoder.setVertexBuffer( 1, fragUVBuffer );
-
-        instance.passEncoder.draw( 6, 1, 0, 0 );
     }
     getColors( instance )
     {

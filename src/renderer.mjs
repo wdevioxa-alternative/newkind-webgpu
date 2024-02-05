@@ -265,8 +265,8 @@ export class wDApplication
         this.spline = new wDSpline( this, 10, 10, this.getCanvasWidth() - 20, this.getCanvasHeight() - 20 );
         await this.spline.init();
         
-        // this.label = new wDLabel( this, 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
-        // await this.label.init();
+        //this.label = new wDLabel( this, 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
+        //await this.label.init();
 
         // this.circle = new wDCircle( this );
         // await this.circle.init();
@@ -381,11 +381,12 @@ export class wDApplication
         ////////////////////////////////////////////////////////////////////////////////////
         // wDLabel example is completed
         ////////////////////////////////////////////////////////////////////////////////////
-        // let textColor = "rgb(255, 255, 255)";
-        // let backgroundColor = "rgb(0, 0, 0)";
+        //let textColor = "rgb(255, 255, 255)";
+        //let backgroundColor = "rgb(0, 0, 0)";
         //
-        // this.label.set( 10, 320, 320 );
-        // this.label.draw( this, textColor, backgroundColor, "100.001N", true, false );
+        //this.label.set( 10, 320, 320 );
+        //await this.label.draw( this, textColor, backgroundColor, "100.001N", true, true );
+        //await this.label.render( this );
         ////////////////////////////////////////////////////////////////////////////////////
 
 //        let objectparam = window.getDrawParams.call();
