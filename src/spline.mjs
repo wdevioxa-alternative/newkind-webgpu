@@ -483,7 +483,7 @@ export class wDSpline extends wDObject
             // x delimeters
             for ( let i = stepX; i < kdX / 2.0; i = i + stepX ) 
             {
-                if ( ( x + _width / 2.0 + i * cX ) > _width ) 
+                if ( ( x + _width / 2.0 + i * cX ) > _width - cX * 1.5 ) 
                     continue;
 
                 if ( ( x + _width / 2.0 - i * cX ) < x ) 
@@ -524,7 +524,7 @@ export class wDSpline extends wDObject
             // y delimeters
             for ( let i = stepY; i < kdY / 2.0; i = i + stepY ) 
             {
-                if ( ( y + _height / 2.0 + i * cY ) > _height ) 
+                if ( ( y + _height / 2.0 + i * cY ) > _height - cY * 1.5 ) 
                     continue;
                 if ( ( y + _height / 2.0 - i * cY ) < y ) 
                     continue;
