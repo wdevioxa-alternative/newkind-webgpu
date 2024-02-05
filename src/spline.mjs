@@ -1,6 +1,7 @@
 import { wDObject } from './object.mjs';
 import { wDLabel } from './label.mjs';
 import { wDBox } from './box.mjs';
+import { wDLine } from './line.mjs';
 
 export class wDSpline extends wDObject
 {
@@ -18,21 +19,25 @@ export class wDSpline extends wDObject
         this.setPositionsBuffer( null );
         this.setShaderBindGroup( null );
         this.setDuty( false );
-        this.objectLabels = [];
     }  
     destroy()
     {
-        for ( let i = this.objectLabels.length - 1; i >= 0; i-- ) 
-            this.objectLabels[i].destroy();
-        this.objectLabels = [];
+        let l = this.labels.length;
+        for ( let i = l - 1; i >= 0; i-- ) 
+            this.labels[i].destroy();
+        this.labels = [];
+        
+        this.border.destroy();
+        this.lines.destroy();
+
         this.setBorderPositionsBuffer( null );
         this.setBorderColorsBuffer( null );
         this.setPositionsBuffer( null );
         this.setColorsBuffer( null );
         this.setAxisPositionsBuffer( null );
         this.setAxisColorsBuffer( null );
-        this.setShaderBindGroup( null );
-        this.border.destroy();
+        this.setShaderBindGroup( null );  
+
         this.setDuty( true );
     }
     async init() 
@@ -41,6 +46,11 @@ export class wDSpline extends wDObject
         
         this.border = new wDBox( instance );
         await this.border.init();
+
+        this.lines = new wDLine( instance );
+        await this.lines.init();
+
+        this.labels = [];
 
         this.defaultcolor = 0.1;
         this.coloriteration = 0.01;
@@ -226,14 +236,14 @@ export class wDSpline extends wDObject
         this.colors = new Float32Array();
     }
     getLabelsCount() {
-        return this.objectLabels.length;
+        return this.labels.length;
     }
     getLabelAt( objectIndex ) {
-        return this.objectLabels[ objectIndex ];
+        return this.labels[ objectIndex ];
     }
     appendLabel( label ) {
-        this.objectLabels.push( label );
-        return this.objectLabels.length - 1;
+        this.labels.push( label );
+        return this.labels.length - 1;
     }
     getPositions( instance ) {
         let vpositions = new Float32Array(this.positions.length);
@@ -301,17 +311,17 @@ export class wDSpline extends wDObject
 
         return borderColors;
     }
-    getAxisPositions( instance, iterationsX, iterationsY )
+    getAxisPositions( instance, itX, itY )
     {
         //////////////////////////////////////////////////
         // количество линий
         //////////////////////////////////////////////////
-        var itX = iterationsX | 1;
-        var itY = iterationsY | 1;
+        itX = itX | 1;
+        itY = itY | 1;
 	// [ 2; width - 3 ]
 
-        var objectWidth = this.getWidth() - 3; // 3 border size
-        var objectHeight = this.getHeight() - 3; // 3 border size
+        let objectWidth = this.getWidth() - 3; // 3 border size
+        let objectHeight = this.getHeight() - 3; // 3 border size
 
         var offsetX = this.getX() + 2; // 2 border size
         var offsetY = this.getY() + 2; // 2 border size
@@ -363,13 +373,13 @@ export class wDSpline extends wDObject
         return axisColors;
     }
 	
-    async draw( instance, minX, minY, maxX, maxY, itX, itY, _t = 1, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
+    async draw( instance, minX, minY, maxX, maxY, itX, itY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
     {
-        await this.borderDraw( instance, this.getX(), this.getY(), this.getWidth(), this.getHeight(), _t, color );
-        await this.axisDraw( instance, minX, minY, maxX, maxY, itX, itY, _t, color );
+        await this.borderDraw( instance, this.getX(), this.getY(), this.getWidth(), this.getHeight(), _t, colors );
+        await this.axisDraw( instance, minX, minY, maxX, maxY, itX, itY, _t, colors );
     }
 
-    async borderDraw( instance, x, y, _w, _h, _t = 1, color = [ 1.0, 0.0, 1.0, 1.0 ] ) 
+    async borderDraw( instance, x, y, _w, _h, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
     {
         this.border.set( x, y, _w, _h, _t );
 
@@ -392,13 +402,99 @@ export class wDSpline extends wDObject
         ] );
     }
 
-    async axisDraw( instance, minX, minY, maxX, maxY, itX, itY, _t, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
+    async axisDraw( instance, minX, minY, maxX, maxY, itX, itY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
     {
+        let flag = this.isDuty();
+
+        if ( flag == true ) {
+            this.lines.clear();
+            this.lines.setDuty( flag );
+            this.setDuty( false );
+        }
+
+        let x = this.getX();
+        let y = this.getY();
+
+        let offX = 10;
+        let offY = 10;
+
+        let _width = this.getWidth();
+        let _height = this.getHeight();
+
+        if ( colors.length == 1 )
+        {
+            colors.push( colors[0] );
+        }
+
+        // x axis
+        this.lines.append( 
+            x + offX, 
+            y + _height / 2.0,
+            x - offX + _width,
+            y + _height / 2.0,
+            _t, colors[0] );
+
+        // y axis
+        this.lines.append( 
+            x + _width / 2.0, 
+            y + offY,
+            x + _width / 2.0,
+            y - offY + _height,
+            _t, colors[1] );
+        
+        let cX = _width / window.kdX;
+        let cY = _height / window.kdY;
+
+        for ( let i = 0; i < window.kdX / 2.0; i++ ) 
+        {
+            this.lines.append( 
+                x + _width / 2.0 + i * cX, 
+                y + _height / 2.0 - 5,
+                x + _width / 2.0 + i * cX, 
+                y + _height / 2.0 + 5,
+                _t, colors[1] );    
+            this.lines.append( 
+                x + _width / 2.0 - i * cX, 
+                y + _height / 2.0 - 5,
+                x + _width / 2.0 - i * cX, 
+                y + _height / 2.0 + 5,
+                _t, colors[1] );        
+        }
+
+        for ( let i = 0; i < window.kdY / 2.0; i++ ) 
+        {
+            this.lines.append( 
+                x + _width / 2.0 - 5, 
+                y + _height / 2.0 + i * cY,
+                x + _width / 2.0 + 5, 
+                y + _height / 2.0 + i * cY,
+                _t, colors[1] ); 
+
+            this.lines.append( 
+                x + _width / 2.0 - 5, 
+                y + _height / 2.0 - i * cY,
+                x + _width / 2.0 + 5, 
+                y + _height / 2.0 - i * cY,
+                _t, colors[1] ); 
+        }
+
+        console.log( "SR: " + window.samplerate + "; VR: " + window.volumerate + "; kdX: " + window.kdX + "; kdY: " + window.kdY + "; zoomX: " + window.zoomX + "; zoomY: " + window.zoomY );
+
+
+        await this.lines.draw( instance );
+        
+	    this.setDuty( true );
+
+        return;
+/*
         //////////////////////////////////
         // draw axis
-        //////////////////////////////////        
-        let itX = itX | 1;
-        let itY = itY | 1;
+        //////////////////////////////////
+
+        itX = itX | 1;
+        itY = itY | 1;
+
+        //////////////////////////////////
 
         let stepX = ( maxX - minX ) / ( itX - 1 );
         let stepY = ( maxY - minY ) / ( itY - 1 );
@@ -421,7 +517,7 @@ export class wDSpline extends wDObject
             }
             for ( let i = 0; i < itY; i++ ) 
             {
-                var label = new wDLabel( 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
+                let label = new wDLabel( 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
 
                 label.setX( instance.calcRX( positions[12 + (itX + i) * 6 + 0] ) + 4 );
                 label.setY( instance.calcRY( positions[12 + (itX + i) * 6 + 1] ) + 0 );
@@ -430,12 +526,13 @@ export class wDSpline extends wDObject
                 this.appendLabel( label );
             }
         }
-        var itL = 0;
-        var storedDesc = null;
-        for ( var i = 0; i < itX; i++ ) 
+
+        let itL = 0;
+        let storedDesc = null;
+        for ( let i = 0; i < itX; i++ ) 
         {
-            var stringValue = '';
-            var numberValue = ( minX + ( stepX * i ) );
+            let stringValue = '';
+            let numberValue = ( minX + ( stepX * i ) );
 
             ( numberValue > 0 ) ? stringValue = '+' : stringValue = '';
 
@@ -492,17 +589,17 @@ export class wDSpline extends wDObject
 	        }
             itL++;
         }
-        var axisPositionsBuffer = this.getAxisPositionsBuffer();
+        let axisPositionsBuffer = this.getAxisPositionsBuffer();
         if ( axisPositionsBuffer == null ) {
             axisPositionsBuffer = instance.createBuffer(positions, GPUBufferUsage.VERTEX, instance.device);
             this.setAxisPositionsBuffer( axisPositionsBuffer );
         }
-        var axisColorsBuffer = this.getAxisColorsBuffer();
+        let axisColorsBuffer = this.getAxisColorsBuffer();
         if ( axisColorsBuffer == null ) {
             axisColorsBuffer = instance.createBuffer(colors, GPUBufferUsage.VERTEX, instance.device);
             this.setAxisColorsBuffer( axisColorsBuffer );
         }
-        var vertexCount = positions.length / 3;
+        let vertexCount = positions.length / 3;
         
         let shaderBindGroup = this.getShaderBindGroup();
 	    if ( shaderBindGroup == null ) {
@@ -511,7 +608,7 @@ export class wDSpline extends wDObject
 			    entries: [ {
 				    binding: 0,
 				    resource: {
-					    buffer: this.uniformlShaderLocation
+					    buffer: this.uniformShaderLocation
     				}
 	    		} ]
 		    } );
@@ -523,6 +620,7 @@ export class wDSpline extends wDObject
         instance.passEncoder.setVertexBuffer(0, axisPositionsBuffer);
         instance.passEncoder.setVertexBuffer(1, axisColorsBuffer);
         instance.passEncoder.draw( vertexCount, 1, 0, 0 );
+        */
     }
     async functionSimpleDraw( instance, func, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
     {

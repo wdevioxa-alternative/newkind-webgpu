@@ -72,13 +72,13 @@ export class wDObject
     }
     setUniformShaderLocation( _uniform )
     {
-	    if ( this.uniformlShaderLocation != null ) 
-		    this.uniformlShaderLocation.destroy();
-	    this.uniformlShaderLocation = _uniform;
+	    if ( this.uniformShaderLocation != null ) 
+		    this.uniformShaderLocation.destroy();
+	    this.uniformShaderLocation = _uniform;
     }
     getUniformShaderLocation()
     {
-    	return this.uniformlShaderLocation;
+    	return this.uniformShaderLocation;
     }
     setUniformShaderFlag( device, _shaderValue )
     {

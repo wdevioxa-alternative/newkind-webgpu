@@ -330,7 +330,7 @@ export class wDImage extends wDObject
 		    entries: [ {
 			    binding: 0,
 			    resource: {
-				    buffer: this.uniformlShaderLocation
+				    buffer: this.uniformShaderLocation
 			    }
 		    } ]
 	    } );
