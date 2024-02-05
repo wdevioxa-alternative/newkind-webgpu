@@ -251,8 +251,8 @@ export class wDSpline extends wDObject
                 colors.push( colors[0] );
             }
 
-            let stepX = ( cX > 50 ) ? 1 : ( 50 / cX ) + 1;
-            let stepY = ( cY > 20 ) ? 1 : ( 20 / cY ) + 1;
+            let stepX = ( cX > 65 ) ? 1 : ( 65 / cX ) + 1;
+            let stepY = ( cY > 25 ) ? 1 : ( 25 / cY ) + 1;
 
             ////////////////////////////////////////////////////////////////////
             // x axis
