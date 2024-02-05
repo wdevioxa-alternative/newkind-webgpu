@@ -366,7 +366,7 @@ export class wDSpline extends wDObject
     async draw( instance, minX, minY, maxX, maxY, itX, itY, _t = 1, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
     {
         await this.borderDraw( instance, this.getX(), this.getY(), this.getWidth(), this.getHeight(), _t, color );
-        // await this.axisDraw( instance, minX, maxX, itX, minY, maxY, itY, color );
+        await this.axisDraw( instance, minX, minY, maxX, maxY, itX, itY, _t, color );
     }
 
     async borderDraw( instance, x, y, _w, _h, _t = 1, color = [ 1.0, 0.0, 1.0, 1.0 ] ) 
@@ -392,26 +392,26 @@ export class wDSpline extends wDObject
         ] );
     }
 
-    async axisDraw( instance, minX, minY, maxX, maxY, itX, itY, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
+    async axisDraw( instance, minX, minY, maxX, maxY, itX, itY, _t, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
     {
         //////////////////////////////////
         // draw axis
         //////////////////////////////////        
-        var itX = itX | 1;
-        var itY = itY | 1;
+        let itX = itX | 1;
+        let itY = itY | 1;
 
-        var stepX = ( maxX - minX ) / ( itX - 1 );
-        var stepY = ( maxY - minY ) / ( itY - 1 );
+        let stepX = ( maxX - minX ) / ( itX - 1 );
+        let stepY = ( maxY - minY ) / ( itY - 1 );
 
-        var positions = this.getAxisPositions(instance, itX, itY);
-        var colors = this.getAxisColors(instance, itX + itY, color);
+        let positions = this.getAxisPositions( instance, itX, itY);
+        let colors = this.getAxisColors( instance, itX + itY, color );
 
-        var labelsCount = this.getLabelsCount();
+        let labelsCount = this.getLabelsCount();
         if ( labelsCount == 0 )
         {
-            for ( var i = 0; i < itX; i++ ) 
+            for ( let i = 0; i < itX; i++ ) 
             {
-                var label = new wDLabel( 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
+                let label = new wDLabel( 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
 
                 label.setX( instance.calcRX( positions[12 + i * 6 + 0] ) + 0 );
                 label.setY( instance.calcRY( positions[12 + i * 6 + 1] ) + 4 );
@@ -419,7 +419,7 @@ export class wDSpline extends wDObject
 
                 this.appendLabel( label );
             }
-            for ( var i = 0; i < itY; i++ ) 
+            for ( let i = 0; i < itY; i++ ) 
             {
                 var label = new wDLabel( 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
 
@@ -441,13 +441,13 @@ export class wDSpline extends wDObject
 
             if ( i != ( itX - 1 ) / 2 ) 
             {
-		var oldDesc = storedDesc;
+		        var oldDesc = storedDesc;
                 var textOut = stringValue + numberValue.toFixed(2).toString();
-	        var textColor = 'rgb(255, 255, 255)';
-	        var backgroundColor = 'rgb(0, 0, 0)';
-		var objectLabel = this.getLabelAt( itL );
+	            var textColor = 'rgb(255, 255, 255)';
+	            var backgroundColor = 'rgb(0, 0, 0)';
+		        var objectLabel = this.getLabelAt( itL );
                 var newDesc = await objectLabel.draw( instance, textColor, backgroundColor, textOut, true, true );
-		if ( newDesc != null ) 
+		        if ( newDesc != null ) 
                 {
                     if ( oldDesc == null ) oldDesc = newDesc;
                     if (( oldDesc == newDesc ) || (( newDesc.x - oldDesc.x ) > ( 2 * newDesc.width ) && 
@@ -472,24 +472,24 @@ export class wDSpline extends wDObject
             ( numberValue > 0 ) ? stringValue = '+' : stringValue = '';
 
             if ( i % 4 == 0 )
-	    {
-                    var oldDesc = storedDesc;
-                    var textOut = stringValue + numberValue.toFixed(2).toString();
-                    var textColor = 'rgb(255, 255, 255)';
+	        {
+                var oldDesc = storedDesc;
+                var textOut = stringValue + numberValue.toFixed(2).toString();
+                var textColor = 'rgb(255, 255, 255)';
 	            var backgroundColor = 'rgb(0, 0, 0)';
-                    var objectLabel = this.getLabelAt( itL );
-                    var newDesc = await objectLabel.draw( instance, textColor, backgroundColor, textOut, true, true );
-                    if ( newDesc != null ) 
+                var objectLabel = this.getLabelAt( itL );
+                var newDesc = await objectLabel.draw( instance, textColor, backgroundColor, textOut, true, true );
+                if ( newDesc != null ) 
+                {
+                    if ((( newDesc.y - this.getY() ) > ( newDesc.height )) && (( this.getHeight() + this.getY() - newDesc.y ) > ( newDesc.height )))
                     {
-                        if ((( newDesc.y - this.getY() ) > ( newDesc.height )) && (( this.getHeight() + this.getY() - newDesc.y ) > ( newDesc.height )))
-                        {
-                            objectLabel.setY( newDesc.y - newDesc.height / 2 - 1 );
-                            await objectLabel.draw( instance, textColor, backgroundColor, textOut, true, false );
-                            objectLabel.setY( newDesc.y );
-                            storedDesc = newDesc;
-                        }
+                        objectLabel.setY( newDesc.y - newDesc.height / 2 - 1 );
+                        await objectLabel.draw( instance, textColor, backgroundColor, textOut, true, false );
+                        objectLabel.setY( newDesc.y );
+                        storedDesc = newDesc;
                     }
-	    }
+                }
+	        }
             itL++;
         }
         var axisPositionsBuffer = this.getAxisPositionsBuffer();

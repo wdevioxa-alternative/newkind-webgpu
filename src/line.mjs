@@ -312,6 +312,7 @@ export class wDLine extends wDObject
     async draw( instance ) 
     {
         let flag = this.isDuty();
+
         if ( flag == true ) 
 	    {
             this.setColorsBuffer( null );
@@ -319,21 +320,25 @@ export class wDLine extends wDObject
             this.setVertexBuffer( null );
             this.setDuty( false );
         }
+
 	    let vertexBuffer = this.getVertexBuffer();
         if ( vertexBuffer == null ) {
 		    vertexBuffer = instance.createBuffer(this.getVertex(), GPUBufferUsage.VERTEX, instance.device );
             this.setVertexBuffer( vertexBuffer );
         }
+
         let fragUVBuffer = this.getFragUVBuffer();
         if ( fragUVBuffer == null ) {
 		    fragUVBuffer = instance.createBuffer( this.getFragUV(), GPUBufferUsage.VERTEX, instance.device );
             this.setFragUVBuffer( fragUVBuffer );
         }
+
         let colorsBuffer = this.getColorsBuffer();
         if ( colorsBuffer == null ) {
 		    colorsBuffer = instance.createBuffer( this.getColors(), GPUBufferUsage.VERTEX, instance.device );
             this.setColorsBuffer( colorsBuffer );
         }	    
+
         let shaderBindGroup = this.getShaderBindGroup();
 	    if ( shaderBindGroup == null ) {
 		    shaderBindGroup = instance.device.createBindGroup( {
@@ -347,6 +352,7 @@ export class wDLine extends wDObject
 		    } );
 		    this.setShaderBindGroup( shaderBindGroup );
         }
+
 	    let count = this.getLinesCount();
         instance.passEncoder.setBindGroup( 0, shaderBindGroup );
         instance.passEncoder.setVertexBuffer( 0, vertexBuffer );
