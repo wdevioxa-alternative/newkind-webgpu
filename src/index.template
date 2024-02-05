@@ -98,16 +98,16 @@
 
 			jQuery(document).ready(function () 
 			{
-				function change_samplerate() {
-					let value = $("#sample-rate").spinner( "value" );
+				let change_samplerate = function() {
+					let value = $( "#sample-rate" ).spinner( "value" );
 					value = window.isNumber( value ) ? value : 44100;
-					$("#sample-rate").spinner( "value", value );
+					$( "#sample-rate" ).spinner( "value", value );
 					window.samplerate = parseFloat( value );					
 				};
 
 				$( "#sample-rate" ).spinner( {
 					create: function( event, ui ) {
-						$("#sample-rate").spinner( "value", 44100 );
+						$( "#sample-rate" ).spinner( "value", 44100 );
 						window.samplerate = 44100;
 					},
 					change: function( event, ui ) {
@@ -132,7 +132,7 @@
 					}
     			});
 
-				function change_volumerate() {
+				let change_volumerate = function() {
 					let value = $("#volume-rate").spinner( "value" );
 					value = window.isNumber( value ) ? value : 1.000;
 					$("#volume-rate").spinner( "value", value );
