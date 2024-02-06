@@ -389,27 +389,11 @@ export class wDApplication
         //await this.label.render( this );
         ////////////////////////////////////////////////////////////////////////////////////
 
-//        let objectparam = window.getDrawParams.call();
-
         this.spline.set( 10, 10, sW - 20, sH - 20 );
 
-        await this.spline.draw( this, window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY );
+        let object = window.getDrawParams.call();
+        await this.spline.draw( this, object, window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY );
 
-
-//        for ( var i = 0; i < objectparam.draw.length; i++ ) 
-//        {
-//            if ( objectparam.draw[i].coords.visibility === true ) {
-//                await this.spline.draw( this, objectparam.draw[i].coords.x.min, objectparam.draw[i].coords.y.min, objectparam.draw[i].coords.x.max, objectparam.draw[i].coords.y.max, objectparam.draw[i].coords.x.dprepeats, objectparam.draw[i].coords.y.dprepeats, 1, objectparam.draw[i].coords.color );
-//	    	    break;
-//            }
-//        }
-
-/*
-	    for ( var i = 0; i < objectparam.draw.length; i++ ) 
-        {
-            await this.spline.functionDraw( this, objectparam.draw[i].coords.x.min, objectparam.draw[i].coords.x.max, objectparam.draw[i].coords.x.dprepeats, objectparam.draw[i].dpoints, objectparam.draw[i].func, objectparam.draw[i].color );
-	    }
-*/
         this.passEncoder.end();
         this.device.queue.submit( [ this.commandEncoder.finish() ] );
 

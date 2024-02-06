@@ -314,7 +314,7 @@ export class wDLine extends wDObject
         let flag = this.isDuty();
 
         if ( flag == true ) 
-	    {
+        {
             this.setColorsBuffer( null );
             this.setFragUVBuffer( null );
             this.setVertexBuffer( null );

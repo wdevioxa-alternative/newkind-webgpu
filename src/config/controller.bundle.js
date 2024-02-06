@@ -16,7 +16,7 @@ window.getDrawParams = () => {
 						max: 1.0,
 						dprepeats: 20
 					}, 
-					visibility: false,
+					axis: false,
 					color: [ 1.0, 1.0, 0.0, 1.0 ],
 				},
 				dpoints: true,
@@ -37,7 +37,7 @@ window.getDrawParams = () => {
 						max: 1.0,
 						dprepeats: 20
 					}, 
-					visibility: false,
+					axis: false,
 					color: [ 0.0, 1.0, 1.0, 1.0 ],
 				},
 				dpoints: false,
@@ -58,7 +58,7 @@ window.getDrawParams = () => {
 						max: 1.0,
 						dprepeats: 20
 					}, 
-					visibility: false,
+					axis: false,
 					color: [ 1.0, 0.0, 1.0, 1.0 ],
 				},
 				dpoints: false,
@@ -79,7 +79,7 @@ window.getDrawParams = () => {
 						max: 1.0,
 						dprepeats: 50
 					}, 
-					visibility: true,
+					axis: true,
 					color: [ 1.0, 0.0, 1.0, 1.0 ],
 				},
 				dpoints: true,

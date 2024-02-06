@@ -163,10 +163,13 @@ export class wDSpline extends wDObject
         this.labels = [];
     }    
 
-    async draw( instance, samplerate, volumerate, kdX, kdY, zoomX, zoomY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
+    async draw( instance, object, samplerate, volumerate, kdX, kdY, zoomX, zoomY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
     {
         await this.borderDraw( instance, this.getX(), this.getY(), this.getWidth(), this.getHeight(), _t, colors );
         await this.axisDraw( instance, samplerate, volumerate, this.getX(), this.getY(), this.getWidth(), this.getHeight(), kdX, kdY, zoomX, zoomY, _t, colors );
+        if ( object.draw.length > 0 )
+            for ( let i = 0; i < object.draw.length; i++ )
+                await this.functionDraw( instance, object.draw[i] );
     }
 
     async borderDraw( instance, x, y, _width, _height, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
@@ -255,7 +258,8 @@ export class wDSpline extends wDObject
             let stepY = ( cY > 25 ) ? 1 : ( 25 / cY ) + 1;
 
             ////////////////////////////////////////////////////////////////////
-            // x axis
+            // x: axis
+            ////////////////////////////////////////////////////////////////////
             this.axis.append( 
                 x + offX, 
                 y + _height / 2.0,
@@ -264,7 +268,8 @@ export class wDSpline extends wDObject
                 _t, colors[0] );
 
             ////////////////////////////////////////////////////////////////////
-            // y axis
+            // y: axis
+            ////////////////////////////////////////////////////////////////////
             this.axis.append( 
                 x + _width / 2.0, 
                 y + offY,
@@ -273,7 +278,8 @@ export class wDSpline extends wDObject
                 _t, colors[0] );
 
             ////////////////////////////////////////////////////////////////////
-            // x delimeters
+            // x: delimeters
+            ////////////////////////////////////////////////////////////////////
             for ( let i = stepX; i < kdX / 2.0; i = i + stepX ) 
             {
                 if ( ( x + _width / 2.0 + i * cX ) > _width ) 
@@ -330,7 +336,8 @@ export class wDSpline extends wDObject
             }
 
             ////////////////////////////////////////////////////////////////////
-            // y delimeters
+            // y: delimeters
+            ////////////////////////////////////////////////////////////////////
             for ( let i = stepY; i < kdY / 2.0; i = i + stepY ) 
             {
                 if ( ( y + _height / 2.0 + i * cY ) > _height ) 
@@ -393,13 +400,25 @@ export class wDSpline extends wDObject
         }
     }
 
-    async functionSimpleDraw( instance, func, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
+    async functionDraw( instance, _d ) 
     {
-        this.functionDraw( instance, this.getMinX(), this.getMaxX(), true, this.getItX(), func, color );
-    }
+        let _axis = _d.axis;
+        let _ac = _d.coords.color;
 
-    async functionDraw( instance, minX, maxX, itX, points, func, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
-    {
+        let _dp = _d.dpoints;
+        let _dc = _d.color;
+
+        let _func = _d.func;
+
+        let _xmin = _d.coords.x.min;
+        let _xmax = _d.coords.x.max;
+        let _xdpr = _d.coords.x.dprepeats;
+
+        let _ymin = _d.coords.y.min;
+        let _ymax = _d.coords.y.max;
+        let _ydpr = _d.coords.y.dprepeats;
+
+        
 
     }
 };
