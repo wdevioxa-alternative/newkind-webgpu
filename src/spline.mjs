@@ -213,6 +213,16 @@ export class wDSpline extends wDObject
         let sX = tX * _samplerate;
         let vY = 2.0 * _volumerate / kdY;
 
+        if ( this.kdX == undefined || this.kdX != kdX ) {
+            this.kdX = kdX;
+            this.setDuty( true );
+        }
+
+        if ( this.kdY == undefined || this.kdY != kdY ) {
+            this.kdY = kdY;
+            this.setDuty( true );
+        }
+
         if ( this.vY == undefined || this.vY != vY ) {
             this.vY = vY;
             this.setDuty( true );
@@ -402,14 +412,41 @@ export class wDSpline extends wDObject
 
     async functionDraw( instance, _d ) 
     {
+        ////////////////////////////////////////////////////////////////////////
+        // _samplerate: 44100 - 1s           
+        ////////////////////////////////////////////////////////////////////////
+        // let sX = 2.0 * _samplerate / kdX;
+        // let sX = tX * _samplerate;
+        ////////////////////////////////////////////////////////////////////////
+
+        if ( this.vY == undefined ) return;
+        if ( this.sX == undefined ) return;
+        if ( this.cX == undefined ) return;
+        if ( this.cY == undefined ) return;
+        if ( this.kdX == undefined ) return;
+        if ( this.kdY == undefined ) return;
+
+        let cX = this.cX;
+        let cY = this.cY;
+
+        let kdX = this.kdX;
+        let kdY = this.kdY;
+
+        let sX = this.sX;
+        let vY = this.vY;
+        let tX = 2.0 / kdX;
+
+        let _samplerate = sX / tX;
+
+/*
         let _axis = _d.axis;
         let _ac = _d.coords.color;
 
         let _dp = _d.dpoints;
         let _dc = _d.color;
-
+*/
         let _func = _d.func;
-
+/*
         let _xmin = _d.coords.x.min;
         let _xmax = _d.coords.x.max;
         let _xdpr = _d.coords.x.dprepeats;
@@ -417,8 +454,56 @@ export class wDSpline extends wDObject
         let _ymin = _d.coords.y.min;
         let _ymax = _d.coords.y.max;
         let _ydpr = _d.coords.y.dprepeats;
+*/
+/*
+        for ( let i = 0; i < ( itL - 1); i++ ) 
+        {  
+            /////////////////////////////////////////////////////////////////////
+            // рисование точки
+            /////////////////////////////////////////////////////////////////////
+            floatX = i * wStep + minXX;
+            floatY = func( floatX );
 
-        
+            /////////////////////////////////////////////////////////////////////////////
+            // axis coordinates in center
+            /////////////////////////////////////////////////////////////////////////////
+            var floatXX = floatX - this.getMinX();
+            var floatYY = floatY - this.getMinY();
+
+            var realX = instance.calcScale( origWidth, wholeWidth, floatXX );
+            var realY = origHeight - instance.calcScale( origHeight, wholeHeight, floatYY );
+
+            this.appendItem( instance, [ realX, realY, 0.0 ], color );
+
+            floatX = ( i + 1 ) * wStep + minXX;
+            floatY = func( floatX );
+
+            /////////////////////////////////////////////////////////////////////////////
+            // axis coordinates in center
+            /////////////////////////////////////////////////////////////////////////////
+            floatXX = floatX - this.getMinX();
+            floatYY = floatY - this.getMinY();
+
+            realX = instance.calcScale( origWidth, wholeWidth, floatXX );
+            realY = origHeight - instance.calcScale( origHeight, wholeHeight, floatYY );
+
+            this.appendItem( instance, [ realX, realY, 0.0 ], color );
+
+            /////////////////////////////////////////////////////////////////////
+            // рисование точки
+            /////////////////////////////////////////////////////////////////////
+            if ( points == true ) {
+                this.appendItem( instance, [ realX - 1, realY + 1, 0.0 ], color );
+                this.appendItem( instance, [ realX - 1, realY - 1, 0.0 ], color );
+                this.appendItem( instance, [ realX - 1, realY - 1, 0.0 ], color );
+                this.appendItem( instance, [ realX + 1, realY - 1, 0.0 ], color );
+                this.appendItem( instance, [ realX + 1, realY - 1, 0.0 ], color );
+                this.appendItem( instance, [ realX + 1, realY + 1, 0.0 ], color );
+                this.appendItem( instance, [ realX + 1, realY + 1, 0.0 ], color );
+                this.appendItem( instance, [ realX - 1, realY + 1, 0.0 ], color );
+            }
+        }
+*/
 
     }
 };
