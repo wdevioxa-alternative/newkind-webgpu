@@ -10,9 +10,9 @@ export class wDSpline extends wDObject
         super( instance, x, y, _width, _height, _weight );
 
         this.setMinX( -Math.PI );
-        this.setMinY( -1 );
+        this.setMinY( -1.0 );
         this.setMaxX( +Math.PI );
-        this.setMaxY( +1 );
+        this.setMaxY( +1.0 );
         this.setItX( 58 );
         this.setItY( 20 );
     }  
@@ -44,11 +44,6 @@ export class wDSpline extends wDObject
 
         this.defaultcolor = 0.1;
         this.coloriteration = 0.01;
-
-        this.setShaderBindGroup( null );
-        this.setUniformShaderLocation( 
-            this.setUniformShaderFlag( instance.device, 0 ) 
-        );
 
         this.setDuty( false );
     }
@@ -82,16 +77,6 @@ export class wDSpline extends wDObject
             }
         }
     }   
-
-    setShaderBindGroup( shaderBind ) 
-    {
-        this.shaderBindGroup = shaderBind;
-    }
-
-    getShaderBindGroup() 
-    {
-        return this.shaderBindGroup;
-    }
 
     setItX( itX ) { 
         this.itX = itX; 
@@ -163,13 +148,15 @@ export class wDSpline extends wDObject
         this.labels = [];
     }    
 
-    async draw( instance, object, samplerate, volumerate, kdX, kdY, zoomX, zoomY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
+    async draw( instance, object, _samplerate, _volumerate, kdX, kdY, zoomX, zoomY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
     {
         await this.borderDraw( instance, this.getX(), this.getY(), this.getWidth(), this.getHeight(), _t, colors );
-        await this.axisDraw( instance, samplerate, volumerate, this.getX(), this.getY(), this.getWidth(), this.getHeight(), kdX, kdY, zoomX, zoomY, _t, colors );
-        if ( object.draw.length > 0 )
-            for ( let i = 0; i < object.draw.length; i++ )
-                await this.functionDraw( instance, object.draw[i] );
+        await this.axisDraw( instance, _samplerate, _volumerate, this.getX(), this.getY(), this.getWidth(), this.getHeight(), kdX, kdY, zoomX, zoomY, _t, colors );
+
+        //if ( object.draw.length > 0 )
+        //    for ( let i = 0; i < object.draw.length; i++ )
+        //        await this.functionDraw( instance, object.draw[i], _samplerate, _volumerate, this.getX(), this.getY(), this.getWidth(), this.getHeight(), _t, colors );
+
     }
 
     async borderDraw( instance, x, y, _width, _height, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
@@ -212,6 +199,16 @@ export class wDSpline extends wDObject
         let tX = 2.0 / kdX;
         let sX = tX * _samplerate;
         let vY = 2.0 * _volumerate / kdY;
+
+        if ( this.zoomX == undefined || this.zoomX != zoomX ) {
+            this.zoomX = zoomX;
+            this.setDuty( true );
+        }
+
+        if ( this.zoomY == undefined || this.zoomY != zoomY ) {
+            this.zoomY = zoomY;
+            this.setDuty( true );
+        }
 
         if ( this.kdX == undefined || this.kdX != kdX ) {
             this.kdX = kdX;
@@ -410,13 +407,16 @@ export class wDSpline extends wDObject
         }
     }
 
-    async functionDraw( instance, _d ) 
+    async functionDraw( instance, object, _samplerate, _volumerate, x, y, _width, _height, _t, colors ) 
     {
+        ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////
         // _samplerate: 44100 - 1s           
         ////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////
         // let sX = 2.0 * _samplerate / kdX;
         // let sX = tX * _samplerate;
+        ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////
 
         if ( this.vY == undefined ) return;
@@ -425,85 +425,96 @@ export class wDSpline extends wDObject
         if ( this.cY == undefined ) return;
         if ( this.kdX == undefined ) return;
         if ( this.kdY == undefined ) return;
+        if ( this.zoomX == undefined ) return;
+        if ( this.zoomY == undefined ) return;
+
+        let kX = this.zoomX / 100.0;
+        let kY = this.zoomY / 100.0;
 
         let cX = this.cX;
         let cY = this.cY;
 
-        let kdX = this.kdX;
-        let kdY = this.kdY;
+        let tX = 2.0 / this.kdX;
 
-        let sX = this.sX;
-        let vY = this.vY;
-        let tX = 2.0 / kdX;
-
-        let _samplerate = sX / tX;
+        let sX = 2.0 * _samplerate / this.kdX;
+        let vY = 2.0 * _volumerate / this.kdY;
 
 /*
-        let _axis = _d.axis;
-        let _ac = _d.coords.color;
+        let _axis = object.axis;
+        let _ac = object.coords.color;
 
-        let _dp = _d.dpoints;
-        let _dc = _d.color;
+        let objectp = object.dpoints;
+        let objectc = object.color;
 */
-        let _func = _d.func;
-/*
-        let _xmin = _d.coords.x.min;
-        let _xmax = _d.coords.x.max;
-        let _xdpr = _d.coords.x.dprepeats;
 
-        let _ymin = _d.coords.y.min;
-        let _ymax = _d.coords.y.max;
-        let _ydpr = _d.coords.y.dprepeats;
-*/
-/*
-        for ( let i = 0; i < ( itL - 1); i++ ) 
-        {  
-            /////////////////////////////////////////////////////////////////////
-            // рисование точки
-            /////////////////////////////////////////////////////////////////////
-            floatX = i * wStep + minXX;
-            floatY = func( floatX );
+        let _func = object.func;
 
-            /////////////////////////////////////////////////////////////////////////////
-            // axis coordinates in center
-            /////////////////////////////////////////////////////////////////////////////
-            var floatXX = floatX - this.getMinX();
-            var floatYY = floatY - this.getMinY();
+        let _xmin = object.coords.x.min;
+        let _xmax = object.coords.x.max;
+        let _xdpr = object.coords.x.dprepeats;
 
-            var realX = instance.calcScale( origWidth, wholeWidth, floatXX );
-            var realY = origHeight - instance.calcScale( origHeight, wholeHeight, floatYY );
+        let _ymin = object.coords.y.min;
+        let _ymax = object.coords.y.max;
+        let _ydpr = object.coords.y.dprepeats;
 
-            this.appendItem( instance, [ realX, realY, 0.0 ], color );
+        //let flag = this.isDuty();
 
-            floatX = ( i + 1 ) * wStep + minXX;
-            floatY = func( floatX );
+        this.lines.clear();
 
-            /////////////////////////////////////////////////////////////////////////////
-            // axis coordinates in center
-            /////////////////////////////////////////////////////////////////////////////
-            floatXX = floatX - this.getMinX();
-            floatYY = floatY - this.getMinY();
+        this.lines.append( 
+            x + _width / 4.0, 
+            y + _height / 4.0,
+            x + _width / 4.0, 
+            y + _height / 2.0,
+            _t, colors[0] ); 
 
-            realX = instance.calcScale( origWidth, wholeWidth, floatXX );
-            realY = origHeight - instance.calcScale( origHeight, wholeHeight, floatYY );
+/*        
+        //if ( flag == true ) 
+        {
+            
 
-            this.appendItem( instance, [ realX, realY, 0.0 ], color );
+            let _istep = ( _xmax - _xmin ) / _xdpr;
 
-            /////////////////////////////////////////////////////////////////////
-            // рисование точки
-            /////////////////////////////////////////////////////////////////////
-            if ( points == true ) {
-                this.appendItem( instance, [ realX - 1, realY + 1, 0.0 ], color );
-                this.appendItem( instance, [ realX - 1, realY - 1, 0.0 ], color );
-                this.appendItem( instance, [ realX - 1, realY - 1, 0.0 ], color );
-                this.appendItem( instance, [ realX + 1, realY - 1, 0.0 ], color );
-                this.appendItem( instance, [ realX + 1, realY - 1, 0.0 ], color );
-                this.appendItem( instance, [ realX + 1, realY + 1, 0.0 ], color );
-                this.appendItem( instance, [ realX + 1, realY + 1, 0.0 ], color );
-                this.appendItem( instance, [ realX - 1, realY + 1, 0.0 ], color );
-            }
+            let _yx = undefined;  // prev x
+            let _yy = undefined;  // prev y
+
+            let dX = _width / 2.0 * _samplerate;
+            let dY = _height / 2.0 * _volumerate;
+
+            //for ( let i = 0; i < _xdpr; i++ ) 
+            //{
+            //let _x = _istep * i;
+            //let _y = _func( _x );
+
+                let _xx = _x * dX; // new x
+                let _xy = _y * dY; // new y
+
+                if ( _yx == undefined ) _yx = _xx;
+                if ( _yy == undefined ) _yy = _xy;
+
+                this.lines.append( 
+                    _xx, 
+                    _xy,
+                    _yx, 
+                    _yy,
+                    _t, colors );
+
+                this.lines.append( 
+                    0, 
+                    0,
+                    100, 
+                    100,
+                    _t, colors[0] );
+
+                _yx = _xx;
+                _yy = _xy;
+
+            //}
+            //this.setDuty( false );
         }
-*/
 
+        */
+
+        await this.lines.draw( instance );
     }
 };

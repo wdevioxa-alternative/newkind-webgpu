@@ -323,7 +323,7 @@ export class wDLine extends wDObject
 
 	    let vertexBuffer = this.getVertexBuffer();
         if ( vertexBuffer == null ) {
-		    vertexBuffer = instance.createBuffer(this.getVertex(), GPUBufferUsage.VERTEX, instance.device );
+		    vertexBuffer = instance.createBuffer( this.getVertex(), GPUBufferUsage.VERTEX, instance.device );
             this.setVertexBuffer( vertexBuffer );
         }
 
@@ -354,10 +354,13 @@ export class wDLine extends wDObject
         }
 
 	    let count = this.getLinesCount();
+
         instance.passEncoder.setBindGroup( 0, shaderBindGroup );
+
         instance.passEncoder.setVertexBuffer( 0, vertexBuffer );
         instance.passEncoder.setVertexBuffer( 1, fragUVBuffer );
         instance.passEncoder.setVertexBuffer( 2, colorsBuffer );
+
         instance.passEncoder.draw(6 * count, 1, 0, 0 );
     }
 };
