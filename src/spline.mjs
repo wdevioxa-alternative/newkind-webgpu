@@ -152,11 +152,7 @@ export class wDSpline extends wDObject
     {
         await this.borderDraw( instance, this.getX(), this.getY(), this.getWidth(), this.getHeight(), _t, colors );
         await this.axisDraw( instance, _samplerate, _volumerate, this.getX(), this.getY(), this.getWidth(), this.getHeight(), kdX, kdY, zoomX, zoomY, _t, colors );
-
-        //if ( object.draw.length > 0 )
-        //    for ( let i = 0; i < object.draw.length; i++ )
-        //        await this.functionDraw( instance, object.draw[i], _samplerate, _volumerate, this.getX(), this.getY(), this.getWidth(), this.getHeight(), _t, colors );
-
+        await this.functionDraw( instance, object, _samplerate, _volumerate, this.getX(), this.getY(), this.getWidth(), this.getHeight(), _t, colors );
     }
 
     async borderDraw( instance, x, y, _width, _height, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
@@ -405,6 +401,7 @@ export class wDSpline extends wDObject
         for ( let i = 0; i < count; i++ ) {
             await this.getLabelAt( i ).render( instance );
         }
+
     }
 
     async functionDraw( instance, object, _samplerate, _volumerate, x, y, _width, _height, _t, colors ) 
@@ -419,6 +416,7 @@ export class wDSpline extends wDObject
         ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////
 
+/*
         if ( this.vY == undefined ) return;
         if ( this.sX == undefined ) return;
         if ( this.cX == undefined ) return;
@@ -427,6 +425,25 @@ export class wDSpline extends wDObject
         if ( this.kdY == undefined ) return;
         if ( this.zoomX == undefined ) return;
         if ( this.zoomY == undefined ) return;
+*/
+
+        this.lines.clear();
+        
+        let len = object.draw.length;
+
+        for ( let i = 0; i < len; i++ )
+        {
+            this.lines.append( 
+                x + _width / 4.0 * i, 
+                y + _height / 4.0,
+                x + _width / 2.0, 
+                y + _height / 2.0,
+                _t, colors[0] ); 
+        }
+
+        await this.lines.draw( instance );
+
+        return;
 
         let kX = this.zoomX / 100.0;
         let kY = this.zoomY / 100.0;
