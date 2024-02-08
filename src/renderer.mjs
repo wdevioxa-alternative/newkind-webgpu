@@ -141,7 +141,7 @@ export class wDApplication
                     device: this.device,
                     format: 'bgra8unorm',
                     size: [ this.getCanvasWidth(), this.getCanvasHeight(), 1 ],
-                    compositingAlphaMode: "premultiplied", // "opaque",
+                    compositingAlphaMode: "opaque", // "premultiplied",
                     usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
                 });
 
@@ -218,7 +218,7 @@ export class wDApplication
                     minFilter: 'linear'   // linear
                 });
 
-                this.emptyTexture = this.device.createTexture({
+                this.nullTexture = this.device.createTexture({
                     size: [ 1, 1, 1 ],
                     format: 'rgba8unorm',
                     usage:
@@ -275,7 +275,7 @@ export class wDApplication
         // await this.dotcircle.init();
 
         this.color = 0.0;
-        this.coloriterator = 0.01;
+        this.itcolor = 0.01;
     }
 
     render = async() => {
@@ -321,7 +321,7 @@ export class wDApplication
                 },
                 {
                     binding: 1,
-                    resource: this.emptyTexture.createView( {
+                    resource: this.nullTexture.createView( {
                         baseMipLevel: 0,
                         mipLevelCount: 1
                     } ) ,
@@ -334,13 +334,13 @@ export class wDApplication
         this.passEncoder.setBindGroup( 0, shaderBindGroup );
         this.passEncoder.setBindGroup( 1, textureBindGroup );
 
-        this.color += this.coloriterator;
+        this.color += this.itcolor;
 
         if ( this.color >= 1.0 ) {
-            this.coloriterator = -0.01;
+            this.itcolor = -0.01;
             this.color = 1.0;
         } else if ( this.color < 0 ) { 
-            this.coloriterator = +0.01; 
+            this.itcolor = +0.01; 
             this.color = 0;
         }
 

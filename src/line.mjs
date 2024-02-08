@@ -35,7 +35,7 @@ export class wDLine extends wDObject
 	    this.setUniformShaderLocation( 
 		    this.setUniformShaderFlag( instance.device, 0 ) 
 	    );
-        this.setDuty( false );
+        this.resetDuty();
     }
     getLinesCount()
     {
@@ -47,18 +47,18 @@ export class wDLine extends wDObject
     }
     setLines( lines ) 
     {
-	    this.setDuty(true);
     	this.lines = lines;
+        this.setDuty();
     }
     clearLines() 
     {
-	    this.setDuty(true);
 	    this.setLines( [] );
+        this.setDuty();
     }
     appendLine( line ) 
     {
-	    this.setDuty(true);
-    	this.lines.push( line );
+        this.lines.push( line );
+	    this.setDuty();
     }
     getX1() 
     {
@@ -102,10 +102,8 @@ export class wDLine extends wDObject
     }
     setVertexBuffer( vertex )
     {
-        if ( vertex == null ) {
-            if ( this.vertexBuffer != null )
-                this.vertexBuffer.destroy();
-        }
+        if ( this.vertexBuffer != null )
+            this.vertexBuffer.destroy();
         this.vertexBuffer = vertex;
     }
     getVertexBuffer() 
@@ -113,11 +111,9 @@ export class wDLine extends wDObject
         return this.vertexBuffer;
     }
     setFragUVBuffer( fragUV )
-    {
-        if ( fragUV == null ) {        
-            if ( this.fragUVBuffer != null )
-                this.fragUVBuffer.destroy();
-        }
+    {     
+        if ( this.fragUVBuffer != null )
+            this.fragUVBuffer.destroy();
         this.fragUVBuffer = fragUV;
     }
     getFragUVBuffer()
@@ -125,11 +121,9 @@ export class wDLine extends wDObject
         return this.fragUVBuffer;
     }
     setColorsBuffer( colors )
-    {
-        if ( colors == null ) {        
-            if ( this.colorsBuffer != null )
-                this.colorsBuffer.destroy();
-        }
+    {        
+        if ( this.colorsBuffer != null )
+            this.colorsBuffer.destroy();
         this.colorsBuffer = colors;
     }
     getColorsBuffer() 
@@ -192,9 +186,9 @@ export class wDLine extends wDObject
 //                    Xf = ( Math.cos( Math.PI - alpha ) * vW < vW ) ? vW : ( Math.cos( Math.PI - alpha ) * vW );
                 }
            } else if ( vX < 0 && vY <= 0 ) {
-		//////////////////////////////////
-		// To left; left up;
-		//////////////////////////////////
+                //////////////////////////////////
+                // To left; left up;
+                //////////////////////////////////
                 if ( vY == 0 ) {
                     Yf = vW;
                     Xf = 0.0;
@@ -299,6 +293,11 @@ export class wDLine extends wDObject
         return cb;
     }
 
+    count()
+    {
+        return this.getLinesCount();
+    }
+
     clear()
     {
 	    this.clearLines();
@@ -318,7 +317,6 @@ export class wDLine extends wDObject
             this.setColorsBuffer( null );
             this.setFragUVBuffer( null );
             this.setVertexBuffer( null );
-            this.setDuty( false );
         }
 
 	    let vertexBuffer = this.getVertexBuffer();
@@ -353,7 +351,7 @@ export class wDLine extends wDObject
 		    this.setShaderBindGroup( shaderBindGroup );
         }
 
-	    let count = this.getLinesCount();
+	    let lines = this.count();
 
         instance.passEncoder.setBindGroup( 0, shaderBindGroup );
 
@@ -361,6 +359,6 @@ export class wDLine extends wDObject
         instance.passEncoder.setVertexBuffer( 1, fragUVBuffer );
         instance.passEncoder.setVertexBuffer( 2, colorsBuffer );
 
-        instance.passEncoder.draw(6 * count, 1, 0, 0 );
+        instance.passEncoder.draw( 6 * lines, 1, 0, 0 );
     }
 };

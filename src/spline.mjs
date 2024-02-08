@@ -15,12 +15,15 @@ export class wDSpline extends wDObject
         this.setMaxY( +1.0 );
         this.setItX( 58 );
         this.setItY( 20 );
+
+        this.fontsize = instance.getCanvasHeight() * 16 / ( 9 * 125 );
+        console.log( this.fontsize );
     }  
 
     destroy()
     {        
         this.axis.destroy();
-        this.lines.destroy();
+        this.discretlines.destroy();
         this.border.destroy();
 
         this.clearLabels();
@@ -37,13 +40,13 @@ export class wDSpline extends wDObject
         this.axis = new wDLine( instance );
         await this.axis.init();
 
-        this.lines = new wDLine( instance );
-        await this.lines.init();
+        this.discretlines = new wDLine( instance );
+        await this.discretlines.init();
 
         this.labels = [];
 
         this.defaultcolor = 0.1;
-        this.coloriteration = 0.01;
+        this.itcolor = 0.01;
 
         this.setDuty( false );
     }
@@ -148,24 +151,17 @@ export class wDSpline extends wDObject
         this.labels = [];
     }    
 
-    async draw( instance, object, _samplerate, _volumerate, kdX, kdY, zoomX, zoomY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
-    {
-        await this.borderDraw( instance, this.getX(), this.getY(), this.getWidth(), this.getHeight(), _t, colors );
-        await this.axisDraw( instance, _samplerate, _volumerate, this.getX(), this.getY(), this.getWidth(), this.getHeight(), kdX, kdY, zoomX, zoomY, _t, colors );
-        await this.functionDraw( instance, object, _samplerate, _volumerate, this.getX(), this.getY(), this.getWidth(), this.getHeight(), _t, colors );
-    }
-
     async borderDraw( instance, x, y, _width, _height, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
     {
         this.border.set( x, y, _width, _height, _t );
 
-        this.defaultcolor += this.coloriteration;
+        this.defaultcolor += this.itcolor;
 
         if ( this.defaultcolor >= 1.0 ) {
-            this.coloriteration = -0.01;
+            this.itcolor = -0.01;
             this.defaultcolor = 1.0;
         } else if ( this.defaultcolor < 0 ) { 
-            this.coloriteration = +0.01; 
+            this.itcolor = +0.01; 
             this.defaultcolor = 0;
         }
 
@@ -176,6 +172,8 @@ export class wDSpline extends wDObject
             { from: [ this.defaultcolor, 1.0 - this.defaultcolor, this.defaultcolor, 1.0 ], to: [ 1.0 - this.defaultcolor, this.defaultcolor, 1.0 - this.defaultcolor, 1.0 ] },
             { from: [ 1.0 - this.defaultcolor, this.defaultcolor, 1.0 - this.defaultcolor, 1.0 ], to: [ this.defaultcolor, 1.0 - this.defaultcolor, this.defaultcolor, 1.0 ] } 
         ] );
+
+        this.border.setDuty();
     }
 
     async axisDraw( instance, _samplerate, _volumerate, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
@@ -198,42 +196,42 @@ export class wDSpline extends wDObject
 
         if ( this.zoomX == undefined || this.zoomX != zoomX ) {
             this.zoomX = zoomX;
-            this.setDuty( true );
+            this.setDuty();
         }
 
         if ( this.zoomY == undefined || this.zoomY != zoomY ) {
             this.zoomY = zoomY;
-            this.setDuty( true );
+            this.setDuty();
         }
 
         if ( this.kdX == undefined || this.kdX != kdX ) {
             this.kdX = kdX;
-            this.setDuty( true );
+            this.setDuty();
         }
 
         if ( this.kdY == undefined || this.kdY != kdY ) {
             this.kdY = kdY;
-            this.setDuty( true );
+            this.setDuty();
         }
 
         if ( this.vY == undefined || this.vY != vY ) {
             this.vY = vY;
-            this.setDuty( true );
+            this.setDuty();
         }
 
         if ( this.sX == undefined || this.sX != sX ) {
             this.sX = sX;
-            this.setDuty( true );
+            this.setDuty();
         } 
 
         if ( this.cX == undefined || this.cX != cX ) {
             this.cX = cX;
-            this.setDuty( true );
+            this.setDuty();
         }
 
         if ( this.cY == undefined || this.cY != cY ) {
             this.cY = cY;
-            this.setDuty( true );
+            this.setDuty();
         } 
 
         let flag = this.isDuty();
@@ -241,10 +239,9 @@ export class wDSpline extends wDObject
         if ( flag == true ) 
         {
             this.axis.clear();
-            this.axis.setDuty( flag );
+            this.axis.setDuty();
 
             this.clearLabels();
-            this.setDuty( false );
 
             let textColor = "rgba(255, 255, 255, 1.0)";
             let backgroundColor = "rgba(0, 0, 0, 1.0)";
@@ -257,8 +254,8 @@ export class wDSpline extends wDObject
                 colors.push( colors[0] );
             }
 
-            let stepX = ( cX > 65 ) ? 1 : ( 65 / cX ) + 1;
-            let stepY = ( cY > 25 ) ? 1 : ( 25 / cY ) + 1;
+            let stepX = ( cX > this.fontsize * 8.0 ) ? 1 : ( this.fontsize * 8.0 / cX ) + 1;
+            let stepY = ( cY > this.fontsize * 2.0 ) ? 1 : ( this.fontsize * 2.0 / cY ) + 1;
 
             ////////////////////////////////////////////////////////////////////
             // x: axis
@@ -298,11 +295,11 @@ export class wDSpline extends wDObject
                     y + _height / 2.0 + 5,
                     _t, colors[0] );   
     
-                let Llabel = new wDLabel( instance, 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
+                let Llabel = new wDLabel( instance, 'lighter', this.fontsize, 'Segoe UI Light', 0, 0, 128, 128 );
                 await Llabel.init();
         
-                Llabel.set( 10, x + _width / 2.0 - i * cX, y + _height / 2.0 );
-                Llabel.draw( instance, textColor, backgroundColor, (-i * sX).toFixed(0) + "(" + ( i * tX ).toFixed(3) + ")", true, true );
+                Llabel.set( this.fontsize, x + _width / 2.0 - i * cX, y + _height / 2.0 );
+                Llabel.draw( instance, textColor, backgroundColor, ( -i * sX ).toFixed(0) + "(" + ( i * tX ).toFixed(3) + ")", true, true );
     
                 let _w = Llabel.getWidth();
                 let _h = Llabel.getHeight();
@@ -321,11 +318,11 @@ export class wDSpline extends wDObject
                     y + _height / 2.0 + 5,
                     _t, colors[0] );    
 
-                let Rlabel = new wDLabel( instance, 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
+                let Rlabel = new wDLabel( instance, 'lighter', this.fontsize, 'Segoe UI Light', 0, 0, 128, 128 );
                 await Rlabel.init();
 
-                Rlabel.set( 10, x + _width / 2.0 + i * cX, y + _height / 2.0 );
-                Rlabel.draw( instance, textColor, backgroundColor, (i * sX).toFixed(0) + "(" + ( i * tX ).toFixed(3) + ")", true, true );
+                Rlabel.set( this.fontsize, x + _width / 2.0 + i * cX, y + _height / 2.0 );
+                Rlabel.draw( instance, textColor, backgroundColor, ( i * sX ).toFixed(0) + "(" + ( i * tX ).toFixed(3) + ")", true, true );
                 
                 _w = Rlabel.getWidth();
                 _h = Rlabel.getHeight();
@@ -356,16 +353,17 @@ export class wDSpline extends wDObject
                     y + _height / 2.0 + i * cY,
                     _t, colors[0] ); 
                     
-                let Rlabel = new wDLabel( instance, 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
+                let Rlabel = new wDLabel( instance, 'lighter', this.fontsize, 'Segoe UI Light', 0, 0, 128, 128 );
                 await Rlabel.init();
 
-                Rlabel.set( 10, x + _width / 2.0, y + _height / 2.0 + i * cY );
-                Rlabel.draw( instance, textColor, backgroundColor, (-i * vY ).toFixed(3), true, true );
+                Rlabel.set( this.fontsize, x + _width / 2.0, y + _height / 2.0 + i * cY );
+                Rlabel.draw( instance, textColor, backgroundColor, ( -i * vY ).toFixed( 3 ), true, true );
 
                 let _h = Rlabel.getHeight();
                 let _w = Rlabel.getWidth();
                 let _x = Rlabel.getX();
                 let _y = Rlabel.getY();
+
                 Rlabel.setX( _x + 6 );
                 Rlabel.setY( _y - _h );
 
@@ -378,16 +376,17 @@ export class wDSpline extends wDObject
                     y + _height / 2.0 - i * cY,
                     _t, colors[0] ); 
 
-                let Llabel = new wDLabel( instance, 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
+                let Llabel = new wDLabel( instance, 'lighter', this.fontsize, 'Segoe UI Light', 0, 0, 128, 128 );
                 await Llabel.init();
 
-                Llabel.set( 10, x + _width / 2.0, y + _height / 2.0 - i * cY );
-                Llabel.draw( instance, textColor, backgroundColor, (i * vY).toFixed(3), true, true );
+                Llabel.set( this.fontsize, x + _width / 2.0, y + _height / 2.0 - i * cY );
+                Llabel.draw( instance, textColor, backgroundColor, ( i * vY ).toFixed( 3 ), true, true );
 
                 _h = Llabel.getHeight();
                 _w = Llabel.getWidth();
                 _x = Llabel.getX();
                 _y = Llabel.getY();
+
                 Llabel.setX( _x - _w - 6 );
                 Llabel.setY( _y );
 
@@ -404,7 +403,7 @@ export class wDSpline extends wDObject
 
     }
 
-    async functionDraw( instance, object, _samplerate, _volumerate, x, y, _width, _height, _t, colors ) 
+    async functionDraw( instance, _object, _samplerate, _volumerate, x, y, _width, _height, _t = 1 ) 
     {
         ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////
@@ -416,122 +415,251 @@ export class wDSpline extends wDObject
         ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////
 
-/*
-        if ( this.vY == undefined ) return;
-        if ( this.sX == undefined ) return;
-        if ( this.cX == undefined ) return;
-        if ( this.cY == undefined ) return;
-        if ( this.kdX == undefined ) return;
-        if ( this.kdY == undefined ) return;
         if ( this.zoomX == undefined ) return;
+
         if ( this.zoomY == undefined ) return;
-*/
 
-        this.lines.clear();
+        if ( this.vY == undefined ) return;
+
+        if ( this.sX == undefined ) return;
+
+        if ( this.cX == undefined ) return;
+
+        if ( this.cY == undefined ) return;
+
+        if ( this.kdX == undefined ) return;
+
+        if ( this.kdY == undefined ) return;
+
+        let flag = this.isDuty();
+
+        if ( flag == true )
+        {
+            let kX = this.zoomX / 100.0;
+            let kY = this.zoomY / 100.0;
+
+            let offX = 10.0;
+            let offY = 10.0;
+
+            ////////////////////////////////////////////////////////////////////////
+            // let cX = _width * kX / kdX;  this.cX
+            // let cY = _height * kY / kdY; this.cY
+            ////////////////////////////////////////////////////////////////////////
+
+            let tX = 2.0 / this.kdX;
+
+            let sX = 2.0 * _samplerate / this.kdX;
+            let vY = 2.0 * _volumerate / this.kdY;
+
+            let _vdp = ( _object.dpoints == undefined ) ? false : _object.dpoints;
+            let _dpc = ( _object.dcolor == undefined ) ? [ 1.0, 1.0, 1.0, 1.0 ] : _object.dcolor;
+            let _lgc = ( _object.coords.color == undefined ) ? [ 1.0, 1.0, 1.0, 1.0 ] : _object.coords.color;
+
+            let dcolors = [ { from: _dpc, to: _dpc } ];
+            let lcolors = [ { from: _lgc, to: _lgc } ];
+
+            let _func = _object.func;
+
+            let _x_min_ = _object.coords.x.min;
+            let _x_max_ = _object.coords.x.max;
+
+            ///////////////////////////////////////////////////////////////////
+            // Количество отсчетов
+            ///////////////////////////////////////////////////////////////////
+            let _xdp = _object.coords.x.dprepeats;
+
+            let _y_min_ = _object.coords.y.min;
+            let _y_max_ = _object.coords.y.max;
+
+            let _rs_bx = undefined;
+            let _rs_by = undefined;
+            let _ls_bx = undefined;
+            let _ls_by = undefined;
+            let _i_last_bi = undefined;
+
+            ///////////////////////////////////////////////////////////////////
+            // Step in radians on x axis
+            ///////////////////////////////////////////////////////////////////
+            let _istep = ( _x_max_ - _x_min_ ) / this.kdX;
+
+            ///////////////////////////////////////////////////////////////////
+            // Step in pixels with scale on x and y axis
+            ///////////////////////////////////////////////////////////////////
+            let cX = _width * kX / this.kdX;
+            let cY = _height * kY / this.kdY;
+
+            let _centX = x + _width / 2.0;
+            let _centY = y + _height / 2.0;
+
+            for ( let i = 0; i < this.kdX / 2.0; i++ )
+            {
+                /////////////////////////////////////////////////
+                // x and y: one step to right side 
+                let _rs_ex = (+1) * _istep * i + _x_min_;
+                let _rs_ey = _func( _rs_ex );
+
+                /////////////////////////////////////////////////
+                // x and y: one step to left side 
+                let _ls_ex = (-1) * _istep * i + _x_min_;
+                let _ls_ey = _func( _ls_ex );
+
+                if ( _rs_bx == undefined || _rs_by == undefined || _ls_bx == undefined || _ls_by == undefined || _i_last_bi == undefined ) 
+                {
+                    _rs_bx = _rs_ex;
+                    _rs_by = _rs_ey;
+                    _ls_bx = _ls_ex;
+                    _ls_by = _ls_ey;
+
+                    _i_last_bi = i;
+                    continue;
+                }
+
+                let _rs_sc_bx = _centX + _i_last_bi * cX;
+                let _rs_sc_by = _centY + _ls_by * kY * _height / 2.0; 
+
+                let _rs_sc_ex = _centX + i * cX;
+                let _rs_sc_ey = _centY + _ls_ey * kY * _height / 2.0; 
+
+                ///////////////////////////////////////////////////////////////////
+                // console.log( "i: " + i + "; " + _x + ": " + _y );
+                ///////////////////////////////////////////////////////////////////
+
+                if ( _rs_sc_ex >= ( x + _width - offX ) ) continue;
+
+                this.discretlines.append( 
+                    _rs_sc_bx, 
+                    _rs_sc_by,
+                    _rs_sc_ex, 
+                    _rs_sc_ey,
+                    _t, 
+                    lcolors[0] 
+                );
+
+                if ( _vdp == true )
+                {
+                    this.discretlines.append( 
+                        _rs_sc_ex, 
+                        _rs_sc_ey,
+                        _rs_sc_ex + 5, 
+                        _rs_sc_ey,
+                        _t, 
+                        dcolors[0] 
+                    );
+                    this.discretlines.append( 
+                        _rs_sc_ex, 
+                        _rs_sc_ey,
+                        _rs_sc_ex - 5, 
+                        _rs_sc_ey,
+                        _t, 
+                        dcolors[0] 
+                    );
+                    this.discretlines.append( 
+                        _rs_sc_ex, 
+                        _rs_sc_ey,
+                        _rs_sc_ex, 
+                        _rs_sc_ey + 5,
+                        _t, 
+                        dcolors[0] 
+                    );
+                    this.discretlines.append( 
+                        _rs_sc_ex, 
+                        _rs_sc_ey,
+                        _rs_sc_ex, 
+                        _rs_sc_ey - 5,
+                        _t, 
+                        dcolors[0] 
+                    );                                        
+                }
+
+                let _ls_sc_bx = _centX - _i_last_bi * cX;
+                let _ls_sc_by = _centY + _rs_by * kY * _height / 2.0; 
         
-        let len = object.draw.length;
+                let _ls_sc_ex = _centX - i * cX;
+                let _ls_sc_ey = _centY + _rs_ey * kY * _height / 2.0; 
+        
+                if ( _ls_sc_ex < ( x + offX ) ) continue;
 
-        for ( let i = 0; i < len; i++ )
-        {
-            this.lines.append( 
-                x + _width / 4.0 * i, 
-                y + _height / 4.0,
-                x + _width / 2.0, 
-                y + _height / 2.0,
-                _t, colors[0] ); 
+                this.discretlines.append( 
+                    _ls_sc_bx, 
+                    _ls_sc_by,
+                    _ls_sc_ex, 
+                    _ls_sc_ey,
+                    _t, lcolors[0] 
+                );                             
+
+                if ( _vdp == true )
+                {
+                    this.discretlines.append( 
+                        _ls_sc_ex, 
+                        _ls_sc_ey,
+                        _ls_sc_ex + 5, 
+                        _ls_sc_ey,
+                        _t, dcolors[0] 
+                    );
+                    this.discretlines.append( 
+                        _ls_sc_ex, 
+                        _ls_sc_ey,
+                        _ls_sc_ex - 5, 
+                        _ls_sc_ey,
+                        _t, dcolors[0] 
+                    );
+                    this.discretlines.append( 
+                        _ls_sc_ex, 
+                        _ls_sc_ey,
+                        _ls_sc_ex, 
+                        _ls_sc_ey + 5,
+                        _t, dcolors[0] 
+                    );
+                    this.discretlines.append( 
+                        _ls_sc_ex, 
+                        _ls_sc_ey,
+                        _ls_sc_ex, 
+                        _ls_sc_ey - 5,
+                        _t, dcolors[0] 
+                    );
+                }
+
+                _rs_bx = _rs_ex;
+                _rs_by = _rs_ey;
+                _ls_bx = _ls_ex;
+                _ls_by = _ls_ey;
+
+                _i_last_bi = i;
+            }
         }
 
-        await this.lines.draw( instance );
+    }
 
-        return;
+    async draw( instance, object, _samplerate, _volumerate, kdX, kdY, zoomX, zoomY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
+    {
+        let x = this.getX();
+        let y = this.getY();
+        
+        let _width = this.getWidth();
+        let _height = this.getHeight();
 
-        let kX = this.zoomX / 100.0;
-        let kY = this.zoomY / 100.0;
+        await this.borderDraw( instance, x, y, _width, _height, _t, colors );
+        await this.axisDraw( instance, _samplerate, _volumerate, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, colors );
 
-        let cX = this.cX;
-        let cY = this.cY;
-
-        let tX = 2.0 / this.kdX;
-
-        let sX = 2.0 * _samplerate / this.kdX;
-        let vY = 2.0 * _volumerate / this.kdY;
-
-/*
-        let _axis = object.axis;
-        let _ac = object.coords.color;
-
-        let objectp = object.dpoints;
-        let objectc = object.color;
-*/
-
-        let _func = object.func;
-
-        let _xmin = object.coords.x.min;
-        let _xmax = object.coords.x.max;
-        let _xdpr = object.coords.x.dprepeats;
-
-        let _ymin = object.coords.y.min;
-        let _ymax = object.coords.y.max;
-        let _ydpr = object.coords.y.dprepeats;
-
-        //let flag = this.isDuty();
-
-        this.lines.clear();
-
-        this.lines.append( 
-            x + _width / 4.0, 
-            y + _height / 4.0,
-            x + _width / 4.0, 
-            y + _height / 2.0,
-            _t, colors[0] ); 
-
-/*        
-        //if ( flag == true ) 
+        if ( object.draw != undefined ) 
         {
-            
-
-            let _istep = ( _xmax - _xmin ) / _xdpr;
-
-            let _yx = undefined;  // prev x
-            let _yy = undefined;  // prev y
-
-            let dX = _width / 2.0 * _samplerate;
-            let dY = _height / 2.0 * _volumerate;
-
-            //for ( let i = 0; i < _xdpr; i++ ) 
-            //{
-            //let _x = _istep * i;
-            //let _y = _func( _x );
-
-                let _xx = _x * dX; // new x
-                let _xy = _y * dY; // new y
-
-                if ( _yx == undefined ) _yx = _xx;
-                if ( _yy == undefined ) _yy = _xy;
-
-                this.lines.append( 
-                    _xx, 
-                    _xy,
-                    _yx, 
-                    _yy,
-                    _t, colors );
-
-                this.lines.append( 
-                    0, 
-                    0,
-                    100, 
-                    100,
-                    _t, colors[0] );
-
-                _yx = _xx;
-                _yy = _xy;
-
-            //}
-            //this.setDuty( false );
+            if ( object.draw.length != undefined ) 
+            {
+                if ( object.draw.length > 0 ) 
+                {
+                    let flag = this.isDuty();
+                    if ( flag == true ) 
+                    {
+                        this.discretlines.clear();
+                        for ( let i = 0; i < object.draw.length; i++) {
+                            await this.functionDraw( instance, object.draw[i], _samplerate, _volumerate, x, y, _width, _height, _t );
+                        }
+                    }
+                    await this.discretlines.draw( instance );
+                }
+            }
         }
 
-        */
-
-        await this.lines.draw( instance );
+        this.resetDuty();
     }
 };

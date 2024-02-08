@@ -54,8 +54,7 @@ export class wDBox extends wDObject
 
         if ( flag == true ) {
             this.borders.clear();
-            this.borders.setDuty( flag );
-            this.setDuty( false );
+            this.borders.setDuty();
         }
 
         let x = this.getX();
@@ -78,7 +77,5 @@ export class wDBox extends wDObject
         this.borders.append( x, y + _height, x + _width, y + _height, _weight, colors[3] );
 
         await this.borders.draw( instance );
-        
-	    this.setDuty( true );
     }
 };

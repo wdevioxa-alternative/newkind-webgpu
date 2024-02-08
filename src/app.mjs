@@ -13,7 +13,9 @@ window["run"] = function() {
 		const _width = window.innerWidth * devicePixelRatio;
 		const _height = window.innerHeight * devicePixelRatio;
 
-		canvas.width = Math.max( canvas.clientWidth * devicePixelRatio, _width );
+		canvas.width = 1366;
+		
+		// canvas.width = Math.max( canvas.clientWidth * devicePixelRatio, _width );
 		// canvas.height = Math.max( canvas.clientHeight * devicePixelRatio, height );
 
 		///////////////////////////////////////////////////

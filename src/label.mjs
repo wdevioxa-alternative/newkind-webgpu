@@ -14,7 +14,7 @@ export class wDLabel extends wDObject
         this.setFragUVBuffer( null );
         this.setTextureBindGroup( null );
         this.setShaderBindGroup( null );
-        this.setDuty( false );
+        this.resetDuty();
     }  
     destroy()
     {
@@ -25,7 +25,7 @@ export class wDLabel extends wDObject
         this.setTextureBindGroup( null );
         this.setShaderBindGroup( null );
         this.setUniformShaderLocation( null );
-        this.setDuty( true );
+        this.setDuty();
     }
     async init() {
         let instance = this.getInstance();
@@ -35,32 +35,32 @@ export class wDLabel extends wDObject
         this.setUniformShaderLocation( 
             this.setUniformShaderFlag( instance.device, 10 ) 
         );
-        this.setDuty( false );
+        this.resetDuty();
     }
     set( fs, x, y, _width = -1, _height = -1 )
     {
         if ( this.getFontSize() != fs ) {
             this.setFontSize( fs );
-            this.setDuty( true );
+            this.setDuty();
         }
         if ( this.getX() != x ) {
             this.setX( x );
-            this.setDuty( true );
+            this.setDuty();
         }
         if ( this.getY() != y ) {
             this.setY( y );
-            this.setDuty( true );
+            this.setDuty();
         }
         if ( _width != -1 ) {
             if ( this.getWidth() != _width ) {
                 this.setWidth( _width );
-                this.setDuty( true );
+                this.setDuty();
             }
         }
         if ( _height != -1 ) { 
             if ( this.getHeight() != _height ) {
                 this.setHeight( _height );
-                this.setDuty( true );
+                this.setDuty();
             }
         }
     }
@@ -156,7 +156,6 @@ export class wDLabel extends wDObject
             this.setFragUVBuffer( null );
             this.setTextureBindGroup( null );
             this.setShaderBindGroup( null );
-            this.setDuty( false );
         }
 
         let textureImage = this.getTextureImage();

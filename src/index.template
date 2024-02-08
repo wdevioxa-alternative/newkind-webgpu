@@ -216,7 +216,7 @@
 						window.zoomY = ui.value;
 					},
 					range: false,
-					min: 100,
+					min: 80,
 					max: 400,
 					step: 1
 				});

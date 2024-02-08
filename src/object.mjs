@@ -18,7 +18,11 @@ export class wDObject
     {
         return this.instance;
     }
-    setDuty( _duty )
+    resetDuty()
+    {
+        this.recreate = false;
+    }
+    setDuty( _duty = true )
     {
         this.recreate = _duty;
     }
