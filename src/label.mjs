@@ -148,7 +148,6 @@ export class wDLabel extends wDObject
     async draw( instance, textColor, backgroundColor, textOut, autoMeasure, calculateOnly = false ) 
     {
         let flag = this.isDuty();
-
         if ( flag == true ) {
             this.setImageBitmap( null );
             this.setTextureImage( null );
@@ -157,7 +156,6 @@ export class wDLabel extends wDObject
             this.setTextureBindGroup( null );
             this.setShaderBindGroup( null );
         }
-
         let textureImage = this.getTextureImage();
         if ( textureImage == null ) 
         {
@@ -237,6 +235,7 @@ export class wDLabel extends wDObject
 
             if ( calculateOnly == true ) {
                 if ( image == null ) return null;
+                this.resetDuty();
                 return { x: this.getX(), y: this.getY(), width: this.getWidth(), height: this.getHeight() };
             }
         }
@@ -299,6 +298,8 @@ export class wDLabel extends wDObject
 
             instance.passEncoder.draw( 6, 1, 0, 0 );
         }
+        
+        this.resetDuty();
     }
     getColors( instance )
     {

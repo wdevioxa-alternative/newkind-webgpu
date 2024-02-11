@@ -1,7 +1,8 @@
 import { mat4, vec3 } from 'wgpu-matrix';
 import { wDCircle } from './circle.mjs';
 import { wDLine } from './line.mjs';
-import { wDDot } from './dot.mjs';
+import { wDNewLine } from './line-new.mjs';
+import { wDDot } from './dotsarray.mjs';
 import { wDBox } from './box.mjs';
 import { wDSpline } from './spline.mjs';
 import { wDLabel } from './label.mjs';
@@ -52,7 +53,7 @@ export class wDApplication
     calcY( cy ) 
     {
         let ch = this.getCanvasHeight();
-        let translate = -( 2.0 * cy / ch - 1);
+        let translate = 1.0 - 2.0 * cy / ch;
         return translate;
     }
     setUniformShaderLocation( uniform )
@@ -262,17 +263,17 @@ export class wDApplication
         this.image = new wDImage( this, "assets/Di-3d.png" );
         await this.image.init();
 
-        this.spline = new wDSpline( this, 10, 10, this.getCanvasWidth() - 20, this.getCanvasHeight() - 20 );
+        this.spline = new wDSpline( this, 0, 0, this.getCanvasWidth(), this.getCanvasHeight() );
         await this.spline.init();
         
         //this.label = new wDLabel( this, 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
         //await this.label.init();
 
-        // this.circle = new wDCircle( this );
-        // await this.circle.init();
+        //this.dotsline = new wDNewLine( this );
+        //await this.dotsline.init();
 
-        // this.dotcircle = new wDCircle( this );
-        // await this.dotcircle.init();
+        this.circle = new wDCircle( this );
+        await this.circle.init();
 
         this.color = 0.0;
         this.itcolor = 0.01;
@@ -296,10 +297,10 @@ export class wDApplication
         );
 
         this.passEncoder.setScissorRect(
-            0,
-            0,
-            this.getCanvasWidth(),
-            this.getCanvasHeight()
+            9,
+            9,
+            this.getCanvasWidth() - 18,
+            this.getCanvasHeight() - 18
         );     
 
         let shaderBindGroup = this.device.createBindGroup( {
@@ -373,10 +374,20 @@ export class wDApplication
         ////////////////////////////////////////////////////////////////////////////////////
         // wDCircle example is completed
         ////////////////////////////////////////////////////////////////////////////////////
-        // // this.circle.set( 10, 10, 6, 1 );
-        // this.circle.set( sW / 2.0, sH / 2.0, 100 * ( 1.0 - this.color ) * 2, 2 );
-        // await this.circle.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
+        //this.circle.set( 10, 10, 6, 1 );
+
+        this.circle.set( sW / 2.0, sH / 2.0, 100 * ( 1.0 - this.color ) * 2, 1 );
+        await this.circle.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
         ////////////////////////////////////////////////////////////////////////////////////
+
+        //this.dotsline.set( 20, 10, 10, 20, 1 );
+
+
+        //this.dotsline.clear();
+        //this.dotsline.append( 200, 100, 0, 20, 1, { from: [1.0,1.0,0.0,1.0], to:[1.0,1.0,0.0,1.0]} );
+        //this.dotsline.append( 0, 0, 200, 500, 1, { from: [1.0,0.0,0.0,1.0], to:[1.0,0.0,0.0,1.0]} );
+        //this.dotsline.append( 200, 300, 500, 100, 1, { from: [1.0,0.0,0.0,1.0], to:[1.0,0.0,0.0,1.0]} );
+        //await this.dotsline.draw( this );
 
         ////////////////////////////////////////////////////////////////////////////////////
         // wDLabel example is completed

@@ -2,6 +2,7 @@ import { wDObject } from './object.mjs';
 import { wDLabel } from './label.mjs';
 import { wDBox } from './box.mjs';
 import { wDLine } from './line.mjs';
+import { wDNewLine } from './line-new.mjs';
 
 export class wDSpline extends wDObject
 {
@@ -16,18 +17,16 @@ export class wDSpline extends wDObject
         this.setItX( 58 );
         this.setItY( 20 );
 
-        this.fontsize = instance.getCanvasHeight() * 16 / ( 9 * 125 );
-        console.log( this.fontsize );
+        this.fontsize = instance.getCanvasHeight() * 16 / ( 9 * 133 );
     }  
 
     destroy()
     {        
+        this.border.destroy();
+        this.clearLabels();
         this.axis.destroy();
         this.discretlines.destroy();
-        this.border.destroy();
-
-        this.clearLabels();
-        this.setDuty( true );
+        this.setDuty();
     }
 
     async init() 
@@ -37,10 +36,10 @@ export class wDSpline extends wDObject
         this.border = new wDBox( instance );
         await this.border.init();
 
-        this.axis = new wDLine( instance );
+        this.axis = new wDNewLine( instance );
         await this.axis.init();
 
-        this.discretlines = new wDLine( instance );
+        this.discretlines = new wDNewLine( instance );
         await this.discretlines.init();
 
         this.labels = [];
@@ -48,35 +47,35 @@ export class wDSpline extends wDObject
         this.defaultcolor = 0.1;
         this.itcolor = 0.01;
 
-        this.setDuty( false );
+        this.setDuty();
     }
 
     set( x, y, _width = -1, _height = -1, _weight = -1 )
     {
         if ( this.getX() != x ) {
             this.setX( x );
-            this.setDuty( true );
+            this.setDuty();
         }
         if ( this.getY() != y ) {
             this.setY( y );
-            this.setDuty( true );
+            this.setDuty();
         }
         if ( _width != -1 ) {
             if ( this.getWidth() != _width ) {
                 this.setWidth( _width );
-                this.setDuty( true );
+                this.setDuty();
             }
         }
         if ( _height != -1 ) { 
             if ( this.getHeight() != _height ) {
                 this.setHeight( _height );
-                this.setDuty( true );
+                this.setDuty();
             }
         }
         if ( _weight != -1 ) { 
             if ( this.getWeight() != _weight ) {
                 this.setWeight( _weight );
-                this.setDuty( true );
+                this.setDuty();
             }
         }
     }   
@@ -145,8 +144,9 @@ export class wDSpline extends wDObject
     {
         let l = this.labels.length;
         if ( l > 0 ) {
-            for ( let i = l - 1; i >= 0; i-- ) 
+            for ( let i = l - 1; i >= 0; i-- ) {
                 this.labels[i].destroy();
+            }
         }
         this.labels = [];
     }    
@@ -165,6 +165,8 @@ export class wDSpline extends wDObject
             this.defaultcolor = 0;
         }
 
+        this.border.setDuty();
+
         await this.border.draw( instance, 
         [   
             { from: [ this.defaultcolor, 1.0 - this.defaultcolor, this.defaultcolor, 1.0 ], to: [ 1.0 - this.defaultcolor, this.defaultcolor, 1.0 - this.defaultcolor, 1.0 ] },
@@ -172,8 +174,6 @@ export class wDSpline extends wDObject
             { from: [ this.defaultcolor, 1.0 - this.defaultcolor, this.defaultcolor, 1.0 ], to: [ 1.0 - this.defaultcolor, this.defaultcolor, 1.0 - this.defaultcolor, 1.0 ] },
             { from: [ 1.0 - this.defaultcolor, this.defaultcolor, 1.0 - this.defaultcolor, 1.0 ], to: [ this.defaultcolor, 1.0 - this.defaultcolor, this.defaultcolor, 1.0 ] } 
         ] );
-
-        this.border.setDuty();
     }
 
     async axisDraw( instance, _samplerate, _volumerate, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
@@ -239,15 +239,13 @@ export class wDSpline extends wDObject
         if ( flag == true ) 
         {
             this.axis.clear();
-            this.axis.setDuty();
-
             this.clearLabels();
 
             let textColor = "rgba(255, 255, 255, 1.0)";
             let backgroundColor = "rgba(0, 0, 0, 1.0)";
 
-            let offX = 10.0;
-            let offY = 10.0;
+            //let offX = 10.0;
+            //let offY = 10.0;
 
             if ( colors.length == 1 )
             {
@@ -261,9 +259,9 @@ export class wDSpline extends wDObject
             // x: axis
             ////////////////////////////////////////////////////////////////////
             this.axis.append( 
-                x + offX, 
+                x, 
                 y + _height / 2.0,
-                x - offX + _width,
+                x + _width,
                 y + _height / 2.0,
                 _t, colors[0] );
 
@@ -272,9 +270,9 @@ export class wDSpline extends wDObject
             ////////////////////////////////////////////////////////////////////
             this.axis.append( 
                 x + _width / 2.0, 
-                y + offY,
+                y,
                 x + _width / 2.0,
-                y - offY + _height,
+                y + _height,
                 _t, colors[0] );
 
             ////////////////////////////////////////////////////////////////////
@@ -282,10 +280,10 @@ export class wDSpline extends wDObject
             ////////////////////////////////////////////////////////////////////
             for ( let i = stepX; i < kdX / 2.0; i = i + stepX ) 
             {
-                if ( ( x + _width / 2.0 + i * cX ) > _width ) 
+                if ( ( x + _width / 2.0 + i * cX ) >= _width ) 
                     continue;
 
-                if ( ( x + _width / 2.0 - i * cX ) < x ) 
+                if ( ( x + _width / 2.0 - i * cX ) <= x ) 
                     continue;
                     
                 this.axis.append( 
@@ -340,10 +338,10 @@ export class wDSpline extends wDObject
             ////////////////////////////////////////////////////////////////////
             for ( let i = stepY; i < kdY / 2.0; i = i + stepY ) 
             {
-                if ( ( y + _height / 2.0 + i * cY ) > _height ) 
+                if ( ( y + _height / 2.0 + i * cY ) >= _height ) 
                     continue;
 
-                if ( ( y + _height / 2.0 - i * cY ) < y ) 
+                if ( ( y + _height / 2.0 - i * cY ) <= y ) 
                     continue;
 
                 this.axis.append( 
@@ -485,8 +483,8 @@ export class wDSpline extends wDObject
             ///////////////////////////////////////////////////////////////////
             // Step in pixels with scale on x and y axis
             ///////////////////////////////////////////////////////////////////
-            let cX = _width * kX / this.kdX;
-            let cY = _height * kY / this.kdY;
+            //let cX = _width * kX / this.kdX;
+           // let cY = _height * kY / this.kdY;
 
             let _centX = x + _width / 2.0;
             let _centY = y + _height / 2.0;
@@ -514,17 +512,21 @@ export class wDSpline extends wDObject
                     continue;
                 }
 
-                let _rs_sc_bx = _centX + _i_last_bi * cX;
+                let _rs_sc_bx = _centX + _i_last_bi * _width * kX / this.kdX;
                 let _rs_sc_by = _centY + _ls_by * kY * _height / 2.0; 
 
-                let _rs_sc_ex = _centX + i * cX;
+                let _rs_sc_ex = _centX + i * _width * kX / this.kdX;
                 let _rs_sc_ey = _centY + _ls_ey * kY * _height / 2.0; 
 
                 ///////////////////////////////////////////////////////////////////
                 // console.log( "i: " + i + "; " + _x + ": " + _y );
                 ///////////////////////////////////////////////////////////////////
 
-                if ( _rs_sc_ex >= ( x + _width - offX ) ) continue;
+                        
+                if ( _rs_sc_bx == _rs_sc_ex && _rs_sc_by == _rs_sc_ey )
+                    console.log( "possible skipping" );
+
+                // if ( _rs_sc_ex > ( x + _width - offX ) ) continue;
 
                 this.discretlines.append( 
                     _rs_sc_bx, 
@@ -571,13 +573,16 @@ export class wDSpline extends wDObject
                     );                                        
                 }
 
-                let _ls_sc_bx = _centX - _i_last_bi * cX;
+                let _ls_sc_bx = _centX - _i_last_bi * _width * kX / this.kdX;
                 let _ls_sc_by = _centY + _rs_by * kY * _height / 2.0; 
         
-                let _ls_sc_ex = _centX - i * cX;
+                let _ls_sc_ex = _centX - i * _width * kX / this.kdX;
                 let _ls_sc_ey = _centY + _rs_ey * kY * _height / 2.0; 
         
-                if ( _ls_sc_ex < ( x + offX ) ) continue;
+                if ( _ls_sc_bx == _ls_sc_ex && _ls_sc_by == _ls_sc_ey )
+                    console.log( "possible skipping" );
+
+                //if ( _ls_sc_ex < ( x + offX ) ) continue;
 
                 this.discretlines.append( 
                     _ls_sc_bx, 

@@ -140,14 +140,14 @@ export class wDLine extends wDObject
         let vb = new Float32Array( 12 * count );
         let ii = 0;
 
-    	for (let cj = 0; cj < count; cj++ )        
+    	for ( let i = 0; i < count; i++ )        
     	{
-            let vX1 = lines[ cj ].x1;
-            let vY1 = lines[ cj ].y1;
-            let vX2 = lines[ cj ].x2;
-            let vY2 = lines[ cj ].y2;
+            let vX1 = lines[ i ].x1;
+            let vY1 = lines[ i ].y1;
+            let vX2 = lines[ i ].x2;
+            let vY2 = lines[ i ].y2;
 
-            let vW = lines[ cj ].weight;
+            let vW = lines[ i ].weight;
 	
             let vY = vY2 - vY1;
             let vX = vX2 - vX1;
@@ -164,6 +164,7 @@ export class wDLine extends wDObject
                     Xf = 0.0;
                 } else {
                     let alpha = Math.atan2( Math.abs(vY), Math.abs(vX) );
+
                     Yf = -Math.sin( Math.PI - alpha ) * vW;
                     Xf = Math.cos( Math.PI - alpha ) * vW;
 
@@ -179,6 +180,7 @@ export class wDLine extends wDObject
                     Xf = vW;   
                 } else {
                     let alpha = Math.atan2( Math.abs(vY), Math.abs(vX) );
+
                     Yf = Math.sin( Math.PI - alpha ) * vW;
                     Xf = Math.cos( Math.PI - alpha ) * vW;
 
@@ -194,6 +196,7 @@ export class wDLine extends wDObject
                     Xf = 0.0;
                 } else {
                     let alpha = Math.atan2( Math.abs(vY), Math.abs(vX) );
+
                     Yf = -Math.sin( Math.PI - alpha ) * vW;
                     Xf = Math.cos( Math.PI - alpha ) * vW;
 
@@ -237,12 +240,13 @@ export class wDLine extends wDObject
             vb[ii++] = instance.calcX( vX1 + Xh );
             vb[ii++] = instance.calcY( vY1 - Yh ); // 0 0
 
-            for ( let k = 0; k < 2; k++ ) vb[ii++] = vb[ 0 * 2 + k + cj * 12 ];
-            for ( let k = 0; k < 2; k++ ) vb[ii++] = vb[ 2 * 2 + k + cj * 12 ];
+            for ( let k = 0; k < 2; k++ ) vb[ii++] = vb[ 0 * 2 + k + i * 12 ];
+            for ( let k = 0; k < 2; k++ ) vb[ii++] = vb[ 2 * 2 + k + i * 12 ];
 
             vb[ii++] = instance.calcX( vX1 - Xh );
             vb[ii++] = instance.calcY( vY1 + Yh ); // 0 1
         }
+
 	    return vb;
     }
 
@@ -251,10 +255,10 @@ export class wDLine extends wDObject
         let lines = this.getLines();
         let count = this.getLinesCount();
 
-        let fb = new Float32Array(12 * count);
+        let fb = new Float32Array( 12 * count );
         let ii = 0;
 
-        for (let cj = 0; cj < count; cj++ )        
+        for (let j = 0; j < count; j++ )        
         {	
             fb[ii++] = 1.0;
             fb[ii++] = 1.0;
@@ -262,8 +266,8 @@ export class wDLine extends wDObject
             fb[ii++] = 0.0;
             fb[ii++] = 0.0;
             fb[ii++] = 0.0;
-            for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 0 * 2 + k + cj * 12 ];
-            for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 2 * 2 + k + cj * 12 ];
+            for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 0 * 2 + k + j * 12 ];
+            for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 2 * 2 + k + j * 12 ];
             fb[ii++] = 0.0;
             fb[ii++] = 1.0;
         }
@@ -279,14 +283,14 @@ export class wDLine extends wDObject
         let cb = new Float32Array( 24 * count );
 	    let ii = 0;
 	
-        for (let cj = 0; cj < count; cj++ )        
+        for (let i = 0; i < count; i++ )        
         {
-            let colors = lines[cj].colors;
+            let colors = lines[i].colors;
             for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.to[k];
             for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.to[k];
             for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.from[k];
-            for ( let k = 0; k < 4; k++ ) cb[ii++] = cb[ 0 * 4 + k + cj * 24];
-            for ( let k = 0; k < 4; k++ ) cb[ii++] = cb[ 2 * 4 + k + cj * 24 ];
+            for ( let k = 0; k < 4; k++ ) cb[ii++] = cb[ 0 * 4 + k + i * 24];
+            for ( let k = 0; k < 4; k++ ) cb[ii++] = cb[ 2 * 4 + k + i * 24 ];
             for ( let k = 0; k < 4; k++ ) cb[ii++] = colors.from[k];
         }
 
@@ -297,46 +301,38 @@ export class wDLine extends wDObject
     {
         return this.getLinesCount();
     }
-
     clear()
     {
 	    this.clearLines();
     }
-
     append( x1, y1, x2, y2, weight, colors = { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } )
     {
 	    this.appendLine( { 'x1': x1, 'y1': y1, 'x2': x2, 'y2': y2, 'weight': weight, 'colors' : colors } );
     }
-
     async draw( instance ) 
     {
         let flag = this.isDuty();
-
         if ( flag == true ) 
         {
             this.setColorsBuffer( null );
             this.setFragUVBuffer( null );
             this.setVertexBuffer( null );
         }
-
 	    let vertexBuffer = this.getVertexBuffer();
         if ( vertexBuffer == null ) {
 		    vertexBuffer = instance.createBuffer( this.getVertex(), GPUBufferUsage.VERTEX, instance.device );
             this.setVertexBuffer( vertexBuffer );
         }
-
         let fragUVBuffer = this.getFragUVBuffer();
         if ( fragUVBuffer == null ) {
 		    fragUVBuffer = instance.createBuffer( this.getFragUV(), GPUBufferUsage.VERTEX, instance.device );
             this.setFragUVBuffer( fragUVBuffer );
         }
-
         let colorsBuffer = this.getColorsBuffer();
         if ( colorsBuffer == null ) {
 		    colorsBuffer = instance.createBuffer( this.getColors(), GPUBufferUsage.VERTEX, instance.device );
             this.setColorsBuffer( colorsBuffer );
         }	    
-
         let shaderBindGroup = this.getShaderBindGroup();
 	    if ( shaderBindGroup == null ) {
 		    shaderBindGroup = instance.device.createBindGroup( {
@@ -350,15 +346,12 @@ export class wDLine extends wDObject
 		    } );
 		    this.setShaderBindGroup( shaderBindGroup );
         }
-
-	    let lines = this.count();
-
+	    let lines = this.getLinesCount();
         instance.passEncoder.setBindGroup( 0, shaderBindGroup );
-
         instance.passEncoder.setVertexBuffer( 0, vertexBuffer );
         instance.passEncoder.setVertexBuffer( 1, fragUVBuffer );
         instance.passEncoder.setVertexBuffer( 2, colorsBuffer );
-
         instance.passEncoder.draw( 6 * lines, 1, 0, 0 );
+        this.resetDuty();
     }
 };

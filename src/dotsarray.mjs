@@ -13,7 +13,7 @@ export class wDDot extends wDObject
     constructor( instance ) 
     {
         super( instance, 0, 0, 0, 0 );
-	    this.setDots( [] );
+        this.setDotsArray( [] );
     }
     destroy()
     {
@@ -33,25 +33,25 @@ export class wDDot extends wDObject
 	    this.setUniformShaderLocation( 
 		    this.setUniformShaderFlag( instance.device, 0 ) 
 	    );
-        this.setDuty( false );
+        this.setDuty();
     }
-    getDotsCount()
+    getDotsArrayCount()
     {
-	    return this.dots.length;
+	    return this.dotsarray.length;
     }
-    getDots() {
-    	return this.dots;
+    getDotsArray() {
+    	return this.dotsarray;
     }
-    setDots( dots ) {
-	    this.setDuty(true);
-    	this.dots = dots;
+    setDotsArray( _dotsarray ) {
+    	this.dotsarray = _dotsarray;
+        this.setDuty();
     }
-    clearDots() {
-	    this.setDots( [] );
+    clearDotsArray() {
+	    this.setDotsArray( [] );
     }
-    appendDot( dot ) {
-	    this.setDuty(true);
-    	this.dots.push( dot );
+    appendDotToArray( dot ) {
+    	this.dotsarray.push( dot );
+        this.setDuty();
     }
     setShaderBindGroup( shaderBind ) 
     {
@@ -63,9 +63,8 @@ export class wDDot extends wDObject
     }
     setVertexBuffer( vertex )
     {
-        if ( vertex == null )
-            if ( this.vertexBuffer != null )
-                this.vertexBuffer.destroy();
+        if ( this.vertexBuffer != null )
+            this.vertexBuffer.destroy();
         this.vertexBuffer = vertex;
     }
     getVertexBuffer() 
@@ -74,9 +73,8 @@ export class wDDot extends wDObject
     }
     setFragUVBuffer( fragUV )
     {
-        if ( fragUV == null )
-            if ( this.fragUVBuffer != null )
-                this.fragUVBuffer.destroy();
+        if ( this.fragUVBuffer != null )
+            this.fragUVBuffer.destroy();
         this.fragUVBuffer = fragUV;
     }
     getFragUVBuffer()
@@ -85,9 +83,8 @@ export class wDDot extends wDObject
     }
     setColorsBuffer( colors )
     {
-        if ( colors == null )
-            if ( this.colorsBuffer != null )
-                this.colorsBuffer.destroy();
+        if ( this.colorsBuffer != null )
+            this.colorsBuffer.destroy();
         this.colorsBuffer = colors;
     }
     getColorsBuffer() 
@@ -98,18 +95,18 @@ export class wDDot extends wDObject
     {
         let instance = this.getInstance();
 
-        let dots = this.getDots();
-        let count = this.getDotsCount();
+        let _da = this.getDotsArray();
+        let _cnt = this.getDotsArrayCount();
 
-        let vb = new Float32Array( 12 * count );
+        let vb = new Float32Array( 12 * _cnt );
         let ii = 0;
 
-        for (let cj = 0; cj < count; cj++ )        
+        for ( let i = 0; i < _cnt; i++ )        
         {
-            let vX = dots[ cj ].x;
-            let vY = dots[ cj ].y;
+            let vX = _da[ i ].x;
+            let vY = _da[ i ].y;
 
-            let vW = dots[ cj ].weight;
+            let vW = _da[ i ].weight;
 
             let Xh = vW / 2.0;
             let Yh = vW / 2.0;
@@ -124,16 +121,12 @@ export class wDDot extends wDObject
 
             vb[ii++] = instance.calcX( vX + Xh );
             vb[ii++] = instance.calcY( vY + Yh ); // 1 1
-
             vb[ii++] = instance.calcX( vX + Xh );
             vb[ii++] = instance.calcY( vY - Yh ); // 1 0
-
             vb[ii++] = instance.calcX( vX - Xh );
             vb[ii++] = instance.calcY( vY - Yh ); // 0 0
-
-            for ( let k = 0; k < 2; k++ ) vb[ii++] = vb[ 0 * 2 + k + cj * 12 ];
-            for ( let k = 0; k < 2; k++ ) vb[ii++] = vb[ 2 * 2 + k + cj * 12 ];
-
+            for ( let k = 0; k < 2; k++ ) vb[ii++] = vb[ 0 * 2 + k + i * 12 ];
+            for ( let k = 0; k < 2; k++ ) vb[ii++] = vb[ 2 * 2 + k + i * 12 ];
             vb[ii++] = instance.calcX( vX - Xh );
             vb[ii++] = instance.calcY( vY + Yh ); // 0 1
         }
@@ -143,46 +136,41 @@ export class wDDot extends wDObject
 
     getFragUV()
     {   
-        let dots = this.getDots();
-        let count = this.getDotsCount();
+        let _cnt = this.getDotsArrayCount();
 
-        let fb = new Float32Array(12 * count);
+        let fb = new Float32Array( 12 * _cnt );
         let ii = 0;
 
-        for (let cj = 0; cj < count; cj++ )        
+        for (let i = 0; i < _cnt; i++ )        
         {	
             fb[ii++] = 1.0; // ( 1; 1 )
             fb[ii++] = 1.0;
-
             fb[ii++] = 1.0; // ( 1; 0 )
             fb[ii++] = 0.0;
-
             fb[ii++] = 0.0; // ( 0; 0 )
             fb[ii++] = 0.0;
-
-                for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 0 * 2 + k + cj * 12 ];
-
-                for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 2 * 2 + k + cj * 12 ];
-
+            for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 0 * 2 + k + i * 12 ];
+            for ( let k = 0; k < 2; k++ ) fb[ii++] = fb[ 2 * 2 + k + i * 12 ];
             fb[ii++] = 0.0;  // ( 0; 1 )
             fb[ii++] = 1.0;
         }
+
         return fb;
     }
 
     getColors()
     {
-        let dots = this.getDots();
-        let count = this.getDotsCount();
+        let _dotsarray = this.getDotsArray();
+        let count = this.getDotsArrayCount();
         let cb = new Float32Array( 24 * count );
         let ii = 0;
-        for (let cj = 0; cj < count; cj++ ) {
-		    let color = dots[cj].color;
+        for (let i = 0; i < count; i++ ) {
+		    let color = _dotsarray[i].color;
 	        for ( let k = 0; k < 4; k++ ) cb[ii++] = color[k];
 	        for ( let k = 0; k < 4; k++ ) cb[ii++] = color[k];
 	        for ( let k = 0; k < 4; k++ ) cb[ii++] = color[k];
-        	for ( let k = 0; k < 4; k++ ) cb[ii++] = cb[ 0 * 4 + k + cj * 24];
-	        for ( let k = 0; k < 4; k++ ) cb[ii++] = cb[ 2 * 4 + k + cj * 24 ];
+        	for ( let k = 0; k < 4; k++ ) cb[ii++] = cb[ 0 * 4 + k + i * 24 ];
+	        for ( let k = 0; k < 4; k++ ) cb[ii++] = cb[ 2 * 4 + k + i * 24 ];
 	        for ( let k = 0; k < 4; k++ ) cb[ii++] = color[k];
 	    }
         return cb;
@@ -190,12 +178,12 @@ export class wDDot extends wDObject
 
     clear()
     {
-	    this.clearDots();
+	    this.clearDotsArray();
     }
 
     append( x, y, weight, color = [ 1.0, 1.0, 1.0, 1.0 ] )
     {
-	    this.appendDot( { 'x': x, 'y': y, 'weight': weight, 'color' : color } );
+	    this.appendDotToArray( { 'x': x, 'y': y, 'weight': weight, 'color' : color } );
     }
 
     async draw( instance ) 
@@ -206,23 +194,26 @@ export class wDDot extends wDObject
             this.setColorsBuffer( null );
             this.setFragUVBuffer( null );
             this.setVertexBuffer( null );
-            this.setDuty( false );
         }
+
 	    let vertexBuffer = this.getVertexBuffer();
         if ( vertexBuffer == null ) {
 		    vertexBuffer = instance.createBuffer(this.getVertex(), GPUBufferUsage.VERTEX, instance.device );
             this.setVertexBuffer( vertexBuffer );
         }
+
         let fragUVBuffer = this.getFragUVBuffer();
         if ( fragUVBuffer == null ) {
 		    fragUVBuffer = instance.createBuffer( this.getFragUV(), GPUBufferUsage.VERTEX, instance.device );
             this.setFragUVBuffer( fragUVBuffer );
         }
+
         let colorsBuffer = this.getColorsBuffer();
         if ( colorsBuffer == null ) {
 		    colorsBuffer = instance.createBuffer( this.getColors(), GPUBufferUsage.VERTEX, instance.device );
             this.setColorsBuffer( colorsBuffer );
         }	    
+
         let shaderBindGroup = this.getShaderBindGroup();
 	    if ( shaderBindGroup == null ) {
 		    shaderBindGroup = instance.device.createBindGroup( {
@@ -230,14 +221,14 @@ export class wDDot extends wDObject
 			    entries: [ {
 				    binding: 0,
 				    resource: {
-					    buffer: this.uniformlShaderLocation
+					    buffer: this.uniformShaderLocation
 				    }
 			    } ]
 		    } );
 		    this.setShaderBindGroup( shaderBindGroup );
         }
 
-	    let count = this.getDotsCount();
+	    let count = this.getDotsArrayCount();
 
         instance.passEncoder.setBindGroup( 0, shaderBindGroup );
         instance.passEncoder.setVertexBuffer( 0, vertexBuffer );
@@ -245,5 +236,7 @@ export class wDDot extends wDObject
         instance.passEncoder.setVertexBuffer( 2, colorsBuffer );
 
         instance.passEncoder.draw( 6 * count, 1, 0, 0 );
+
+        this.resetDuty();
     }
 };

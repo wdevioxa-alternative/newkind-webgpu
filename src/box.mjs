@@ -1,4 +1,5 @@
 import { wDObject } from './object.mjs';
+import { wDNewLine } from './line-new.mjs';
 import { wDLine } from './line.mjs';
 
 export class wDBox extends wDObject
@@ -53,8 +54,7 @@ export class wDBox extends wDObject
         let flag = this.isDuty();
 
         if ( flag == true ) {
-            this.borders.clear();
-            this.borders.setDuty();
+            this.borders.clear(); // this sets the duty flag always
         }
 
         let x = this.getX();
@@ -77,5 +77,7 @@ export class wDBox extends wDObject
         this.borders.append( x, y + _height, x + _width, y + _height, _weight, colors[3] );
 
         await this.borders.draw( instance );
+        
+        this.resetDuty();
     }
 };
