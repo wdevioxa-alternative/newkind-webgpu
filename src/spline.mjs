@@ -436,18 +436,18 @@ export class wDSpline extends wDObject
             let kX = this.zoomX / 100.0;
             let kY = this.zoomY / 100.0;
 
-            let offX = 10.0;
-            let offY = 10.0;
+            //let offX = 10.0;
+            //let offY = 10.0;
 
             ////////////////////////////////////////////////////////////////////////
             // let cX = _width * kX / kdX;  this.cX
             // let cY = _height * kY / kdY; this.cY
             ////////////////////////////////////////////////////////////////////////
 
-            let tX = 2.0 / this.kdX;
+            // let tX = 2.0 / this.kdX;
 
-            let sX = 2.0 * _samplerate / this.kdX;
-            let vY = 2.0 * _volumerate / this.kdY;
+            // let sX = 2.0 * _samplerate / this.kdX;
+            // let vY = 2.0 * _volumerate / this.kdY;
 
             let _vdp = ( _object.dpoints == undefined ) ? false : _object.dpoints;
             let _dpc = ( _object.dcolor == undefined ) ? [ 1.0, 1.0, 1.0, 1.0 ] : _object.dcolor;
@@ -464,10 +464,10 @@ export class wDSpline extends wDObject
             ///////////////////////////////////////////////////////////////////
             // Количество отсчетов
             ///////////////////////////////////////////////////////////////////
-            let _xdp = _object.coords.x.dprepeats;
-
-            let _y_min_ = _object.coords.y.min;
-            let _y_max_ = _object.coords.y.max;
+            // let _xdp = _object.coords.x.dprepeats;
+            // let _y_min_ = _object.coords.y.min;
+            // let _y_max_ = _object.coords.y.max;
+            ///////////////////////////////////////////////////////////////////
 
             let _rs_bx = undefined;
             let _rs_by = undefined;
@@ -483,8 +483,8 @@ export class wDSpline extends wDObject
             ///////////////////////////////////////////////////////////////////
             // Step in pixels with scale on x and y axis
             ///////////////////////////////////////////////////////////////////
-            //let cX = _width * kX / this.kdX;
-           // let cY = _height * kY / this.kdY;
+            // let cX = _width * kX / this.kdX;
+            // let cY = _height * kY / this.kdY;
 
             let _centX = x + _width / 2.0;
             let _centY = y + _height / 2.0;
@@ -513,19 +513,16 @@ export class wDSpline extends wDObject
                 }
 
                 let _rs_sc_bx = _centX + _i_last_bi * _width * kX / this.kdX;
-                let _rs_sc_by = _centY + _ls_by * kY * _height / 2.0; 
+                let _rs_sc_by = _centY + _ls_by * _height * kY / 2.0; 
 
                 let _rs_sc_ex = _centX + i * _width * kX / this.kdX;
-                let _rs_sc_ey = _centY + _ls_ey * kY * _height / 2.0; 
+                let _rs_sc_ey = _centY + _ls_ey * _height * kY / 2.0; 
 
                 ///////////////////////////////////////////////////////////////////
                 // console.log( "i: " + i + "; " + _x + ": " + _y );
                 ///////////////////////////////////////////////////////////////////
-
                         
-                if ( _rs_sc_bx == _rs_sc_ex && _rs_sc_by == _rs_sc_ey )
-                    console.log( "possible skipping" );
-
+                // if ( _rs_sc_bx == _rs_sc_ex || _rs_sc_by == _rs_sc_ey ) console.log( "possible skipping" );
                 // if ( _rs_sc_ex > ( x + _width - offX ) ) continue;
 
                 this.discretlines.append( 
@@ -579,10 +576,8 @@ export class wDSpline extends wDObject
                 let _ls_sc_ex = _centX - i * _width * kX / this.kdX;
                 let _ls_sc_ey = _centY + _rs_ey * kY * _height / 2.0; 
         
-                if ( _ls_sc_bx == _ls_sc_ex && _ls_sc_by == _ls_sc_ey )
-                    console.log( "possible skipping" );
-
-                //if ( _ls_sc_ex < ( x + offX ) ) continue;
+                // if ( _ls_sc_bx == _ls_sc_ex || _ls_sc_by == _ls_sc_ey ) console.log( "possible skipping" );
+                // if ( _ls_sc_ex < ( x + offX ) ) continue;
 
                 this.discretlines.append( 
                     _ls_sc_bx, 
@@ -656,7 +651,7 @@ export class wDSpline extends wDObject
                     if ( flag == true ) 
                     {
                         this.discretlines.clear();
-                        for ( let i = 0; i < object.draw.length; i++) {
+                        for ( let i = 0; i < object.draw.length; i++ ) {
                             await this.functionDraw( instance, object.draw[i], _samplerate, _volumerate, x, y, _width, _height, _t );
                         }
                     }

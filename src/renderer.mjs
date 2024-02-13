@@ -2,7 +2,7 @@ import { mat4, vec3 } from 'wgpu-matrix';
 import { wDCircle } from './circle.mjs';
 import { wDLine } from './line.mjs';
 import { wDNewLine } from './line-new.mjs';
-import { wDDot } from './dotsarray.mjs';
+import { wDDot } from './pointsarray.mjs';
 import { wDBox } from './box.mjs';
 import { wDSpline } from './spline.mjs';
 import { wDLabel } from './label.mjs';

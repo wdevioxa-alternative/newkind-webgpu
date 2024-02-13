@@ -1,5 +1,5 @@
 import { wDObject } from './object.mjs';
-import { wDDot } from './dotsarray.mjs';
+import { wDDot } from './pointsarray.mjs';
 
 export class wDNewLine extends wDObject
 {
@@ -164,14 +164,14 @@ export class wDNewLine extends wDObject
                     if ( _aX == 0 ) _x = 0
                     else _x = i * Math.cos( conerX );
 
-                    if ( _aX == 0 )
-                        console.log( "ax: " + _aX );
+                    //if ( _aX == 0 )
+                    //    console.log( "ax: " + _aX );
 
                     if ( _aY == 0 ) _y = 0
                     else _y = i * Math.sin( conerY );
 
-                    if ( _aY == 0 )
-                        console.log( "ay: " + _aY );
+                    //if ( _aY == 0 )
+                    //    console.log( "ay: " + _aY );
 
                     this.vertex.append( _x0 + _x, _y0 + _y, _weight, _colors.from );
                 }          

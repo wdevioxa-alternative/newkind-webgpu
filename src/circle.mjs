@@ -1,5 +1,5 @@
 import { wDObject } from './object.mjs';
-import { wDDot } from './dotsarray.mjs';
+import { wDDot } from './pointsarray.mjs';
 
 export class wDCircle extends wDObject
 {
@@ -193,7 +193,7 @@ export class wDCircle extends wDObject
             }
         }
 
-        let count = this.vertex.getDotsArrayCount();
+        let count = this.vertex.getPointsArrayCount();
         if ( count != 0 ) await this.vertex.draw( instance );
 
         this.resetDuty();
