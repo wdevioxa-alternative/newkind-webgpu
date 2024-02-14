@@ -35,7 +35,7 @@ export class wDApplication
         return this.canvas.height;
     }
     ///////////////////////////////////////////////////////////////////////////////////////////
-    // calc from webgpu to screen coordinates (0 : 1366)
+    // translation from webgpu to screen coordinates (0 : 1366)
     calcRX( cx ) 
     {
         let cw = Math.fround( this.getCanvasWidth() / 2.0 );
@@ -43,7 +43,7 @@ export class wDApplication
         return Math.round( ( cx + 1.0 ) / point );
     }
     ///////////////////////////////////////////////////////////////////////////////////////////
-    // calc from webgpu to screen coordinates (0 : 1366)
+    // translation from webgpu to screen coordinates (0 : 1366)
     calcRY( cy ) 
     {
         let ch = Math.fround( this.getCanvasHeight() / 2.0 );
@@ -51,7 +51,7 @@ export class wDApplication
         return this.getCanvasHeight() - Math.round( ( cy + 1.0 ) / point );
     }
     ///////////////////////////////////////////////////////////////////////////////////////////
-    // calc to webgpu coords -1 : +1
+    // translation screen to webgpu coordinates -1 : +1
     calcX( cx ) 
     {
         let cw = this.getCanvasWidth();
@@ -59,7 +59,7 @@ export class wDApplication
         return translate;
     }
     ///////////////////////////////////////////////////////////////////////////////////////////
-    // calc to webgpu coords -1 : +1
+    // translation screen to webgpu coordinates -1 : +1
     calcY( cy ) 
     {
         let ch = this.getCanvasHeight();
