@@ -436,7 +436,7 @@ export class wDApplication
         ////////////////////////////////////////////////////////////////////////////////////
 
         //console.log( this.calcX( 1366 ) ); 
-        console.log( this.calcRX( 1.0 ) );
+        //console.log( this.calcRX( 1.0 ) );
 
         let object = window.getDrawParams.call();
 
