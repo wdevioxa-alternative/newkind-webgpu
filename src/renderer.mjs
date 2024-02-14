@@ -34,24 +34,32 @@ export class wDApplication
     {
         return this.canvas.height;
     }
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // calc from webgpu to screen coordinates (0 : 1366)
     calcRX( cx ) 
     {
-        let cw = Math.fround(this.getCanvasWidth() / 2.0);
-        let it = 1.0 / cw;
-        return Math.round( ( cx + 1.0 ) / it );
+        let cw = Math.fround( this.getCanvasWidth() / 2.0 );
+        let point = 1.0 / cw;
+        return Math.round( ( cx + 1.0 ) / point );
     }
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // calc from webgpu to screen coordinates (0 : 1366)
     calcRY( cy ) 
     {
-        let ch = Math.fround(this.getCanvasHeight() / 2.0);
-        let it = 1.0 / ch;
-        return this.getCanvasHeight() - Math.round( ( cy + 1.0 ) / it );
+        let ch = Math.fround( this.getCanvasHeight() / 2.0 );
+        let point = 1.0 / ch;
+        return this.getCanvasHeight() - Math.round( ( cy + 1.0 ) / point );
     }
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // calc to webgpu coords -1 : +1
     calcX( cx ) 
     {
         let cw = this.getCanvasWidth();
         let translate = 2.0 * cx / cw - 1.0;
         return translate;
     }
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // calc to webgpu coords -1 : +1
     calcY( cy ) 
     {
         let ch = this.getCanvasHeight();
@@ -426,6 +434,9 @@ export class wDApplication
         //await this.label.draw( this, textColor, backgroundColor, "100.001N", true, true );
         //await this.label.render( this );
         ////////////////////////////////////////////////////////////////////////////////////
+
+        //console.log( this.calcX( 1366 ) ); 
+        console.log( this.calcRX( 1.0 ) );
 
         let object = window.getDrawParams.call();
 

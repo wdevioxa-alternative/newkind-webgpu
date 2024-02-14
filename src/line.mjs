@@ -119,6 +119,7 @@ export class wDLine extends wDObject
             this.setDuty();
         }      
     }
+
     async draw( instance ) 
     {
         let flag = this.isDuty();
@@ -138,8 +139,6 @@ export class wDLine extends wDObject
 
                 let _t = ( lines[i].t < 1.0 ) ? 1.0 : lines[i].t;
                 let _colors = lines[i].colors;
-
-                if ( _x0 == _y0 == _x1 == _y1 ) console.log( "test: " + _x0 );
 
                 let dx = _x1 - _x0;
                 let dy = _y1 - _y0;
@@ -162,10 +161,10 @@ export class wDLine extends wDObject
                     let _y = 0;
                     let _x = 0;
 
-                    if ( _aX == 0 ) _x = 0
+                    if ( _aX == 0 ) _x = 0;
                     else _x = i * Math.cos( conerX );
 
-                    if ( _aY == 0 ) _y = 0
+                    if ( _aY == 0 ) _y = 0;
                     else _y = i * Math.sin( conerY );
 
                     let color = [  _colors.from[0] + ( (_colors.to[0] - _colors.from[0]) * i / gyp ), 
@@ -177,8 +176,8 @@ export class wDLine extends wDObject
                 }          
             }
         }
-        if ( this.vertex.count() > 0 )
-            await this.vertex.draw( instance );
+        if ( this.vertex.count() > 0 ) 
+                await this.vertex.draw( instance );
         this.resetDuty();
     }
 };
