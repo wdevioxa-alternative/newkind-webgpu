@@ -271,9 +271,11 @@ export class wDApplication
         //this.label = new wDLabel( this, 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
         //await this.label.init();
 
-        this.dotsline = new wDLine( this );
-        await this.dotsline.init();
+        this.pointsline = new wDLine( this );
+        await this.pointsline.init();
         
+        this.nativepointsline = new wDNativeLine( this );
+        await this.nativepointsline.init();
 
         this.circle = new wDCircle( this );
         await this.circle.init();
@@ -406,15 +408,14 @@ export class wDApplication
         await this.circle.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
         ////////////////////////////////////////////////////////////////////////////////////
 
-        //this.dotsline.set( 20, 10, 10, 20, 1 );
+        //this.pointsline.clear();
+        //this.pointsline.append( 100, 100, 101, 100, 1, { from: [ 1.0, 1.0, 0.0, 1.0 ], to:[ 1.0, 0.0, 0.0, 1.0 ] } );
+        //await this.pointsline.draw( this );
 
-
-        this.dotsline.clear();
-        this.dotsline.append( 100, 10, 100, 100, 1, { from: [ 1.0,1.0,0.0,1.0 ], to:[ 1.0,0.0,0.0,1.0 ] } );
-        //this.dotsline.append( 0, 0, 200, 500, 1, { from: [1.0,0.0,0.0,1.0], to:[1.0,0.0,0.0,1.0]} );
-        //this.dotsline.append( 200, 300, 500, 100, 1, { from: [1.0,0.0,0.0,1.0], to:[1.0,0.0,0.0,1.0]} );
-        await this.dotsline.draw( this );
-
+        //this.nativepointsline.clear();
+        //this.nativepointsline.append( 200, 20, 220, 100, 1, { from: [ 1.0,1.0,0.0,1.0 ], to:[ 1.0,0.0,0.0,1.0 ] } );
+        //await this.nativepointsline.draw( this );
+        
         ////////////////////////////////////////////////////////////////////////////////////
         // wDLabel example is completed
         ////////////////////////////////////////////////////////////////////////////////////

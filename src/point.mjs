@@ -127,7 +127,7 @@ export class wDPoint extends wDObject
 
             for ( let k = 0; k < 2; k++ ) vb[ii++] = vb[ 0 * 2 + k + i * 12 ]; // 1 1 (0)
             for ( let k = 0; k < 2; k++ ) vb[ii++] = vb[ 2 * 2 + k + i * 12 ]; // 0 0 (2)
-        
+
             vb[ii++] = instance.calcX( Xv - Xw ); // 0 1 (3)
             vb[ii++] = instance.calcY( Yv + Yw ); // 0 1 (3)
         }
@@ -185,6 +185,11 @@ export class wDPoint extends wDObject
     append( x, y, _t = 1, _color = [ 1.0, 1.0, 1.0, 1.0 ] )
     {
 	    this.appendPointToArray( { 'x': x, 'y': y, 'thickness': _t, 'color' : _color } );
+    }
+
+    count()
+    {
+        return this.getPointsArrayCount();
     }
 
     async draw( instance ) 

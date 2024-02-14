@@ -177,7 +177,7 @@ export class wDSpline extends wDObject
         ] );
     }
 
-    async axisDraw( instance, _samplerate, _volumerate, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
+    async axisDraw( instance, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
     {
         let kX = zoomX / 100.0;
         let kY = zoomY / 100.0;
@@ -192,48 +192,8 @@ export class wDSpline extends wDObject
         ////////////////////////////////////////////////////////////////////////
 
         let tX = 2.0 / kdX;
-        let sX = tX * _samplerate;
-        let vY = 2.0 * _volumerate / kdY;
-
-        if ( this.zoomX == undefined || this.zoomX != zoomX ) {
-            this.zoomX = zoomX;
-            this.setDuty();
-        }
-
-        if ( this.zoomY == undefined || this.zoomY != zoomY ) {
-            this.zoomY = zoomY;
-            this.setDuty();
-        }
-
-        if ( this.kdX == undefined || this.kdX != kdX ) {
-            this.kdX = kdX;
-            this.setDuty();
-        }
-
-        if ( this.kdY == undefined || this.kdY != kdY ) {
-            this.kdY = kdY;
-            this.setDuty();
-        }
-
-        if ( this.vY == undefined || this.vY != vY ) {
-            this.vY = vY;
-            this.setDuty();
-        }
-
-        if ( this.sX == undefined || this.sX != sX ) {
-            this.sX = sX;
-            this.setDuty();
-        } 
-
-        if ( this.cX == undefined || this.cX != cX ) {
-            this.cX = cX;
-            this.setDuty();
-        }
-
-        if ( this.cY == undefined || this.cY != cY ) {
-            this.cY = cY;
-            this.setDuty();
-        } 
+        let sX = tX * _rateofsamples;
+        let vY = 2.0 * _volumescale / kdY;
 
         let flag = this.isDuty();
 
@@ -402,7 +362,7 @@ export class wDSpline extends wDObject
 
     }
 
-    async functionDraw( instance, _object, _samplerate, _volumerate, x, y, _width, _height, _t = 1 ) 
+    async functionDraw( instance, _object, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, colors ) 
     {
         ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////
@@ -414,28 +374,22 @@ export class wDSpline extends wDObject
         ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////
 
+/*
         if ( this.zoomX == undefined ) return;
-
         if ( this.zoomY == undefined ) return;
-
         if ( this.vY == undefined ) return;
-
         if ( this.sX == undefined ) return;
-
         if ( this.cX == undefined ) return;
-
         if ( this.cY == undefined ) return;
-
         if ( this.kdX == undefined ) return;
-
         if ( this.kdY == undefined ) return;
-
+*/
         let flag = this.isDuty();
 
         if ( flag == true )
         {
-            let kX = this.zoomX / 100.0;
-            let kY = this.zoomY / 100.0;
+            let kX = zoomX / 100.0;
+            let kY = zoomY / 100.0;
 
             //let offX = 10.0;
             //let offY = 10.0;
@@ -459,8 +413,8 @@ export class wDSpline extends wDObject
 
             let _func = _object.func;
 
-            let _x_min_ = _object.coords.x.min;
-            let _x_max_ = _object.coords.x.max;
+            let _x_min = _object.coords.x.min;
+            let _x_max = _object.coords.x.max;
 
             ///////////////////////////////////////////////////////////////////
             // Количество отсчетов
@@ -479,27 +433,31 @@ export class wDSpline extends wDObject
             ///////////////////////////////////////////////////////////////////
             // Step in radians on x axis
             ///////////////////////////////////////////////////////////////////
-            let _istep = ( _x_max_ - _x_min_ ) / this.kdX;
+            let _istep = ( _x_max - _x_min ) / kdX;
 
             ///////////////////////////////////////////////////////////////////
             // Step in pixels with scale on x and y axis
             ///////////////////////////////////////////////////////////////////
-            //let cX = _width * kX / this.kdX;
-            //let cY = _height * kY / this.kdY;
+            //
+            // let cX = _width * kX / kdX;
+            // let cY = _height * kY / kdY;
+            //
 
             let _centX = x + _width / 2.0;
             let _centY = y + _height / 2.0;
 
-            for ( let i = 0; i < this.kdX / 2.0; i++ )
+            let _x_center = ( _x_max - _x_min ) / 2.0;
+
+            for ( let i = 0.0; i < kdX / 2.0; i++ )
             {
                 /////////////////////////////////////////////////
                 // x and y: one step to right side 
-                let _rs_ex = (+1) * _istep * i + _x_min_;
+                let _rs_ex = (+1) * _istep * i + _x_center;
                 let _rs_ey = _func( _rs_ex );
 
                 /////////////////////////////////////////////////
                 // x and y: one step to left side 
-                let _ls_ex = (-1) * _istep * i + _x_min_;
+                let _ls_ex = (-1) * _istep * i + _x_center;
                 let _ls_ey = _func( _ls_ex );
 
                 if ( _rs_bx == undefined || _rs_by == undefined || _ls_bx == undefined || _ls_by == undefined || _i_last_bi == undefined ) 
@@ -513,10 +471,10 @@ export class wDSpline extends wDObject
                     continue;
                 }
 
-                let _sc_rs_bx = _centX + _i_last_bi * _width * kX / this.kdX;
+                let _sc_rs_bx = _centX + _i_last_bi * kX * _width / kdX;
                 let _sc_rs_by = _centY + _rs_by * _height * kY / 2.0; 
 
-                let _sc_rs_ex = _centX + i * _width * kX / this.kdX;
+                let _sc_rs_ex = _centX + i * kX * _width / kdX;
                 let _sc_rs_ey = _centY + _rs_ey * _height * kY / 2.0; 
 
                 ///////////////////////////////////////////////////////////////////
@@ -571,10 +529,10 @@ export class wDSpline extends wDObject
                     );                                        
                 }
 
-                let _sc_ls_bx = _centX - _i_last_bi * _width * kX / this.kdX;
+                let _sc_ls_bx = _centX - _i_last_bi * _width * kX / kdX;
                 let _sc_ls_by = _centY + _ls_by * kY * _height / 2.0; 
         
-                let _sc_ls_ex = _centX - i * _width * kX / this.kdX;
+                let _sc_ls_ex = _centX - i * _width * kX / kdX;
                 let _sc_ls_ey = _centY + _ls_ey * kY * _height / 2.0; 
         
                 // if ( _ls_sc_bx == _ls_sc_ex || _ls_sc_by == _ls_sc_ey ) console.log( "possible skipping" );
@@ -631,16 +589,71 @@ export class wDSpline extends wDObject
 
     }
 
-    async draw( instance, object, _samplerate, _volumerate, kdX, kdY, zoomX, zoomY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
+    async draw( instance, object, _rateofsamples, _volumescale, kdX, kdY, zoomX, zoomY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
     {
-        let x = this.getX();
-        let y = this.getY();
-        
+        let kX = zoomX / 100.0;
+        let kY = zoomY / 100.0;
+
         let _width = this.getWidth();
         let _height = this.getHeight();
 
+        let cX = _width * kX / kdX;
+        let cY = _height * kY / kdY;
+
+        ////////////////////////////////////////////////////////////////////////
+        // _samplerate: 44100 - 1s           
+        ////////////////////////////////////////////////////////////////////////
+        // let sX = 2.0 * _samplerate / kdX;
+        ////////////////////////////////////////////////////////////////////////
+
+        let sX = _rateofsamples * 2.0 / kdX;
+        let vY = 2.0 * _volumescale / kdY;
+
+        if ( this.zoomX == undefined || this.zoomX != zoomX ) {
+            this.zoomX = zoomX;
+            this.setDuty();
+        }
+
+        if ( this.zoomY == undefined || this.zoomY != zoomY ) {
+            this.zoomY = zoomY;
+            this.setDuty();
+        }
+
+        if ( this.kdX == undefined || this.kdX != kdX ) {
+            this.kdX = kdX;
+            this.setDuty();
+        }
+
+        if ( this.kdY == undefined || this.kdY != kdY ) {
+            this.kdY = kdY;
+            this.setDuty();
+        }
+
+        if ( this.vY == undefined || this.vY != vY ) {
+            this.vY = vY;
+            this.setDuty();
+        }
+
+        if ( this.sX == undefined || this.sX != sX ) {
+            this.sX = sX;
+            this.setDuty();
+        } 
+
+        if ( this.cX == undefined || this.cX != cX ) {
+            this.cX = cX;
+            this.setDuty();
+        }
+
+        if ( this.cY == undefined || this.cY != cY ) {
+            this.cY = cY;
+            this.setDuty();
+        } 
+
+        let x = this.getX();
+        let y = this.getY();
+
         await this.borderDraw( instance, x, y, _width, _height, _t, colors );
-        await this.axisDraw( instance, _samplerate, _volumerate, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, colors );
+        await this.axisDraw( instance, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, colors );
 
         if ( object.draw != undefined ) 
         {
@@ -653,7 +666,7 @@ export class wDSpline extends wDObject
                     {
                         this.discretlines.clear();
                         for ( let i = 0; i < object.draw.length; i++ ) {
-                            await this.functionDraw( instance, object.draw[i], _samplerate, _volumerate, x, y, _width, _height, _t );
+                            await this.functionDraw( instance, object.draw[i], _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, colors );
                         }
                     }
                     await this.discretlines.draw( instance );

@@ -147,7 +147,7 @@ export class wDNativeLine extends wDObject
             let vX2 = lines[ i ].x2;
             let vY2 = lines[ i ].y2;
 
-            let vW = lines[ i ].t;
+            let vW = lines[ i ].thickness;
 	
             let vY = vY2 - vY1;
             let vX = vX2 - vX1;
@@ -307,7 +307,7 @@ export class wDNativeLine extends wDObject
     }
     append( x1, y1, x2, y2, _t = 1, _colors = { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } )
     {
-	    this.appendLine( { 'x1': x1, 'y1': y1, 'x2': x2, 'y2': y2, 't': _t, 'colors' : _colors } );
+	    this.appendLine( { 'x1': x1, 'y1': y1, 'x2': x2, 'y2': y2, 'thickness': _t, 'colors' : _colors } );
     }
     async draw( instance ) 
     {

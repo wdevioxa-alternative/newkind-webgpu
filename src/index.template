@@ -198,7 +198,7 @@
 						window.kdX = ui.value;
 					},
 					range: false,
-					min: 3,
+					min: 6,
 					max: 999,
 					step: 2,
 				});

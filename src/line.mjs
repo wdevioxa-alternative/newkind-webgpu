@@ -139,12 +139,14 @@ export class wDLine extends wDObject
                 let _t = ( lines[i].t < 1.0 ) ? 1.0 : lines[i].t;
                 let _colors = lines[i].colors;
 
+                if ( _x0 == _y0 == _x1 == _y1 ) console.log( "test: " + _x0 );
+
                 let dx = _x1 - _x0;
                 let dy = _y1 - _y0;
 
                 let gyp = Math.floor( Math.sqrt( Math.abs( dx ) * Math.abs( dx ) + Math.abs( dy ) * Math.abs( dy ) ) );
                 let conerX = Math.acos( dx / gyp );
-                let conerY = Math.asin( dy / gyp );    
+                let conerY = Math.asin( dy / gyp );
 
                 let _aX = 0;                                         //  0: horizontal line
                 _aX = ( conerX > Math.PI / 2.0 ) ? 1 : -1;           //  1: to the right; -1: to the left
@@ -152,15 +154,11 @@ export class wDLine extends wDObject
                 let _aY = 0;                                         //  0: vertical line
                 _aY = ( conerY > 0 ) ? 1 : -1;                       //  1: to the bottom; -1: to the top    
 
-                if ( gyp == 0.0 ) {
-                    console.log( "null?????" );
-                    continue;
-                }
-
                 /////////////////////////////////////////////////////////////////////////////////////////////////////
                 // console.log( "x1: " + _x0 + "; y1: " + _y0 + "; x2: " + _x1 + "; y2: " +  _y1 );
                 /////////////////////////////////////////////////////////////////////////////////////////////////////
-                for ( let i = 0; i < gyp; i++ ) {
+                for ( let i = 0; i < gyp; i++ )
+                {
                     let _y = 0;
                     let _x = 0;
 
@@ -170,14 +168,17 @@ export class wDLine extends wDObject
                     if ( _aY == 0 ) _y = 0
                     else _y = i * Math.sin( conerY );
 
-                    let color = [  _colors.from[0] + ( (_colors.to[0] - _colors.from[0]) * i / gyp ), _colors.from[1] + ( (_colors.to[1] - _colors.from[1]) * i / gyp ),
-                            _colors.from[2] + ( (_colors.to[2] - _colors.from[2]) * i / gyp ), _colors.from[3] + ( (_colors.to[3] - _colors.from[3]) * i / gyp ) ];
+                    let color = [  _colors.from[0] + ( (_colors.to[0] - _colors.from[0]) * i / gyp ), 
+                            _colors.from[1] + ( (_colors.to[1] - _colors.from[1]) * i / gyp ),
+                            _colors.from[2] + ( (_colors.to[2] - _colors.from[2]) * i / gyp ),
+                            _colors.from[3] + ( (_colors.to[3] - _colors.from[3]) * i / gyp ) ];
 
                     this.vertex.append( _x0 + _x, _y0 + _y, _t, color );
                 }          
             }
         }
-        await this.vertex.draw( instance );
+        if ( this.vertex.count() > 0 )
+            await this.vertex.draw( instance );
         this.resetDuty();
     }
 };
