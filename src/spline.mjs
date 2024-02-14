@@ -2,7 +2,8 @@ import { wDObject } from './object.mjs';
 import { wDLabel } from './label.mjs';
 import { wDBox } from './box.mjs';
 import { wDLine } from './line.mjs';
-import { wDNewLine } from './line-new.mjs';
+import { wDNativeLine } from './line-native.mjs';
+
 
 export class wDSpline extends wDObject
 {
@@ -17,7 +18,7 @@ export class wDSpline extends wDObject
         this.setItX( 58 );
         this.setItY( 20 );
 
-        this.fontsize = instance.getCanvasHeight() * 16 / ( 9 * 133 );
+        this.fontsize = instance.getCanvasHeight() * 16 / 1366;
     }  
 
     destroy()
@@ -36,10 +37,10 @@ export class wDSpline extends wDObject
         this.border = new wDBox( instance );
         await this.border.init();
 
-        this.axis = new wDNewLine( instance );
+        this.axis = new wDNativeLine( instance );
         await this.axis.init();
 
-        this.discretlines = new wDNewLine( instance );
+        this.discretlines = new wDLine( instance );
         await this.discretlines.init();
 
         this.labels = [];
@@ -50,7 +51,7 @@ export class wDSpline extends wDObject
         this.setDuty();
     }
 
-    set( x, y, _width = -1, _height = -1, _weight = -1 )
+    set( x, y, _width = -1, _height = -1, _thickness = -1 )
     {
         if ( this.getX() != x ) {
             this.setX( x );
@@ -72,9 +73,9 @@ export class wDSpline extends wDObject
                 this.setDuty();
             }
         }
-        if ( _weight != -1 ) { 
-            if ( this.getWeight() != _weight ) {
-                this.setWeight( _weight );
+        if ( _thickness != -1 ) { 
+            if ( this.getThickness() != _thickness ) {
+                this.setThickness( _thickness );
                 this.setDuty();
             }
         }
@@ -483,8 +484,8 @@ export class wDSpline extends wDObject
             ///////////////////////////////////////////////////////////////////
             // Step in pixels with scale on x and y axis
             ///////////////////////////////////////////////////////////////////
-            // let cX = _width * kX / this.kdX;
-            // let cY = _height * kY / this.kdY;
+            //let cX = _width * kX / this.kdX;
+            //let cY = _height * kY / this.kdY;
 
             let _centX = x + _width / 2.0;
             let _centY = y + _height / 2.0;
@@ -512,11 +513,11 @@ export class wDSpline extends wDObject
                     continue;
                 }
 
-                let _rs_sc_bx = _centX + _i_last_bi * _width * kX / this.kdX;
-                let _rs_sc_by = _centY + _ls_by * _height * kY / 2.0; 
+                let _sc_rs_bx = _centX + _i_last_bi * _width * kX / this.kdX;
+                let _sc_rs_by = _centY + _rs_by * _height * kY / 2.0; 
 
-                let _rs_sc_ex = _centX + i * _width * kX / this.kdX;
-                let _rs_sc_ey = _centY + _ls_ey * _height * kY / 2.0; 
+                let _sc_rs_ex = _centX + i * _width * kX / this.kdX;
+                let _sc_rs_ey = _centY + _rs_ey * _height * kY / 2.0; 
 
                 ///////////////////////////////////////////////////////////////////
                 // console.log( "i: " + i + "; " + _x + ": " + _y );
@@ -526,10 +527,10 @@ export class wDSpline extends wDObject
                 // if ( _rs_sc_ex > ( x + _width - offX ) ) continue;
 
                 this.discretlines.append( 
-                    _rs_sc_bx, 
-                    _rs_sc_by,
-                    _rs_sc_ex, 
-                    _rs_sc_ey,
+                    _sc_rs_bx, 
+                    _sc_rs_by,
+                    _sc_rs_ex, 
+                    _sc_rs_ey,
                     _t, 
                     lcolors[0] 
                 );
@@ -537,84 +538,84 @@ export class wDSpline extends wDObject
                 if ( _vdp == true )
                 {
                     this.discretlines.append( 
-                        _rs_sc_ex, 
-                        _rs_sc_ey,
-                        _rs_sc_ex + 5, 
-                        _rs_sc_ey,
+                        _sc_rs_ex, 
+                        _sc_rs_ey,
+                        _sc_rs_ex + 5, 
+                        _sc_rs_ey,
                         _t, 
                         dcolors[0] 
                     );
                     this.discretlines.append( 
-                        _rs_sc_ex, 
-                        _rs_sc_ey,
-                        _rs_sc_ex - 5, 
-                        _rs_sc_ey,
+                        _sc_rs_ex, 
+                        _sc_rs_ey,
+                        _sc_rs_ex - 5, 
+                        _sc_rs_ey,
                         _t, 
                         dcolors[0] 
                     );
                     this.discretlines.append( 
-                        _rs_sc_ex, 
-                        _rs_sc_ey,
-                        _rs_sc_ex, 
-                        _rs_sc_ey + 5,
+                        _sc_rs_ex, 
+                        _sc_rs_ey,
+                        _sc_rs_ex, 
+                        _sc_rs_ey + 5,
                         _t, 
                         dcolors[0] 
                     );
                     this.discretlines.append( 
-                        _rs_sc_ex, 
-                        _rs_sc_ey,
-                        _rs_sc_ex, 
-                        _rs_sc_ey - 5,
+                        _sc_rs_ex, 
+                        _sc_rs_ey,
+                        _sc_rs_ex, 
+                        _sc_rs_ey - 5,
                         _t, 
                         dcolors[0] 
                     );                                        
                 }
 
-                let _ls_sc_bx = _centX - _i_last_bi * _width * kX / this.kdX;
-                let _ls_sc_by = _centY + _rs_by * kY * _height / 2.0; 
+                let _sc_ls_bx = _centX - _i_last_bi * _width * kX / this.kdX;
+                let _sc_ls_by = _centY + _ls_by * kY * _height / 2.0; 
         
-                let _ls_sc_ex = _centX - i * _width * kX / this.kdX;
-                let _ls_sc_ey = _centY + _rs_ey * kY * _height / 2.0; 
+                let _sc_ls_ex = _centX - i * _width * kX / this.kdX;
+                let _sc_ls_ey = _centY + _ls_ey * kY * _height / 2.0; 
         
                 // if ( _ls_sc_bx == _ls_sc_ex || _ls_sc_by == _ls_sc_ey ) console.log( "possible skipping" );
                 // if ( _ls_sc_ex < ( x + offX ) ) continue;
 
                 this.discretlines.append( 
-                    _ls_sc_bx, 
-                    _ls_sc_by,
-                    _ls_sc_ex, 
-                    _ls_sc_ey,
+                    _sc_ls_bx, 
+                    _sc_ls_by,
+                    _sc_ls_ex, 
+                    _sc_ls_ey,
                     _t, lcolors[0] 
                 );                             
 
                 if ( _vdp == true )
                 {
                     this.discretlines.append( 
-                        _ls_sc_ex, 
-                        _ls_sc_ey,
-                        _ls_sc_ex + 5, 
-                        _ls_sc_ey,
+                        _sc_ls_ex, 
+                        _sc_ls_ey,
+                        _sc_ls_ex + 5, 
+                        _sc_ls_ey,
                         _t, dcolors[0] 
                     );
                     this.discretlines.append( 
-                        _ls_sc_ex, 
-                        _ls_sc_ey,
-                        _ls_sc_ex - 5, 
-                        _ls_sc_ey,
+                        _sc_ls_ex, 
+                        _sc_ls_ey,
+                        _sc_ls_ex - 5, 
+                        _sc_ls_ey,
                         _t, dcolors[0] 
                     );
                     this.discretlines.append( 
-                        _ls_sc_ex, 
-                        _ls_sc_ey,
-                        _ls_sc_ex, 
-                        _ls_sc_ey + 5,
+                        _sc_ls_ex, 
+                        _sc_ls_ey,
+                        _sc_ls_ex, 
+                        _sc_ls_ey + 5,
                         _t, dcolors[0] 
                     );
                     this.discretlines.append( 
-                        _ls_sc_ex, 
-                        _ls_sc_ey,
-                        _ls_sc_ex, 
-                        _ls_sc_ey - 5,
+                        _sc_ls_ex, 
+                        _sc_ls_ey,
+                        _sc_ls_ex, 
+                        _sc_ls_ey - 5,
                         _t, dcolors[0] 
                     );
                 }

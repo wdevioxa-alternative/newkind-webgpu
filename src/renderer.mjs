@@ -1,8 +1,8 @@
 import { mat4, vec3 } from 'wgpu-matrix';
 import { wDCircle } from './circle.mjs';
 import { wDLine } from './line.mjs';
-import { wDNewLine } from './line-new.mjs';
-import { wDDot } from './pointsarray.mjs';
+import { wDNativeLine } from './line-native.mjs';
+import { wDDot } from './point.mjs';
 import { wDBox } from './box.mjs';
 import { wDSpline } from './spline.mjs';
 import { wDLabel } from './label.mjs';
@@ -15,6 +15,8 @@ export class wDApplication
 {
     constructor() 
     {
+        this.setShaderBindGroup( null );
+        this.setTextureBindGroup( null );
     }
     setCanvas( canvas ) 
     {
@@ -269,8 +271,9 @@ export class wDApplication
         //this.label = new wDLabel( this, 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
         //await this.label.init();
 
-        //this.dotsline = new wDNewLine( this );
-        //await this.dotsline.init();
+        this.dotsline = new wDLine( this );
+        await this.dotsline.init();
+        
 
         this.circle = new wDCircle( this );
         await this.circle.init();
@@ -278,7 +281,22 @@ export class wDApplication
         this.color = 0.0;
         this.itcolor = 0.01;
     }
-
+    setTextureBindGroup( group )
+    {
+        this.textureBindGroup = group;
+    }
+    getTextureBindGroup() 
+    {
+        return this.textureBindGroup;
+    }    
+    setShaderBindGroup( group )
+    {
+        this.shaderBindGroup = group;
+    }
+    getShaderBindGroup() 
+    {
+        return this.shaderBindGroup;
+    }    
     render = async() => {
 
 	    let texture = this.context.getCurrentTexture();
@@ -303,17 +321,23 @@ export class wDApplication
             this.getCanvasHeight() - 18
         );     
 
-        let shaderBindGroup = this.device.createBindGroup( {
-            layout: this.pipeline.getBindGroupLayout(0),
-            entries: [ {
-                binding: 0,
-                resource: {
-                    buffer: this.uniformlShaderLocation,
-                }
-            } ]
-	    } );
+        let shaderBindGroup = this.getShaderBindGroup();
+	    if ( shaderBindGroup == null ) {
+            shaderBindGroup = this.device.createBindGroup( {
+                layout: this.pipeline.getBindGroupLayout(0),
+                entries: [ {
+                    binding: 0,
+                    resource: {
+                        buffer: this.uniformlShaderLocation,
+                    }
+                } ]
+            } );
+            this.setShaderBindGroup(shaderBindGroup);
+        }
 
-        let textureBindGroup = this.device.createBindGroup( {
+        let textureBindGroup = this.getTextureBindGroup();
+	    if ( textureBindGroup == null ) {
+            textureBindGroup = this.device.createBindGroup( {
             layout: this.pipeline.getBindGroupLayout( 1 ),
             entries: [ 
                 {
@@ -328,7 +352,9 @@ export class wDApplication
                     } ) ,
                 } 
             ]
-	    } );
+	        } );
+            this.getTextureBindGroup(textureBindGroup);
+        }
 
         this.passEncoder.setPipeline( this.pipeline );
 
@@ -383,11 +409,11 @@ export class wDApplication
         //this.dotsline.set( 20, 10, 10, 20, 1 );
 
 
-        //this.dotsline.clear();
-        //this.dotsline.append( 200, 100, 0, 20, 1, { from: [1.0,1.0,0.0,1.0], to:[1.0,1.0,0.0,1.0]} );
+        this.dotsline.clear();
+        this.dotsline.append( 100, 10, 100, 100, 1, { from: [ 1.0,1.0,0.0,1.0 ], to:[ 1.0,0.0,0.0,1.0 ] } );
         //this.dotsline.append( 0, 0, 200, 500, 1, { from: [1.0,0.0,0.0,1.0], to:[1.0,0.0,0.0,1.0]} );
         //this.dotsline.append( 200, 300, 500, 100, 1, { from: [1.0,0.0,0.0,1.0], to:[1.0,0.0,0.0,1.0]} );
-        //await this.dotsline.draw( this );
+        await this.dotsline.draw( this );
 
         ////////////////////////////////////////////////////////////////////////////////////
         // wDLabel example is completed
@@ -400,9 +426,9 @@ export class wDApplication
         //await this.label.render( this );
         ////////////////////////////////////////////////////////////////////////////////////
 
-        this.spline.set( 10, 10, sW - 20, sH - 20 );
-
         let object = window.getDrawParams.call();
+
+        this.spline.set( 10, 10, sW - 20, sH - 20 );
         await this.spline.draw( this, object, window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY );
 
         this.passEncoder.end();

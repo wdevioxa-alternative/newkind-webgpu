@@ -8,7 +8,7 @@ import { wDObject } from './object.mjs';
 //
 //////////////////////////////
 
-export class wDDot extends wDObject
+export class wDPoint extends wDObject
 {
     constructor( instance ) 
     {
@@ -37,20 +37,20 @@ export class wDDot extends wDObject
     }
     getPointsArrayCount()
     {
-	    return this.dotsarray.length;
+	    return this.pointsarray.length;
     }
     getPointsArray() {
-    	return this.dotsarray;
+    	return this.pointsarray;
     }
-    setPointsArray( _dotsarray ) {
-    	this.dotsarray = _dotsarray;
+    setPointsArray( _pointsarray ) {
+    	this.pointsarray = _pointsarray;
         this.setDuty();
     }
     clearPointsArray() {
 	    this.setPointsArray( [] );
     }
-    appendPointToArray( dot ) {
-    	this.dotsarray.push( dot );
+    appendPointToArray( point ) {
+    	this.pointsarray.push( point );
         this.setDuty();
     }
     setShaderBindGroup( shaderBind ) 
@@ -105,10 +105,10 @@ export class wDDot extends wDObject
         {
             let Xv = _da[ i ].x;
             let Yv = _da[ i ].y;
-            let Wv = _da[ i ].weight;
+            let Wv = _da[ i ].thickness;
 
-            let Xh = Wv / 2.0;
-            let Yh = Wv / 2.0;
+            let Xw = Wv / 2.0;
+            let Yw = Wv / 2.0;
 
 //////////////////////////////
 //        
@@ -118,16 +118,18 @@ export class wDDot extends wDObject
 //
 //////////////////////////////
 
-            vb[ii++] = instance.calcX( Xv + Xh ); // 1 1 (0)
-            vb[ii++] = instance.calcY( Yv + Yh ); // 1 1 (0)
-            vb[ii++] = instance.calcX( Xv + Xh ); // 1 0 (1)
-            vb[ii++] = instance.calcY( Yv - Yh ); // 1 0 (1)
-            vb[ii++] = instance.calcX( Xv - Xh ); // 0 0 (2)
-            vb[ii++] = instance.calcY( Yv - Yh ); // 0 0 (2)
+            vb[ii++] = instance.calcX( Xv + Xw ); // 1 1 (0)
+            vb[ii++] = instance.calcY( Yv + Yw ); // 1 1 (0)
+            vb[ii++] = instance.calcX( Xv + Xw ); // 1 0 (1)
+            vb[ii++] = instance.calcY( Yv - Yw ); // 1 0 (1)
+            vb[ii++] = instance.calcX( Xv - Xw ); // 0 0 (2)
+            vb[ii++] = instance.calcY( Yv - Yw ); // 0 0 (2)
+
             for ( let k = 0; k < 2; k++ ) vb[ii++] = vb[ 0 * 2 + k + i * 12 ]; // 1 1 (0)
             for ( let k = 0; k < 2; k++ ) vb[ii++] = vb[ 2 * 2 + k + i * 12 ]; // 0 0 (2)
-            vb[ii++] = instance.calcX( Xv - Xh ); // 0 1 (3)
-            vb[ii++] = instance.calcY( Yv + Yh ); // 0 1 (3)
+        
+            vb[ii++] = instance.calcX( Xv - Xw ); // 0 1 (3)
+            vb[ii++] = instance.calcY( Yv + Yw ); // 0 1 (3)
         }
 
 	    return vb;
@@ -159,12 +161,12 @@ export class wDDot extends wDObject
 
     getColors()
     {
-        let _dotsarray = this.getPointsArray();
+        let _pointsarray = this.getPointsArray();
         let count = this.getPointsArrayCount();
         let cb = new Float32Array( 24 * count );
         let ii = 0;
         for (let i = 0; i < count; i++ ) {
-		    let color = _dotsarray[i].color;
+		    let color = _pointsarray[i].color;
 	        for ( let k = 0; k < 4; k++ ) cb[ii++] = color[k];
 	        for ( let k = 0; k < 4; k++ ) cb[ii++] = color[k];
 	        for ( let k = 0; k < 4; k++ ) cb[ii++] = color[k];
@@ -180,14 +182,15 @@ export class wDDot extends wDObject
 	    this.clearPointsArray();
     }
 
-    append( x, y, _weight = 1, _color = [ 1.0, 1.0, 1.0, 1.0 ] )
+    append( x, y, _t = 1, _color = [ 1.0, 1.0, 1.0, 1.0 ] )
     {
-	    this.appendPointToArray( { 'x': x, 'y': y, 'weight': _weight, 'color' : _color } );
+	    this.appendPointToArray( { 'x': x, 'y': y, 'thickness': _t, 'color' : _color } );
     }
 
     async draw( instance ) 
     {
         let flag = this.isDuty();
+
         if ( flag == true ) 
 	    {
             this.setColorsBuffer( null );

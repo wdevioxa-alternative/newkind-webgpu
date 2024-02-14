@@ -1,13 +1,13 @@
 export class wDObject
 {
-    constructor( instance, x, y, width, height, weight = -1 ) 
+    constructor( instance, x, y, width, height, _t = -1 ) 
     {
     	this.setInstance( instance );
         this.setX( x );
         this.setY( y );
         this.setWidth( width );
         this.setHeight( height );
-        this.setWeight( weight );
+        this.setThickness( _t );
         this.setDuty( true );
     }
     setInstance( _instance )
@@ -34,13 +34,13 @@ export class wDObject
     {
         return this.recreate;
     }
-    getWeight() 
+    getThickness() 
     {
-        return this.weight;
+        return this.thickness;
     }
-    setWeight(_w) 
+    setThickness( _t ) 
     {
-        this.weight = _w;
+        this.thickness = _t;
     }    
     getX() 
     {

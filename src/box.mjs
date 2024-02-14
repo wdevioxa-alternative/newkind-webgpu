@@ -1,5 +1,5 @@
 import { wDObject } from './object.mjs';
-import { wDNewLine } from './line-new.mjs';
+import { wDNativeLine } from './line-native.mjs';
 import { wDLine } from './line.mjs';
 
 export class wDBox extends wDObject
@@ -16,11 +16,11 @@ export class wDBox extends wDObject
     async init() 
     {
 	    let instance = this.getInstance();
-	    this.borders = new wDLine( instance );
+	    this.borders = new wDNativeLine( instance );
 	    await this.borders.init();
         this.setDuty( false );
     }
-    set( x, y, _width = -1, _height = -1, _weight = -1 )
+    set( x, y, _width = -1, _height = -1, _thickness = -1 )
     {
         if ( this.getX() != x ) {
             this.setX( x );
@@ -42,9 +42,9 @@ export class wDBox extends wDObject
                 this.setDuty( true );
             }
         }
-        if ( _weight != -1 ) { 
-            if ( this.getWeight() != _weight ) {
-                this.setWeight( _weight );
+        if ( _thickness != -1 ) { 
+            if ( this.getThickness() != _thickness ) {
+                this.setThickness( _thickness );
                 this.setDuty( true );
             }
         }
@@ -60,9 +60,9 @@ export class wDBox extends wDObject
         let x = this.getX();
         let y = this.getY();
 
+        let _thickness = this.getThickness();	
         let _width = this.getWidth();
         let _height = this.getHeight();
-        let _weight = this.getWeight();	
 
         if ( colors.length == 1 )
         {
@@ -71,10 +71,10 @@ export class wDBox extends wDObject
             colors.push( colors[0] );
         }
 
-        this.borders.append( x + _width, y + _height, x + _width, y, _weight, colors[0] );
-        this.borders.append( x + _width, y, x, y, _weight, colors[1] );
-        this.borders.append( x, y, x, y + _height, _weight, colors[2] );
-        this.borders.append( x, y + _height, x + _width, y + _height, _weight, colors[3] );
+        this.borders.append( x + _width, y + _height, x + _width, y, _thickness, colors[0] );
+        this.borders.append( x + _width, y, x, y, _thickness, colors[1] );
+        this.borders.append( x, y, x, y + _height, _thickness, colors[2] );
+        this.borders.append( x, y + _height, x + _width, y + _height, _thickness, colors[3] );
 
         await this.borders.draw( instance );
         

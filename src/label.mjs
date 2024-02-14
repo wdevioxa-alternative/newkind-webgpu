@@ -200,7 +200,7 @@ export class wDLabel extends wDObject
             canvas.width = fw;
             canvas.height = fh;
 
-            context.imageSmoothingEnabled= false;
+            context.imageSmoothingEnabled=false;
 
             context.clearRect( 0, 0, canvas.width, canvas.height );
             context.font = fontstring;
@@ -211,6 +211,8 @@ export class wDLabel extends wDObject
             context.fillStyle = textColor;
             context.fillText( textOut, fx, fy, fw );
 
+            context.imageSmoothingEnabled=false;
+            
             let image = await createImageBitmap( canvas ); //, { colorSpaceConversion: 'default', resizeQuality: 'pixelated' } );
             this.setImageBitmap( image );
 
