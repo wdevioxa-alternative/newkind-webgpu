@@ -306,7 +306,6 @@ export class wDSpline extends wDObject
         }
 
     }
-
     drawScalePoint( _vdp, _sc_bx, _sc_by, _t, dcolors )
     {
         if ( _vdp == true )
@@ -491,14 +490,10 @@ export class wDSpline extends wDObject
 
                 _i_last_bi = i;
             }
-
-            
-            
         }
-
     }
 
-    async draw( instance, object, _rateofsamples, _volumescale, kdX, kdY, zoomX, zoomY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
+    async draw( instance, object, _rateofsamples, _volumescale, kdX, kdY, zoomX, zoomY, _t = 1, _colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
     {
         let kX = zoomX / 100.0;
         let kY = zoomY / 100.0;
@@ -561,8 +556,8 @@ export class wDSpline extends wDObject
         let x = this.getX();
         let y = this.getY();
 
-        await this.borderDraw( instance, x, y, _width, _height, _t, colors );
-        await this.axisDraw( instance, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, colors );
+        await this.borderDraw( instance, x, y, _width, _height, _t, _colors );
+        await this.axisDraw( instance, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, _colors );
 
         if ( object.draw != undefined ) 
         {
@@ -575,7 +570,7 @@ export class wDSpline extends wDObject
                     {
                         this.discretlines.clear();
                         for ( let i = 0; i < object.draw.length; i++ ) {
-                            await this.functionDraw( instance, object.draw[i], _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, colors );
+                            await this.functionDraw( instance, object.draw[i], _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, _colors );
                         }
                     }
                     await this.discretlines.draw( instance );
