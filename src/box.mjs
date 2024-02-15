@@ -9,7 +9,7 @@ export class wDBox extends wDObject
         super( instance, 0, 0, 0, 0 );
         this.setDuty( false );
     }  
-    
+
     destroy()
     {
 	    this.borders.destroy();
@@ -18,7 +18,7 @@ export class wDBox extends wDObject
     async init() 
     {
 	    let instance = this.getInstance();
-	    this.borders = new wDNativeLine( instance );
+	    this.borders = new wDLine( instance );
 	    await this.borders.init();
         this.setDuty( false );
     }

@@ -10,7 +10,6 @@ export class wDSpline extends wDObject
     constructor( instance, x, y, _width, _height, _weight = 1 ) 
     {
         super( instance, x, y, _width, _height, _weight );
-        this.fontsize = instance.getCanvasHeight() * 16 / 1366;
     }  
 
     destroy()
@@ -29,11 +28,13 @@ export class wDSpline extends wDObject
         this.border = new wDBox( instance );
         await this.border.init();
 
-        this.axis = new wDLine( instance );
+        this.axis = new wDNativeLine( instance );
         await this.axis.init();
 
         this.discretlines = new wDLine( instance );
         await this.discretlines.init();
+
+        this.fontsize = instance.getCanvasHeight() * 16 / 1366;
 
         this.labels = [];
 
