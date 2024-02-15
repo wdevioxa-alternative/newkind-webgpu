@@ -118,17 +118,17 @@
 							null
 						);
 
-						var retval = Module.ccall(
+						let retval = Module.ccall(
 							'AL_play',
 							'number',
 							['string'],
 							[ f_name ]
 						);
-				}
+				};
 
 				let stop = function() 
 				{
-						var retval = Module.ccall(
+						let retval = Module.ccall(
 							'AL_stop',
 							'number',
 							null,
@@ -141,7 +141,7 @@
 							null,
 							null
 						);
-				}	
+				};
 
 				let change_samplerate = function() {
 					let value = $( "#sample-rate" ).spinner( "value" );
