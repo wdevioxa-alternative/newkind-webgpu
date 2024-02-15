@@ -17,15 +17,14 @@ export class wDApplication
     {
         this.setShaderBindGroup( null );
         this.setTextureBindGroup( null );
-        this.setBorderWidth( 9 );
     }
     getBorderWidth()
     {
-        return this.border;
+        return this.borderwidth;
     }
     setBorderWidth( _w )
     {
-        this.border = _w;
+        this.borderwidth = _w;
     }
     setCanvas( canvas ) 
     {
@@ -35,15 +34,35 @@ export class wDApplication
     {
         return this.canvas;
     }
-    getCanvasWidth( _wb = true ) 
+    getDrawWidth()
     {
-        if ( _wb == true ) return this.canvas.width;
-        return this.canvas.width - this.getBorderWidth() * 2.0;
+        return this.drawwidth;
     }
-    getCanvasHeight( _wb = true ) 
+    setDrawWidth( _w )
     {
-        if ( _wb == true ) return this.canvas.height;
-        return this.canvas.height - this.getBorderWidth() * 2.0;
+        this.drawwidth = _w;
+    }
+    getDrawHeight()
+    {
+        return this.drawheight;
+    }
+    setDrawHeight( _h )
+    {
+        this.drawheight = _h;
+    }
+    getCanvasWidth( _wbw = true ) 
+    {
+        if ( _wbw == true ) return this.canvas.width;
+        let _bw = this.getBorderWidth() * 2.0;
+        let _w  = this.canvas.width - _bw;
+        return _w;
+    }
+    getCanvasHeight( _wbw = true ) 
+    {
+        if ( _wbw == true ) return this.canvas.height;
+        let _bw = this.getBorderWidth() * 2.0;
+        let _h = this.canvas.height - _bw;
+        return _h;
     }
     calcXtoS( cx ) 
     {
@@ -82,6 +101,7 @@ export class wDApplication
     calcX( cx ) 
     {
         let cw = this.getCanvasWidth();
+        // cx = cx + this.getBorderWidth();
         let translate = 2.0 * cx / cw - 1.0;
         return translate;
     }
@@ -90,6 +110,7 @@ export class wDApplication
     calcY( cy ) 
     {
         let ch = this.getCanvasHeight();
+        // cy = cy + this.getBorderWidth();
         let translate = 1.0 - 2.0 * cy / ch;
         return translate;
     }
@@ -304,6 +325,10 @@ export class wDApplication
 
         // this.box = new wDBox( this );
         // await this.box.init();
+        this.setBorderWidth( 10.0 );
+
+        this.setDrawWidth( this.getCanvasWidth( false ) );
+        this.setDrawHeight( this.getCanvasHeight( false ) );
 
         this.image = new wDImage( this, "assets/Di-3d.png" );
         await this.image.init();
@@ -350,6 +375,7 @@ export class wDApplication
         this.commandEncoder = this.device.createCommandEncoder();
         this.passEncoder = this.commandEncoder.beginRenderPass( this.renderPassDesc ); 
 
+
         this.passEncoder.setViewport(
             0,
             0,
@@ -360,10 +386,10 @@ export class wDApplication
         );
 
         this.passEncoder.setScissorRect(
-            this.getBorderWidth(),
-            this.getBorderWidth(),
-            this.getCanvasWidth( false ),
-            this.getCanvasHeight( false )
+            this.getBorderWidth() - 1,
+            this.getBorderWidth() - 1,
+            this.getCanvasWidth( false ) + 2,
+            this.getCanvasHeight( false ) + 2,
         );     
 
         let shaderBindGroup = this.getShaderBindGroup();
@@ -398,7 +424,7 @@ export class wDApplication
                 } 
             ]
 	        } );
-            this.getTextureBindGroup(textureBindGroup);
+            this.getTextureBindGroup( textureBindGroup );
         }
 
         this.passEncoder.setPipeline( this.pipeline );
@@ -419,14 +445,17 @@ export class wDApplication
         ////////////////////////////////////////////////////////////////////////////////
         // Draw image
         ////////////////////////////////////////////////////////////////////////////////
-        let sW = this.getCanvasWidth();
-        let sH = this.getCanvasHeight();
+
+        let sBW = this.getBorderWidth();
+
+        let sW = this.getCanvasWidth( false );
+        let sH = this.getCanvasHeight( false );
 
         let iW = 100 * this.color * 4;
         let iH = 100 * this.color * 4;
         
-        let iX = ( sW - iW ) / 2.0;
-        let iY = ( sH - iH ) / 2.0;
+        let iX = sBW + ( sW - iW ) / 2.0;
+        let iY = sBW + ( sH - iH ) / 2.0;
 
         this.image.set( iX, iY, iW, iH );
         await this.image.draw( this );
@@ -447,7 +476,7 @@ export class wDApplication
         ////////////////////////////////////////////////////////////////////////////////////
         //this.circle.set( 10, 10, 6, 1 );
 
-        this.circle.set( sW / 2.0, sH / 2.0, 100 * ( 1.0 - this.color ) * 2, 1 );
+        this.circle.set( sBW + sW / 2.0, sBW + sH / 2.0, 100 * ( 1.0 - this.color ) * 2, 1 );
         await this.circle.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
         ////////////////////////////////////////////////////////////////////////////////////
 
@@ -472,7 +501,7 @@ export class wDApplication
 
         let object = window.getDrawParams.call();
 
-        this.spline.set( 10, 10, sW - 20, sH - 20 );
+        this.spline.set( sBW, sBW, sW, sH );
         await this.spline.draw( this, object, window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY );
 
         this.passEncoder.end();

@@ -307,6 +307,44 @@ export class wDSpline extends wDObject
 
     }
 
+    drawScalePoint( _vdp, _sc_bx, _sc_by, _t, dcolors )
+    {
+        if ( _vdp == true )
+        {
+            this.discretlines.append( 
+                _sc_bx, 
+                _sc_by,
+                _sc_bx + 5, 
+                _sc_by,
+                _t, 
+                dcolors[0] 
+            );
+            this.discretlines.append( 
+                _sc_bx, 
+                _sc_by,
+                _sc_bx - 5, 
+                _sc_by,
+                _t, 
+                dcolors[0] 
+            );
+            this.discretlines.append( 
+                _sc_bx, 
+                _sc_by,
+                _sc_bx, 
+                _sc_by + 5,
+                _t, 
+                dcolors[0] 
+            );
+            this.discretlines.append( 
+                _sc_bx, 
+                _sc_by,
+                _sc_bx, 
+                _sc_by - 5,
+                _t, 
+                dcolors[0] 
+            );                                        
+        }
+    }
     async functionDraw( instance, _object, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, colors ) 
     {
         ////////////////////////////////////////////////////////////////////////
@@ -401,18 +439,10 @@ export class wDSpline extends wDObject
                     continue;
                 }
 
-                //let _sc_rs_bx = instance.calcRX( instance.calcX( _centX ) + _rs_bx * kX * _i_last_bi );
-                //let _sc_rs_by = instance.calcRY( instance.calcY( _centY ) + _rs_by * kY * _height / 2.0 ); 
-        
-                //let _sc_rs_ex = instance.calcRX( instance.calcX( _centX ) + _rs_ex * kX * i );
-                //let _sc_rs_ey = instance.calcRY( instance.calcY( _centY ) + _rs_ey * kY * _height / 2.0 ); 
-
                 let _sc_rs_bx = _centX + instance.calcXtoS ( instance.calcStoX ( _i_last_bi * cX ) );
-                //let _sc_rs_bx = _centX + instance.calcXtoS ( _rs_bx * kX );
                 let _sc_rs_by = instance.calcYtoS ( _rs_by * kY ); 
 
                 let _sc_rs_ex = _centX + instance.calcXtoS ( instance.calcStoX ( i * cX ) );
-                //let _sc_rs_ex = _centX + instance.calcXtoS ( _rs_ex * kX );
                 let _sc_rs_ey = instance.calcYtoS ( _rs_ey * kY );
 
                 ///////////////////////////////////////////////////////////////////
@@ -431,52 +461,13 @@ export class wDSpline extends wDObject
                     lcolors[0] 
                 );
 
-                if ( _vdp == true )
-                {
-                    this.discretlines.append( 
-                        _sc_rs_ex, 
-                        _sc_rs_ey,
-                        _sc_rs_ex + 5, 
-                        _sc_rs_ey,
-                        _t, 
-                        dcolors[0] 
-                    );
-                    this.discretlines.append( 
-                        _sc_rs_ex, 
-                        _sc_rs_ey,
-                        _sc_rs_ex - 5, 
-                        _sc_rs_ey,
-                        _t, 
-                        dcolors[0] 
-                    );
-                    this.discretlines.append( 
-                        _sc_rs_ex, 
-                        _sc_rs_ey,
-                        _sc_rs_ex, 
-                        _sc_rs_ey + 5,
-                        _t, 
-                        dcolors[0] 
-                    );
-                    this.discretlines.append( 
-                        _sc_rs_ex, 
-                        _sc_rs_ey,
-                        _sc_rs_ex, 
-                        _sc_rs_ey - 5,
-                        _t, 
-                        dcolors[0] 
-                    );                                        
-                }
-
-                //let _sc_ls_bx = instance.calcRX( instance.calcX( _centX ) + _ls_bx * kX * _i_last_bi );
-                //let _sc_ls_by = instance.calcRY( instance.calcY( _centY ) + _ls_by * kY ); 
+                this.drawScalePoint( _vdp, _sc_rs_bx, _sc_rs_by, _t, dcolors );
+                this.drawScalePoint( _vdp, _sc_rs_ex, _sc_rs_ey, _t, dcolors );
         
-                //let _sc_ls_ex = instance.calcRX( instance.calcX( _centX ) + _ls_bx * kX * i );
-                //let _sc_ls_ey = instance.calcRY( instance.calcY( _centY ) + _ls_ey * kY ); 
-        
-                let _sc_ls_bx = instance.calcXtoS ( instance.calcStoX ( _centX - _i_last_bi * cX ) );
+                let _sc_ls_bx = _centX - instance.calcXtoS ( instance.calcStoX ( _i_last_bi * cX ) );
                 let _sc_ls_by = instance.calcYtoS ( _ls_by * kY );
 
-                let _sc_ls_ex = instance.calcXtoS ( instance.calcStoX ( _centX - i * cX ) );
+                let _sc_ls_ex = _centX - instance.calcXtoS ( instance.calcStoX ( i * cX ) );
                 let _sc_ls_ey = instance.calcYtoS ( _ls_ey * kY ); 
 
                 // if ( _ls_sc_bx == _ls_sc_ex || _ls_sc_by == _ls_sc_ey ) console.log( "possible skipping" );
@@ -490,37 +481,8 @@ export class wDSpline extends wDObject
                     _t, lcolors[0] 
                 );                             
 
-                if ( _vdp == true )
-                {
-                    this.discretlines.append( 
-                        _sc_ls_ex, 
-                        _sc_ls_ey,
-                        _sc_ls_ex + 5, 
-                        _sc_ls_ey,
-                        _t, dcolors[0] 
-                    );
-                    this.discretlines.append( 
-                        _sc_ls_ex, 
-                        _sc_ls_ey,
-                        _sc_ls_ex - 5, 
-                        _sc_ls_ey,
-                        _t, dcolors[0] 
-                    );
-                    this.discretlines.append( 
-                        _sc_ls_ex, 
-                        _sc_ls_ey,
-                        _sc_ls_ex, 
-                        _sc_ls_ey + 5,
-                        _t, dcolors[0] 
-                    );
-                    this.discretlines.append( 
-                        _sc_ls_ex, 
-                        _sc_ls_ey,
-                        _sc_ls_ex, 
-                        _sc_ls_ey - 5,
-                        _t, dcolors[0] 
-                    );
-                }
+                this.drawScalePoint( _vdp, _sc_ls_bx, _sc_ls_by, _t, dcolors );
+                this.drawScalePoint( _vdp, _sc_ls_ex, _sc_ls_ey, _t, dcolors );
 
                 _rs_bx = _rs_ex;
                 _rs_by = _rs_ey;
@@ -529,6 +491,9 @@ export class wDSpline extends wDObject
 
                 _i_last_bi = i;
             }
+
+            
+            
         }
 
     }
