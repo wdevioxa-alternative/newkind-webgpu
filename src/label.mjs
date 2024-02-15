@@ -14,7 +14,6 @@ export class wDLabel extends wDObject
         this.setFragUVBuffer( null );
         this.setTextureBindGroup( null );
         this.setShaderBindGroup( null );
-        this.resetDuty();
     }  
     destroy()
     {
@@ -25,17 +24,15 @@ export class wDLabel extends wDObject
         this.setTextureBindGroup( null );
         this.setShaderBindGroup( null );
         this.setUniformShaderLocation( null );
-        this.setDuty();
+        this.resetDuty();
     }
     async init() {
         let instance = this.getInstance();
         this.setFragUVBuffer( null );
         this.setPositionBuffer( null );
         this.setTextureImage( null );
-        this.setUniformShaderLocation( 
-            this.setUniformShaderFlag( instance.device, 10 ) 
-        );
-        this.resetDuty();
+        this.createUniformShaderLocationFlag( instance.device, 10 );
+        this.setDuty();
     }
     set( fs, x, y, _width = -1, _height = -1 )
     {
@@ -93,9 +90,8 @@ export class wDLabel extends wDObject
     }
     setPositionBuffer( positions )
     {
-        if ( positions == null )
-            if ( this.positionsBuffer != null )
-                this.positionsBuffer.destroy();
+        if ( this.positionsBuffer != null )
+            this.positionsBuffer.destroy();
         this.positionsBuffer = positions;
     }
     getPositionBuffer() 
@@ -108,9 +104,8 @@ export class wDLabel extends wDObject
     }
     setFragUVBuffer( fragUV )
     {
-        if ( fragUV == null )
-            if ( this.fragUVBuffer != null )
-                this.fragUVBuffer.destroy();
+        if ( this.fragUVBuffer != null )
+            this.fragUVBuffer.destroy();
         this.fragUVBuffer = fragUV;
     }
     setImageBitmap( bitmap ) 
@@ -165,6 +160,7 @@ export class wDLabel extends wDObject
             let fontstring = this.getFontWeight().toString() + ' ' + this.getFontSize().toString() + 'px ' + this.getFontFamily();
 
             context.font = fontstring;
+            context.imageSmoothingEnabled = false;
 
             let fh = this.getHeight();
             let fw = this.getWidth();
@@ -200,18 +196,15 @@ export class wDLabel extends wDObject
             canvas.width = fw;
             canvas.height = fh;
 
-            context.imageSmoothingEnabled=false;
-
             context.clearRect( 0, 0, canvas.width, canvas.height );
             context.font = fontstring;
+            context.imageSmoothingEnabled = false;
 
             context.fillStyle = backgroundColor;
             context.fillRect( 0, 0, fw, fh );
             
             context.fillStyle = textColor;
             context.fillText( textOut, fx, fy, fw );
-
-            context.imageSmoothingEnabled=false;
             
             let image = await createImageBitmap( canvas ); //, { colorSpaceConversion: 'default', resizeQuality: 'pixelated' } );
             this.setImageBitmap( image );

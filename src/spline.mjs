@@ -10,24 +10,16 @@ export class wDSpline extends wDObject
     constructor( instance, x, y, _width, _height, _weight = 1 ) 
     {
         super( instance, x, y, _width, _height, _weight );
-
-        this.setMinX( -Math.PI );
-        this.setMinY( -1.0 );
-        this.setMaxX( +Math.PI );
-        this.setMaxY( +1.0 );
-        this.setItX( 58 );
-        this.setItY( 20 );
-
         this.fontsize = instance.getCanvasHeight() * 16 / 1366;
     }  
 
     destroy()
     {        
-        this.border.destroy();
         this.clearLabels();
+        this.border.destroy();
         this.axis.destroy();
         this.discretlines.destroy();
-        this.setDuty();
+        this.resetDuty();
     }
 
     async init() 
@@ -37,7 +29,7 @@ export class wDSpline extends wDObject
         this.border = new wDBox( instance );
         await this.border.init();
 
-        this.axis = new wDNativeLine( instance );
+        this.axis = new wDLine( instance );
         await this.axis.init();
 
         this.discretlines = new wDLine( instance );
@@ -80,54 +72,6 @@ export class wDSpline extends wDObject
             }
         }
     }   
-
-    setItX( itX ) { 
-        this.itX = itX; 
-    }
-
-    getItX() { 
-        return this.itX; 
-    }
-
-    setItY( itY ) { 
-        this.itY = itY; 
-    }
-
-    getItY() { 
-        return this.itY; 
-    }
-
-    setMinX( x ) { 
-        this.minX = x; 
-    }
-
-    getMinX() { 
-        return this.minX; 
-    }
-
-    setMaxX( x ) { 
-        this.maxX = x; 
-    }
-
-    getMaxX() { 
-        return this.maxX; 
-    }
-
-    setMinY( y ) { 
-        this.minY = y; 
-    }
-
-    getMinY() { 
-        return this.minY; 
-    }
-
-    setMaxY( y ) { 
-        this.maxY = y; 
-    }
-
-    getMaxY() { 
-        return this.maxY; 
-    }
 
     getLabelsCount() {
         return this.labels.length;
@@ -374,16 +318,6 @@ export class wDSpline extends wDObject
         ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////
 
-/*
-        if ( this.zoomX == undefined ) return;
-        if ( this.zoomY == undefined ) return;
-        if ( this.vY == undefined ) return;
-        if ( this.sX == undefined ) return;
-        if ( this.cX == undefined ) return;
-        if ( this.cY == undefined ) return;
-        if ( this.kdX == undefined ) return;
-        if ( this.kdY == undefined ) return;
-*/
         let flag = this.isDuty();
 
         if ( flag == true )
@@ -391,8 +325,8 @@ export class wDSpline extends wDObject
             let kX = zoomX / 100.0;
             let kY = zoomY / 100.0;
 
-            //let offX = 10.0;
-            //let offY = 10.0;
+            // let offX = 10.0;
+            // let offY = 10.0;
 
             ////////////////////////////////////////////////////////////////////////
             // let cX = _width * kX / kdX;  this.cX
@@ -433,34 +367,32 @@ export class wDSpline extends wDObject
             ///////////////////////////////////////////////////////////////////
             // Step in radians on x axis
             ///////////////////////////////////////////////////////////////////
-            let _istep = ( _x_max - _x_min ) / kdX;
+            let _ix_step = ( _x_max - _x_min ) / kdX;
+            let _ix_center = ( _x_max - _x_min ) / 2.0;
 
             ///////////////////////////////////////////////////////////////////
             // Step in pixels with scale on x and y axis
             ///////////////////////////////////////////////////////////////////
             //
-            // let cX = _width * kX / kdX;
-            // let cY = _height * kY / kdY;
-            //
+            let cX = kX * _width / kdX;
+            let cY = kY * _height / kdY;
 
             let _centX = x + _width / 2.0;
             let _centY = y + _height / 2.0;
-
-            let _x_center = ( _x_max - _x_min ) / 2.0;
 
             for ( let i = 0; i < kdX / 2.0; i++ )
             {
                 /////////////////////////////////////////////////
                 // x and y: one step to right side in radians
-                let _rs_ex = (+1) * _istep * i + _x_center;
+                let _rs_ex = (+1) * _ix_step * i + _ix_center;
                 let _rs_ey = _func( _rs_ex );
 
                 /////////////////////////////////////////////////
                 // x and y: one step to left side in radians
-                let _ls_ex = (-1) * _istep * i + _x_center;
+                let _ls_ex = (-1) * _ix_step * i + _ix_center;
                 let _ls_ey = _func( _ls_ex );
 
-                if ( _rs_bx == undefined || _rs_by == undefined || _ls_bx == undefined || _ls_by == undefined || _i_last_bi == undefined ) 
+                if ( i == 0 ) 
                 {
                     _rs_bx = _rs_ex;
                     _rs_by = _rs_ey;
@@ -471,17 +403,17 @@ export class wDSpline extends wDObject
                     continue;
                 }
 
-                let _sc_rs_bx = instance.calcRX( instance.calcX( _centX ) - _rs_bx * kX );
-                let _sc_rs_by = instance.calcRX( instance.calcX( _centY ) + _ls_by * kY ); 
+                //let _sc_rs_bx = instance.calcRX( instance.calcX( _centX ) + _rs_bx * kX * _i_last_bi );
+                //let _sc_rs_by = instance.calcRY( instance.calcY( _centY ) + _rs_by * kY * _height / 2.0 ); 
         
-                let _sc_rs_ex = instance.calcRX( instance.calcX( _centX ) - _rs_ex * kX );
-                let _sc_rs_ey = instance.calcRX( instance.calcX( _centY ) + _ls_ey * kY ); 
+                //let _sc_rs_ex = instance.calcRX( instance.calcX( _centX ) + _rs_ex * kX * i );
+                //let _sc_rs_ey = instance.calcRY( instance.calcY( _centY ) + _rs_ey * kY * _height / 2.0 ); 
 
-                //let _sc_rs_bx = _centX + _i_last_bi * kX * _width / kdX;
-                //let _sc_rs_by = _centY + _rs_by * kY * _height / 2.0; 
+                let _sc_rs_bx = instance.calcRX ( instance.calcX ( _centX + _i_last_bi * cX ) );
+                let _sc_rs_by = instance.calcYtoS ( _rs_by * kY ); 
 
-                //let _sc_rs_ex = _centX + i * kX * _width / kdX;
-                //let _sc_rs_ey = _centY + _rs_ey * kY * _height / 2.0; 
+                let _sc_rs_ex = instance.calcRX ( instance.calcX ( _centX + i * cX ) );
+                let _sc_rs_ey = instance.calcYtoS ( _rs_ey * kY );
 
                 ///////////////////////////////////////////////////////////////////
                 // console.log( "i: " + i + "; " + _x + ": " + _y );
@@ -535,12 +467,18 @@ export class wDSpline extends wDObject
                     );                                        
                 }
 
-                let _sc_ls_bx = instance.calcRX( instance.calcX( _centX ) - _ls_bx * kX );
-                let _sc_ls_by = instance.calcRY( instance.calcY( _centY ) + _ls_by * kY ); 
+                //let _sc_ls_bx = instance.calcRX( instance.calcX( _centX ) + _ls_bx * kX * _i_last_bi );
+                //let _sc_ls_by = instance.calcRY( instance.calcY( _centY ) + _ls_by * kY ); 
         
-                let _sc_ls_ex = instance.calcRX( instance.calcX( _centX ) - _ls_bx * kX );
-                let _sc_ls_ey = instance.calcRX( instance.calcY( _centY ) + _ls_ey * kY ); 
+                //let _sc_ls_ex = instance.calcRX( instance.calcX( _centX ) + _ls_bx * kX * i );
+                //let _sc_ls_ey = instance.calcRY( instance.calcY( _centY ) + _ls_ey * kY ); 
         
+                let _sc_ls_bx = instance.calcRX ( instance.calcX ( _centX - _i_last_bi * cX ) );
+                let _sc_ls_by = instance.calcYtoS ( _ls_by * kY );
+
+                let _sc_ls_ex = instance.calcRX ( instance.calcX ( _centX - i * cX ) );
+                let _sc_ls_ey = instance.calcYtoS ( _ls_ey * kY ); 
+
                 // if ( _ls_sc_bx == _ls_sc_ex || _ls_sc_by == _ls_sc_ey ) console.log( "possible skipping" );
                 // if ( _ls_sc_ex < ( x + offX ) ) continue;
 

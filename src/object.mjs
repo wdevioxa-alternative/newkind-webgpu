@@ -1,12 +1,12 @@
 export class wDObject
 {
-    constructor( instance, x, y, width, height, _t = -1 ) 
+    constructor( instance, x, y, _width, _height, _t = -1 ) 
     {
     	this.setInstance( instance );
         this.setX( x );
         this.setY( y );
-        this.setWidth( width );
-        this.setHeight( height );
+        this.setWidth( _width );
+        this.setHeight( _height );
         this.setThickness( _t );
         this.setDuty( true );
     }
@@ -74,6 +74,16 @@ export class wDObject
     {
 	    this.height = _h;
     }
+    createUniformShaderLocationFlag( device, shaderFlag = 0 )
+    {
+        if ( device == null ) {
+            this.setUniformShaderLocation( null );
+        } else {
+            this.setUniformShaderLocation( 
+                this.setUniformShaderFlag( device, shaderFlag ) 
+            );
+        }
+    }    
     setUniformShaderLocation( _uniform )
     {
 	    if ( this.uniformShaderLocation != null ) 

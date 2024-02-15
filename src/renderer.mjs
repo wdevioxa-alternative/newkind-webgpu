@@ -34,6 +34,14 @@ export class wDApplication
     {
         return this.canvas.height;
     }
+    calcXtoS( cx ) 
+    {
+        return this.calcRX( cx );
+    }
+    calcYtoS( cy ) 
+    {
+        return this.calcRY( cy );
+    }
     ///////////////////////////////////////////////////////////////////////////////////////////
     // translation from webgpu to screen coordinates (0 : 1366)
     calcRX( cx ) 
@@ -49,6 +57,14 @@ export class wDApplication
         let ch = Math.fround( this.getCanvasHeight() / 2.0 );
         let point = 1.0 / ch;
         return this.getCanvasHeight() - Math.round( ( cy + 1.0 ) / point );
+    }
+    calcStoX( cx ) 
+    {
+        return this.calcX( cx );
+    }
+    calcStoY( cy ) 
+    {
+        return this.calcY( cy );
     }
     ///////////////////////////////////////////////////////////////////////////////////////////
     // translation screen to webgpu coordinates -1 : +1
@@ -66,17 +82,27 @@ export class wDApplication
         let translate = 1.0 - 2.0 * cy / ch;
         return translate;
     }
-    setUniformShaderLocation( uniform )
+    createAppUniformShaderLocationFlag( device, shaderFlag = 0 )
     {
-        if ( this.uniformlShaderLocation != null ) 
-            this.uniformlShaderLocation.destroy();
-                this.uniformlShaderLocation = uniform;
-    }
-    getUniformShaderLocation()
+        if ( device == null ) {
+            this.setAppUniformShaderLocation( null );
+        } else {
+            this.setAppUniformShaderLocation( 
+                this.setAppUniformShaderFlag( device, shaderFlag ) 
+            );
+        }
+    } 
+    setAppUniformShaderLocation( _uniform )
     {
-    	return this.uniformlShaderLocation;
+        if ( this.uniformShaderLocation != null ) 
+            this.uniformShaderLocation.destroy();
+                this.uniformShaderLocation = _uniform;
     }
-    setUniformShaderFlag( device, shaderValue )
+    getAppUniformShaderLocation()
+    {
+    	return this.uniformShaderLocation;
+    }
+    setAppUniformShaderFlag( device, shaderValue )
     {
         let source = new Uint32Array(1);
         source[0] = shaderValue;
@@ -143,7 +169,7 @@ export class wDApplication
             this.adapter = await navigator.gpu.requestAdapter();
             this.device = await this.adapter.requestDevice();
 
-            if (!this.context)
+            if ( !this.context )
                 this.context = this.canvas.getContext('webgpu');
 
                 this.presentationFormat = navigator.gpu.getPreferredCanvasFormat();
@@ -220,13 +246,11 @@ export class wDApplication
     //              },
                 } } );
 
-                this.setUniformShaderLocation (
-                    this.setUniformShaderFlag( this.device, 0 )
-                );
+                this.createAppUniformShaderLocationFlag( this.device, 0 );
 
                 this.sampler = this.device.createSampler({
-                    magFilter: 'linear',  // linear
-                    minFilter: 'linear'   // linear
+                    magFilter: 'nearest',  // nearest | linear
+                    minFilter: 'nearest'   // nearest | linear
                 });
 
                 this.nullTexture = this.device.createTexture({
@@ -338,7 +362,7 @@ export class wDApplication
                 entries: [ {
                     binding: 0,
                     resource: {
-                        buffer: this.uniformlShaderLocation,
+                        buffer: this.uniformShaderLocation,
                     }
                 } ]
             } );
@@ -435,8 +459,8 @@ export class wDApplication
         //await this.label.render( this );
         ////////////////////////////////////////////////////////////////////////////////////
 
-        //console.log( this.calcX( 1366 ) ); 
-        //console.log( this.calcRX( 1.0 ) );
+        // console.log( this.calcYtoS( -1.0 ) ); 
+        // console.log( this.calcRX( 1.0 ) );
 
         let object = window.getDrawParams.call();
 
@@ -446,8 +470,10 @@ export class wDApplication
         this.passEncoder.end();
         this.device.queue.submit( [ this.commandEncoder.finish() ] );
 
+        ////////////////////////////////////////////////////////////////////////////////////
         // shaderBindGroup
         // textureBindGroup
+        ////////////////////////////////////////////////////////////////////////////////////
 
         requestAnimationFrame( this.render );
     }
