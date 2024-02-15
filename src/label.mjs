@@ -142,14 +142,18 @@ export class wDLabel extends wDObject
     async draw( instance, textColor, backgroundColor, textOut, autoMeasure, calculateOnly = false ) 
     {
         let flag = this.isDuty();
-        if ( flag == true ) {
+        
+        if ( flag == true ) 
+        {
             this.setImageBitmap( null );
             this.setTextureImage( null );
             this.setPositionBuffer( null );
             this.setFragUVBuffer( null );
-            this.setTextureBindGroup( null );
-            this.setShaderBindGroup( null );
+
+            // this.setShaderBindGroup( null );
+            // this.setTextureBindGroup( null );
         }
+
         let textureImage = this.getTextureImage();
         if ( textureImage == null ) 
         {
@@ -239,6 +243,14 @@ export class wDLabel extends wDObject
 
     async render( instance )
     {
+        let flag = this.isDuty();
+        
+        if ( flag == true ) 
+        {
+            this.setShaderBindGroup( null );
+            this.setTextureBindGroup( null );
+        }
+
         let textureImage = this.getTextureImage();
         if ( textureImage != null ) 
         {
@@ -265,6 +277,7 @@ export class wDLabel extends wDObject
                         }
                     } ]
                 } );
+                this.setShaderBindGroup( shaderBindGroup );
             }
 
             let textureBindGroup = this.getTextureBindGroup();
@@ -282,6 +295,7 @@ export class wDLabel extends wDObject
                         } ),
                     } ]
                 } );
+                this.setTextureBindGroup( textureBindGroup );
             }
 
             instance.passEncoder.setBindGroup( 0, shaderBindGroup );
@@ -292,7 +306,6 @@ export class wDLabel extends wDObject
 
             instance.passEncoder.draw( 6, 1, 0, 0 );
         }
-        
         this.resetDuty();
     }
     getColors( instance )

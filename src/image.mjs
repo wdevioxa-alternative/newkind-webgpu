@@ -20,6 +20,8 @@ export class wDImage extends wDObject
         this.setFragUVBuffer( null );
         this.setVertexBuffer( null );
         this.setTextureImage( null );
+        this.setTextureBindGroup( null );
+        this.setShaderBindGroup( null );
         this.setTextureImage( 
             await this.loadTextureImage( instance.device, this.getURL() )
         );
@@ -55,6 +57,22 @@ export class wDImage extends wDObject
     setURL( url ) {
         this.locationURL = url;
     }
+    setTextureBindGroup( group )
+    {
+        this.textureBindGroup = group;
+    }
+    getTextureBindGroup() 
+    {
+        return this.textureBindGroup;
+    }    
+    setShaderBindGroup( group )
+    {
+        this.shaderBindGroup = group;
+    }
+    getShaderBindGroup() 
+    {
+        return this.shaderBindGroup;
+    }  
     webGPUTextureFromImageBitmapOrCanvas(gpuDevice, source, generateMipmaps = true) 
     {
         const textureDescriptor = {
@@ -292,11 +310,11 @@ export class wDImage extends wDObject
     async draw( instance, color = [ 1.0, 1.0, 1.0, 1.0 ] ) 
     {
         let flag = this.isDuty();
+
         if ( flag == true ) {
             this.setColorsBuffer( null );
             this.setFragUVBuffer( null );
             this.setVertexBuffer( null );
-            this.setDuty( false );
         }
 
         let textureImage = this.getTextureImage();
@@ -323,29 +341,37 @@ export class wDImage extends wDObject
             this.setColorsBuffer( colorsBuffer );
         }
 
-        let shaderBindGroup = instance.device.createBindGroup( {
-		    layout: instance.pipeline.getBindGroupLayout( 0 ),
-		    entries: [ {
-			    binding: 0,
-			    resource: {
-				    buffer: this.uniformShaderLocation
-			    }
-		    } ]
-	    } );
+        let shaderBindGroup = this.getShaderBindGroup();
+        if ( shaderBindGroup == null ) {
+                shaderBindGroup = instance.device.createBindGroup( {
+                layout: instance.pipeline.getBindGroupLayout( 0 ),
+                entries: [ {
+                    binding: 0,
+                    resource: {
+                        buffer: this.uniformShaderLocation
+                    }
+                } ]
+            } );
+            this.setShaderBindGroup( shaderBindGroup ); 
+        }
 
-        let textureBindGroup = instance.device.createBindGroup( {
-		    layout: instance.pipeline.getBindGroupLayout(1),
-		    entries: [ {
-		        binding: 0,
-		        resource: instance.sampler,
-		    }, {
-		        binding: 1,
-		        resource: this.textureImage.createView({
-                    baseMipLevel: 0,
-                    mipLevelCount: 1
-                }),
-		    } ]
-	    } );
+        let textureBindGroup = this.getTextureBindGroup();
+        if ( textureBindGroup == null ) {
+                textureBindGroup = instance.device.createBindGroup( {
+                layout: instance.pipeline.getBindGroupLayout(1),
+                entries: [ {
+                    binding: 0,
+                    resource: instance.sampler,
+                }, {
+                    binding: 1,
+                    resource: this.textureImage.createView({
+                        baseMipLevel: 0,
+                        mipLevelCount: 1
+                    }),
+                } ]
+            } );
+            this.setTextureBindGroup( textureBindGroup );
+        }
 
         instance.passEncoder.setBindGroup( 0, shaderBindGroup );
         instance.passEncoder.setBindGroup( 1, textureBindGroup );
@@ -355,5 +381,7 @@ export class wDImage extends wDObject
         instance.passEncoder.setVertexBuffer( 2, colorsBuffer );
 
         instance.passEncoder.draw( 6, 1, 0, 0 );
+        
+        this.resetDuty();
     }
 };

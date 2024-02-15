@@ -179,9 +179,12 @@ export class wDCircle extends wDObject
                     this.vertex.append( x0 - 4, y0 + 3, _t, color );
                     this.vertex.append( x0 - 3, y0 + 4, _t, color );
                     this.vertex.append( x0 - 2, y0 + 4, _t, color );
-            } else {
+            } 
+            else 
+            {
         		let ang = 0;
-                while ( ang < ( Math.PI / 2.0 ) ) {
+                while ( ang < ( Math.PI / 2.0 ) ) 
+                {
                     let x1 = Math.fround( r * Math.sin( ang ) );
                     let y1 = Math.fround( r * Math.cos( ang ) );
                     this.vertex.append( x0 + x1, y0 + y1, _t, color );

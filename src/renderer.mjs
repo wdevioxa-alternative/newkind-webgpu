@@ -375,7 +375,6 @@ export class wDApplication
         this.commandEncoder = this.device.createCommandEncoder();
         this.passEncoder = this.commandEncoder.beginRenderPass( this.renderPassDesc ); 
 
-
         this.passEncoder.setViewport(
             0,
             0,
@@ -391,7 +390,7 @@ export class wDApplication
             this.getCanvasWidth( false ) + 2,
             this.getCanvasHeight( false ) + 2,
         );     
-
+/*
         let shaderBindGroup = this.getShaderBindGroup();
 	    if ( shaderBindGroup == null ) {
             shaderBindGroup = this.device.createBindGroup( {
@@ -426,11 +425,11 @@ export class wDApplication
 	        } );
             this.getTextureBindGroup( textureBindGroup );
         }
-
+*/
         this.passEncoder.setPipeline( this.pipeline );
 
-        this.passEncoder.setBindGroup( 0, shaderBindGroup );
-        this.passEncoder.setBindGroup( 1, textureBindGroup );
+        //this.passEncoder.setBindGroup( 0, shaderBindGroup );
+        //this.passEncoder.setBindGroup( 1, textureBindGroup );
 
         this.color += this.itcolor;
 
