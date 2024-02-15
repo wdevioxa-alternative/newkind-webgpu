@@ -375,10 +375,7 @@ export class wDSpline extends wDObject
             ///////////////////////////////////////////////////////////////////
             //
             let cX = kX * _width / kdX;
-            let cY = kY * _height / kdY;
-
             let _centX = x + _width / 2.0;
-            let _centY = y + _height / 2.0;
 
             for ( let i = 0; i < kdX / 2.0; i++ )
             {
@@ -409,10 +406,12 @@ export class wDSpline extends wDObject
                 //let _sc_rs_ex = instance.calcRX( instance.calcX( _centX ) + _rs_ex * kX * i );
                 //let _sc_rs_ey = instance.calcRY( instance.calcY( _centY ) + _rs_ey * kY * _height / 2.0 ); 
 
-                let _sc_rs_bx = instance.calcRX ( instance.calcX ( _centX + _i_last_bi * cX ) );
+                let _sc_rs_bx = _centX + instance.calcXtoS ( instance.calcStoX ( _i_last_bi * cX ) );
+                //let _sc_rs_bx = _centX + instance.calcXtoS ( _rs_bx * kX );
                 let _sc_rs_by = instance.calcYtoS ( _rs_by * kY ); 
 
-                let _sc_rs_ex = instance.calcRX ( instance.calcX ( _centX + i * cX ) );
+                let _sc_rs_ex = _centX + instance.calcXtoS ( instance.calcStoX ( i * cX ) );
+                //let _sc_rs_ex = _centX + instance.calcXtoS ( _rs_ex * kX );
                 let _sc_rs_ey = instance.calcYtoS ( _rs_ey * kY );
 
                 ///////////////////////////////////////////////////////////////////
@@ -473,10 +472,10 @@ export class wDSpline extends wDObject
                 //let _sc_ls_ex = instance.calcRX( instance.calcX( _centX ) + _ls_bx * kX * i );
                 //let _sc_ls_ey = instance.calcRY( instance.calcY( _centY ) + _ls_ey * kY ); 
         
-                let _sc_ls_bx = instance.calcRX ( instance.calcX ( _centX - _i_last_bi * cX ) );
+                let _sc_ls_bx = instance.calcXtoS ( instance.calcStoX ( _centX - _i_last_bi * cX ) );
                 let _sc_ls_by = instance.calcYtoS ( _ls_by * kY );
 
-                let _sc_ls_ex = instance.calcRX ( instance.calcX ( _centX - i * cX ) );
+                let _sc_ls_ex = instance.calcXtoS ( instance.calcStoX ( _centX - i * cX ) );
                 let _sc_ls_ey = instance.calcYtoS ( _ls_ey * kY ); 
 
                 // if ( _ls_sc_bx == _ls_sc_ex || _ls_sc_by == _ls_sc_ey ) console.log( "possible skipping" );

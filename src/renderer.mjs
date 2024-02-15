@@ -17,6 +17,15 @@ export class wDApplication
     {
         this.setShaderBindGroup( null );
         this.setTextureBindGroup( null );
+        this.setBorderWidth( 9 );
+    }
+    getBorderWidth()
+    {
+        return this.border;
+    }
+    setBorderWidth( _w )
+    {
+        this.border = _w;
     }
     setCanvas( canvas ) 
     {
@@ -26,13 +35,15 @@ export class wDApplication
     {
         return this.canvas;
     }
-    getCanvasWidth() 
+    getCanvasWidth( _wb = true ) 
     {
-        return this.canvas.width;
+        if ( _wb == true ) return this.canvas.width;
+        return this.canvas.width - this.getBorderWidth() * 2.0;
     }
-    getCanvasHeight() 
+    getCanvasHeight( _wb = true ) 
     {
-        return this.canvas.height;
+        if ( _wb == true ) return this.canvas.height;
+        return this.canvas.height - this.getBorderWidth() * 2.0;
     }
     calcXtoS( cx ) 
     {
@@ -349,10 +360,10 @@ export class wDApplication
         );
 
         this.passEncoder.setScissorRect(
-            9,
-            9,
-            this.getCanvasWidth() - 18,
-            this.getCanvasHeight() - 18
+            this.getBorderWidth(),
+            this.getBorderWidth(),
+            this.getCanvasWidth( false ),
+            this.getCanvasHeight( false )
         );     
 
         let shaderBindGroup = this.getShaderBindGroup();
@@ -420,8 +431,8 @@ export class wDApplication
         this.image.set( iX, iY, iW, iH );
         await this.image.draw( this );
 
-        let bW = sW - 40;
-        let bH = sH - 40;
+        let bW = sW;
+        let bH = sH;
 
         // this.box.set( 20, 20, bW, bH, 1 );
         // await this.box.draw( this, [                         
@@ -458,9 +469,6 @@ export class wDApplication
         //await this.label.draw( this, textColor, backgroundColor, "100.001N", true, true );
         //await this.label.render( this );
         ////////////////////////////////////////////////////////////////////////////////////
-
-        // console.log( this.calcYtoS( -1.0 ) ); 
-        // console.log( this.calcRX( 1.0 ) );
 
         let object = window.getDrawParams.call();
 
