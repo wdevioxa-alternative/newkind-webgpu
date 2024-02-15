@@ -102,14 +102,14 @@
 				
 				let startplayback = function( file_name ) 
 				{
-						// var fileinput = document.getElementById('fileinput');
+					// var fileinput = document.getElementById('fileinput');
 
-						// if (fileinput.files.length == 0) {
-						//	filename.innerHTML = "";
-						//	return;
-						// }
+					// if (fileinput.files.length == 0) {
+					//	filename.innerHTML = "";
+					//	return;
+					// }
 
-						// var file = fileinput.files[0];
+					// var file = fileinput.files[0];
 
 					Module.ccall(
 						'AL_init',
@@ -220,10 +220,10 @@
 						$("#zoom-x-value").text( ui.value );
 						window.zoomX = ui.value;
 					},					
-					slide: function( event, ui ) {
-						$("#zoom-x-value").text( ui.value );
-						window.zoomX = ui.value;
-					},
+//					slide: function( event, ui ) {
+//						$("#zoom-x-value").text( ui.value );
+//						window.zoomX = ui.value;
+//					},
 					range: false,
 					min: 100,
 					max: 400,
@@ -238,10 +238,10 @@
 						$("#minimum-x-value").text( ui.value );
 						window.kdX = ui.value;
 					},
-					slide: function( event, ui ) {
-						$("#minimum-x-value").text( ui.value );
-						window.kdX = ui.value;
-					},
+//					slide: function( event, ui ) {
+//						$("#minimum-x-value").text( ui.value );
+//						window.kdX = ui.value;
+//					},
 					range: false,
 					min: 6,
 					max: 999,
@@ -256,10 +256,10 @@
 						$("#zoom-y-value").text( ui.value );
 						window.zoomY = ui.value;
 					},
-					slide: function( event, ui ) {
-						$("#zoom-y-value").text( ui.value );
-						window.zoomY = ui.value;
-					},
+//					slide: function( event, ui ) {
+//						$("#zoom-y-value").text( ui.value );
+//						window.zoomY = ui.value;
+//					},
 					range: false,
 					min: 80,
 					max: 400,
@@ -274,10 +274,10 @@
 						$("#minimum-y-value").text( ui.value );
 						window.kdY = ui.value;
 					},
-					slide: function( event, ui ) {
-						$("#minimum-y-value").text( ui.value );
-						window.kdY = ui.value;
-					},
+//					slide: function( event, ui ) {
+//						$("#minimum-y-value").text( ui.value );
+//						window.kdY = ui.value;
+//					},
 					min: 3,
 					max: 559,
 					step: 2,
@@ -285,7 +285,7 @@
 				$( "#controlgroup" ).controlgroup();
 				window.run();
 
-				play( "D:\!!!\music\Linkin Park\A Thousand Suns\01 The Requiem.mp3" );
+				// play( "D:\!!!\music\Linkin Park\A Thousand Suns\01 The Requiem.mp3" );
 			});
 		</script>
 	</head>

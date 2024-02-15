@@ -390,7 +390,7 @@ export class wDApplication
             this.getCanvasWidth( false ) + 2,
             this.getCanvasHeight( false ) + 2,
         );     
-/*
+
         let shaderBindGroup = this.getShaderBindGroup();
 	    if ( shaderBindGroup == null ) {
             shaderBindGroup = this.device.createBindGroup( {
@@ -402,7 +402,7 @@ export class wDApplication
                     }
                 } ]
             } );
-            this.setShaderBindGroup(shaderBindGroup);
+            this.setShaderBindGroup( shaderBindGroup );
         }
 
         let textureBindGroup = this.getTextureBindGroup();
@@ -425,11 +425,11 @@ export class wDApplication
 	        } );
             this.getTextureBindGroup( textureBindGroup );
         }
-*/
+
         this.passEncoder.setPipeline( this.pipeline );
 
-        //this.passEncoder.setBindGroup( 0, shaderBindGroup );
-        //this.passEncoder.setBindGroup( 1, textureBindGroup );
+        this.passEncoder.setBindGroup( 0, shaderBindGroup );
+        this.passEncoder.setBindGroup( 1, textureBindGroup );
 
         this.color += this.itcolor;
 
