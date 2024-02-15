@@ -100,7 +100,7 @@
 			jQuery(document).ready(function () 
 			{			
 				
-				let play = function( f_name ) 
+				let startplayback = function( file_name ) 
 				{
 						// var fileinput = document.getElementById('fileinput');
 
@@ -111,36 +111,36 @@
 
 						// var file = fileinput.files[0];
 
-						Module.ccall(
-							'AL_init',
-							null,
-							null,
-							null
-						);
+					Module.ccall(
+						'AL_init',
+						null,
+						null,
+						null
+					);
 
-						let retval = Module.ccall(
-							'AL_play',
-							'number',
-							['string'],
-							[ f_name ]
-						);
+					let retval = Module.ccall(
+						'AL_play',
+						'number',
+						['string'],
+						[ file_name ]
+					);
 				};
 
-				let stop = function() 
+				let stopplayback = function() 
 				{
-						let retval = Module.ccall(
-							'AL_stop',
-							'number',
-							null,
-							null
-						);
+					let retval = Module.ccall(
+						'AL_stop',
+						'number',
+						null,
+						null
+					);
 
-						Module.ccall(
-							'AL_exit',
-							null,
-							null,
-							null
-						);
+					Module.ccall(
+						'AL_exit',
+						null,
+						null,
+						null
+					);
 				};
 
 				let change_samplerate = function() {
