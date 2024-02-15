@@ -14,14 +14,17 @@ window["run"] = function() {
 		const _height = window.innerHeight * devicePixelRatio;
 
 		canvas.width = 1366;
-		
+
+		/////////////////////////////////////////////////////////////////////////////////////////
 		// canvas.width = Math.max( canvas.clientWidth * devicePixelRatio, _width );
 		// canvas.height = Math.max( canvas.clientHeight * devicePixelRatio, height );
-
+		/////////////////////////////////////////////////////////////////////////////////////////
+		
 		///////////////////////////////////////////////////
 		// 4:3  &&  16:9 
 	    canvas.height = canvas.width * 9 / 16;  
 
+		console.log("set width: " + canvas.width + "; set height: " + canvas.height);
 		return { ready: renderer.start() };
 	} 
 	catch( e ) 

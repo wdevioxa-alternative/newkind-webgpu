@@ -19,18 +19,18 @@ export default {
             font: 'fonts/segoeuil.ttf'
         }),
         new RemoveWebpackPlugin({
-            before: {
-                log: false,
-	        include: [ 'dist' ]
-            }
+          before: {
+            log: false,
+            include: [ 'dist' ]
+          }
         }),
         new CopyWebpackPlugin({ 
-	    patterns: [
-	        { from: path.resolve(__dirname, 'src', 'font'), to: path.resolve(__dirname, 'dist', 'font') },
-	        { from: path.resolve(__dirname, 'src', 'js'), to: path.resolve(__dirname, 'dist', 'js') },
-	        { from: path.resolve(__dirname, 'src', 'assets'), to: path.resolve(__dirname, 'dist', 'assets') },
-	        { from: path.resolve(__dirname, 'src', 'config'), to: path.resolve(__dirname, 'dist', 'config') }
-            ]
+	        patterns: [
+            { from: path.resolve(__dirname, 'src', 'font'), to: path.resolve(__dirname, 'dist', 'font') },
+            { from: path.resolve(__dirname, 'src', 'js'), to: path.resolve(__dirname, 'dist', 'js') },
+            { from: path.resolve(__dirname, 'src', 'assets'), to: path.resolve(__dirname, 'dist', 'assets') },
+            { from: path.resolve(__dirname, 'src', 'config'), to: path.resolve(__dirname, 'dist', 'config') }
+          ]
         }),
 
 /*

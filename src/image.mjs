@@ -191,8 +191,8 @@ export class wDImage extends wDObject
         gpuDevice.queue.submit([commandEncoder.finish()]);
     }
 
-    async loadTextureImage( device, url ) {
-
+    async loadTextureImage( device, url ) 
+    {
         let response = await fetch(
 //            new URL( "webgpu/dist/" + url, window.location.href ).toString()
             new URL( url, window.location.href ).toString()
