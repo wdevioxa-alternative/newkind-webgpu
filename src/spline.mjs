@@ -191,7 +191,16 @@ export class wDSpline extends wDObject
 
                 if ( ( x + _width / 2.0 - i * cX ) <= x ) 
                     continue;
-                    
+                
+                let color = { from: [0.2,0.2,0.2,0.2], to: [0.2,0.2,0.2,0.2] };
+
+                this.axis.append( 
+                    x + _width / 2.0 - i * cX, 
+                    y,
+                    x + _width / 2.0 - i * cX, 
+                    y + _height,
+                    _t, color ); 
+    
                 this.axis.append( 
                     x + _width / 2.0 - i * cX, 
                     y + _height / 2.0 - _t - 3,
@@ -214,6 +223,13 @@ export class wDSpline extends wDObject
                 Llabel.setX( _x );
     
                 this.appendToLabels( Llabel );  
+
+                this.axis.append( 
+                    x + _width / 2.0 + i * cX, 
+                    y,
+                    x + _width / 2.0 + i * cX, 
+                    y + _height,
+                    _t, color ); 
 
                 this.axis.append( 
                     x + _width / 2.0 + i * cX, 
@@ -250,6 +266,15 @@ export class wDSpline extends wDObject
                 if ( ( y + _height / 2.0 - i * cY ) <= y ) 
                     continue;
 
+                let color = { from: [0.2,0.2,0.2,0.2], to: [0.2,0.2,0.2,0.2] };
+
+                this.axis.append( 
+                    x, 
+                    y + _height / 2.0 + i * cY,
+                    x + _width, 
+                    y + _height / 2.0 + i * cY,
+                    _t, color ); 
+
                 this.axis.append( 
                     x + _width / 2.0 - _t -  3, 
                     y + _height / 2.0 + i * cY,
@@ -272,6 +297,13 @@ export class wDSpline extends wDObject
                 Rlabel.setY( _y - _h );
 
                 this.appendToLabels( Rlabel );
+
+                this.axis.append( 
+                    x, 
+                    y + _height / 2.0 - i * cY,
+                    x + _width, 
+                    y + _height / 2.0 - i * cY,
+                    _t, color ); 
 
                 this.axis.append( 
                     x + _width / 2.0 - _t - 3, 

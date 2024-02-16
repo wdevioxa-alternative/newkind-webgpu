@@ -341,9 +341,6 @@ export class wDApplication
 
         this.pointsline = new wDLine( this );
         await this.pointsline.init();
-        
-        this.nativepointsline = new wDNativeLine( this );
-        await this.nativepointsline.init();
 
         this.circle = new wDCircle( this );
         await this.circle.init();
@@ -459,8 +456,10 @@ export class wDApplication
         this.image.set( iX, iY, iW, iH );
         await this.image.draw( this );
 
-        let bW = sW;
-        let bH = sH;
+        ////////////////////////////////////////////////////////////////////////////////////
+        // let bW = sW;
+        // let bH = sH;
+        ////////////////////////////////////////////////////////////////////////////////////
 
         // this.box.set( 20, 20, bW, bH, 1 );
         // await this.box.draw( this, [                         
@@ -479,9 +478,16 @@ export class wDApplication
         await this.circle.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
         ////////////////////////////////////////////////////////////////////////////////////
 
-        //this.pointsline.clear();
-        //this.pointsline.append( 100, 100, 101, 100, 1, { from: [ 1.0, 1.0, 0.0, 1.0 ], to:[ 1.0, 0.0, 0.0, 1.0 ] } );
-        //await this.pointsline.draw( this );
+/*
+        let sY = sH / window.kdY;
+
+        this.pointsline.clear();
+        for ( let i = 0; i < sH; i = i + sY )
+        {
+            this.pointsline.append( sBW, sBW + i, sBW + sW, sBW + i, 1, { from: [ 0.5, 0.5, 0.5, 0.5 ], to:[ 0.5, 0.5, 0.5, 0.5 ] } );
+        }
+        await this.pointsline.draw( this );
+*/
 
         //this.nativepointsline.clear();
         //this.nativepointsline.append( 200, 20, 220, 100, 1, { from: [ 1.0,1.0,0.0,1.0 ], to:[ 1.0,0.0,0.0,1.0 ] } );
