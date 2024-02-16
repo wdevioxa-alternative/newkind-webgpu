@@ -281,8 +281,8 @@ export class wDApplication
                 this.createAppUniformShaderLocationFlag( this.device, 0 );
 
                 this.sampler = this.device.createSampler({
-                    magFilter: 'nearest',  // nearest | linear
-                    minFilter: 'nearest'   // nearest | linear
+                    magFilter: 'linear',  // nearest | linear
+                    minFilter: 'linear'   // nearest | linear
                 });
 
                 this.nullTexture = this.device.createTexture({

@@ -96,18 +96,7 @@
 			})(jQuery);
 
 			window["isNumber"] = function(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
-			
-			Module.onRuntimeInitialized = () => { 
-					console.log("onRuntimeInitialized");
-					//startplayback( "file:////D:\!!!\music\Linkin Park\A Thousand Suns\01 The Requiem.mp3" );
-					//
-			}
-
-			jQuery(document).ready(function () 
-			{			
-				
-				let startplayback = function( file_name ) 
-				{
+			window["startplayback"] = function( file_name ) {
 					// var fileinput = document.getElementById('fileinput');
 
 					// if (fileinput.files.length == 0) {
@@ -130,10 +119,8 @@
 						['string'],
 						[ file_name ]
 					);
-				};
-
-				let stopplayback = function() 
-				{
+			};
+			window["stopplayback"] = function() {
 					let retval = Module.ccall(
 						'AL_stop',
 						'number',
@@ -147,8 +134,11 @@
 						null,
 						null
 					);
-				};
+			};
 
+
+			jQuery(document).ready(function () 
+			{			
 				let change_samplerate = function() {
 					let value = $( "#sample-rate" ).spinner( "value" );
 					value = window.isNumber( value ) ? value : 44100;
@@ -286,13 +276,11 @@
 				});
 				$( "#controlgroup" ).controlgroup();
 
-				//window.run();
+				Module.onRuntimeInitialized = () => { 
+					window.startplayback( "file:///D:/noise-2.mp3" );
+					window.startapp();
+				}
 
-				//Module.onRuntimeInitialized = () => { 
-				//	console.log("onRuntimeInitialized");
-					//startplayback( "file:////D:\!!!\music\Linkin Park\A Thousand Suns\01 The Requiem.mp3" );
-					//
-				//}
 			});
 		</script>
 	</head>

@@ -1,7 +1,7 @@
 
 import { wDApplication } from './renderer.mjs';
 
-window["run"] = function() {
+window["startapp"] = function() {
 	try {
 		const renderer = new wDApplication();
 
