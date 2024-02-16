@@ -3,8 +3,15 @@ import { wDApplication } from './renderer.mjs';
 import { wDSound } from './sound.mjs';
 
 window["loadfile"] = function( nameoffile ) {
-	const binary = new wDSound();
-	return binary.loadSoundData( nameoffile );
+	try {
+		const binary = new wDSound();
+		return binary.loadSoundData( nameoffile );
+	}
+	catch( e ) 
+	{
+		console.log( "exception: " + e );
+		throw( e );
+	}	
 };
 
 window["startapp"] = function() {
@@ -42,7 +49,7 @@ window["startapp"] = function() {
 	catch( e ) 
 	{
 		console.log( "exception: " + e );
-		throw(e);
+		throw( e );
 	}
 };
 

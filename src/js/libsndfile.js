@@ -1,4 +1,4 @@
-window["wasminit"] = function( func )
+window["wasminit"] = function( url, func )
 {
 
 // The Module object: Our interface to the outside world. We import
@@ -1529,7 +1529,7 @@ function createExportWrapper(name, fixedasm) {
 }
 
 var wasmBinaryFile;
-  wasmBinaryFile = 'libsndfile.wasm';
+  wasmBinaryFile = url + 'libsndfile.wasm';
   if (!isDataURI(wasmBinaryFile)) {
     wasmBinaryFile = locateFile(wasmBinaryFile);
   }

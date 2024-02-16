@@ -28,19 +28,9 @@ export default {
             { from: path.resolve(__dirname, 'src', 'js'), to: path.resolve(__dirname, 'dist', 'js') },
             { from: path.resolve(__dirname, 'src', 'assets'), to: path.resolve(__dirname, 'dist', 'assets') },
             { from: path.resolve(__dirname, 'src', 'config'), to: path.resolve(__dirname, 'dist', 'config') },
-            { from: path.resolve(__dirname, 'src', 'sounds'), to: path.resolve(__dirname, 'dist', 'sounds') },
-            { from: "src/js/libsndfile.wasm", to: "[path]libsndfile.wasm" },
+            { from: path.resolve(__dirname, 'src', 'sounds'), to: path.resolve(__dirname, 'dist', 'sounds') }
           ]
         }),
-
-/*
-    new CopyWebpackPlugin({
-      patterns: [
-        { from: "src/fonts/segoeuil.ttf", to: "[path]fonts/segoeuil.ttf" },
-        { from: "src/config/controller.bundle.js", to: "[path]config/controller.bundle.js" },
-      ],
-    }),
-*/
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),

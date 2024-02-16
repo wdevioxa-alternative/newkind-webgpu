@@ -235,23 +235,22 @@
 				$( "#controlgroup" ).controlgroup();
 
 				$( "#playback" ).click( function() {
-					let url = "04891.mp3";
-					window.loadfile( "sounds/" + url ).then( function( source ) 
+					let nameoffile = "04891.mp3";
+					window.loadfile( "sounds/" + nameoffile ).then( function( source ) 
 					{
 						let memdata = new Uint8Array( source );
 						let memptr = window.malloc( memdata.length * memdata.BYTES_PER_ELEMENT );
 						window.assign( memdata, memptr );
-						let retval = window.savefile( url, memdata, memptr );
+						let retval = window.savefile( nameoffile, memdata, memptr );
 						if ( retval > 0 ) {
-							let channels = window.channels( url );
-							window.startplayback( url );
+							let channels = window.channels( nameoffile );
+							window.startplayback( nameoffile );
 						}
 						if ( memptr > 0 ) window.free( memptr );									
 					});
-				
 				});
-
-				window.wasminit( function(){
+				
+				window.wasminit( "js/", function() {
 					window.startapp();
 				});
 
