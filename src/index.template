@@ -272,9 +272,8 @@
 	<body>	
 		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
 		<div id="controlgroup">
-			<label for="sample-rate">Имя файла - по умолчанию.</label>
+			<label for="playback">Имя файла - по умолчанию.</label>
 			<div><input id="playback" type="button" style="width:150px;" value="Playback" /></div>
-			<br />
 			<label for="sample-rate">Частота дискретизации:</label>
 			<div><input style="width:150px;" id="sample-rate"/></div>
 			<br />
