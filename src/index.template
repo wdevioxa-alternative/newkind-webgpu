@@ -234,7 +234,7 @@
 
 				$( "#controlgroup" ).controlgroup();
 
-				$( "#playback" ).click( function() {
+				$( "#startplayback" ).click( function() {
 					let nameoffile = "04891.mp3";
 					window.loadfile( "sounds/" + nameoffile ).then( function( source ) 
 					{
@@ -249,6 +249,10 @@
 						}
 						if ( memptr > 0 ) window.free( memptr );									
 					});
+				});
+
+				$( "#stopplayback" ).click( function() {
+					window.stopplayback();
 				});
 				
 				window.wasminit( "js/", function() {
@@ -266,7 +270,8 @@
 			<span><input style="width:150px;" id="sample-rate"/></span>
 			<label for="volume-rate">Громкость:</label>
 			<span><input style="width:60px;" id="volume-rate"/></span>
-			<span><input id="playback" type="button" style="width:150px;" value="Playback" /></span>
+			<span><input id="startplayback" type="button" style="width:150px;" value="Playback" /></span>
+			<span><input id="stopplayback" type="button" style="width:150px;" value="Stop" /></span>
 			<br />
 			<br />
 			<label for="zoom-x">Масштаб по x:&nbsp;<span id="zoom-x-value">0</span></label>
