@@ -8184,6 +8184,15 @@ Module.onRuntimeInitialized = () => {
     );
   };
 
+  window["channels"] = function ( url ) {
+    return Module.ccall(
+      'getchannels',
+      'number',
+      [ 'string' ],
+      [ url ]
+    );
+  }
+
   window["version"] = function()
   {
     return Module.cwrap(

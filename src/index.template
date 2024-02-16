@@ -234,11 +234,11 @@
 
 				$( "#controlgroup" ).controlgroup();
 
-				$( "#playback" ).click( function() 
-				{
-					let url = "sound8.wav";
-					window.loadfile( "sounds/" + url ).then( function( source ) {
+				$( "#playback" ).click( function() {
+					let url = "04891.mp3";
 
+					window.loadfile( "sounds/" + url ).then( function( source ) 
+					{
 						let memdata = new Uint8Array( source );
 
 						let version = window.version();
@@ -247,26 +247,18 @@
 						window.assign( memdata, memptr );
 
 						let retval = window.savefile( url, memdata, memptr );
-						
-						/*
-						 {
-
+							
 						if ( retval > 0 ) {
-							let channels = Module.ccall(
-								'getchannels',
-								'number',
-								[ 'string' ],
-								[ url ]
-        					);
+							let channels = window.channels( url );
+							console.log( "channels: " + channels );
 						}
-*/
-						if ( memptr > 0 ) {
-							window.free( memptr );
-						}							
+
+						if ( memptr > 0 )
+							window.free( memptr );					
 
 						window.startplayback( url );
-
 					});
+				
 				});
 
 				window.wasminit( function(){
