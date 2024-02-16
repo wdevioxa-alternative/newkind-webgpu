@@ -97,60 +97,8 @@
 
 			window["isNumber"] = function(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 
-			window["startplayback"] = function( nameoffile ) {
-				Module.ccall(
-					'AL_init',
-					null,
-					null,
-					null
-				);
-				let retval = Module.ccall(
-					'AL_play',
-					'number',
-					['string'],
-					[ nameoffile ]
-				);
-			};
-
-			window["stopplayback"] = function() {
-				let retval = Module.ccall(
-					'AL_stop',
-					'number',
-					null,
-					null
-				);
-				Module.ccall(
-					'AL_exit',
-					null,
-					null,
-					null
-				);
-			};
-
-			window["malloc"] = function( memsize ) {
-				return Module.ccall(
-					'wasm_malloc',
-					'number',
-					['number'],
-					[ memsize ]
-	        	);
-			};
-
-			window["free"] = function( memptr ) {
-                Module.ccall(
-					'wasm_free',
-					null,
-					['number'],
-					[ memptr ]
-	        	);
-			};
-
 			jQuery(document).ready(function () 
 			{			
-				window.wasminit( function(){
-					window.startapp();
-				});
-				
 				let onchange_samplerate = function() {
 					let value = $( "#sample-rate" ).spinner( "value" );
 					value = window.isNumber( value ) ? value : 44100;
@@ -197,9 +145,6 @@
 					change: function( event, ui ) {
 						onchange_volumerate();
 					},					
-//					spin: function( event, ui ) {
-//						window.volumerate = ui.value;
-//					},
 					min: 0.000,
 					max: 1.000,
 					step: 0.001,
@@ -233,7 +178,8 @@
 					max: 400,
 					step: 1
 				});
-				$( "#minimum-x" ).slider({
+
+				$( "#minimum-x" ).slider( {
 					create: function( event, ui ) {
 						$("#minimum-x").slider( "value", 30 );
 						window.kdX = 30;
@@ -250,7 +196,8 @@
 					max: 999,
 					step: 2,
 				});
-				$( "#zoom-y" ).slider({
+
+				$( "#zoom-y" ).slider( {
 					create: function( event, ui ) {
 						$("#zoom-y").slider( "value", 80 );
 						window.zoomY = 80;
@@ -267,7 +214,8 @@
 					max: 400,
 					step: 1
 				});
-				$( "#minimum-y" ).slider({
+
+				$( "#minimum-y" ).slider( {
 					create: function( event, ui ) {
 						$("#minimum-y").slider( "value", 10 );
 						window.kdY = 10;
@@ -286,50 +234,45 @@
 
 				$( "#controlgroup" ).controlgroup();
 
-				$( "#playback" ).click( function() {
-
+				$( "#playback" ).click( function() 
+				{
 					let url = "sound8.wav";
+					window.loadfile( "sounds/" + url ).then( function( source ) {
 
-        			let response = fetch(
-        			    new URL( "sounds/" + url, window.location.href ).toString()
-        			).then( function( response ) {
+						let memdata = new Uint8Array( source );
 
-						let source = response.arrayBuffer();
+						let version = window.version();
+						let memptr = window.malloc( memdata.length * memdata.BYTES_PER_ELEMENT );
 
-						try {
-							let memdata = new Uint8Array( source );
-							let lib_version = Module.cwrap(
-								'lib_version',
-								'string',
-								null
-	        				);
-							let memptr = window.malloc( memdata.length * memdata.BYTES_PER_ELEMENT );
-							Module.HEAPU8.set( memdata, memptr );
-							let retval = Module.ccall(
-								'savesoundfile',
+						window.assign( memdata, memptr );
+
+						let retval = window.savefile( url, memdata, memptr );
+						
+						/*
+						 {
+
+						if ( retval > 0 ) {
+							let channels = Module.ccall(
+								'getchannels',
 								'number',
-								[ 'string', 'number', 'number' ],
-								[ url, memptr, memdata.length * memdata.BYTES_PER_ELEMENT ]
-	        				);
-							if ( retval > 0 ) {
-								let channels = Module.ccall(
-									'getchannels',
-									'number',
-									[ 'string' ],
-									[ url ]
-	        					);
-							}
-							if ( memptr > 0 ) {
-								window.free( memptr );
-							}							
-							window.startplayback( url );
+								[ 'string' ],
+								[ url ]
+        					);
 						}
-						catch ( e )
-						{
+*/
+						if ( memptr > 0 ) {
+							window.free( memptr );
+						}							
 
-						}
+						window.startplayback( url );
+
 					});
 				});
+
+				window.wasminit( function(){
+					window.startapp();
+				});
+
 			});
 		</script>
 	</head>

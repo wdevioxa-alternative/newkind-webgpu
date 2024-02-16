@@ -1,5 +1,11 @@
 
 import { wDApplication } from './renderer.mjs';
+import { wDSound } from './sound.mjs';
+
+window["loadfile"] = function( nameoffile ) {
+	const binary = new wDSound();
+	return binary.loadSoundData( nameoffile );
+};
 
 window["startapp"] = function() {
 	try {

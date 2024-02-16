@@ -8120,10 +8120,80 @@ if (Module['noInitialRun']) shouldRunNow = false;
 run();
 
 Module.onRuntimeInitialized = () => { 
+
+  window["startplayback"] = function( nameoffile ) {
+    Module.ccall(
+      'AL_init',
+      null,
+      null,
+      null
+    );
+    let retval = Module.ccall(
+      'AL_play',
+      'number',
+      ['string'],
+      [ nameoffile ]
+    );
+    return retval;
+  };
+  
+  window["stopplayback"] = function() {
+    let retval = Module.ccall(
+      'AL_stop',
+      'number',
+      null,
+      null
+    );
+    Module.ccall(
+      'AL_exit',
+      null,
+      null,
+      null
+    );
+    return retval;
+  };
+  
+  window["malloc"] = function( memsize ) {
+    return Module.ccall(
+      'wasm_malloc',
+      'number',
+      ['number'],
+      [ memsize ]
+    );
+  };
+  
+  window["free"] = function( memptr ) {
+    Module.ccall(
+      'wasm_free',
+      null,
+      ['number'],
+      [ memptr ]
+    );
+  };
+  
+  window["assign"] = function( memdata, memptr ) {
+    Module.HEAPU8.set( memdata, memptr );
+  };
+
+  window["savefile"] = function ( url, memdata, memptr ) {
+    return Module.ccall(
+      'savesoundfile',
+      'number',
+      [ 'string', 'number', 'number' ],
+      [ url, memptr, memdata.length * memdata.BYTES_PER_ELEMENT ]
+    );
+  };
+
+  window["version"] = function()
+  {
+    return Module.cwrap(
+      'lib_version',
+      'string',
+      null
+    );
+  };
+
   func();
-};
 
 };
-
-
-
+};
