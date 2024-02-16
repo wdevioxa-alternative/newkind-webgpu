@@ -272,13 +272,12 @@
 	<body>	
 		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
 		<div id="controlgroup">
-			<label for="playback">Имя файла - по умолчанию.</label>
-			<div><input id="playback" type="button" style="width:150px;" value="Playback" /></div>
 			<label for="sample-rate">Частота дискретизации:</label>
-			<div><input style="width:150px;" id="sample-rate"/></div>
+			<span><input style="width:150px;" id="sample-rate"/></span>
+			<label for="volume-rate">Громкость:</label>
+			<span><input style="width:60px;" id="volume-rate"/></span>
+			<span><input id="playback" type="button" style="width:150px;" value="Playback" /></span>
 			<br />
-			<label for="volume-rate">Ось Y:</label>
-			<div><input style="width:60px;" id="volume-rate"/></div>
 			<br />
 			<label for="zoom-x">Масштаб по x:&nbsp;<span id="zoom-x-value">0</span></label>
 			<div style="width:450px;" id="zoom-x"></div>
