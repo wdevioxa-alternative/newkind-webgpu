@@ -5,8 +5,6 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import RemoveWebpackPlugin from 'remove-files-webpack-plugin';
 
-// const __dirname = path.dirname( process.argv[1] );
-
 const __dirname = './';
 
 export default {
@@ -30,7 +28,8 @@ export default {
             { from: path.resolve(__dirname, 'src', 'js'), to: path.resolve(__dirname, 'dist', 'js') },
             { from: path.resolve(__dirname, 'src', 'assets'), to: path.resolve(__dirname, 'dist', 'assets') },
             { from: path.resolve(__dirname, 'src', 'config'), to: path.resolve(__dirname, 'dist', 'config') },
-            { from: path.resolve(__dirname, 'src', 'sounds'), to: path.resolve(__dirname, 'dist', 'sounds') }
+            { from: path.resolve(__dirname, 'src', 'sounds'), to: path.resolve(__dirname, 'dist', 'sounds') },
+            { from: "src/js/libsndfile.wasm", to: "[path]libsndfile.wasm" },
           ]
         }),
 
@@ -66,11 +65,11 @@ export default {
         type: 'asset/source' 
       },
       { 
-	test: /\.(eot|svg|ttf|woff|woff2)$/,
+	      test: /\.(eot|svg|ttf|woff|woff2)$/,
         type: 'asset/resource',
-	generator: {
-		filename: '[path][name].[ext]'
-	}
+        generator: {
+          filename: '[path][name].[ext]'
+        }
       }
     ]
   },
