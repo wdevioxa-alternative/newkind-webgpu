@@ -411,8 +411,7 @@ export class wDSpline extends wDObject
             ///////////////////////////////////////////////////////////////////
             // Step in pixels with scale on x and y axis
             ///////////////////////////////////////////////////////////////////
-            //
-            let cX = kX * _width / kdX;
+            let _cX = kX * _width / kdX;
             let _centX = x + _width / 2.0;
 
             for ( let i = 0; i < kdX / 2.0; i++ )
@@ -438,10 +437,10 @@ export class wDSpline extends wDObject
                     continue;
                 }
 
-                let _sc_rs_bx = _centX + instance.calcXtoS ( instance.calcStoX ( _i_last_bi * cX ) );
+                let _sc_rs_bx = _centX + instance.calcXtoS ( instance.calcStoX ( _i_last_bi * _cX ) );
                 let _sc_rs_by = instance.calcYtoS ( _rs_by * kY ); 
 
-                let _sc_rs_ex = _centX + instance.calcXtoS ( instance.calcStoX ( i * cX ) );
+                let _sc_rs_ex = _centX + instance.calcXtoS ( instance.calcStoX ( i * _cX ) );
                 let _sc_rs_ey = instance.calcYtoS ( _rs_ey * kY );
 
                 ///////////////////////////////////////////////////////////////////
@@ -463,10 +462,10 @@ export class wDSpline extends wDObject
                 this.drawScalePoint( _vdp, _sc_rs_bx, _sc_rs_by, _t, lcolors );
                 this.drawScalePoint( _vdp, _sc_rs_ex, _sc_rs_ey, _t, lcolors );
         
-                let _sc_ls_bx = _centX - instance.calcXtoS ( instance.calcStoX ( _i_last_bi * cX ) );
+                let _sc_ls_bx = _centX - instance.calcXtoS ( instance.calcStoX ( _i_last_bi * _cX ) );
                 let _sc_ls_by = instance.calcYtoS ( _ls_by * kY );
 
-                let _sc_ls_ex = _centX - instance.calcXtoS ( instance.calcStoX ( i * cX ) );
+                let _sc_ls_ex = _centX - instance.calcXtoS ( instance.calcStoX ( i * _cX ) );
                 let _sc_ls_ey = instance.calcYtoS ( _ls_ey * kY ); 
 
                 // if ( _ls_sc_bx == _ls_sc_ex || _ls_sc_by == _ls_sc_ey ) console.log( "possible skipping" );
