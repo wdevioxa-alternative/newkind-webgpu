@@ -199,7 +199,7 @@ export class wDSpline extends wDObject
                     y,
                     x + _width / 2.0 - i * cX, 
                     y + _height,
-                    _t, color ); 
+                    _t, color, 8 ); 
     
                 this.axis.append( 
                     x + _width / 2.0 - i * cX, 
@@ -229,7 +229,7 @@ export class wDSpline extends wDObject
                     y,
                     x + _width / 2.0 + i * cX, 
                     y + _height,
-                    _t, color ); 
+                    _t, color, 8 ); 
 
                 this.axis.append( 
                     x + _width / 2.0 + i * cX, 
@@ -273,7 +273,7 @@ export class wDSpline extends wDObject
                     y + _height / 2.0 + i * cY,
                     x + _width, 
                     y + _height / 2.0 + i * cY,
-                    _t, color ); 
+                    _t, color, 8 ); 
 
                 this.axis.append( 
                     x + _width / 2.0 - _t -  3, 
@@ -303,7 +303,7 @@ export class wDSpline extends wDObject
                     y + _height / 2.0 - i * cY,
                     x + _width, 
                     y + _height / 2.0 - i * cY,
-                    _t, color ); 
+                    _t, color, 8 ); 
 
                 this.axis.append( 
                     x + _width / 2.0 - _t - 3, 
