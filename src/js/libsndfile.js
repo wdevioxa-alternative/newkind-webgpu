@@ -1,4 +1,5 @@
-
+window["wasminit"] = function( func )
+{
 
 // The Module object: Our interface to the outside world. We import
 // and export values on it. There are various ways Module can be used:
@@ -8118,7 +8119,11 @@ if (Module['noInitialRun']) shouldRunNow = false;
 
 run();
 
+Module.onRuntimeInitialized = () => { 
+  func();
+};
 
+};
 
 
 

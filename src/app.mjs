@@ -3,6 +3,7 @@ import { wDApplication } from './renderer.mjs';
 
 window["startapp"] = function() {
 	try {
+
 		const renderer = new wDApplication();
 
 		renderer.check();
@@ -32,5 +33,5 @@ window["startapp"] = function() {
 		console.log( "exception: " + e );
 		throw(e);
 	}
-}
+};
 

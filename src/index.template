@@ -113,18 +113,18 @@
 			};
 
 			window["stopplayback"] = function() {
-					let retval = Module.ccall(
-						'AL_stop',
-						'number',
-						null,
-						null
-					);
-					Module.ccall(
-						'AL_exit',
-						null,
-						null,
-						null
-					);
+				let retval = Module.ccall(
+					'AL_stop',
+					'number',
+					null,
+					null
+				);
+				Module.ccall(
+					'AL_exit',
+					null,
+					null,
+					null
+				);
 			};
 
 			window["malloc"] = function( memsize ) {
@@ -147,6 +147,10 @@
 
 			jQuery(document).ready(function () 
 			{			
+				window.wasminit( function(){
+					window.startapp();
+				});
+				
 				let onchange_samplerate = function() {
 					let value = $( "#sample-rate" ).spinner( "value" );
 					value = window.isNumber( value ) ? value : 44100;
@@ -284,24 +288,16 @@
 
 				$( "#playback" ).click( function() {
 
-					let filereader = new FileReader();
+					let url = "sound8.wav";
 
         			let response = fetch(
-        			    new URL( "sounds/sound8.wav", window.location.href ).toString()
+        			    new URL( "sounds/" + url, window.location.href ).toString()
         			).then( function( response ) {
-						let blob = response.blob();
-						filereader.readAsArrayBuffer( blob );
-					});
 
-					filereader.onloadstart = function() {
-						// alert("onloadstart");
-					};
-					filereader.onerror = function() {
-						// alert("onerror");
-					};
-					filereader.onload = function() {
+						let source = response.arrayBuffer();
+
 						try {
-							let memdata = new Uint8Array( filereader.result );
+							let memdata = new Uint8Array( source );
 							let lib_version = Module.cwrap(
 								'lib_version',
 								'string',
@@ -313,34 +309,27 @@
 								'savesoundfile',
 								'number',
 								[ 'string', 'number', 'number' ],
-								[ file.name, memptr, memdata.length * memdata.BYTES_PER_ELEMENT ]
+								[ url, memptr, memdata.length * memdata.BYTES_PER_ELEMENT ]
 	        				);
 							if ( retval > 0 ) {
 								let channels = Module.ccall(
 									'getchannels',
 									'number',
 									[ 'string' ],
-									[ file.name ]
+									[ url ]
 	        					);
 							}
 							if ( memptr > 0 ) {
 								window.free( memptr );
 							}							
-							window.startplayback( file.name );
+							window.startplayback( url );
 						}
 						catch ( e )
 						{
 
 						}
-					};
-
-					
+					});
 				});
-
-				Module.onRuntimeInitialized = () => { 
-					window.startapp();
-				}
-
 			});
 		</script>
 	</head>
