@@ -194,9 +194,9 @@ export class wDSpline extends wDObject
                     
                 this.axis.append( 
                     x + _width / 2.0 - i * cX, 
-                    y + _height / 2.0 - 5,
+                    y + _height / 2.0 - _t - 3,
                     x + _width / 2.0 - i * cX, 
-                    y + _height / 2.0 + 5,
+                    y + _height / 2.0 + 3,
                     _t, colors[0] );   
     
                 let Llabel = new wDLabel( instance, 'lighter', this.fontsize, 'Segoe UI Light', 0, 0, 128, 128 );
@@ -217,9 +217,9 @@ export class wDSpline extends wDObject
 
                 this.axis.append( 
                     x + _width / 2.0 + i * cX, 
-                    y + _height / 2.0 - 5,
+                    y + _height / 2.0 - _t - 3,
                     x + _width / 2.0 + i * cX, 
-                    y + _height / 2.0 + 5,
+                    y + _height / 2.0 + 3,
                     _t, colors[0] );    
 
                 let Rlabel = new wDLabel( instance, 'lighter', this.fontsize, 'Segoe UI Light', 0, 0, 128, 128 );
@@ -251,9 +251,9 @@ export class wDSpline extends wDObject
                     continue;
 
                 this.axis.append( 
-                    x + _width / 2.0 - 5, 
+                    x + _width / 2.0 - _t -  3, 
                     y + _height / 2.0 + i * cY,
-                    x + _width / 2.0 + 5, 
+                    x + _width / 2.0 + 3, 
                     y + _height / 2.0 + i * cY,
                     _t, colors[0] ); 
                     
@@ -268,15 +268,15 @@ export class wDSpline extends wDObject
                 let _x = Rlabel.getX();
                 let _y = Rlabel.getY();
 
-                Rlabel.setX( _x + 6 );
+                Rlabel.setX( _x + 6 + 2 );
                 Rlabel.setY( _y - _h );
 
                 this.appendToLabels( Rlabel );
 
                 this.axis.append( 
-                    x + _width / 2.0 - 5, 
+                    x + _width / 2.0 - _t - 3, 
                     y + _height / 2.0 - i * cY,
-                    x + _width / 2.0 + 5, 
+                    x + _width / 2.0 + 3, 
                     y + _height / 2.0 - i * cY,
                     _t, colors[0] ); 
 
@@ -291,7 +291,7 @@ export class wDSpline extends wDObject
                 _x = Llabel.getX();
                 _y = Llabel.getY();
 
-                Llabel.setX( _x - _w - 6 );
+                Llabel.setX( _x - _w - 6 - 2 );
                 Llabel.setY( _y );
 
                 this.appendToLabels( Llabel );
