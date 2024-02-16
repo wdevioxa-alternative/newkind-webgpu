@@ -239,9 +239,10 @@
 					window.loadfile( "sounds/" + nameoffile ).then( function( source ) 
 					{
 						let memdata = new Uint8Array( source );
-						let memptr = window.malloc( memdata.length * memdata.BYTES_PER_ELEMENT );
+						let memsize = memdata.length * memdata.BYTES_PER_ELEMENT;
+						let memptr = window.malloc( memsize );
 						window.assign( memdata, memptr );
-						let retval = window.savefile( nameoffile, memdata, memptr );
+						let retval = window.savefile( nameoffile, memptr, memsize );
 						if ( retval > 0 ) {
 							let channels = window.channels( nameoffile );
 							window.startplayback( nameoffile );

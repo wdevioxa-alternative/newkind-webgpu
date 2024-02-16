@@ -8175,12 +8175,12 @@ Module.onRuntimeInitialized = () => {
     Module.HEAPU8.set( memdata, memptr );
   };
 
-  window["savefile"] = function ( url, memdata, memptr ) {
+  window["savefile"] = function ( url, memptr, memsize ) {
     return Module.ccall(
       'savesoundfile',
       'number',
       [ 'string', 'number', 'number' ],
-      [ url, memptr, memdata.length * memdata.BYTES_PER_ELEMENT ]
+      [ url, memptr, memsize ]
     );
   };
 
