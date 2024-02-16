@@ -24,7 +24,7 @@ window["startapp"] = function() {
 		// 4:3  &&  16:9 
 	    canvas.height = canvas.width * 9 / 16;  
 
-		console.log("set width: " + canvas.width + "; set height: " + canvas.height);
+		// console.log("set width: " + canvas.width + "; set height: " + canvas.height);
 		return { ready: renderer.start() };
 	} 
 	catch( e ) 

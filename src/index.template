@@ -96,30 +96,22 @@
 			})(jQuery);
 
 			window["isNumber"] = function(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
-			window["startplayback"] = function( file_name ) {
-					// var fileinput = document.getElementById('fileinput');
 
-					// if (fileinput.files.length == 0) {
-					//	filename.innerHTML = "";
-					//	return;
-					// }
-
-					// var file = fileinput.files[0];
-
-					Module.ccall(
-						'AL_init',
-						null,
-						null,
-						null
-					);
-
-					let retval = Module.ccall(
-						'AL_play',
-						'number',
-						['string'],
-						[ file_name ]
-					);
+			window["startplayback"] = function( nameoffile ) {
+				Module.ccall(
+					'AL_init',
+					null,
+					null,
+					null
+				);
+				let retval = Module.ccall(
+					'AL_play',
+					'number',
+					['string'],
+					[ nameoffile ]
+				);
 			};
+
 			window["stopplayback"] = function() {
 					let retval = Module.ccall(
 						'AL_stop',
@@ -127,7 +119,6 @@
 						null,
 						null
 					);
-
 					Module.ccall(
 						'AL_exit',
 						null,
@@ -136,17 +127,34 @@
 					);
 			};
 
+			window["malloc"] = function( memsize ) {
+				return Module.ccall(
+					'wasm_malloc',
+					'number',
+					['number'],
+					[ memsize ]
+	        	);
+			};
+
+			window["free"] = function( memptr ) {
+                Module.ccall(
+					'wasm_free',
+					null,
+					['number'],
+					[ memptr ]
+	        	);
+			};
 
 			jQuery(document).ready(function () 
 			{			
-				let change_samplerate = function() {
+				let onchange_samplerate = function() {
 					let value = $( "#sample-rate" ).spinner( "value" );
 					value = window.isNumber( value ) ? value : 44100;
 					$( "#sample-rate" ).spinner( "value", value );
 					window.samplerate = parseFloat( value );					
 				};
 
-				let change_volumerate = function() {
+				let onchange_volumerate = function() {
 					let value = $("#volume-rate").spinner( "value" );
 					value = window.isNumber( value ) ? value : 1.000;
 					$("#volume-rate").spinner( "value", value );
@@ -159,11 +167,8 @@
 						window.samplerate = 44100;
 					},
 					change: function( event, ui ) {
-						change_samplerate();
+						onchange_samplerate();
 					},
-//					spin: function( event, ui ) {
-//						window.samplerate = ui.value;
-//					},
 					min: 2000,
 					max: 96000,
 					step: 100,
@@ -171,12 +176,12 @@
 				});
 
 				$( "#sample-rate" ).click(function() {
-					change_samplerate();
+					onchange_samplerate();
 				});
 
 			    $( "#sample-rate" ).keyup(function(){
 					if (event.keyCode === 13) {
-						change_samplerate();
+						onchange_samplerate();
 					}
     			});
 
@@ -186,7 +191,7 @@
 						window.volumerate = 1.000;
 					},
 					change: function( event, ui ) {
-						change_volumerate();
+						onchange_volumerate();
 					},					
 //					spin: function( event, ui ) {
 //						window.volumerate = ui.value;
@@ -198,12 +203,12 @@
 				});
 
 				$( "#volume-rate" ).click( function() {
-					change_volumerate();
+					onchange_volumerate();
 				});
 
 			    $( "#volume-rate" ).keyup( function(){
 					if (event.keyCode === 13) {
-						change_volumerate();
+						onchange_volumerate();
 					}
     			});
 
@@ -274,10 +279,65 @@
 					max: 559,
 					step: 2,
 				});
+
 				$( "#controlgroup" ).controlgroup();
 
+				$( "#playback" ).click( function() {
+
+					let filereader = new FileReader();
+
+        			let response = fetch(
+        			    new URL( "sounds/sound8.wav", window.location.href ).toString()
+        			).then( function( response ) {
+						let blob = response.blob();
+						filereader.readAsArrayBuffer( blob );
+					});
+
+					filereader.onloadstart = function() {
+						// alert("onloadstart");
+					};
+					filereader.onerror = function() {
+						// alert("onerror");
+					};
+					filereader.onload = function() {
+						try {
+							let memdata = new Uint8Array( filereader.result );
+							let lib_version = Module.cwrap(
+								'lib_version',
+								'string',
+								null
+	        				);
+							let memptr = window.malloc( memdata.length * memdata.BYTES_PER_ELEMENT );
+							Module.HEAPU8.set( memdata, memptr );
+							let retval = Module.ccall(
+								'savesoundfile',
+								'number',
+								[ 'string', 'number', 'number' ],
+								[ file.name, memptr, memdata.length * memdata.BYTES_PER_ELEMENT ]
+	        				);
+							if ( retval > 0 ) {
+								let channels = Module.ccall(
+									'getchannels',
+									'number',
+									[ 'string' ],
+									[ file.name ]
+	        					);
+							}
+							if ( memptr > 0 ) {
+								window.free( memptr );
+							}							
+							window.startplayback( file.name );
+						}
+						catch ( e )
+						{
+
+						}
+					};
+
+					
+				});
+
 				Module.onRuntimeInitialized = () => { 
-					window.startplayback( "file:///D:/noise-2.mp3" );
 					window.startapp();
 				}
 
@@ -288,6 +348,9 @@
 	<body>	
 		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
 		<div id="controlgroup">
+			<label for="sample-rate">Имя файла:</label>
+			<div><input id="fileinput" type="file" style="display: none; width:150px;" /><input id="playback" type="button" style="width:150px;" value="Playback" /></div>
+			<br />
 			<label for="sample-rate">Частота дискретизации:</label>
 			<div><input style="width:150px;" id="sample-rate"/></div>
 			<br />
