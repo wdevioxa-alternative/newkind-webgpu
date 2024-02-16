@@ -236,27 +236,17 @@
 
 				$( "#playback" ).click( function() {
 					let url = "04891.mp3";
-
 					window.loadfile( "sounds/" + url ).then( function( source ) 
 					{
 						let memdata = new Uint8Array( source );
-
-						let version = window.version();
 						let memptr = window.malloc( memdata.length * memdata.BYTES_PER_ELEMENT );
-
 						window.assign( memdata, memptr );
-
 						let retval = window.savefile( url, memdata, memptr );
-							
 						if ( retval > 0 ) {
 							let channels = window.channels( url );
-							console.log( "channels: " + channels );
+							window.startplayback( url );
 						}
-
-						if ( memptr > 0 )
-							window.free( memptr );					
-
-						window.startplayback( url );
+						if ( memptr > 0 ) window.free( memptr );									
 					});
 				
 				});
