@@ -306,7 +306,7 @@ export class wDSpline extends wDObject
         }
 
     }
-    drawScalePoint( _vdp, _sc_bx, _sc_by, _t, dcolors )
+    async drawScalePoint( _vdp, _sc_bx, _sc_by, _t, dcolors )
     {
         if ( _vdp == true )
         {
@@ -459,8 +459,8 @@ export class wDSpline extends wDObject
                     lcolors[0] 
                 );
 
-                this.drawScalePoint( _vdp, _sc_rs_bx, _sc_rs_by, _t, lcolors );
-                this.drawScalePoint( _vdp, _sc_rs_ex, _sc_rs_ey, _t, lcolors );
+                await this.drawScalePoint( _vdp, _sc_rs_bx, _sc_rs_by, _t, lcolors );
+                await this.drawScalePoint( _vdp, _sc_rs_ex, _sc_rs_ey, _t, lcolors );
         
                 let _sc_ls_bx = _centX - instance.calcXtoS ( instance.calcStoX ( _i_last_bi * _cX ) );
                 let _sc_ls_by = instance.calcYtoS ( _ls_by * kY );
@@ -479,8 +479,8 @@ export class wDSpline extends wDObject
                     _t, lcolors[0] 
                 );                             
 
-                this.drawScalePoint( _vdp, _sc_ls_bx, _sc_ls_by, _t, lcolors );
-                this.drawScalePoint( _vdp, _sc_ls_ex, _sc_ls_ey, _t, lcolors );
+                await this.drawScalePoint( _vdp, _sc_ls_bx, _sc_ls_by, _t, lcolors );
+                await this.drawScalePoint( _vdp, _sc_ls_ex, _sc_ls_ey, _t, lcolors );
 
                 _rs_bx = _rs_ex;
                 _rs_by = _rs_ey;
