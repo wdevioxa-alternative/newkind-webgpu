@@ -6,15 +6,16 @@ export const actions = (self) => {
         resolve({
             click: (event) => {
                 event.stopPropagation()
-                // self.setAttribute('checked', true)
-                // const customCheckbox = self.shadowRoot.querySelector('.custom-checkbox')
-                // const input = self.shadowRoot.querySelector('input')
-                //
-                // input.setAttribute("checked", true);
-                // customCheckbox.setAttribute("checked", true);
-                // self.setAttribute("checked", true);
+                const currentTarget = event.currentTarget
 
-                // console.log('---------------------- CLICK CHECKBOX --------------------------------', customCheckbox)
+                document.dispatchEvent(new CustomEvent(`settingsCheckbox`, {
+                    bubbles: true,
+                    composed: true,
+                    detail: {
+                        id: currentTarget.id.split('-')[1],
+                        value: currentTarget.checked
+                    }
+                }));
             }
         })
     })

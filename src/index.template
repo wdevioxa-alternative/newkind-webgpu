@@ -88,6 +88,15 @@
                   composed: true,
             });
 
+            document.addEventListener('settingsCheckbox', (event) => {
+                const id = event.detail.id
+                const value = event.detail.value
+                console.log('Checkbox: ',id,  value)
+            }, {
+                  bubbles: true,
+                  composed: true,
+            });
+
 			(function($)
 			{
 				$.fn.input = function (css)
