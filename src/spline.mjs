@@ -384,149 +384,107 @@ export class wDSpline extends wDObject
     {
         let _framescount = _object.length / _channels;
 
-        ////////////////////////////////////////////////////////////////////////
-        // _samplerate: 44100 - 1s           
-        ////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////
-        // let sX = 2.0 * _samplerate / kdX;
-        // let sX = tX * _samplerate;
-        ////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////
+        let kX = zoomX / 100.0;
+        let kY = zoomY / 100.0;
 
-        //let flag = this.isDuty();
+        let _vdp = false;
 
-        //if ( flag == true )
+        let _rs_bx = undefined;
+        let _rs_by = undefined;
+        let _ls_bx = undefined;
+        let _ls_by = undefined;
+        let _i_last_bi = undefined;
+
+        ///////////////////////////////////////////////////////////////////
+        // Step in samples on x axis
+        ///////////////////////////////////////////////////////////////////
+        let _ix_step = Math.trunc( _framescount / kdX );
+
+        let _ix_excess = _ix_step % _channels;
+        _ix_step = _ix_step - _ix_excess;
+
+        let _ix_center = _framescount / 2.0;
+
+        ///////////////////////////////////////////////////////////////////
+        // Step in pixels with scale on x and y axis
+        ///////////////////////////////////////////////////////////////////
+        let _cX = kX * _width / kdX;
+        let _centX = x + _width / 2.0;
+
+        for ( let i = 0; i < kdX / 2; i++ )
         {
-            let kX = zoomX / 100.0;
-            let kY = zoomY / 100.0;
+            /////////////////////////////////////////////////
+            // x and y: one step to right side in radians
+            let _rs_ex = _ix_center + i * _ix_step;
+            let _rs_ey = _object[ _channels * _rs_ex + _channel ];
 
-            // let offX = 10.0;
-            // let offY = 10.0;
+            /////////////////////////////////////////////////
+            // x and y: one step to left side in radians
+            let _ls_ex = _ix_center - i * _ix_step;
+            let _ls_ey = _object[ _channels * _ls_ex - _channels + _channel ];
 
-            ////////////////////////////////////////////////////////////////////////
-            // let cX = _width * kX / kdX;  this.cX
-            // let cY = _height * kY / kdY; this.cY
-            ////////////////////////////////////////////////////////////////////////
-
-            // let tX = 2.0 / this.kdX;
-
-            // let sX = 2.0 * _samplerate / this.kdX;
-            // let vY = 2.0 * _volumerate / this.kdY;
-
-            let _vdp = false;
-
-            ///////////////////////////////////////////////////////////////////
-            // Количество отсчетов
-            ///////////////////////////////////////////////////////////////////
-            // let _xdp = _object.coords.x.dprepeats;
-            // let _y_min_ = _object.coords.y.min;
-            // let _y_max_ = _object.coords.y.max;
-            ///////////////////////////////////////////////////////////////////
-
-            let _rs_bx = undefined;
-            let _rs_by = undefined;
-            let _ls_bx = undefined;
-            let _ls_by = undefined;
-            let _i_last_bi = undefined;
-
-            ///////////////////////////////////////////////////////////////////
-            // Step in samples on x axis
-            ///////////////////////////////////////////////////////////////////
-            let _ix_step = Math.trunc( _framescount / kdX );
-
-            let _ix_excess = _ix_step % _channels;
-            _ix_step = _ix_step - _ix_excess;
-
-            let _ix_center = _framescount / 2.0;
-
-            ///////////////////////////////////////////////////////////////////
-            // Step in pixels with scale on x and y axis
-            ///////////////////////////////////////////////////////////////////
-            let _cX = kX * _width / kdX;
-            let _centX = x + _width / 2.0;
-
-            for ( let i = 0; i < kdX / 2; i++ )
+            if ( i == 0 ) 
             {
-                /////////////////////////////////////////////////
-                // x and y: one step to right side in radians
-                let _rs_ex = _ix_center + i * _ix_step;
-                let _rs_ey = _object[ _channels * _rs_ex + _channel ];
-
-                //console.log( "_sc_rs_bx: " + _sc_rs_bx + "; _rs_ey: " + _rs_ey );
-
-                /////////////////////////////////////////////////
-                // x and y: one step to left side in radians
-                let _ls_ex = _ix_center - i * _ix_step;
-                let _ls_ey = _object[ _channels * _ls_ex - _channels + _channel ];
-
-                //console.log( "_sc_rs_bx: " + _sc_rs_bx + "; _ls_ey: " + _ls_ey );
-
-                if ( i == 0 ) 
-                {
-                    _rs_bx = _rs_ex;
-                    _rs_by = _rs_ey;
-                    _ls_bx = _ls_ex;
-                    _ls_by = _ls_ey;
-
-                    _i_last_bi = i;
-                    continue;
-                }
-
-
-                let _sc_rs_bx = _centX + instance.calcXtoS ( instance.calcStoX ( _i_last_bi * _cX ) );
-                let _sc_rs_by = instance.calcYtoS ( _rs_by * kY ); 
-                //console.log( "_sc_rs_bx: " + _sc_rs_bx + "; _sc_rs_by: " + _sc_rs_by );
-
-                let _sc_rs_ex = _centX + instance.calcXtoS ( instance.calcStoX ( i * _cX ) );
-                let _sc_rs_ey = instance.calcYtoS ( _rs_ey * kY );
-                //console.log( "_sc_rs_ex: " + _sc_rs_ex + "; _sc_rs_ey: " + _sc_rs_ey );
-
-                ///////////////////////////////////////////////////////////////////
-                // console.log( "i: " + i + "; " + _x + ": " + _y );
-                ///////////////////////////////////////////////////////////////////
-                        
-                // if ( _rs_sc_bx == _rs_sc_ex || _rs_sc_by == _rs_sc_ey ) console.log( "possible skipping" );
-                // if ( _rs_sc_ex > ( x + _width - offX ) ) continue;
-
-                this.discretlines.append( 
-                    _sc_rs_bx, 
-                    _sc_rs_by,
-                    _sc_rs_ex, 
-                    _sc_rs_ey,
-                    _t, 
-                    _colors[_channel] 
-                );
-
-                await this.drawScalePoint( _vdp, _sc_rs_bx, _sc_rs_by, _t, _colors[_channel]  );
-                await this.drawScalePoint( _vdp, _sc_rs_ex, _sc_rs_ey, _t, _colors[_channel]  );
-        
-                let _sc_ls_bx = _centX - instance.calcXtoS ( instance.calcStoX ( _i_last_bi * _cX ) );
-                let _sc_ls_by = instance.calcYtoS ( _ls_by * kY );
-
-                let _sc_ls_ex = _centX - instance.calcXtoS ( instance.calcStoX ( i * _cX ) );
-                let _sc_ls_ey = instance.calcYtoS ( _ls_ey * kY ); 
-
-                // if ( _ls_sc_bx == _ls_sc_ex || _ls_sc_by == _ls_sc_ey ) console.log( "possible skipping" );
-                // if ( _ls_sc_ex < ( x + offX ) ) continue;
-
-                this.discretlines.append( 
-                    _sc_ls_bx, 
-                    _sc_ls_by,
-                    _sc_ls_ex, 
-                    _sc_ls_ey,
-                    _t, _colors[_channel] 
-                );                             
-
-                await this.drawScalePoint( _vdp, _sc_ls_bx, _sc_ls_by, _t, _colors[_channel]  );
-                await this.drawScalePoint( _vdp, _sc_ls_ex, _sc_ls_ey, _t, _colors[_channel]  );
-
                 _rs_bx = _rs_ex;
                 _rs_by = _rs_ey;
                 _ls_bx = _ls_ex;
                 _ls_by = _ls_ey;
 
                 _i_last_bi = i;
+                continue;
             }
+
+            let _sc_rs_bx = _centX + instance.calcXtoS ( instance.calcStoX ( _i_last_bi * _cX ) );
+            let _sc_rs_by = instance.calcYtoS ( _rs_by * kY ); 
+
+            let _sc_rs_ex = _centX + instance.calcXtoS ( instance.calcStoX ( i * _cX ) );
+            let _sc_rs_ey = instance.calcYtoS ( _rs_ey * kY );
+
+            ///////////////////////////////////////////////////////////////////
+            // console.log( "i: " + i + "; " + _x + ": " + _y );
+            ///////////////////////////////////////////////////////////////////
+                        
+                // if ( _rs_sc_bx == _rs_sc_ex || _rs_sc_by == _rs_sc_ey ) console.log( "possible skipping" );
+                // if ( _rs_sc_ex > ( x + _width - offX ) ) continue;
+
+            this.discretlines.append( 
+                _sc_rs_bx, 
+                _sc_rs_by,
+                _sc_rs_ex, 
+                _sc_rs_ey,
+                _t, 
+                _colors[_channel] 
+            );
+
+            await this.drawScalePoint( _vdp, _sc_rs_bx, _sc_rs_by, _t, _colors[_channel]  );
+            await this.drawScalePoint( _vdp, _sc_rs_ex, _sc_rs_ey, _t, _colors[_channel]  );
+        
+            let _sc_ls_bx = _centX - instance.calcXtoS ( instance.calcStoX ( _i_last_bi * _cX ) );
+            let _sc_ls_by = instance.calcYtoS ( _ls_by * kY );
+
+            let _sc_ls_ex = _centX - instance.calcXtoS ( instance.calcStoX ( i * _cX ) );
+            let _sc_ls_ey = instance.calcYtoS ( _ls_ey * kY ); 
+
+            // if ( _ls_sc_bx == _ls_sc_ex || _ls_sc_by == _ls_sc_ey ) console.log( "possible skipping" );
+            // if ( _ls_sc_ex < ( x + offX ) ) continue;
+
+            this.discretlines.append( 
+                _sc_ls_bx, 
+                _sc_ls_by,
+                _sc_ls_ex, 
+                _sc_ls_ey,
+                _t, _colors[_channel] 
+            );                             
+
+            await this.drawScalePoint( _vdp, _sc_ls_bx, _sc_ls_by, _t, _colors[_channel]  );
+            await this.drawScalePoint( _vdp, _sc_ls_ex, _sc_ls_ey, _t, _colors[_channel]  );
+
+            _rs_bx = _rs_ex;
+            _rs_by = _rs_ey;
+            _ls_bx = _ls_ex;
+            _ls_by = _ls_ey;
+
+            _i_last_bi = i;
         }
     }
 
@@ -744,17 +702,16 @@ export class wDSpline extends wDObject
         await this.borderDraw( instance, x, y, _width, _height, _t, _colors );
         await this.axisDraw( instance, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] );
 
-        if ( _object.length > 0 ) 
+        if ( _object != null )
         {
-            //let flag = this.isDuty();
-            //if ( flag == true ) 
-            //{
-            this.discretlines.clear();
-            for ( let i = 0; i < _channels; i++ ) {
-                await this.floatarrayDraw( instance, _object, _channels, i, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, _colors );
+            if ( _object.length > 0 ) 
+            {
+                this.discretlines.clear();
+                for ( let i = 0; i < _channels; i++ ) {
+                    await this.floatarrayDraw( instance, _object, _channels, i, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, _colors );
+                }
+                await this.discretlines.draw( instance );
             }
-            //}
-            await this.discretlines.draw( instance );
         }
 
         this.resetDuty();
