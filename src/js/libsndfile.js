@@ -37,8 +37,8 @@ Module.onRuntimeInitialized = () => {
     let retval = Module.ccall(
       'AL_stop',
       'number',
-      null,
-      null
+      [],
+      []
     );
     return retval;
   };
@@ -83,21 +83,40 @@ Module.onRuntimeInitialized = () => {
     );
   };
 
-  window["channels"] = function ( url ) {
+  window["getchannels"] = function ( url ) {
     return Module.ccall(
       'getchannels',
       'number',
       [ 'string' ],
       [ url ]
     );
-  }
+  };
+
+  window["getsamplerate"] = function ( url ) {
+    return Module.ccall(
+      'getsamplerate',
+      'number',
+      [ 'string' ],
+      [ url ]
+    );
+  };
+
+  window["currentbuffer"] = function ( url, startframe, memptr, memsize ) {
+    return Module.ccall(
+      'processsoundfile',
+      'number',
+      [ 'string', 'number', 'number', 'number' ],
+      [ url, startframe, memptr, memsize ]
+    );
+  };
 
   window["version"] = function()
   {
     return Module.ccall(
       'lib_version',
       'string',
-      null, null
+      [], 
+      []
     );
   };
 

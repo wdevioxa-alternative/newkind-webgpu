@@ -281,8 +281,8 @@ export class wDApplication
                 this.createAppUniformShaderLocationFlag( this.device, 0 );
 
                 this.sampler = this.device.createSampler({
-                    magFilter: 'linear',  // nearest | linear
-                    minFilter: 'linear'   // nearest | linear
+                    magFilter: 'nearest',  // nearest | linear
+                    minFilter: 'nearest'   // nearest | linear
                 });
 
                 this.nullTexture = this.device.createTexture({
@@ -450,7 +450,7 @@ export class wDApplication
         let object = window.getDrawParams.call();
 
         this.spline.set( sBW, sBW, sW, sH );
-        await this.spline.draw( this, object, window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY );
+        await this.spline.draw( this, object, window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
 
         let iW = 100 * this.color * 4;
         let iH = 100 * this.color * 4;
