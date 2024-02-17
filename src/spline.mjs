@@ -191,9 +191,10 @@ export class wDSpline extends wDObject
 
                 if ( ( x + _width / 2.0 - i * cX ) <= x ) 
                     continue;
-                
-                let color = { from: [0.2,0.2,0.2,0.2], to: [0.2,0.2,0.2,0.2] };
 
+                let color = { from : [ 0.3, 0.3, 0.3, 0.05 ],
+                    to : [ 0.3, 0.3, 0.3, 0.05 ] };
+    
                 this.axis.append( 
                     x + _width / 2.0 - i * cX, 
                     y,
@@ -266,7 +267,8 @@ export class wDSpline extends wDObject
                 if ( ( y + _height / 2.0 - i * cY ) <= y ) 
                     continue;
 
-                let color = { from: [0.2,0.2,0.2,0.2], to: [0.2,0.2,0.2,0.2] };
+                let color = { from : [ 0.3, 0.3, 0.3, 0.05 ],
+                    to : [ 0.3, 0.3, 0.3, 0.05 ] };
 
                 this.axis.append( 
                     x, 
