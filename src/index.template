@@ -68,6 +68,23 @@
 		</style>
 
 		<script type='text/javascript'>
+
+            document.addEventListener('settingsInput', (event) => {
+                const value = event.detail.value
+                console.log('INPUT', value)
+            }, {
+                bubbles: true,
+                composed: true,
+            });
+
+             document.addEventListener('settingsDelay', (event) => {
+                const value = event.detail.value
+                console.log('DELAY: ', value)
+            }, {
+                  bubbles: true,
+                  composed: true,
+            });
+
 			(function($)
 			{
 				$.fn.input = function (css)
@@ -316,7 +333,7 @@
             >
         		<template>
         		    <div class="container">
-                       <fieldset class="multiswitch" data-theme="stoplight">
+                       <fieldset data-field="settingsInput" class="multiswitch" data-theme="stoplight">
                             <legend>Input Data</legend>
 
                             <div class="slide-container">
@@ -329,7 +346,7 @@
                                 <a class="slide value" aria-hidden="true"></a>
                             </div>
                         </fieldset>
-                        <fieldset class="multiswitch">
+                        <fieldset data-field="settingsDelay" class="multiswitch">
                             <legend>sample position</legend>
 
                       <div class="slide-container">
