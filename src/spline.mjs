@@ -122,7 +122,7 @@ export class wDSpline extends wDObject
         ] );
     }
 
-    async axisDraw( instance, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t = 1, colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
+    async axisDraw( instance, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t = 1, _colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
     {
         let kX = zoomX / 100.0;
         let kY = zoomY / 100.0;
@@ -153,9 +153,9 @@ export class wDSpline extends wDObject
             //let offX = 10.0;
             //let offY = 10.0;
 
-            if ( colors.length == 1 )
+            if ( _colors.length == 1 )
             {
-                colors.push( colors[0] );
+                _colors.push( _colors[0] );
             }
 
             let stepX = ( cX > this.fontsize * 8.0 ) ? 1 : ( this.fontsize * 8.0 / cX ) + 1;
@@ -169,7 +169,7 @@ export class wDSpline extends wDObject
                 y + _height / 2.0,
                 x + _width,
                 y + _height / 2.0,
-                _t, colors[0] );
+                _t, _colors[0] );
 
             ////////////////////////////////////////////////////////////////////
             // y: axis
@@ -179,7 +179,7 @@ export class wDSpline extends wDObject
                 y,
                 x + _width / 2.0,
                 y + _height,
-                _t, colors[0] );
+                _t, _colors[0] );
 
             ////////////////////////////////////////////////////////////////////
             // x: delimeters
@@ -207,7 +207,7 @@ export class wDSpline extends wDObject
                     y + _height / 2.0 - _t - 3,
                     x + _width / 2.0 - i * cX, 
                     y + _height / 2.0 + 3,
-                    _t, colors[0] );   
+                    _t, _colors[0] );   
     
                 let Llabel = new wDLabel( instance, 'lighter', this.fontsize, 'Segoe UI Light', 0, 0, 128, 128 );
                 await Llabel.init();
@@ -237,7 +237,7 @@ export class wDSpline extends wDObject
                     y + _height / 2.0 - _t - 3,
                     x + _width / 2.0 + i * cX, 
                     y + _height / 2.0 + 3,
-                    _t, colors[0] );    
+                    _t, _colors[0] );    
 
                 let Rlabel = new wDLabel( instance, 'lighter', this.fontsize, 'Segoe UI Light', 0, 0, 128, 128 );
                 await Rlabel.init();
@@ -282,7 +282,7 @@ export class wDSpline extends wDObject
                     y + _height / 2.0 + i * cY,
                     x + _width / 2.0 + 3, 
                     y + _height / 2.0 + i * cY,
-                    _t, colors[0] ); 
+                    _t, _colors[0] ); 
                     
                 let Rlabel = new wDLabel( instance, 'lighter', this.fontsize, 'Segoe UI Light', 0, 0, 128, 128 );
                 await Rlabel.init();
@@ -312,7 +312,7 @@ export class wDSpline extends wDObject
                     y + _height / 2.0 - i * cY,
                     x + _width / 2.0 + 3, 
                     y + _height / 2.0 - i * cY,
-                    _t, colors[0] ); 
+                    _t, _colors[0] ); 
 
                 let Llabel = new wDLabel( instance, 'lighter', this.fontsize, 'Segoe UI Light', 0, 0, 128, 128 );
                 await Llabel.init();
@@ -341,7 +341,7 @@ export class wDSpline extends wDObject
 
     }
 
-    async drawScalePoint( _vdp, _sc_bx, _sc_by, _t, dcolors )
+    async drawScalePoint( _vdp, _sc_bx, _sc_by, _t, _dcolor )
     {
         if ( _vdp == true )
         {
@@ -351,7 +351,7 @@ export class wDSpline extends wDObject
                 _sc_bx + 1, 
                 _sc_by - 1,
                 _t, 
-                dcolors[0] 
+                _dcolor
             );
             this.discretlines.append( 
                 _sc_bx - 1, 
@@ -359,7 +359,7 @@ export class wDSpline extends wDObject
                 _sc_bx + 1, 
                 _sc_by + 1,
                 _t, 
-                dcolors[0] 
+                _dcolor
             );
             this.discretlines.append( 
                 _sc_bx - 1, 
@@ -367,7 +367,7 @@ export class wDSpline extends wDObject
                 _sc_bx - 1, 
                 _sc_by + 1,
                 _t, 
-                dcolors[0] 
+                _dcolor
             );
             this.discretlines.append( 
                 _sc_bx + 1, 
@@ -375,12 +375,12 @@ export class wDSpline extends wDObject
                 _sc_bx + 1, 
                 _sc_by + 1,
                 _t, 
-                dcolors[0] 
+                _dcolor
             );                                        
         }
     }
 
-    async floatarrayDraw( instance, _object, _channels, _channel, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, colors ) 
+    async floatarrayDraw( instance, _object, _channels, _channel, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, _colors ) 
     {
         let _framescount = _object.length / _channels;
 
@@ -436,7 +436,7 @@ export class wDSpline extends wDObject
 
             let _ix_excess = _ix_step % _channels;
             _ix_step = _ix_step - _ix_excess;
-            
+
             let _ix_center = _framescount / 2.0;
 
             ///////////////////////////////////////////////////////////////////
@@ -452,14 +452,14 @@ export class wDSpline extends wDObject
                 let _rs_ex = _ix_center + i * _ix_step;
                 let _rs_ey = _object[ _channels * _rs_ex + _channel ];
 
-                console.log( "_sc_rs_bx: " + _sc_rs_bx + "; _rs_ey: " + _rs_ey );
+                //console.log( "_sc_rs_bx: " + _sc_rs_bx + "; _rs_ey: " + _rs_ey );
 
                 /////////////////////////////////////////////////
                 // x and y: one step to left side in radians
                 let _ls_ex = _ix_center - i * _ix_step;
                 let _ls_ey = _object[ _channels * _ls_ex - _channels + _channel ];
 
-                console.log( "_sc_rs_bx: " + _sc_rs_bx + "; _ls_ey: " + _ls_ey );
+                //console.log( "_sc_rs_bx: " + _sc_rs_bx + "; _ls_ey: " + _ls_ey );
 
                 if ( i == 0 ) 
                 {
@@ -494,11 +494,11 @@ export class wDSpline extends wDObject
                     _sc_rs_ex, 
                     _sc_rs_ey,
                     _t, 
-                    colors[0] 
+                    _colors[_channel] 
                 );
 
-                await this.drawScalePoint( _vdp, _sc_rs_bx, _sc_rs_by, _t, colors );
-                await this.drawScalePoint( _vdp, _sc_rs_ex, _sc_rs_ey, _t, colors );
+                await this.drawScalePoint( _vdp, _sc_rs_bx, _sc_rs_by, _t, _colors[_channel]  );
+                await this.drawScalePoint( _vdp, _sc_rs_ex, _sc_rs_ey, _t, _colors[_channel]  );
         
                 let _sc_ls_bx = _centX - instance.calcXtoS ( instance.calcStoX ( _i_last_bi * _cX ) );
                 let _sc_ls_by = instance.calcYtoS ( _ls_by * kY );
@@ -514,11 +514,11 @@ export class wDSpline extends wDObject
                     _sc_ls_by,
                     _sc_ls_ex, 
                     _sc_ls_ey,
-                    _t, colors[0] 
+                    _t, _colors[_channel] 
                 );                             
 
-                await this.drawScalePoint( _vdp, _sc_ls_bx, _sc_ls_by, _t, colors );
-                await this.drawScalePoint( _vdp, _sc_ls_ex, _sc_ls_ey, _t, colors );
+                await this.drawScalePoint( _vdp, _sc_ls_bx, _sc_ls_by, _t, _colors[_channel]  );
+                await this.drawScalePoint( _vdp, _sc_ls_ex, _sc_ls_ey, _t, _colors[_channel]  );
 
                 _rs_bx = _rs_ex;
                 _rs_by = _rs_ey;
@@ -742,7 +742,7 @@ export class wDSpline extends wDObject
         let y = this.getY();
 
         await this.borderDraw( instance, x, y, _width, _height, _t, _colors );
-        await this.axisDraw( instance, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, _colors );
+        await this.axisDraw( instance, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] );
 
         if ( _object.length > 0 ) 
         {

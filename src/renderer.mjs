@@ -531,7 +531,7 @@ export class wDApplication
 
                     /////////////////////////////////////////////////////////////////////////////////
                     // ( _samplerate / 2 ) 0.5 seconds
-                    let _countofframes = _samplerate / 2 * _channels;
+                    let _countofframes = _samplerate / 4 * _channels;
 
                     let _memptr = window.malloc( _countofframes * _channels * SIZE_OF_FLOAT );
 
@@ -541,7 +541,12 @@ export class wDApplication
             
                     if ( _memptr > 0 ) window.free( _memptr );
 
-                    await this.spline.drawData( this, f32a, _channels, _samplerate, 1, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
+                    let _colors = [
+                        { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 1.0, 0.0, 0.0, 1.0 ] },
+                        { from: [ 0.0, 1.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] },
+                    ] 
+
+                    await this.spline.drawData( this, f32a, _channels, _samplerate, 1, window.kdX, window.kdY, window.zoomX, window.zoomY, 1, _colors );
                 }
             }
         }
