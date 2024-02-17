@@ -9,6 +9,9 @@ const __dirname = './';
 
 export default {
     entry: [ 'babel-polyfill', './src/app.mjs' ],
+    experiments: {
+        topLevelAwait: true
+    },
     plugins: [
         new HtmlWebpackPlugin({ 
             title: 'WebGPU Test Page',
@@ -36,7 +39,8 @@ export default {
     path: path.resolve(__dirname, 'dist'),
     filename: "[name].bundle.js",
     chunkFilename: "[id].bundle.js",
-    assetModuleFilename: "[path][name].[ext]"
+    assetModuleFilename: "[path][name].[ext]",
+    publicPath: path.resolve(__dirname, 'dist/this'),
   },
   module: {
     rules: [

@@ -1,6 +1,7 @@
 
 import { wDApplication } from './renderer.mjs';
 import { wDSound } from './sound.mjs';
+import components from './components/multi-switchrh/index.mjs'
 
 window["loadfile"] = function( nameoffile ) {
 	try {

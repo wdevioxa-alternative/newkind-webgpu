@@ -68,7 +68,6 @@
 		</style>
 
 		<script type='text/javascript'>
-
 			(function($)
 			{
 				$.fn.input = function (css)
@@ -311,6 +310,9 @@
 			<br />
 			<br />
 		</div>
+		<multi-switchrh>
+		    <div>sdsdsdsdsd</div>
+		</multi-switchrh>
 		<canvas id="gfx">&nbsp;</canvas>
 	</body>
 </html>
