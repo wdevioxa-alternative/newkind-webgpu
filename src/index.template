@@ -334,39 +334,39 @@
 
                       <div class="slide-container">
                         <input type="radio" name="sample" id="sample0">
-                        <label for="sample0">0</label>
+                        <label for="sample0">-16</label>
                         <input type="radio" name="sample" id="sample1">
-                        <label for="sample1">1</label>
+                        <label for="sample1">-151</label>
                         <input type="radio" name="sample" id="sample2">
-                        <label for="sample2">2</label>
+                        <label for="sample2">-14</label>
                         <input type="radio" name="sample" id="sample3">
-                        <label for="sample3">3</label>
+                        <label for="sample3">-13</label>
                         <input type="radio" name="sample" id="sample4">
-                        <label for="sample4">4</label>
+                        <label for="sample4">-12</label>
                         <input type="radio" name="sample" id="sample5">
-                        <label for="sample5">5</label>
+                        <label for="sample5">-11</label>
                         <input type="radio" name="sample" id="sample6">
-                        <label for="sample6">6</label>
+                        <label for="sample6">-10</label>
                         <input type="radio" name="sample" id="sample7">
-                        <label for="sample7">7</label>
+                        <label for="sample7">-9</label>
                         <input type="radio" name="sample" id="sample8" checked>
-                        <label for="sample8">8</label>
+                        <label for="sample8">-8</label>
                         <input type="radio" name="sample" id="sample9">
-                        <label for="sample9">9</label>
+                        <label for="sample9">-7</label>
                         <input type="radio" name="sample" id="sample10">
-                        <label for="sample10">10</label>
+                        <label for="sample10">-6</label>
                         <input type="radio" name="sample" id="sample11">
-                        <label for="sample11">11</label>
+                        <label for="sample11">-5</label>
                         <input type="radio" name="sample" id="sample12">
-                        <label for="sample12">12</label>
+                        <label for="sample12">-4</label>
                         <input type="radio" name="sample" id="sample13">
-                        <label for="sample13">13</label>
+                        <label for="sample13">-3</label>
                         <input type="radio" name="sample" id="sample14">
-                        <label for="sample14">14</label>
+                        <label for="sample14">-2</label>
                         <input type="radio" name="sample" id="sample15">
-                        <label for="sample15">15</label>
+                        <label for="sample15">-1</label>
                         <input type="radio" name="sample" id="sample16">
-                        <label for="sample16">16</label>
+                        <label for="sample16">0</label>
 
                         <!-- leave this "slide" -->
                         <a class="slide" aria-hidden="true"></a>
