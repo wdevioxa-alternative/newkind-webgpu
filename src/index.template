@@ -236,6 +236,7 @@
 
 				$( "#startplayback" ).click( function() {
 					let nameoffile = "04891.mp3";
+					window.audioinit();
 					window.loadfile( "sounds/" + nameoffile ).then( function( source ) 
 					{
 						let memdata = new Uint8Array( source );
@@ -264,11 +265,12 @@
 
 					let SIZE_OF_SHORT = 2;
 
-					let memsize = _countofframes * _channels * SIZE_OF_SHORT;
-					let memptr = window.malloc( memsize );
-					let _size = window.currentbuffer( nameoffile, _frameoffset, memptr, _countofframes );
+					let memptr = window.malloc( _countofframes * _channels * SIZE_OF_SHORT );
 
-					let i16a = window.copy( memptr, memsize );
+					let _framescount = window.currentbuffer( nameoffile, _frameoffset, memptr, _countofframes );
+
+					let i16a = window.copy( memptr, _framescount * _channels * SIZE_OF_SHORT );
+
 					console.log( "data: " + i16a );
 
 					if ( memptr > 0 ) window.free( memptr );
@@ -277,7 +279,6 @@
 				});
 				
 				window.wasminit( "js/", function() {
-					window.audioinit();
 					window.startapp();
 				});
 
