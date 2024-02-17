@@ -6,10 +6,16 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import RemoveWebpackPlugin from 'remove-files-webpack-plugin';
 
 const __dirname = './';
-
+const ASSET_PATH = './src/components'
 export default {
     entry: [ 'babel-polyfill', './src/app.mjs' ],
+    experiments: {
+        topLevelAwait: true
+    },
     plugins: [
+        new webpack.DefinePlugin({
+            'process.env.ASSET_PATH': JSON.stringify(ASSET_PATH),
+        }),
         new HtmlWebpackPlugin({ 
             title: 'WebGPU Test Page',
             filename: 'index.html',
@@ -27,6 +33,7 @@ export default {
             { from: path.resolve(__dirname, 'src', 'font'), to: path.resolve(__dirname, 'dist', 'font') },
             { from: path.resolve(__dirname, 'src', 'js'), to: path.resolve(__dirname, 'dist', 'js') },
             { from: path.resolve(__dirname, 'src', 'assets'), to: path.resolve(__dirname, 'dist', 'assets') },
+            { from: path.resolve(__dirname, 'src', 'components'), to: path.resolve(__dirname, 'dist', 'component') },
             { from: path.resolve(__dirname, 'src', 'config'), to: path.resolve(__dirname, 'dist', 'config') },
             { from: path.resolve(__dirname, 'src', 'sounds'), to: path.resolve(__dirname, 'dist', 'sounds') }
           ]
@@ -36,7 +43,8 @@ export default {
     path: path.resolve(__dirname, 'dist'),
     filename: "[name].bundle.js",
     chunkFilename: "[id].bundle.js",
-    assetModuleFilename: "[path][name].[ext]"
+    assetModuleFilename: "[path][name].[ext]",
+    publicPath: path.resolve(__dirname, 'dist/this'),
   },
   module: {
     rules: [
