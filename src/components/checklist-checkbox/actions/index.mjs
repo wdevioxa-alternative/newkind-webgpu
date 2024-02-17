@@ -8,6 +8,7 @@ export const actions = (self) => {
                 event.stopPropagation()
                 const currentTarget = event.currentTarget
 
+                console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@', currentTarget.id)
                 document.dispatchEvent(new CustomEvent(`settingsCheckbox`, {
                     bubbles: true,
                     composed: true,

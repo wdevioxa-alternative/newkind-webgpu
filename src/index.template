@@ -91,7 +91,7 @@
             document.addEventListener('settingsCheckbox', (event) => {
                 const id = event.detail.id
                 const value = event.detail.value
-                console.log('Checkbox: ',id,  value)
+                console.log('Checkbox: ', id,  value)
             }, {
                   bubbles: true,
                   composed: true,
@@ -451,7 +451,7 @@
                             <label for="checkbox-9"></label>
                         </li>
                         <li class="checkbox">
-                            <input class="custom-checkbox" id="checkbox-`10" type="checkbox">
+                            <input class="custom-checkbox" id="checkbox-10" type="checkbox">
                             <label for="checkbox-10"></label>
                         </li>
                         <li class="checkbox">
