@@ -124,10 +124,8 @@ export class wDPoint extends wDObject
             vb[ii++] = instance.calcY( Yv - Yw ); // 1 0 (1)
             vb[ii++] = instance.calcX( Xv - Xw ); // 0 0 (2)
             vb[ii++] = instance.calcY( Yv - Yw ); // 0 0 (2)
-
             for ( let k = 0; k < 2; k++ ) vb[ii++] = vb[ 0 * 2 + k + i * 12 ]; // 1 1 (0)
             for ( let k = 0; k < 2; k++ ) vb[ii++] = vb[ 2 * 2 + k + i * 12 ]; // 0 0 (2)
-
             vb[ii++] = instance.calcX( Xv - Xw ); // 0 1 (3)
             vb[ii++] = instance.calcY( Yv + Yw ); // 0 1 (3)
         }

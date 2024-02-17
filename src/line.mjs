@@ -160,6 +160,8 @@ export class wDLine extends wDObject
             let lines = this.getLines();
             let count = this.getLinesCount();
 
+            let _skipcount = 0;
+
             for ( let i = 0; i < count; i++ )
             {
                 let _x0 = lines[ i ].x1;
@@ -169,6 +171,7 @@ export class wDLine extends wDObject
 
                 let _t = ( lines[i].t < 1.0 ) ? 1.0 : lines[i].t;
                 let _colors = lines[i].colors;
+
                 let _style = lines[i].style;
 
                 let dx = _x1 - _x0;
@@ -191,6 +194,15 @@ export class wDLine extends wDObject
                 {
                     let _y = 0;
                     let _x = 0;
+
+                    if ( _style != 0 ) {
+                        _skipcount++;
+                                            
+                        if ( _style == _skipcount ) {
+                            _skipcount = 0;
+                            continue;
+                        }
+                    }
 
                     if ( _aX == 0 ) _x = 0;
                     else _x = j * Math.cos( conerX );

@@ -68,40 +68,7 @@
 		</style>
 
 		<script type='text/javascript'>
-			function clone(obj) {
-				var copy;
 
-				// Handle the 3 simple types, and null or undefined
-				if (null == obj || "object" != typeof obj) return obj;
-
-				// Handle Date
-				if (obj instanceof Date) {
-					copy = new Date();
-					copy.setTime(obj.getTime());
-					return copy;
-				}
-
-				// Handle Array
-				if (obj instanceof Array) {
-					copy = [];
-					for (var i = 0, len = obj.length; i < len; i++) {
-						copy[i] = clone(obj[i]);
-					}
-					return copy;
-				}
-
-				// Handle Object
-				if (obj instanceof Object) {
-					copy = {};
-					for (var attr in obj) {
-						if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
-					}
-					return copy;
-				}
-
-				throw new Error("Unable to copy obj! Its type isn't supported.");
-			}
-			
 			(function($)
 			{
 				$.fn.input = function (css)
@@ -214,8 +181,8 @@
 
 				$( "#minimum-x" ).slider( {
 					create: function( event, ui ) {
-						$("#minimum-x").slider( "value", 30 );
-						window.kdX = 30;
+						$("#minimum-x").slider( "value", 81 );
+						window.kdX = 81;
 					},
 					change: function( event, ui ) {
 						$("#minimum-x-value").text( ui.value );
@@ -225,7 +192,7 @@
 						$("#minimum-x-value").text( ui.value );
 					},					
 					range: false,
-					min: 6,
+					min: 9,
 					max: 999,
 					step: 2,
 				});
@@ -250,8 +217,8 @@
 
 				$( "#minimum-y" ).slider( {
 					create: function( event, ui ) {
-						$("#minimum-y").slider( "value", 10 );
-						window.kdY = 10;
+						$("#minimum-y").slider( "value", 11 );
+						window.kdY = 11;
 					},
 					change: function( event, ui ) {
 						$("#minimum-y-value").text( ui.value );
@@ -260,7 +227,7 @@
 					slide: function( event, ui ) {
 						$("#minimum-y-value").text( ui.value );
 					},							
-					min: 3,
+					min: 9,
 					max: 559,
 					step: 2,
 				});

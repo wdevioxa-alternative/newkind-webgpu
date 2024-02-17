@@ -447,6 +447,11 @@ export class wDApplication
         let sW = this.getCanvasWidth( false );
         let sH = this.getCanvasHeight( false );
 
+        let object = window.getDrawParams.call();
+
+        this.spline.set( sBW, sBW, sW, sH );
+        await this.spline.draw( this, object, window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY );
+
         let iW = 100 * this.color * 4;
         let iH = 100 * this.color * 4;
         
@@ -503,11 +508,6 @@ export class wDApplication
         //await this.label.draw( this, textColor, backgroundColor, "100.001N", true, true );
         //await this.label.render( this );
         ////////////////////////////////////////////////////////////////////////////////////
-
-        let object = window.getDrawParams.call();
-
-        this.spline.set( sBW, sBW, sW, sH );
-        await this.spline.draw( this, object, window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY );
 
         this.passEncoder.end();
         this.device.queue.submit( [ this.commandEncoder.finish() ] );
