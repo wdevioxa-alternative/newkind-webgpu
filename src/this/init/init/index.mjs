@@ -35,7 +35,6 @@ export const init = (self) => {
             for (let i = 0; i < self.children.length; ++i) {
                 const content = self.children[i].content;
                 container = getChildren(content);
-                console.log('content 22',  container )
                 self.children[i].remove();
             }
         } else {

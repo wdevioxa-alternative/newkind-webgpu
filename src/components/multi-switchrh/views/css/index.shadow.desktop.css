@@ -18,8 +18,8 @@
     /* Even though we're using "flex" to display, we have to assign widths so that we know exactly where to position the slide */
     width: 50%;
     text-align: center;
-    padding-left: 0.2vw;
-    padding-right: 0.2vw;
+    /*padding-left: 0.2vw;*/
+    /*padding-right: 0.2vw;*/
     z-index: 2;
     box-sizing: border-box;
 }
