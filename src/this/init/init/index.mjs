@@ -35,6 +35,7 @@ export const init = (self) => {
             for (let i = 0; i < self.children.length; ++i) {
                 const content = self.children[i].content;
                 container = getChildren(content);
+                console.log('content 22',  container )
                 self.children[i].remove();
             }
         } else {
@@ -56,7 +57,7 @@ export const init = (self) => {
         }
 
         if (!pathname) {
-            pathname = store.get('pathname').pathname;
+            pathname = store.get('pathname')?.pathname;
         }
 
         if (pathname === null || !pathname) {
@@ -83,6 +84,20 @@ export const init = (self) => {
             style.textContent = `@import "${link}";`;
             self.shadowRoot.appendChild(style);
             style.onload = () => {
+                for (let i = 0; i < container.shadowDom.length; ++i) {
+                    self.shadowRoot.append(container.shadowDom[i]);
+                }
+
+                if(container.lightDom.length > 0) {
+                    for (let i = 0; i < container.lightDom.length; ++i) {
+                        self.appendChild(container.lightDom[i])
+                    }
+                }
+
+                resolve(self);
+            };
+
+            style.onerror = () => {
                 for (let i = 0; i < container.shadowDom.length; ++i) {
                     self.shadowRoot.append(container.shadowDom[i]);
                 }

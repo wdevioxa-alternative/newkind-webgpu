@@ -10,9 +10,13 @@ const envInit = {
 let ENV = {}
 
 try {
-    const myRequest = new Request("/env.json", envInit);
-    const response = await fetch(myRequest);
-    ENV = await response.json()
+    // const myRequest = new Request("/env.json", envInit);
+    // const response = await fetch(myRequest);
+    // ENV = await response.json()
+
+    ENV = {
+        test: "test"
+    }
 } catch (e) {
     console.error('ERROR FETCH JSON', e)
 }
