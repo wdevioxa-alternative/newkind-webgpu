@@ -61,6 +61,11 @@ Module.onRuntimeInitialized = () => {
     );
   };
   
+  window["copy"] = function( memptr, memsize ) {
+    var tempdb = new Int8Array(Module.HEAPU8.buffer, memptr, memsize  );
+    return new Int16Array(tempdb.buffer, memptr, memsize / 2 );				
+  };
+
   window["assign"] = function( memdata, memptr ) {
     Module.HEAPU8.set( memdata, memptr );
   };

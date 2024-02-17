@@ -243,13 +243,7 @@
 						let memptr = window.malloc( memsize );
 						window.assign( memdata, memptr );
 						let retval = window.savefile( nameoffile, memptr, memsize );
-						if ( retval > 0 ) {
-							let channels = window.getchannels( nameoffile );
-							let samplerate = window.getsamplerate( nameoffile );
-
-							console.log( "channels: " + channels );
-							console.log( "samplerate: " + samplerate );
-							
+						if ( retval > 0 ) {							
 							window.startplayback( nameoffile );
 						}
 						if ( memptr > 0 ) window.free( memptr );									
@@ -258,12 +252,28 @@
 
 				$( "#stopplayback" ).click( function() {
 					let nameoffile = "04891.mp3";
-					let soundoffset = window.currentoffset();
-					let memsize = memdata.length * memdata.BYTES_PER_ELEMENT;
-					let memptr = window.malloc( memsize );
-  					let size = window.currentbuffer( nameoffile, soundoffset, memptr, memsize );
+					
+					let _channels = window.getchannels( nameoffile );
+					let _samplerate = window.getsamplerate( nameoffile );
+					
+					let _frameoffset = window.currentoffset();
 
-					//window.stopplayback();
+					/////////////////////////////////////////////////////////////////////////////////
+					// 0.5 seconds
+					let _countofframes = _samplerate / 2.0;
+
+					let SIZE_OF_SHORT = 2;
+
+					let memsize = _countofframes * _channels * SIZE_OF_SHORT;
+					let memptr = window.malloc( memsize );
+					let _size = window.currentbuffer( nameoffile, _frameoffset, memptr, _countofframes );
+
+					let i16a = window.copy( memptr, memsize );
+					console.log( "data: " + i16a );
+
+					if ( memptr > 0 ) window.free( memptr );
+
+					window.stopplayback();
 				});
 				
 				window.wasminit( "js/", function() {
