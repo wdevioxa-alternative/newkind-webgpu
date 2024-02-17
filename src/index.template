@@ -256,6 +256,7 @@
 				});
 				
 				window.wasminit( "js/", function() {
+					window.audioinit();
 					window.startapp();
 				});
 
