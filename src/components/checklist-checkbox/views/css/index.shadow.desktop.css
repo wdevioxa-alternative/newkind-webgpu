@@ -1,14 +1,16 @@
 :host {
     display: flex;
     align-self: flex-start;
-    width: calc(100% / 17);
+    width: 100%;
 }
 
 .container {
+    display: flex;
     padding: 0;
     list-style-type: none;
     margin: auto;
     text-align: center;
+    width: 100%;
 }
 
 :host([data-id="checkbox_2"]) .container, :host([data-id="checkbox_1"]) .container, :host([data-id="checkbox_3"]) .container {
@@ -16,6 +18,10 @@
     flex-direction: column;
     width: 100%;
     gap: 2.96rem;
+}
+
+.checkbox {
+    width: calc(100% / 17);
 }
 
 li {
