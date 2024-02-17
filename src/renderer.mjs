@@ -450,7 +450,7 @@ export class wDApplication
         let object = window.getDrawParams.call();
 
         this.spline.set( sBW, sBW, sW, sH );
-        await this.spline.draw( this, object, window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
+        //await this.spline.drawConfig( this, object, window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
 
         let iW = 100 * this.color * 4;
         let iH = 100 * this.color * 4;
@@ -458,8 +458,8 @@ export class wDApplication
         let iX = sBW + ( sW - iW ) / 2.0;
         let iY = sBW + ( sH - iH ) / 2.0;
 
-        this.image.set( iX, iY, iW, iH );
-        await this.image.draw( this );
+        //this.image.set( iX, iY, iW, iH );
+        //await this.image.draw( this );
 
         ////////////////////////////////////////////////////////////////////////////////////
         // let bW = sW;
@@ -479,8 +479,8 @@ export class wDApplication
         ////////////////////////////////////////////////////////////////////////////////////
         //this.circle.set( 10, 10, 6, 1 );
 
-        this.circle.set( sBW + sW / 2.0, sBW + sH / 2.0, 100 * ( 1.0 - this.color ) * 2, 1 );
-        await this.circle.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
+        // this.circle.set( sBW + sW / 2.0, sBW + sH / 2.0, 100 * ( 1.0 - this.color ) * 2, 1 );
+        // await this.circle.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
         ////////////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -508,6 +508,46 @@ export class wDApplication
         //await this.label.draw( this, textColor, backgroundColor, "100.001N", true, true );
         //await this.label.render( this );
         ////////////////////////////////////////////////////////////////////////////////////
+
+        if ( window.isInit() )
+        {
+            let nameoffile = "04891.mp3";
+
+            if ( window.isExist( nameoffile ) )
+            {
+                if ( window.isPlaying() )
+                {
+                    /////////////////////////////////////////////////////////////////////////////////
+                    // number of channels
+                    let _channels = window.getchannels( nameoffile );
+
+                    /////////////////////////////////////////////////////////////////////////////////
+                    // samplerate of the file
+                    let _samplerate = window.getsamplerate( nameoffile );
+
+                    /////////////////////////////////////////////////////////////////////////////////
+                    // current playback offset of the file					
+                    let _frameoffset = window.playbackoffset();
+
+                    /////////////////////////////////////////////////////////////////////////////////
+                    // ( _samplerate / 2 ) 0.5 seconds
+                    let _countofframes = _samplerate / 2 * _channels;
+
+                    let _memptr = window.malloc( _countofframes * _channels * SIZE_OF_FLOAT );
+
+                    let _framescount = window.getcurrentbuffer( nameoffile, _frameoffset, _memptr, _countofframes );
+
+                    let f32a = window.copy( _memptr, _framescount * _channels * SIZE_OF_FLOAT );
+            
+                    if ( _memptr > 0 ) window.free( _memptr );
+
+                    await this.spline.drawData( this, f32a, _channels, _samplerate, 1, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
+                }
+            }
+        }
+
+        
+
 
         this.passEncoder.end();
         this.device.queue.submit( [ this.commandEncoder.finish() ] );

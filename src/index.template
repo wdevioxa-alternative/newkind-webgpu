@@ -97,6 +97,11 @@
 
 			window["isNumber"] = function(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 
+			const SIZE_OF_FLOAT = 4;
+			const SIZE_OF_SHORT = 2;
+			const SIZE_OF_INT = 4;
+			const SIZE_OF_DOUBLE = 8;
+
 			jQuery(document).ready(function () 
 			{			
 				let onchange_samplerate = function() {
@@ -235,8 +240,9 @@
 				$( "#controlgroup" ).controlgroup();
 
 				$( "#startplayback" ).click( function() {
-					let nameoffile = "04891.mp3";
 					window.audioinit();
+
+					let nameoffile = "04891.mp3";
 					window.loadfile( "sounds/" + nameoffile ).then( function( source ) 
 					{
 						let memdata = new Uint8Array( source );
@@ -244,7 +250,8 @@
 						let memptr = window.malloc( memsize );
 						window.assign( memdata, memptr );
 						let retval = window.savefile( nameoffile, memptr, memsize );
-						if ( retval > 0 ) {							
+						if ( retval > 0 ) {				
+							console.log( "savefile: " + nameoffile );		
 							window.startplayback( nameoffile );
 						}
 						if ( memptr > 0 ) window.free( memptr );									
@@ -252,29 +259,6 @@
 				});
 
 				$( "#stopplayback" ).click( function() {
-					let nameoffile = "04891.mp3";
-					
-					let _channels = window.getchannels( nameoffile );
-					let _samplerate = window.getsamplerate( nameoffile );
-					
-					let _frameoffset = window.currentoffset();
-
-					/////////////////////////////////////////////////////////////////////////////////
-					// 0.5 seconds
-					let _countofframes = _samplerate / 2.0;
-
-					let SIZE_OF_SHORT = 2;
-
-					let memptr = window.malloc( _countofframes * _channels * SIZE_OF_SHORT );
-
-					let _framescount = window.currentbuffer( nameoffile, _frameoffset, memptr, _countofframes );
-
-					let i16a = window.copy( memptr, _framescount * _channels * SIZE_OF_SHORT );
-
-					console.log( "data: " + i16a );
-
-					if ( memptr > 0 ) window.free( memptr );
-
 					window.stopplayback();
 				});
 				
