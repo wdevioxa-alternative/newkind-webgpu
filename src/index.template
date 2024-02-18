@@ -97,6 +97,14 @@
                   composed: true,
             });
 
+            document.addEventListener('channels', (event) => {
+                const value = event.detail.value
+                console.log('Channel: ', value)
+            }, {
+                  bubbles: true,
+                  composed: true,
+            });
+
 			(function($)
 			{
 				$.fn.input = function (css)
@@ -325,6 +333,28 @@
                 <br />
             </div>
             <multi-switchrh
+                data-field="LCR"
+                data-services-path="webgpu"
+            >
+                <template>
+                    <div class="container">
+                       <fieldset data-field="LCR" class="multiswitch" data-theme="stoplight">
+                           <legend>Left/Center/Right</legend>
+                           <div class="slide-container">
+                               <input type="radio" name="stoplight" id="left">
+                               <label for="left">Left</label>
+                               <input type="radio" name="stoplight" id="stereo"  checked>
+                               <label for="stereo">Stereo</label>
+                               <input type="radio" name="stoplight" id="right">
+                               <label for="right">Right</label>
+                               <a class="slide value" aria-hidden="true"></a>
+                           </div>
+                       </fieldset>
+                       </div>
+                </template>
+            </multi-switchrh>
+            <multi-switchrh
+                data-field="settings-1"
                 data-services-path="webgpu"
             >
         		<template>
