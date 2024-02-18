@@ -25,6 +25,8 @@
 				margin-left: auto;
 				margin-right: auto;
 				width: 80%;
+      			overflow-y: scroll;
+      			overflow-x: auto;				
 			}
 			#gfx {
 		    	width: 100%;
