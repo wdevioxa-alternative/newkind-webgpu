@@ -636,7 +636,7 @@ export class wDSpline extends wDObject
         }
     }
 
-    async drawData( instance, _object, _channels, _rateofsamples, _volumescale, kdX, kdY, zoomX, zoomY, _t = 1, _colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
+    async drawData( instance, _object, _channels, _render, _rateofsamples, _volumescale, kdX, kdY, zoomX, zoomY, _t = 1, _colors = [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] ) 
     {
         let kX = zoomX / 100.0;
         let kY = zoomY / 100.0;
@@ -707,8 +707,16 @@ export class wDSpline extends wDObject
             if ( _object.length > 0 ) 
             {
                 this.discretlines.clear();
-                for ( let i = 0; i < _channels; i++ ) {
-                    await this.floatarrayDraw( instance, _object, _channels, i, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, _colors );
+                if ( _render == "left" ) {
+                    await this.floatarrayDraw( instance, _object, _channels, 0, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, _colors );
+                }
+                if ( _render == "right" ) {
+                    await this.floatarrayDraw( instance, _object, _channels, 1, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, _colors );
+                }
+                if ( _render == "stereo" ) {
+                    for ( let i = 0; i < _channels; i++ ) {
+                        await this.floatarrayDraw( instance, _object, _channels, i, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, _colors );
+                    }
                 }
                 await this.discretlines.draw( instance );
             }

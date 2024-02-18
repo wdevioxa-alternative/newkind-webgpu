@@ -99,6 +99,7 @@
 
             document.addEventListener('channels', (event) => {
                 const value = event.detail.value
+				window["activechannels"] = value;
                 console.log('Channel: ', value)
             }, {
                   bubbles: true,
@@ -132,6 +133,7 @@
 			})(jQuery);
 
 			window["isNumber"] = function(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
+			window["activechannels"] = "stereo";
 
 			const SIZE_OF_FLOAT = 4;
 			const SIZE_OF_SHORT = 2;

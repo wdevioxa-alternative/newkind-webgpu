@@ -506,6 +506,8 @@ export class wDApplication
         //await this.label.render( this );
         ////////////////////////////////////////////////////////////////////////////////////
 
+        let _render = window["activechannels"];
+
         if ( window.isInit() )
         {
             let nameoffile = "04891.mp3";
@@ -553,22 +555,22 @@ export class wDApplication
                             { from: [ 0.0, 1.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] },
                         ] 
 
-                        await this.spline.drawData( this, _buffer, _channels, _samplerate, 1, window.kdX, window.kdY, window.zoomX, window.zoomY, 1, _colors );
+                        await this.spline.drawData( this, _buffer, _channels, _render, _samplerate, 1, window.kdX, window.kdY, window.zoomX, window.zoomY, 1, _colors );
                     }
                 }
                 else
                 {
-                    await this.spline.drawData( this, null, null, window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
+                    await this.spline.drawData( this, null, null, "stereo", window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
                 }    
             }
             else
             {
-                await this.spline.drawData( this, null, null, window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
+                await this.spline.drawData( this, null, null, "stereo", window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
             }    
         }
         else
         {
-            await this.spline.drawData( this, null, null, window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
+            await this.spline.drawData( this, null, null, "stereo", window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
         } 
         
 
