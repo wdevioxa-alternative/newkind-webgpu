@@ -277,9 +277,8 @@
 					step: 2,
 				});
 
-				$( "#controlgroup" ).controlgroup({
-					direction: "horizontal"
-				});
+				$( "#startplayback" ).button();
+				$( "#stopplayback" ).button();
 
 				$( "#startplayback" ).click( function() {
 					window.audioinit();
@@ -311,7 +310,7 @@
 	<body>	
 		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
 		<div class="settings">
-			<div id="controlgroup">
+
 				<table style="width: 100%" cellpadding=0 cellspacing=0 >
 					<tr>
 						<td style="width: 20%">
@@ -330,7 +329,7 @@
 						</td>
 					</tr>
 				</table>
-			</div>
+
 			<br />
 
 				<table style="width: 100%" cellpadding=0 cellspacing=6 >
@@ -521,6 +520,8 @@
                 </template>
             </checklist-checkbox>
 		</div>
+		<br />
+		<br />
 		<canvas id="gfx">&nbsp;</canvas>
     </body>
 </html>

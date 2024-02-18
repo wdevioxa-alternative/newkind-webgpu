@@ -183,9 +183,6 @@ export class wDApplication
             const wgerr = document.getElementById('error');
             wgerr.style.display = 'none';
 
-            const wcg = document.getElementById('controlgroup');
-            wcg.style.display = 'block';
-
             const wgfx = document.getElementById('gfx');
             wgfx.style.display = 'block';
 
