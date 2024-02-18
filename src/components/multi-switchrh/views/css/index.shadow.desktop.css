@@ -1,4 +1,4 @@
-:host([data-field="LCR"]) {
+:host([data-field="settings-2"]) {
     display: flex;
     width: 25vw;
 }
@@ -41,6 +41,10 @@
 
 .multiswitch .slide-container a.value {
     width: calc(100%/3);
+}
+
+.multiswitch .slide-container a.settings-2 {
+    width: calc(100%/2);
 }
 
 /*
@@ -159,6 +163,14 @@
 }
 
 
+.multiswitch label:nth-last-child(4) ~ input:nth-child(1):checked ~ a {
+    left: calc(100% / 4 * 1);
+}
+
+.multiswitch label:nth-last-child(4) ~ input:nth-child(3):checked ~ a {
+    left: calc(100% / 4 * 2);
+}
+
 /*.multiswitch label:nth-last-child(6) ~ input:nth-child(5):checked ~ a {*/
 /*    left: calc(100% / 3 * 2);*/
 /*}*/
@@ -232,6 +244,9 @@ fieldset legend {
 }
 
 .container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
     width: 100%;
 }
 
