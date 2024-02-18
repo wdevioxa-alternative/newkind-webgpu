@@ -1,3 +1,7 @@
+:host([data-field="LCR"]) {
+    display: flex;
+    width: 25vw;
+}
 /*
  CSS for the main interaction
 */
@@ -225,6 +229,10 @@ fieldset legend {
 .multiswitch[data-theme="stoplight"] input:not(:first-child):checked ~ a {
     background: #ec7a08;
     border-color: #bc6106;
+}
+
+.container {
+    width: 100%;
 }
 
 .container:last-child {

@@ -97,6 +97,14 @@
                   composed: true,
             });
 
+            document.addEventListener('channels', (event) => {
+                const value = event.detail.value
+                console.log('Channel: ', value)
+            }, {
+                  bubbles: true,
+                  composed: true,
+            });
+
 			(function($)
 			{
 				$.fn.input = function (css)
@@ -325,66 +333,84 @@
                 <br />
             </div>
             <multi-switchrh
+                data-field="LCR"
+                data-services-path="webgpu"
+            >
+                <template>
+                    <div class="container">
+                       <fieldset data-field="LCR" class="multiswitch" data-theme="stoplight">
+                           <legend>Left/Stereo/Right</legend>
+                           <div class="slide-container">
+                               <input type="radio" name="stoplight" id="left">
+                               <label for="left">Left</label>
+                               <input type="radio" name="stoplight" id="stereo"  checked>
+                               <label for="stereo">Stereo</label>
+                               <input type="radio" name="stoplight" id="right">
+                               <label for="right">Right</label>
+                               <a class="slide value" aria-hidden="true"></a>
+                           </div>
+                       </fieldset>
+                       </div>
+                </template>
+            </multi-switchrh>
+            <multi-switchrh
+                data-field="settings-1"
                 data-services-path="webgpu"
             >
         		<template>
         		    <div class="container">
-                       <fieldset data-field="settingsInput" class="multiswitch" data-theme="stoplight">
-                            <legend>Input Data</legend>
-
-                            <div class="slide-container">
-                                <input type="radio" name="stoplight" id="audioInput" checked>
-                                <label for="audioInput">Audio</label>
-                                <input type="radio" name="stoplight" id="oscInput">
-                                <label for="oscInput">OSC</label>
-                                <input type="radio" name="stoplight" id="dataInput">
-                                <label for="dataInput">Data</label>
-                                <a class="slide value" aria-hidden="true"></a>
-                            </div>
-                        </fieldset>
-                        <fieldset data-field="settingsDelay" class="multiswitch">
-                            <legend>sample position</legend>
-
-                      <div class="slide-container">
-                        <input type="radio" name="sample" id="sample0">
-                        <label for="sample0">-16</label>
-                        <input type="radio" name="sample" id="sample1">
-                        <label for="sample1">-15</label>
-                        <input type="radio" name="sample" id="sample2">
-                        <label for="sample2">-14</label>
-                        <input type="radio" name="sample" id="sample3">
-                        <label for="sample3">-13</label>
-                        <input type="radio" name="sample" id="sample4">
-                        <label for="sample4">-12</label>
-                        <input type="radio" name="sample" id="sample5">
-                        <label for="sample5">-11</label>
-                        <input type="radio" name="sample" id="sample6">
-                        <label for="sample6">-10</label>
-                        <input type="radio" name="sample" id="sample7">
-                        <label for="sample7">-9</label>
-                        <input type="radio" name="sample" id="sample8" checked>
-                        <label for="sample8">-8</label>
-                        <input type="radio" name="sample" id="sample9">
-                        <label for="sample9">-7</label>
-                        <input type="radio" name="sample" id="sample10">
-                        <label for="sample10">-6</label>
-                        <input type="radio" name="sample" id="sample11">
-                        <label for="sample11">-5</label>
-                        <input type="radio" name="sample" id="sample12">
-                        <label for="sample12">-4</label>
-                        <input type="radio" name="sample" id="sample13">
-                        <label for="sample13">-3</label>
-                        <input type="radio" name="sample" id="sample14">
-                        <label for="sample14">-2</label>
-                        <input type="radio" name="sample" id="sample15">
-                        <label for="sample15">-1</label>
-                        <input type="radio" name="sample" id="sample16">
-                        <label for="sample16">0</label>
-
-                        <!-- leave this "slide" -->
-                        <a class="slide" aria-hidden="true"></a>
-                      </div>
-                        </fieldset>
+                    <fieldset data-field="settingsInput" class="multiswitch" data-theme="stoplight">
+                        <legend>Input Data</legend>
+                        <div class="slide-container">
+                            <input type="radio" name="stoplight" id="audioInput" checked>
+                            <label for="audioInput">Audio</label>
+                            <input type="radio" name="stoplight" id="oscInput">
+                            <label for="oscInput">OSC</label>
+                            <input type="radio" name="stoplight" id="dataInput">
+                            <label for="dataInput">Data</label>
+                            <a class="slide value" aria-hidden="true"></a>
+                        </div>
+                    </fieldset>
+                    <fieldset data-field="settingsDelay" class="multiswitch">
+                        <legend>sample position</legend>
+                        <div class="slide-container">
+                            <input type="radio" name="sample" id="sample-0">
+                            <label for="sample-0">-16</label>
+                            <input type="radio" name="sample" id="sample-1">
+                            <label for="sample-1">-15</label>
+                            <input type="radio" name="sample" id="sample-2">
+                            <label for="sample-2">-14</label>
+                            <input type="radio" name="sample" id="sample-3">
+                            <label for="sample-3">-13</label>
+                            <input type="radio" name="sample" id="sample-4">
+                            <label for="sample-4">-12</label>
+                            <input type="radio" name="sample" id="sample-5">
+                            <label for="sample-5">-11</label>
+                            <input type="radio" name="sample" id="sample-6">
+                            <label for="sample-6">-10</label>
+                            <input type="radio" name="sample" id="sample-7">
+                            <label for="sample-7">-9</label>
+                            <input type="radio" name="sample" id="sample-8" checked>
+                            <label for="sample-8">-8</label>
+                            <input type="radio" name="sample" id="sample-9">
+                            <label for="sample-9">-7</label>
+                            <input type="radio" name="sample" id="sample-10">
+                            <label for="sample-10">-6</label>
+                            <input type="radio" name="sample" id="sample-11">
+                            <label for="sample-11">-5</label>
+                            <input type="radio" name="sample" id="sample-12">
+                            <label for="sample-12">-4</label>
+                            <input type="radio" name="sample" id="sample-13">
+                            <label for="sample-13">-3</label>
+                            <input type="radio" name="sample" id="sample-14">
+                            <label for="sample-14">-2</label>
+                            <input type="radio" name="sample" id="sample-15">
+                            <label for="sample-15">-1</label>
+                            <input type="radio" name="sample" id="sample-16">
+                            <label for="sample-16">0</label>
+                            <a class="slide" aria-hidden="true"></a>
+                        </div>
+                    </fieldset>
                     </div>
         		</template>
             </multi-switchrh>

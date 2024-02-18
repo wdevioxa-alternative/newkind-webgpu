@@ -24,6 +24,15 @@ export const actions = (self) => {
                                 }
                             }));
                             break
+                        case "LCR":
+                            document.dispatchEvent(new CustomEvent(`channels`, {
+                                bubbles: true,
+                                composed: true,
+                                detail: {
+                                    value: event.target.textContent.toLowerCase()
+                                }
+                            }));
+                            break
                         default:
                             console.warn('не обрабатывается data-field', fieldSet.dataset.field)
                             break
