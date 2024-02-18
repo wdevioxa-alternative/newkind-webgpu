@@ -34,7 +34,7 @@ export class wDSpline extends wDObject
         this.discretlines = new wDLine( instance );
         await this.discretlines.init();
 
-        this.fontsize = instance.getCanvasHeight() * 16 / 1366;
+        this.fontsize = instance.getCanvasHeight() * 16 / 800;
 
         this.labels = [];
 
@@ -167,7 +167,7 @@ export class wDSpline extends wDObject
             this.axis.append( 
                 x, 
                 y + _height / 2.0,
-                x + _width,
+                x + _width - _t,
                 y + _height / 2.0,
                 _t, _colors[0] );
 
@@ -178,7 +178,7 @@ export class wDSpline extends wDObject
                 x + _width / 2.0, 
                 y,
                 x + _width / 2.0,
-                y + _height,
+                y + _height - _t,
                 _t, _colors[0] );
 
             ////////////////////////////////////////////////////////////////////
@@ -199,7 +199,7 @@ export class wDSpline extends wDObject
                     x + _width / 2.0 - i * cX, 
                     y,
                     x + _width / 2.0 - i * cX, 
-                    y + _height,
+                    y + _height - _t,
                     _t, color ); 
     
                 this.axis.append( 
@@ -229,7 +229,7 @@ export class wDSpline extends wDObject
                     x + _width / 2.0 + i * cX, 
                     y,
                     x + _width / 2.0 + i * cX, 
-                    y + _height,
+                    y + _height - _t,
                     _t, color, 2 ); 
 
                 this.axis.append( 
@@ -273,12 +273,12 @@ export class wDSpline extends wDObject
                 this.axis.append( 
                     x, 
                     y + _height / 2.0 + i * cY,
-                    x + _width, 
+                    x + _width - _t, 
                     y + _height / 2.0 + i * cY,
                     _t, color, 8 ); 
 
                 this.axis.append( 
-                    x + _width / 2.0 - _t -  3, 
+                    x + _width / 2.0 - _t - 3, 
                     y + _height / 2.0 + i * cY,
                     x + _width / 2.0 + 3, 
                     y + _height / 2.0 + i * cY,
@@ -303,7 +303,7 @@ export class wDSpline extends wDObject
                 this.axis.append( 
                     x, 
                     y + _height / 2.0 - i * cY,
-                    x + _width, 
+                    x + _width - _t, 
                     y + _height / 2.0 - i * cY,
                     _t, color, 8 ); 
 
@@ -702,10 +702,8 @@ export class wDSpline extends wDObject
         await this.borderDraw( instance, x, y, _width, _height, _t, _colors );
         await this.axisDraw( instance, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] );
 
-        if ( _object != null )
-        {
-            if ( _object.length > 0 ) 
-            {
+        if ( _object != null ) {
+            if ( _object.length > 0 ) {
                 this.discretlines.clear();
                 if ( _channels >= 2 ) {
                     if ( _render == "left" ) {
