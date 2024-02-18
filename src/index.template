@@ -100,7 +100,7 @@
             document.addEventListener('channels', (event) => {
                 const value = event.detail.value
 				window["activechannels"] = value;
-                console.log('Channel: ', value)
+                // console.log('Channel: ', value)
             }, {
                   bubbles: true,
                   composed: true,
@@ -246,8 +246,8 @@
 
 				$( "#zoom-y" ).slider({
 					create: function( event, ui ) {
-						$("#zoom-y").slider( "value", 80 );
-						window.zoomY = 80;
+						$("#zoom-y").slider( "value", 100 );
+						window.zoomY = 100;
 					},
 					change: function( event, ui ) {
 						$("#zoom-y-value").text( ui.value );
@@ -257,7 +257,7 @@
 						$("#zoom-y-value").text( ui.value );
 					},					
 					range: false,
-					min: 80,
+					min: 100,
 					max: 400,
 					step: 1
 				});

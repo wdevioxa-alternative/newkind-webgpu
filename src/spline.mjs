@@ -707,16 +707,20 @@ export class wDSpline extends wDObject
             if ( _object.length > 0 ) 
             {
                 this.discretlines.clear();
-                if ( _render == "left" ) {
-                    await this.floatarrayDraw( instance, _object, _channels, 0, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, _colors );
-                }
-                if ( _render == "right" ) {
-                    await this.floatarrayDraw( instance, _object, _channels, 1, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, _colors );
-                }
-                if ( _render == "stereo" ) {
-                    for ( let i = 0; i < _channels; i++ ) {
-                        await this.floatarrayDraw( instance, _object, _channels, i, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, _colors );
+                if ( _channels >= 2 ) {
+                    if ( _render == "left" ) {
+                        await this.floatarrayDraw( instance, _object, _channels, 0, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, _colors );
                     }
+                    if ( _render == "right" ) {
+                        await this.floatarrayDraw( instance, _object, _channels, 1, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, _colors );
+                    }
+                    if ( _render == "stereo" ) {
+                        for ( let i = 0; i < _channels; i++ ) {
+                            await this.floatarrayDraw( instance, _object, _channels, i, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, _colors );
+                        }
+                    }
+                } else {
+                    await this.floatarrayDraw( instance, _object, _channels, 0, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, _colors );
                 }
                 await this.discretlines.draw( instance );
             }
