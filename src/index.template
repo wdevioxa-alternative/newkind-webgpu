@@ -346,7 +346,12 @@
 									<a class="slide settings-3" aria-hidden="true"></a>
 								</div>
 							</fieldset>
-							<br />
+						</div>
+					</template>
+				</multi-switchrh>
+				<multi-switchrh data-field="settings-2" data-services-path="webgpu">
+					<template>
+						<div class="container">
 							<fieldset data-field="goniometer" class="multiswitch" data-theme="stoplight">
 								<legend>Goniometer</legend>
 								<div class="slide-container">
@@ -357,7 +362,12 @@
 									<a class="slide settings-2" aria-hidden="true"></a>
 								</div>
 							</fieldset>
-							<br />
+						</div>
+					</template>
+				</multi-switchrh>
+				<multi-switchrh data-field="settings-2" data-services-path="webgpu">
+					<template>
+						<div class="container">
 							<fieldset data-field="LCR" class="multiswitch" data-theme="stoplight">
 								<legend>Left/Stereo/Right</legend>
 								<div class="slide-container">
@@ -391,7 +401,12 @@
 									<a class="slide value" aria-hidden="true"></a>
 								</div>
 							</fieldset>
-							<br />
+						</div>
+					</template>
+				</multi-switchrh>
+				<multi-switchrh data-field="settings-1" data-services-path="webgpu">
+					<template>
+						<div class="container">
 							<fieldset data-field="settingsDelay" class="multiswitch">
 								<legend>Sample position</legend>
 								<div class="slide-container">
