@@ -3,8 +3,8 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		
-		<link href="js/themes/dark-hive/jquery-ui.css" rel="stylesheet">
-		<link href="js/themes/dark-hive/theme.css" rel="stylesheet">
+		<link href="js/themes/dark-hive/jquery-ui.css" rel="stylesheet"/>
+		<link href="js/themes/dark-hive/theme.css" rel="stylesheet"/>
 
 		<script type="text/javascript" src="js/jquery-3.7.1.min.js"></script>
 		<script type="text/javascript" src="js/external/jquery/jquery.js"></script>
@@ -139,7 +139,11 @@
 			const SIZE_OF_DOUBLE = 8;
 
 			jQuery(document).ready(function () 
-			{			
+			{	
+				window.wasminit( "js/", function() {
+					window.appinit();
+				});
+		
 				let onchange_samplerate = function() {
 					let value = $( "#sample-rate" ).spinner( "value" );
 					value = window.isNumber( value ) ? value : 44100;
@@ -154,8 +158,8 @@
 					window.volumerate = parseFloat( value );					
 				};
 
-				$( "#sample-rate" ).spinner( {
-					create: function( event, ui ) {
+				$( "#sample-rate" ).spinner({
+					create: function( event, ui ){
 						$( "#sample-rate" ).spinner( "value", 44100 );
 						window.samplerate = 44100;
 					},
@@ -168,15 +172,15 @@
 					value: 44100,
 				});
 
-				$( "#sample-rate" ).click(function() {
+				$( "#sample-rate" ).click(function(){
 					onchange_samplerate();
 				});
 
-			    $( "#sample-rate" ).keyup(function(){
+				$( "#sample-rate" ).keyup(function(){
 					if (event.keyCode === 13) {
 						onchange_samplerate();
 					}
-    			});
+				});
 
 				$( "#volume-rate" ).spinner({
 					create: function( event, ui ) {
@@ -196,11 +200,11 @@
 					onchange_volumerate();
 				});
 
-			    $( "#volume-rate" ).keyup( function(){
+				$( "#volume-rate" ).keyup( function(){
 					if (event.keyCode === 13) {
 						onchange_volumerate();
 					}
-    			});
+				});
 
 				$( "#zoom-x" ).slider({
 					create: function( event, ui ) {
@@ -220,7 +224,7 @@
 					step: 1
 				});
 
-				$( "#minimum-x" ).slider( {
+				$( "#minimum-x" ).slider({
 					create: function( event, ui ) {
 						$("#minimum-x").slider( "value", 81 );
 						window.kdX = 81;
@@ -238,7 +242,7 @@
 					step: 2,
 				});
 
-				$( "#zoom-y" ).slider( {
+				$( "#zoom-y" ).slider({
 					create: function( event, ui ) {
 						$("#zoom-y").slider( "value", 80 );
 						window.zoomY = 80;
@@ -298,10 +302,6 @@
 					window.stopplayback();
 				});
 				
-				window.wasminit( "js/", function() {
-					window.startapp();
-				});
-
 			});
 		</script>
 	</head>

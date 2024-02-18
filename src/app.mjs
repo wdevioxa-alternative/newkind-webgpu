@@ -16,7 +16,7 @@ window["loadfile"] = function( nameoffile ) {
 	}	
 };
 
-window["startapp"] = function() {
+window["appinit"] = function() {
 	try {
 
 		const renderer = new wDApplication();
