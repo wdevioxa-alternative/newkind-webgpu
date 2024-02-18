@@ -289,6 +289,10 @@
 
 				$( "#startplayback" ).button();
 				$( "#stopplayback" ).button();
+				$( "#accordition" ).accordition({
+					heightStyle: "content",
+					collapsible: true
+				});
 
 				$( "#startplayback" ).click( function() {
 					window.audioinit();
@@ -319,168 +323,174 @@
 
 	<body>	
 		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
-		<div class="settings">
-            <multi-switchrh data-field="settings-2" data-services-path="webgpu">
-                <template>
-                    <div class="container">
-                        <fieldset data-field="goniometer" class="multiswitch" data-theme="stoplight">
-                            <legend>Goniometer</legend>
-                            <div class="slide-container">
-                                <input type="radio" name="goniometer" id="off" checked>
-                                <label for="off">Выключено</label>
-                                <input type="radio" name="goniometer" id="on">
-                                <label for="on">Включено</label>
-                                <a class="slide settings-2" aria-hidden="true"></a>
-                            </div>
-                        </fieldset>
-                        <fieldset data-field="LCR" class="multiswitch" data-theme="stoplight">
-                            <legend>Left/Stereo/Right</legend>
-                            <div class="slide-container">
-                               <input type="radio" name="stoplight" id="left">
-                               <label for="left">Left</label>
-                               <input type="radio" name="stoplight" id="stereo"  checked>
-                               <label for="stereo">Stereo</label>
-                               <input type="radio" name="stoplight" id="right">
-                               <label for="right">Right</label>
-                               <a class="slide value" aria-hidden="true"></a>
-                            </div>
-                        </fieldset>
-                       </div>
-                </template>
-            </multi-switchrh>
-            <multi-switchrh data-field="settings-1" data-services-path="webgpu">
-        		<template>
-        		    <div class="container">
-						<fieldset data-field="settingsInput" class="multiswitch" data-theme="stoplight">
-							<legend>Input Data</legend>
-							<div class="slide-container">
-								<input type="radio" name="stoplight" id="audioInput" checked>
-								<label for="audioInput">Audio</label>
-								<input type="radio" name="stoplight" id="oscInput">
-								<label for="oscInput">OSC</label>
-								<input type="radio" name="stoplight" id="dataInput">
-								<label for="dataInput">Data</label>
+		<div id="accordition" class="settings">
+			<h5>Goniometer</h5>
+			<div>
+				<multi-switchrh data-field="settings-2" data-services-path="webgpu">
+					<template>
+						<div class="container">
+							<fieldset data-field="goniometer" class="multiswitch" data-theme="stoplight">
+								<legend>Goniometer</legend>
+								<div class="slide-container">
+									<input type="radio" name="goniometer" id="off" checked>
+									<label for="off">Выключено</label>
+									<input type="radio" name="goniometer" id="on">
+									<label for="on">Включено</label>
+									<a class="slide settings-2" aria-hidden="true"></a>
+								</div>
+							</fieldset>
+							<fieldset data-field="LCR" class="multiswitch" data-theme="stoplight">
+								<legend>Left/Stereo/Right</legend>
+								<div class="slide-container">
+								<input type="radio" name="stoplight" id="left">
+								<label for="left">Left</label>
+								<input type="radio" name="stoplight" id="stereo"  checked>
+								<label for="stereo">Stereo</label>
+								<input type="radio" name="stoplight" id="right">
+								<label for="right">Right</label>
 								<a class="slide value" aria-hidden="true"></a>
-							</div>
-						</fieldset>
-						<br />
-						<fieldset data-field="settingsDelay" class="multiswitch">
-							<legend>Sample position</legend>
-							<div class="slide-container">
-								<input type="radio" name="sample" id="sample-0">
-								<label for="sample-0">-16</label>
-								<input type="radio" name="sample" id="sample-1">
-								<label for="sample-1">-15</label>
-								<input type="radio" name="sample" id="sample-2">
-								<label for="sample-2">-14</label>
-								<input type="radio" name="sample" id="sample-3">
-								<label for="sample-3">-13</label>
-								<input type="radio" name="sample" id="sample-4">
-								<label for="sample-4">-12</label>
-								<input type="radio" name="sample" id="sample-5">
-								<label for="sample-5">-11</label>
-								<input type="radio" name="sample" id="sample-6">
-								<label for="sample-6">-10</label>
-								<input type="radio" name="sample" id="sample-7">
-								<label for="sample-7">-9</label>
-								<input type="radio" name="sample" id="sample-8" checked>
-								<label for="sample-8">-8</label>
-								<input type="radio" name="sample" id="sample-9">
-								<label for="sample-9">-7</label>
-								<input type="radio" name="sample" id="sample-10">
-								<label for="sample-10">-6</label>
-								<input type="radio" name="sample" id="sample-11">
-								<label for="sample-11">-5</label>
-								<input type="radio" name="sample" id="sample-12">
-								<label for="sample-12">-4</label>
-								<input type="radio" name="sample" id="sample-13">
-								<label for="sample-13">-3</label>
-								<input type="radio" name="sample" id="sample-14">
-								<label for="sample-14">-2</label>
-								<input type="radio" name="sample" id="sample-15">
-								<label for="sample-15">-1</label>
-								<input type="radio" name="sample" id="sample-16">
-								<label for="sample-16">0</label>
-								<a class="slide" aria-hidden="true"></a>
-							</div>
-						</fieldset>
-                    </div>
-        		</template>
-            </multi-switchrh>
-            <checklist-checkbox data-id="checkbox_0" data-services-path="webgpu">
-                <template>
-                    <ul class="container">
-                        <li class="checkbox">
-                            <input class="custom-checkbox" id="checkbox-0" type="checkbox">
-                            <label for="checkbox-0"></label>
-                        </li>
-                        <li class="checkbox">
-                            <input class="custom-checkbox" id="checkbox-1" type="checkbox">
-                            <label for="checkbox-1"></label>
-                        </li>
-                        <li class="checkbox">
-                            <input class="custom-checkbox" id="checkbox-2" type="checkbox">
-                            <label for="checkbox-2"></label>
-                        </li>
-                        <li class="checkbox">
-                            <input class="custom-checkbox" id="checkbox-3" type="checkbox">
-                            <label for="checkbox-3"></label>
-                        </li>
-                        <li class="checkbox">
-                            <input class="custom-checkbox" id="checkbox-4" type="checkbox">
-                            <label for="checkbox-4"></label>
-                        </li>
-                        <li class="checkbox">
-                            <input class="custom-checkbox" id="checkbox-5" type="checkbox">
-                            <label for="checkbox-5"></label>
-                        </li>
-                        <li class="checkbox">
-                            <input class="custom-checkbox" id="checkbox-6" type="checkbox">
-                            <label for="checkbox-6"></label>
-                        </li>
-                        <li class="checkbox">
-                            <input class="custom-checkbox" id="checkbox-7" type="checkbox">
-                            <label for="checkbox-7"></label>
-                        </li>
-                        <li class="checkbox">
-                            <input class="custom-checkbox" id="checkbox-8" type="checkbox" checked>
-                            <label for="checkbox-8"></label>
-                        </li>
-                        <li class="checkbox">
-                            <input class="custom-checkbox" id="checkbox-9" type="checkbox">
-                            <label for="checkbox-9"></label>
-                        </li>
-                        <li class="checkbox">
-                            <input class="custom-checkbox" id="checkbox-10" type="checkbox">
-                            <label for="checkbox-10"></label>
-                        </li>
-                        <li class="checkbox">
-                            <input class="custom-checkbox" id="checkbox-11" type="checkbox">
-                            <label for="checkbox-11"></label>
-                        </li>
-                        <li class="checkbox">
-                            <input class="custom-checkbox" id="checkbox-12" type="checkbox">
-                            <label for="checkbox-12"></label>
-                        </li>
-                        <li class="checkbox">
-                            <input class="custom-checkbox" id="checkbox-13" type="checkbox">
-                            <label for="checkbox-13"></label>
-                        </li>
-                        <li class="checkbox">
-                            <input class="custom-checkbox" id="checkbox-14" type="checkbox">
-                            <label for="checkbox-14"></label>
-                        </li>
-                        <li class="checkbox">
-                            <input class="custom-checkbox" id="checkbox-15" type="checkbox">
-                            <label for="checkbox-15"></label>
-                        </li>
-                        <li class="checkbox">
-                            <input class="custom-checkbox" id="checkbox-16" type="checkbox">
-                            <label for="checkbox-16"></label>
-                        </li>
-                    </ul>
-                </template>
-            </checklist-checkbox>
+								</div>
+							</fieldset>
+						</div>
+					</template>
+				</multi-switchrh>
+			</div>
+			<h5>Input Data</h5>
+			<div>
+				<multi-switchrh data-field="settings-1" data-services-path="webgpu">
+					<template>
+						<div class="container">
+							<fieldset data-field="settingsInput" class="multiswitch" data-theme="stoplight">
+								<legend>Input Data</legend>
+								<div class="slide-container">
+									<input type="radio" name="stoplight" id="audioInput" checked>
+									<label for="audioInput">Audio</label>
+									<input type="radio" name="stoplight" id="oscInput">
+									<label for="oscInput">OSC</label>
+									<input type="radio" name="stoplight" id="dataInput">
+									<label for="dataInput">Data</label>
+									<a class="slide value" aria-hidden="true"></a>
+								</div>
+							</fieldset>
+							<br />
+							<fieldset data-field="settingsDelay" class="multiswitch">
+								<legend>Sample position</legend>
+								<div class="slide-container">
+									<input type="radio" name="sample" id="sample-0">
+									<label for="sample-0">-16</label>
+									<input type="radio" name="sample" id="sample-1">
+									<label for="sample-1">-15</label>
+									<input type="radio" name="sample" id="sample-2">
+									<label for="sample-2">-14</label>
+									<input type="radio" name="sample" id="sample-3">
+									<label for="sample-3">-13</label>
+									<input type="radio" name="sample" id="sample-4">
+									<label for="sample-4">-12</label>
+									<input type="radio" name="sample" id="sample-5">
+									<label for="sample-5">-11</label>
+									<input type="radio" name="sample" id="sample-6">
+									<label for="sample-6">-10</label>
+									<input type="radio" name="sample" id="sample-7">
+									<label for="sample-7">-9</label>
+									<input type="radio" name="sample" id="sample-8" checked>
+									<label for="sample-8">-8</label>
+									<input type="radio" name="sample" id="sample-9">
+									<label for="sample-9">-7</label>
+									<input type="radio" name="sample" id="sample-10">
+									<label for="sample-10">-6</label>
+									<input type="radio" name="sample" id="sample-11">
+									<label for="sample-11">-5</label>
+									<input type="radio" name="sample" id="sample-12">
+									<label for="sample-12">-4</label>
+									<input type="radio" name="sample" id="sample-13">
+									<label for="sample-13">-3</label>
+									<input type="radio" name="sample" id="sample-14">
+									<label for="sample-14">-2</label>
+									<input type="radio" name="sample" id="sample-15">
+									<label for="sample-15">-1</label>
+									<input type="radio" name="sample" id="sample-16">
+									<label for="sample-16">0</label>
+									<a class="slide" aria-hidden="true"></a>
+								</div>
+							</fieldset>
+						</div>
+					</template>
+				</multi-switchrh>
+				<checklist-checkbox data-id="checkbox_0" data-services-path="webgpu">
+					<template>
+						<ul class="container">
+							<li class="checkbox">
+								<input class="custom-checkbox" id="checkbox-0" type="checkbox">
+								<label for="checkbox-0"></label>
+							</li>
+							<li class="checkbox">
+								<input class="custom-checkbox" id="checkbox-1" type="checkbox">
+								<label for="checkbox-1"></label>
+							</li>
+							<li class="checkbox">
+								<input class="custom-checkbox" id="checkbox-2" type="checkbox">
+								<label for="checkbox-2"></label>
+							</li>
+							<li class="checkbox">
+								<input class="custom-checkbox" id="checkbox-3" type="checkbox">
+								<label for="checkbox-3"></label>
+							</li>
+							<li class="checkbox">
+								<input class="custom-checkbox" id="checkbox-4" type="checkbox">
+								<label for="checkbox-4"></label>
+							</li>
+							<li class="checkbox">
+								<input class="custom-checkbox" id="checkbox-5" type="checkbox">
+								<label for="checkbox-5"></label>
+							</li>
+							<li class="checkbox">
+								<input class="custom-checkbox" id="checkbox-6" type="checkbox">
+								<label for="checkbox-6"></label>
+							</li>
+							<li class="checkbox">
+								<input class="custom-checkbox" id="checkbox-7" type="checkbox">
+								<label for="checkbox-7"></label>
+							</li>
+							<li class="checkbox">
+								<input class="custom-checkbox" id="checkbox-8" type="checkbox" checked>
+								<label for="checkbox-8"></label>
+							</li>
+							<li class="checkbox">
+								<input class="custom-checkbox" id="checkbox-9" type="checkbox">
+								<label for="checkbox-9"></label>
+							</li>
+							<li class="checkbox">
+								<input class="custom-checkbox" id="checkbox-10" type="checkbox">
+								<label for="checkbox-10"></label>
+							</li>
+							<li class="checkbox">
+								<input class="custom-checkbox" id="checkbox-11" type="checkbox">
+								<label for="checkbox-11"></label>
+							</li>
+							<li class="checkbox">
+								<input class="custom-checkbox" id="checkbox-12" type="checkbox">
+								<label for="checkbox-12"></label>
+							</li>
+							<li class="checkbox">
+								<input class="custom-checkbox" id="checkbox-13" type="checkbox">
+								<label for="checkbox-13"></label>
+							</li>
+							<li class="checkbox">
+								<input class="custom-checkbox" id="checkbox-14" type="checkbox">
+								<label for="checkbox-14"></label>
+							</li>
+							<li class="checkbox">
+								<input class="custom-checkbox" id="checkbox-15" type="checkbox">
+								<label for="checkbox-15"></label>
+							</li>
+							<li class="checkbox">
+								<input class="custom-checkbox" id="checkbox-16" type="checkbox">
+								<label for="checkbox-16"></label>
+							</li>
+						</ul>
+					</template>
+				</checklist-checkbox>
+			</div>
 			<br />
 			<table style="width: 100%" cellpadding="0" cellspacing="6" >
 				<tr>
