@@ -20,7 +20,7 @@
 
 .multiswitch .slide-container label {
     /* Even though we're using "flex" to display, we have to assign widths so that we know exactly where to position the slide */
-    width: 50%;
+    width: 100%;
     text-align: center;
     /*padding-left: 0.2vw;*/
     /*padding-right: 0.2vw;*/
@@ -47,6 +47,9 @@
     width: calc(100%/2);
 }
 
+.multiswitch .slide-container a.settings-3 {
+    width: 100%;
+}
 /*
   Auto adjusting widths
 */
@@ -153,7 +156,6 @@
     left: calc(100% / 17 * 16);
 }
 
-
 .multiswitch label:nth-last-child(6) ~ input:nth-child(3):checked ~ a {
     left: calc(100% / 6 * 2);
 }
@@ -161,7 +163,6 @@
 .multiswitch label:nth-last-child(6) ~ input:nth-child(5):checked ~ a {
     left: calc(100% / 6 * 4);
 }
-
 
 .multiswitch label:nth-last-child(4) ~ input:nth-child(1):checked ~ a {
     left: calc(100% / 4 * 1);
@@ -171,6 +172,9 @@
     left: calc(100% / 4 * 2);
 }
 
+.multiswitch label:nth-last-child(2) ~ input:nth-child(1):checked ~ a {
+    left: 0;
+}
 /*.multiswitch label:nth-last-child(6) ~ input:nth-child(5):checked ~ a {*/
 /*    left: calc(100% / 3 * 2);*/
 /*}*/
@@ -236,6 +240,7 @@ fieldset legend {
 .multiswitch[data-theme="stoplight"] .slide-container > a {
     background: #c00;
     border-color: #8a0000;
+    left: 0;
 }
 
 .multiswitch[data-theme="stoplight"] input:not(:first-child):checked ~ a {
