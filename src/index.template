@@ -491,56 +491,59 @@
 					</template>
 				</checklist-checkbox>
 			</div>
-			<br />
-			<table style="width: 100%" cellpadding="0" cellspacing="6" >
-				<tr>
-					<td style="width: 100%">
-						<label for="zoom-x">Масштаб по x:&nbsp;<span id="zoom-x-value">0</span></label>
-						<div style="width: 100%;" id="zoom-x"></div>
-					</td>
-				</tr>
-				<tr>
-					<td style="width: 100%">
-						<label for="minimum-x">Дискретное пространство по x:&nbsp;<span id="minimum-x-value">0</span></label>
-						<div style="width: 100%;" id="minimum-x"></div>
-					</td>
-				</tr>
-				<tr>
-					<td style="width: 100%">
-						<label for="zoom-y">Масштаб по y:&nbsp;<span id="zoom-y-value">0</span></label>
-						<div style="width: 100%;" id="zoom-y"></div>
-					</td>
-				</tr>
-				<tr>
-					<td style="width: 100%">
-						<label for="minimum-y">Дискретное пространство по y:&nbsp;<span id="minimum-y-value">0</span></label>
-						<div style="width: 100%;" id="minimum-y"></div>
-					</td>
-				</tr>
-			</table>
-			<br />
-			<table style="width: 100%" cellpadding="0" cellspacing="0" >
-				<tr>
-					<td style="width: 20%">
-						<label for="sample-rate">Частота дискретизации:</label>
-						<div><input style="width: 160px;" id="sample-rate"/></div>
-					</td>
-					<td style="width: 20%; text-align: left; padding-left: 10px">
-						<label for="volume-rate">Величина громкости:</label>
-						<div><input style="width: 140px;" id="volume-rate"/></div>
-					</td>
-					<td style="width: auto; text-align: left; padding-left: 10px">
-						&nbsp;
-					</td>
-					<td style="width: 20%; text-align: right; vertical-align: bottom; padding-left: 10px">
-						<input id="startplayback" type="button" style="width:200px;" value="Playback" />
-					</td>
-					<td style="width: 20%; text-align: right; vertical-align: bottom; padding-left: 10px">
-						<input id="stopplayback" type="button" style="width:200px;" value="Stop" />
-					</td>
-				</tr>
-			</table>
-			<br />
+			<h5>Параметры графика</h5>
+			<div>
+				<table style="width: 100%" cellpadding="0" cellspacing="6" >
+					<tr>
+						<td style="width: 100%">
+							<label for="zoom-x">Масштаб по x:&nbsp;<span id="zoom-x-value">0</span></label>
+							<div style="width: 100%;" id="zoom-x"></div>
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 100%">
+							<label for="minimum-x">Дискретное пространство по x:&nbsp;<span id="minimum-x-value">0</span></label>
+							<div style="width: 100%;" id="minimum-x"></div>
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 100%">
+							<label for="zoom-y">Масштаб по y:&nbsp;<span id="zoom-y-value">0</span></label>
+							<div style="width: 100%;" id="zoom-y"></div>
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 100%">
+							<label for="minimum-y">Дискретное пространство по y:&nbsp;<span id="minimum-y-value">0</span></label>
+							<div style="width: 100%;" id="minimum-y"></div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<h5>Воспроизведение файла</h5>
+			<div>
+				<table style="width: 100%" cellpadding="0" cellspacing="0" >
+					<tr>
+						<td style="width: 20%">
+							<label for="sample-rate">Частота дискретизации:</label>
+							<div><input style="width: 160px;" id="sample-rate"/></div>
+						</td>
+						<td style="width: 20%; text-align: left; padding-left: 10px">
+							<label for="volume-rate">Величина громкости:</label>
+							<div><input style="width: 140px;" id="volume-rate"/></div>
+						</td>
+						<td style="width: auto; text-align: left; padding-left: 10px">
+							&nbsp;
+						</td>
+						<td style="width: 20%; text-align: right; vertical-align: bottom; padding-left: 10px">
+							<input id="startplayback" type="button" style="width:200px;" value="Playback" />
+						</td>
+						<td style="width: 20%; text-align: right; vertical-align: bottom; padding-left: 10px">
+							<input id="stopplayback" type="button" style="width:200px;" value="Stop" />
+						</td>
+					</tr>
+				</table>
+			</div>
 		</div>
 		<br />
 		<canvas id="gfx">&nbsp;</canvas>
