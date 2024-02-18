@@ -339,6 +339,7 @@
 									<a class="slide settings-2" aria-hidden="true"></a>
 								</div>
 							</fieldset>
+							<br />
 							<fieldset data-field="LCR" class="multiswitch" data-theme="stoplight">
 								<legend>Left/Stereo/Right</legend>
 								<div class="slide-container">
