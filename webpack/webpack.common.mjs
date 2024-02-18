@@ -45,7 +45,7 @@ export default {
     filename: "[name].bundle.js",
     chunkFilename: "[id].bundle.js",
     assetModuleFilename: "[path][name].[ext]",
-    publicPath: path.resolve(__dirname, 'dist/this'),
+    // publicPath: path.resolve(__dirname, 'dist/this'),
   },
   module: {
     rules: [
