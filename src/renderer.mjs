@@ -476,8 +476,8 @@ export class wDApplication
         ////////////////////////////////////////////////////////////////////////////////////
         //this.circle.set( 10, 10, 6, 1 );
 
-        // this.circle.set( sBW + sW / 2.0, sBW + sH / 2.0, 100 * ( 1.0 - this.color ) * 2, 1 );
-        // await this.circle.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
+        this.circle.set( sBW + sW / 2.0, sBW + sH / 2.0, 100 * ( 1.0 - this.color ) * 2, 1 );
+        await this.circle.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
         ////////////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -506,70 +506,48 @@ export class wDApplication
         //await this.label.render( this );
         ////////////////////////////////////////////////////////////////////////////////////
 
-        let _render = window["activechannels"];
-
-        if ( window.isInit() )
-        {
+        if ( window.isInit() ) {
             let nameoffile = "04891.mp3";
-
-            if ( window.isExist( nameoffile ) )
-            {
-                if ( window.isPlaying() )
-                {
+            if ( window.isExist( nameoffile ) ) {
+                if ( window.isPlaying() ) {
+                    /////////////////////////////////////////////////////////////////////////////////
+                    // differet render types of channels
+                    let _render = window["activechannels"];
                     /////////////////////////////////////////////////////////////////////////////////
                     // number of channels
                     let _channels = window.getchannels( nameoffile );
-
                     /////////////////////////////////////////////////////////////////////////////////
                     // samplerate of the file
                     let _samplerate = window.getsamplerate( nameoffile );
-
                     /////////////////////////////////////////////////////////////////////////////////
                     // frames of the file
                     let _framestotal = window.getframes( nameoffile );
-
                     /////////////////////////////////////////////////////////////////////////////////
                     // current playback offset of the file					
                     let _frameoffset = window.playbackoffset();
-
-                    if ( _framestotal == _frameoffset )
-                    {
+                    if ( _framestotal == _frameoffset ) {
                         window.stopplayback();
-                    } 
-                    else
-                    {
+                    } else {
                         /////////////////////////////////////////////////////////////////////////////////
                         // ( _samplerate / 2 ) 0.5 seconds
                         let _countofframes = _samplerate * _channels;
-
                         let _memptr = window.malloc( _countofframes * _channels * SIZE_OF_FLOAT );
-
                         let _framescount = window.getcurrentbuffer( nameoffile, _frameoffset, _memptr, _countofframes );
-
                         let _buffer = window.copy( _memptr, _framescount * _channels * SIZE_OF_FLOAT );
-                
                         if ( _memptr > 0 ) window.free( _memptr );
-
                         let _colors = [
                             { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 1.0, 0.0, 0.0, 1.0 ] },
                             { from: [ 0.0, 1.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] },
                         ] 
-
                         await this.spline.drawData( this, _buffer, _channels, _render, _samplerate, 1, window.kdX, window.kdY, window.zoomX, window.zoomY, 1, _colors );
                     }
-                }
-                else
-                {
+                } else {
                     await this.spline.drawData( this, null, null, "stereo", window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
                 }    
-            }
-            else
-            {
+            } else {
                 await this.spline.drawData( this, null, null, "stereo", window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
             }    
-        }
-        else
-        {
+        } else {
             await this.spline.drawData( this, null, null, "stereo", window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
         } 
         
