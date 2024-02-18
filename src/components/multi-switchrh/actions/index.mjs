@@ -42,6 +42,15 @@ export const actions = (self) => {
                                 }
                             }));
                             break
+                        case "reset_graph":
+                            document.dispatchEvent(new CustomEvent(`reset_graph`, {
+                                bubbles: true,
+                                composed: true,
+                                detail: {
+                                    value: event.target.textContent.toLowerCase()
+                                }
+                            }));
+                            break
                         default:
                             console.warn('не обрабатывается data-field', fieldSet.dataset.field)
                             break
