@@ -19,7 +19,7 @@ export default {
         new HtmlWebpackPlugin({ 
             title: 'WebGPU Test Page',
             filename: 'index.html',
-            template: './src/index.html',
+            template: './src/index.template',
             font: 'fonts/segoeuil.ttf'
         }),
         new RemoveWebpackPlugin({
