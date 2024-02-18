@@ -339,7 +339,7 @@
                 <template>
                     <div class="container">
                        <fieldset data-field="LCR" class="multiswitch" data-theme="stoplight">
-                           <legend>Left/Center/Right</legend>
+                           <legend>Left/Stereo/Right</legend>
                            <div class="slide-container">
                                <input type="radio" name="stoplight" id="left">
                                <label for="left">Left</label>
