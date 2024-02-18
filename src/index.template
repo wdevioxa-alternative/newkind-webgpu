@@ -72,15 +72,6 @@
 
 		<script type='text/javascript'>
 
-
-         document.addEventListener('reset_graph', (event) => {
-                const value = event.detail.value
-                console.log('RESET', value)
-            }, {
-                bubbles: true,
-                composed: true,
-            });
-
          document.addEventListener('goniometer', (event) => {
                 const value = event.detail.value
                 console.log('GONIOMETER', value)
