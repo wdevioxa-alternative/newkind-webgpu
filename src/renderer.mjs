@@ -538,7 +538,7 @@ export class wDApplication
                     {
                         /////////////////////////////////////////////////////////////////////////////////
                         // ( _samplerate / 2 ) 0.5 seconds
-                        let _countofframes = _samplerate / 2 * _channels;
+                        let _countofframes = _samplerate * _channels;
 
                         let _memptr = window.malloc( _countofframes * _channels * SIZE_OF_FLOAT );
 
