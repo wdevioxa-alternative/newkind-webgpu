@@ -331,26 +331,36 @@
 					</tr>
 				</table>
 			</div>
-                <br />
-		<table style="width: 100%; padding-left: 5%; padding-right: 5%" cellpadding=0 cellspacing=0 >
-			<tr>
-		<td>
-                <label for="zoom-x">Масштаб по x:&nbsp;<span id="zoom-x-value">0</span></label>
-                <div style="width: 100%;" id="zoom-x"></div>
-                <br />
-                <label for="minimum-x">Дискретное пространство по x:&nbsp;<span id="minimum-x-value">0</span></label>
-                <div style="width: 100%;" id="minimum-x"></div>
-                <br/>
-                <label for="zoom-y">Масштаб по y:&nbsp;<span id="zoom-y-value">0</span></label>
-                <div style="width: 100%;" id="zoom-y"></div>
-                <br />
-                <label for="minimum-y">Дискретное пространство по y:&nbsp;<span id="minimum-y-value">0</span></label>
-                <div style="width: 100%;" id="minimum-y"></div>
-		</td>
-		</tr>
-		</table>
-                <br />
-            </div>
+        	        <br />
+
+				<table style="width: 100%" cellpadding=0 cellspacing=6 >
+					<tr>
+						<td style="width: 100%">
+					                <label for="zoom-x">Масштаб по x:&nbsp;<span id="zoom-x-value">0</span></label>
+					                <div style="width: 100%;" id="zoom-x"></div>
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 100%">
+					                <label for="minimum-x">Дискретное пространство по x:&nbsp;<span id="minimum-x-value">0</span></label>
+					                <div style="width: 100%;" id="minimum-x"></div>
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 100%">
+						        <label for="zoom-y">Масштаб по y:&nbsp;<span id="zoom-y-value">0</span></label>
+					                <div style="width: 100%;" id="zoom-y"></div>
+						</td>
+					</tr>
+					<tr>
+						<td style="width: 100%">
+					                <label for="minimum-y">Дискретное пространство по y:&nbsp;<span id="minimum-y-value">0</span></label>
+					                <div style="width: 100%;" id="minimum-y"></div>
+						</td>
+					</tr>
+				</table>
+	                <br />
+		</div>
             <multi-switchrh
                 data-field="LCR"
                 data-services-path="webgpu"
