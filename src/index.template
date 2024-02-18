@@ -289,7 +289,7 @@
 
 				$( "#startplayback" ).button();
 				$( "#stopplayback" ).button();
-				$( "#accordition" ).accordition({
+				$( "#accordition" ).accordion({
 					heightStyle: "content",
 					collapsible: true
 				});
