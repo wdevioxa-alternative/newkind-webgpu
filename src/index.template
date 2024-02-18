@@ -323,6 +323,8 @@
 
 	<body>	
 		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
+		<canvas id="gfx">&nbsp;</canvas>
+		<br />
 		<div id="accordition" class="settings">
 			<h5>Goniometer</h5>
 			<div>
@@ -546,7 +548,5 @@
 				</table>
 			</div>
 		</div>
-		<br />
-		<canvas id="gfx">&nbsp;</canvas>
     </body>
 </html>
