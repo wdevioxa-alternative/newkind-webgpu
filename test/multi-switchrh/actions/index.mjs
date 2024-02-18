@@ -6,15 +6,6 @@ export const actions = (self) => {
                 const fieldSet = event.target.closest('fieldset')
                 if(event.target.tagName === 'LABEL') {
                     switch (fieldSet.dataset.field) {
-                        case "reset_graph":
-                            document.dispatchEvent(new CustomEvent(`reset_graph`, {
-                                bubbles: true,
-                                composed: true,
-                                detail: {
-                                    value: event.target.textContent.toLowerCase()
-                                }
-                            }));
-                            break
                         case "goniometer":
                             document.dispatchEvent(new CustomEvent(`goniometer`, {
                                 bubbles: true,

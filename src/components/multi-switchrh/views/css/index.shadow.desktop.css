@@ -20,7 +20,7 @@
 
 .multiswitch .slide-container label {
     /* Even though we're using "flex" to display, we have to assign widths so that we know exactly where to position the slide */
-    width: 50%;
+    width: 100%;
     text-align: center;
     /*padding-left: 0.2vw;*/
     /*padding-right: 0.2vw;*/
@@ -236,6 +236,11 @@ fieldset legend {
 .multiswitch[data-theme="stoplight"] .slide-container > a {
     background: #c00;
     border-color: #8a0000;
+    left: 0;
+}
+
+.multiswitch[data-theme="stoplight"] .slide-container > a.settings-3 {
+    width: 100%;
 }
 
 .multiswitch[data-theme="stoplight"] input:not(:first-child):checked ~ a {

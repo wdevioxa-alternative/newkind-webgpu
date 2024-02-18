@@ -19,7 +19,7 @@ export default {
         new HtmlWebpackPlugin({ 
             title: 'WebGPU Test Page',
             filename: 'index.html',
-            template: './src/index.template',
+            template: './src/index.html',
             font: 'fonts/segoeuil.ttf'
         }),
         new RemoveWebpackPlugin({
@@ -38,6 +38,7 @@ export default {
             { from: path.resolve(__dirname, 'src', 'sounds'), to: path.resolve(__dirname, 'dist', 'sounds') }
           ]
         }),
+        new webpack.HotModuleReplacementPlugin(),
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -48,6 +49,10 @@ export default {
   },
   module: {
     rules: [
+        {
+            test: /\.html$/,
+            loader: "raw-loader"
+        },
       { 
         test: /\.(jsx|mjs)$/, 
         exclude: /\.(node_modules|js)$/,

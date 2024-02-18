@@ -52,12 +52,12 @@
             .visibleInput {
                 display: flex;
             }</style><script>document.addEventListener('reset_graph', (event) => {
-                const value = event.detail.value
-                console.log('RESET', value)
-            }, {
-                bubbles: true,
-                composed: true,
-            });
+				const value = event.detail.value
+				console.log('RESET', value)
+			}, {
+				bubbles: true,
+				composed: true,
+			});
 
          document.addEventListener('goniometer', (event) => {
                 const value = event.detail.value
@@ -95,7 +95,7 @@
             document.addEventListener('channels', (event) => {
                 const value = event.detail.value
 				window["activechannels"] = value;
-                // console.log('Channel: ', value)
+                console.log('Channel: ', value)
             }, {
                   bubbles: true,
                   composed: true,
