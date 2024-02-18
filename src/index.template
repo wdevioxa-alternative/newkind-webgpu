@@ -322,7 +322,7 @@
 							<label for="volume-rate">Величина громкости:</label>
 							<div><input style="width:120px;" id="volume-rate"/></div>
 						</td>
-						<td style="width: 10%; text-align: right; vertical-align: bottom">
+						<td style="width: 10%; text-align: right; vertical-align: bottom; padding-left: 10px">
 							<input id="startplayback" type="button" style="width:150px;" value="Playback" />
 						</td>
 						<td style="width: 10%; text-align: right; vertical-align: bottom; padding-left: 10px">
