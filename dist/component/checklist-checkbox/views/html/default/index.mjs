@@ -1,0 +1,1 @@
+import{loadHTML as e}from"../index.mjs";let t=new Map;t.set("default",[{type:"component",template:async(e,t={})=>"<div>test</div>"}]);export default t;
