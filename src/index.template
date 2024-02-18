@@ -72,6 +72,14 @@
 
 		<script type='text/javascript'>
 
+         document.addEventListener('goniometer', (event) => {
+                const value = event.detail.value
+                console.log('GONIOMETER', value)
+            }, {
+                bubbles: true,
+                composed: true,
+            });
+
             document.addEventListener('settingsInput', (event) => {
                 const value = event.detail.value
                 console.log('INPUT', value)
@@ -312,12 +320,22 @@
 	<body>	
 		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
 		<div class="settings">
-            <multi-switchrh data-field="LCR" data-services-path="webgpu">
+            <multi-switchrh data-field="settings-2" data-services-path="webgpu">
                 <template>
                     <div class="container">
-                       <fieldset data-field="LCR" class="multiswitch" data-theme="stoplight">
-                           <legend>Left/Stereo/Right</legend>
-                           <div class="slide-container">
+                        <fieldset data-field="goniometer" class="multiswitch" data-theme="stoplight">
+                            <legend>Goniometer</legend>
+                            <div class="slide-container">
+                                <input type="radio" name="goniometer" id="off" checked>
+                                <label for="off">Выключено</label>
+                                <input type="radio" name="goniometer" id="on">
+                                <label for="on">Включено</label>
+                                <a class="slide settings-2" aria-hidden="true"></a>
+                            </div>
+                        </fieldset>
+                        <fieldset data-field="LCR" class="multiswitch" data-theme="stoplight">
+                            <legend>Left/Stereo/Right</legend>
+                            <div class="slide-container">
                                <input type="radio" name="stoplight" id="left">
                                <label for="left">Left</label>
                                <input type="radio" name="stoplight" id="stereo"  checked>
@@ -325,8 +343,8 @@
                                <input type="radio" name="stoplight" id="right">
                                <label for="right">Right</label>
                                <a class="slide value" aria-hidden="true"></a>
-                           </div>
-                       </fieldset>
+                            </div>
+                        </fieldset>
                        </div>
                 </template>
             </multi-switchrh>

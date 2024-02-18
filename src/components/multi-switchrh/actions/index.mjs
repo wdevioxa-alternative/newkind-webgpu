@@ -6,6 +6,15 @@ export const actions = (self) => {
                 const fieldSet = event.target.closest('fieldset')
                 if(event.target.tagName === 'LABEL') {
                     switch (fieldSet.dataset.field) {
+                        case "goniometer":
+                            document.dispatchEvent(new CustomEvent(`goniometer`, {
+                                bubbles: true,
+                                composed: true,
+                                detail: {
+                                    value: event.target.textContent.toLowerCase()
+                                }
+                            }));
+                            break
                         case "settingsDelay":
                             document.dispatchEvent(new CustomEvent(`settingsDelay`, {
                                 bubbles: true,
