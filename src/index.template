@@ -333,7 +333,7 @@
 		<canvas id="gfx">&nbsp;</canvas>
 		<br />
 		<div id="accordition" class="settings">
-			<h5>Goniometer</h5>
+			<h5>Сбросить график</h5>
 			<div>
 				<multi-switchrh data-field="settings-2" data-services-path="webgpu">
 					<template>
@@ -349,6 +349,9 @@
 						</div>
 					</template>
 				</multi-switchrh>
+			</div>
+			<h5>Goniometer</h5>
+			<div>
 				<multi-switchrh data-field="settings-2" data-services-path="webgpu">
 					<template>
 						<div class="container">
@@ -365,6 +368,9 @@
 						</div>
 					</template>
 				</multi-switchrh>
+			</div>				
+			<h5>Left/Stereo/Right</h5>
+			<div>
 				<multi-switchrh data-field="settings-2" data-services-path="webgpu">
 					<template>
 						<div class="container">
