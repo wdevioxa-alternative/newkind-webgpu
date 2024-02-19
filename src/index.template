@@ -303,6 +303,7 @@
 					heightStyle: "content",
 					collapsible: true
 				});
+				
 				$( "#accordition" ).accordion({
 					heightStyle: "content",
 					collapsible: true
