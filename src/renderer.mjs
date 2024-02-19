@@ -529,21 +529,23 @@ export class wDApplication
                     /////////////////////////////////////////////////////////////////////////////////
                     // current playback offset of the file					
                     let _frameoffset = window.playbackoffset();
-                    /////////////////////////////////////////////////////////////////////////////////
-                    // ( _samplerate / 2 ) 0.5 seconds
-                    let _countofframes = _samplerate * _channels;
-                    let _memptr = window.malloc( _countofframes * _channels * SIZE_OF_FLOAT );
-                    let _framescount = window.getcurrentbuffer( nameoffile, _frameoffset, _memptr, _countofframes );
-                    if (_framescount > 0) { 
-                        let _buffer = window.copy( _memptr, _framescount * _channels * SIZE_OF_FLOAT );
-                        let _colors = [
-                            { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 1.0, 0.0, 0.0, 1.0 ] },
-                            { from: [ 0.0, 1.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] },
-                        ] 
-                        await this.spline.drawData( this, _buffer, _channels, _render, _samplerate, 1, window.kdX, window.kdY, window.zoomX, window.zoomY, 1, _colors );
-                        flag = true;
+                    if ( _framestotal != _frameoffset ) {
+                        /////////////////////////////////////////////////////////////////////////////////
+                        // ( _samplerate / 2 ) 0.5 seconds
+                        let _countofframes = _samplerate * _channels;
+                        let _memptr = window.malloc( _countofframes * _channels * SIZE_OF_FLOAT );
+                        let _framescount = window.getcurrentbuffer( nameoffile, _frameoffset, _memptr, _countofframes );
+                        if (_framescount > 0) { 
+                            let _buffer = window.copy( _memptr, _framescount * _channels * SIZE_OF_FLOAT );
+                            let _colors = [
+                                { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 1.0, 0.0, 0.0, 1.0 ] },
+                                { from: [ 0.0, 1.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] },
+                            ] 
+                            await this.spline.drawData( this, _buffer, _channels, _render, _samplerate, 1, window.kdX, window.kdY, window.zoomX, window.zoomY, 1, _colors );
+                            flag = true;
+                        }
+                        if ( _memptr > 0 ) window.free( _memptr );
                     }
-                    if ( _memptr > 0 ) window.free( _memptr );
                 }
             }    
         } 
