@@ -201,19 +201,19 @@ export class wDApplication
             if ( !this.context )
                 this.context = this.canvas.getContext('webgpu');
 
-                this.presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+            this.presentationFormat = navigator.gpu.getPreferredCanvasFormat();
 
-                this.context.configure({
-                    device: this.device,
-                    format: 'bgra8unorm',
-                    size: [ this.getCanvasWidth(), this.getCanvasHeight(), 1 ],
-                    compositingAlphaMode: "opaque", // "premultiplied",
-                    usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
-                });
+            this.context.configure({
+                device: this.device,
+                format: 'bgra8unorm',
+                size: [ this.getCanvasWidth(), this.getCanvasHeight(), 1 ],
+                compositingAlphaMode: "opaque", // "premultiplied",
+                usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.COPY_SRC
+            });
 
-                this.pipeline = this.device.createRenderPipeline( {
-                    layout: 'auto',
-                    vertex: {
+            this.pipeline = this.device.createRenderPipeline( {
+                layout: 'auto',
+                vertex: {
                         module: this.device.createShaderModule({
                             code: vertexShaderWgslCode
                         }),
@@ -273,32 +273,35 @@ export class wDApplication
     //                  depthCompare: 'less',
     //                  format: 'depth24plus',
     //              },
-                } } );
+                } 
+            });
 
-                this.createAppUniformShaderLocationFlag( this.device, 0 );
+            this.createAppUniformShaderLocationFlag( this.device, 0 );
 
-                this.sampler = this.device.createSampler({
-                    magFilter: 'nearest',  // nearest | linear
-                    minFilter: 'nearest'   // nearest | linear
-                });
+            this.sampler = this.device.createSampler({
+                magFilter: 'nearest',  // nearest | linear
+                minFilter: 'nearest'   // nearest | linear
+            });
 
-                this.nullTexture = this.device.createTexture({
-                    size: [ 1, 1, 1 ],
-                    format: 'rgba8unorm',
-                    usage:
-                        GPUTextureUsage.TEXTURE_BINDING |
-                        GPUTextureUsage.COPY_DST |
-                        GPUTextureUsage.RENDER_ATTACHMENT,
-                });
+            this.nullTexture = this.device.createTexture({
+                size: [ 1, 1, 1 ],
+                format: 'rgba8unorm',
+                usage:
+                    GPUTextureUsage.TEXTURE_BINDING |
+                    GPUTextureUsage.COPY_DST |
+                    GPUTextureUsage.RENDER_ATTACHMENT,
+            });
 
-                this.renderPassDesc = {
-                    colorAttachments: [ {
-                        view: null,
-                        clearValue: [ 0.0, 0.0, 0.0, 1.0 ],
-                        loadOp: 'clear',
-                        storeOp: 'store'
-                    }]          
-                };
+            this.renderPassDesc = {
+                colorAttachments: [ {
+                    view: null,
+                    clearValue: [ 0.0, 0.0, 0.0, 1.0 ],
+                    loadOp: 'clear',
+                    storeOp: 'store'
+                }]          
+            };
+
+            this.setBorderWidth( 10.0 );
         }
         catch (e)
         {
@@ -322,7 +325,6 @@ export class wDApplication
 
         // this.box = new wDBox( this );
         // await this.box.init();
-        this.setBorderWidth( 10.0 );
 
         this.setDrawWidth( this.getCanvasWidth( false ) );
         this.setDrawHeight( this.getCanvasHeight( false ) );
