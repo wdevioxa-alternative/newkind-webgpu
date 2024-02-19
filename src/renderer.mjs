@@ -510,10 +510,10 @@ export class wDApplication
 
         let flag = false;
 
-        if ( window.isInit() ) {
-            let nameoffile = "04891.mp3";
-            if ( window.isExist( nameoffile ) ) {
-                if ( window.isPlaying() ) {
+        if ( window.isInit() > 0 ) {
+            let nameoffile = window["nameoffile"];
+            if ( window.isExist( nameoffile ) > 0 ) {
+                if ( window.isPlaying() > 0 ) {
                     /////////////////////////////////////////////////////////////////////////////////
                     // differet render types of channels
                     let _render = window["activechannels"];
@@ -529,14 +529,12 @@ export class wDApplication
                     /////////////////////////////////////////////////////////////////////////////////
                     // current playback offset of the file					
                     let _frameoffset = window.playbackoffset();
-                    if ( _framestotal == _frameoffset ) {
-                        window.stopplayback();
-                    } else {
-                        /////////////////////////////////////////////////////////////////////////////////
-                        // ( _samplerate / 2 ) 0.5 seconds
-                        let _countofframes = _samplerate * _channels;
-                        let _memptr = window.malloc( _countofframes * _channels * SIZE_OF_FLOAT );
-                        let _framescount = window.getcurrentbuffer( nameoffile, _frameoffset, _memptr, _countofframes );
+                    /////////////////////////////////////////////////////////////////////////////////
+                    // ( _samplerate / 2 ) 0.5 seconds
+                    let _countofframes = _samplerate * _channels;
+                    let _memptr = window.malloc( _countofframes * _channels * SIZE_OF_FLOAT );
+                    let _framescount = window.getcurrentbuffer( nameoffile, _frameoffset, _memptr, _countofframes );
+                    if (_framescount > 0) { 
                         let _buffer = window.copy( _memptr, _framescount * _channels * SIZE_OF_FLOAT );
                         if ( _memptr > 0 ) window.free( _memptr );
                         let _colors = [

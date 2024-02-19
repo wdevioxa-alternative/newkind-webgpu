@@ -151,6 +151,7 @@
 
 			window["isNumber"] = function(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 			window["activechannels"] = "stereo";
+			window["nameoffile"] = "04891.mp3";
 
 			const SIZE_OF_FLOAT = 4;
 			const SIZE_OF_SHORT = 2;
@@ -310,8 +311,7 @@
 
 				$( "#startplayback" ).click( function() {
 					window.audioinit();
-
-					let nameoffile = "04891.mp3";
+					let nameoffile = window["nameoffile"];
 					window.loadfile( "sounds/" + nameoffile ).then( function( source ) 
 					{
 						let memdata = new Uint8Array( source );
@@ -319,8 +319,7 @@
 						let memptr = window.malloc( memsize );
 						window.assign( memdata, memptr );
 						let retval = window.savefile( nameoffile, memptr, memsize );
-						if ( retval > 0 ) {				
-							console.log( "savefile: " + nameoffile );		
+						if ( retval > 0 ) {					
 							window.startplayback( nameoffile );
 						}
 						if ( memptr > 0 ) window.free( memptr );									
@@ -544,7 +543,7 @@
 			</div>
 			<h5>Параметры графика</h5>
 			<div>
-				<table style="width: 100%" cellpadding="0" cellspacing="6" >
+				<table style="width: 100%" cellpadding="0" cellspacing="8" >
 					<tr>
 						<td style="width: 100%">
 							<label for="zoom-x">Масштаб по x:&nbsp;<span id="zoom-x-value">0</span></label>
