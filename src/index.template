@@ -116,8 +116,7 @@
 
             document.addEventListener('channels', (event) => {
                 const value = event.detail.value
-				window["activechannels"] = value;
-                console.log('Channel: ', value)
+				window["rendertype"] = value;
             }, {
                   bubbles: true,
                   composed: true,
@@ -150,7 +149,7 @@
 			})(jQuery);
 
 			window["isNumber"] = function(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
-			window["activechannels"] = "stereo";
+			window["rendertype"] = "stereo";
 			window["nameoffile"] = "04891.mp3";
 
 			const SIZE_OF_FLOAT = 4;
