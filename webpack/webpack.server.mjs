@@ -4,6 +4,10 @@ const __dirname = './';
 
 export default {
   devServer: {
+    headers: {
+      "Cross-Origin-Embedder-Policy": "require-corp",
+      "Cross-Origin-Opener-Policy": "same-origin"
+    },
     hot: true,
     static: {
       directory: path.join(__dirname, 'dist'),
