@@ -332,9 +332,11 @@
 
 	<body>	
 		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
-		<canvas id="gfx">&nbsp;</canvas>
-		<br />
 		<div id="accordition" class="settings">
+			<h5>WebGPU график</h5>
+			<div>
+				<canvas id="gfx">&nbsp;</canvas>
+			</div>
 			<h5>Сбросить график</h5>
 			<div>
 				<multi-switchrh data-field="settings-2" data-services-path="webgpu">
