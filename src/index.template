@@ -344,16 +344,16 @@
 			</div>
 		</div>
 		<div id="accordition" class="settings">
-			<h5>Сбросить график</h5>
+			<h5>Удержать график</h5>
 			<div>
 				<multi-switchrh data-field="settings-2" data-services-path="webgpu">
 					<template>
 						<div class="container">
 							<fieldset data-field="reset_graph" class="multiswitch" data-theme="stoplight">
-								<legend>Сбросить график</legend>
+								<legend>Удержать график</legend>
 								<div class="slide-container">
 									<input type="radio" name="reset" id="reset">
-									<label for="reset">Сбросить</label>
+									<label for="reset">Удержать</label>
 									<a class="slide settings-3" aria-hidden="true"></a>
 								</div>
 							</fieldset>
