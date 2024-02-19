@@ -536,7 +536,6 @@ export class wDApplication
                     let _framescount = window.getcurrentbuffer( nameoffile, _frameoffset, _memptr, _countofframes );
                     if (_framescount > 0) { 
                         let _buffer = window.copy( _memptr, _framescount * _channels * SIZE_OF_FLOAT );
-                        if ( _memptr > 0 ) window.free( _memptr );
                         let _colors = [
                             { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 1.0, 0.0, 0.0, 1.0 ] },
                             { from: [ 0.0, 1.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] },
@@ -544,6 +543,7 @@ export class wDApplication
                         await this.spline.drawData( this, _buffer, _channels, _render, _samplerate, 1, window.kdX, window.kdY, window.zoomX, window.zoomY, 1, _colors );
                         flag = true;
                     }
+                    if ( _memptr > 0 ) window.free( _memptr );
                 }
             }    
         } 
