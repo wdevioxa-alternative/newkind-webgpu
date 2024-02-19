@@ -1,18 +1,1 @@
-import { readable } from '../../../modules/index.mjs'
-export default async (self, actions) => {
-    const inputs = self.shadowRoot.querySelectorAll('input')
-
-    console.log('========= readable ============', readable)
-    return {
-        init: () => {
-            for(let item of inputs) {
-                item.addEventListener('click', actions.click)
-            }
-        },
-        terminate: () => {
-            for(let item of inputs) {
-                item.removeEventListener('fer-button-in', actions.click)
-            }
-        }
-    }
-}
+import{readable as e}from"../../../modules/index.mjs";export default async(t,o)=>{const r=t.shadowRoot.querySelectorAll("input");return console.log("========= readable ============",e),{init:()=>{for(let e of r)e.addEventListener("click",o.click)},terminate:()=>{for(let e of r)e.removeEventListener("fer-button-in",o.click)}}};

@@ -1,7 +1,1 @@
-import compoenents from './default/index.mjs'
-export const loadHTML = (htmlRelativeUrl, baseUrl) => {
-    const htmlUrl = new URL(htmlRelativeUrl, baseUrl).href;
-    return fetch(htmlUrl).then(response => response.text());
-}
-
-export default  compoenents
+import t from"./default/index.mjs";export const loadHTML=(t,e)=>{const o=new URL(t,e).href;return fetch(o).then((t=>t.text()))};export default t;

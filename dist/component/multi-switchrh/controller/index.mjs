@@ -1,9 +1,1 @@
-import addEventListener from './addEventListener/index.mjs'
-export const controller = (self, actions) => {
-    return new Promise(async (resolve, reject) => {
-
-        resolve({
-            addEventListener: await addEventListener(self, actions)
-        })
-    })
-}
+import e from"./addEventListener/index.mjs";export const controller=(n,t)=>new Promise((async(r,o)=>{r({addEventListener:await e(n,t)})}));
