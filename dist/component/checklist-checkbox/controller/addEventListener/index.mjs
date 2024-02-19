@@ -1,1 +1,1 @@
-export default async(e,t)=>{const n=e.shadowRoot.querySelectorAll("input");return{init:()=>{for(let e of n)e.addEventListener("click",t.click)},terminate:()=>{for(let e of n)e.removeEventListener("fer-button-in",t.click)}}};
+import{readable as e}from"../../../modules/index.mjs";export default async(t,o)=>{const r=t.shadowRoot.querySelectorAll("input");return console.log("========= readable ============",e),{init:()=>{for(let e of r)e.addEventListener("click",o.click)},terminate:()=>{for(let e of r)e.removeEventListener("fer-button-in",o.click)}}};
