@@ -1,1 +1,19 @@
-import{loadHTML as e}from"../index.mjs";let t=new Map;t.set("default",[{type:"component",template:async(e,t={})=>"<div>test</div>"}]);export default t;
+import {loadHTML} from '../index.mjs'
+
+let components = new Map();
+
+components.set('default', [{
+    type: 'component',
+    template: async (slot, props = {}) => {
+        let template = ''
+        let keys = []
+        switch(slot) { 
+            default:
+                return `<div>test</div>`
+            break
+        }
+    }
+}])
+
+
+export default components
