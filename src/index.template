@@ -298,6 +298,11 @@
 
 				$( "#startplayback" ).button();
 				$( "#stopplayback" ).button();
+
+				$( "#chart" ).accordion({
+					heightStyle: "content",
+					collapsible: true
+				});
 				$( "#accordition" ).accordion({
 					heightStyle: "content",
 					collapsible: true
@@ -332,11 +337,13 @@
 
 	<body>	
 		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
-		<div id="accordition" class="settings">
+		<div id="chart" class="settings">
 			<h5>WebGPU график</h5>
 			<div>
 				<canvas id="gfx">&nbsp;</canvas>
 			</div>
+		</div>
+		<div id="accordition" class="settings">
 			<h5>Сбросить график</h5>
 			<div>
 				<multi-switchrh data-field="settings-2" data-services-path="webgpu">
