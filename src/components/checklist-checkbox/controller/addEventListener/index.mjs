@@ -2,7 +2,7 @@ import { readable } from '../../../modules/index.mjs'
 export default async (self, actions) => {
     const inputs = self.shadowRoot.querySelectorAll('input')
 
-    console.log('========= readable ============', readable)
+    console.log('STREEM')
     return {
         init: () => {
             for(let item of inputs) {
