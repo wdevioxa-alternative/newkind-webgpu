@@ -72,6 +72,9 @@
             }
 		</style>
 
+        <script type="module">
+            console.log('@@@@@@@@@@@@@@@@@@')
+        </script>
 		<script type='text/javascript'>
 			document.addEventListener('reset_graph', (event) => {
 				const value = event.detail.value

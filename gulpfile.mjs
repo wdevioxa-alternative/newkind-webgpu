@@ -35,13 +35,15 @@ gulp.task('copy-html', function() {
         .pipe(gulp.dest('./dist/', {overwrite:true}));
 });
 
-gulp.task('copy-components', function() {
-    return gulp.src('./src/components/**')
-        .pipe(gulp.dest('./dist/component', {overwrite:true}));
+gulp.task('copy-docs', function() {
+    return gulp.src('./src/docs/**')
+        .pipe(gulp.dest('./dist/docs', {overwrite:true}));
 });
 
 gulp.task('watch',  () => {
     gulp.watch([
-        './src/index.html',
-        `./src/components/**`], gulp.series('copy-components' ))
+        './src/index.template',
+        `./src/docs/**`], gulp.series('copy-docs' ))
 });
+
+gulp.task('run', gulp.series('copy-docs', 'watch'))
