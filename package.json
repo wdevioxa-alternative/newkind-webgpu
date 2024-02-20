@@ -58,6 +58,7 @@
         "markdownlint": "^0.25.1",
         "nodemon": "^2.0.15",
         "npm": "^10.0.0",
+        "readable-stream": "^4.5.2",
         "webpack": "^5.72.x",
         "webpack-cli": "^4.9.2",
         "webpack-dev-server": "^4.8.1",
