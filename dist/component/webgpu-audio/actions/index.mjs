@@ -1,0 +1,1 @@
+export const actions=c=>new Promise((async(c,n)=>{c({click:async c=>{}})}));export default{description:"action"};

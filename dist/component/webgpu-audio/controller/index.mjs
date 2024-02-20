@@ -1,0 +1,1 @@
+import e from"./addEventListener/index.mjs";export const controller=(n,t)=>new Promise((async(r,o)=>{r({addEventListener:await e(n,t)})}));

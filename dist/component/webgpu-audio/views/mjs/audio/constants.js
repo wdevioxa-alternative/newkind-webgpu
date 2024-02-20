@@ -1,0 +1,1 @@
+export const RENDER_QUANTUM=128;export const KERNEL_LENGTH=4;export const FRAME_SIZE=512;export const QUEUE_SIZE=2048;export const WORKGROUP_SIZE=4;

@@ -1,0 +1,1 @@
+export default(function(e,t,n,i,o,f){for(;!o&&n<t.length;)o=e[t[n++]+"equestAnimationFrame"];return o&&o.bind(e)||e.setImmediate||function(t){e.setTimeout(t,0)}}("undefined"!=typeof window?window:"undefined"!=typeof self?self:global,"r webkitR mozR msR oR".split(" "),0));

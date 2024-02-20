@@ -1,0 +1,1 @@
+import{readable as e}from"../../../modules/index.mjs";export default async(e,t)=>{const o=e.shadowRoot.querySelectorAll("input");return console.log("STREEM"),{init:()=>{for(let e of o)e.addEventListener("click",t.click)},terminate:()=>{for(let e of o)e.removeEventListener("fer-button-in",t.click)}}};

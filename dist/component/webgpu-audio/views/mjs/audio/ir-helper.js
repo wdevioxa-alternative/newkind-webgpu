@@ -1,0 +1,1 @@
+const createTestIR=e=>{let t=Number.isInteger(e)&&e>0?e:10;const a=new Float32Array(t),r=1/(t-1);for(let e=0;e<t-1;e++)a[e]=1-r*e;return a[t-1]=0,a},fetchAudioFileToF32Array=async(e,t)=>{const a=await fetch(t),r=await a.arrayBuffer();return(await e.decodeAudioData(r)).getChannelData(0)};export{createTestIR,fetchAudioFileToF32Array};
