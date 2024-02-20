@@ -6,6 +6,7 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import RemoveWebpackPlugin from 'remove-files-webpack-plugin';
 
 const __dirname = './';
+
 const ASSET_PATH = './src/components'
 export default {
     entry: [ 'babel-polyfill', './src/app.mjs' ],
@@ -41,45 +42,43 @@ export default {
         new webpack.HotModuleReplacementPlugin(),
   ],
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: "[name].bundle.js",
-    chunkFilename: "[id].bundle.js",
-    assetModuleFilename: "[path][name].[ext]",
+	path: path.resolve(__dirname, 'dist'),
+	filename: "[name].bundle.js",
+	chunkFilename: "[id].bundle.js",
+	assetModuleFilename: "[path][name].[ext]",
     // publicPath: path.resolve(__dirname, 'dist/this'),
   },
   module: {
-    rules: [
-        {
+	rules: [{
             test: /\.html$/,
             loader: "raw-loader"
         },
-      { 
-        test: /\.(jsx|mjs)$/, 
-        exclude: /\.(node_modules|js)$/,
-	      use: { 
-		      loader: 'babel-loader',  
-		      options: {
-			      presets: ['@babel/preset-env']
-                      } 
-	      },
-      },
-      { 
-        test: /\.wgsl/,
-        type: 'asset/source' 
-      },
-      { 
-	      test: /\.(eot|svg|ttf|woff|woff2)$/,
-        type: 'asset/resource',
-        generator: {
-          filename: '[path][name].[ext]'
-        }
-      }
-    ]
+	{ 
+		test: /\.(jsx|mjs)$/, 
+		exclude: /\.(node_modules|js)$/,
+		use: { 
+			loader: 'babel-loader',  
+			options: {
+				presets: ['@babel/preset-env']
+			} 
+		},
+	},
+	{ 
+		test: /\.wgsl/,
+		type: 'asset/source' 
+	},
+	{ 
+		test: /\.(eot|svg|ttf|woff|woff2)$/,
+		type: 'asset/resource',
+		generator: {
+			filename: '[path][name].[ext]'
+		}
+	}]
   },
   performance: {
-    hints: false,
-    maxEntrypointSize: 512000,
-    maxAssetSize: 512000
+	hints: false,
+	maxEntrypointSize: 512000,
+	maxAssetSize: 512000
   }
 
 };
