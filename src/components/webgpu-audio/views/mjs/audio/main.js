@@ -26,9 +26,8 @@ export const gpuAudio = () => {
    */
   const initializeAudio = async () => {
     const audioContext = new AudioContext();
-    await audioContext.audioWorklet.addModule('./basic-processor.js');
 
-    debugger
+    await audioContext.audioWorklet.addModule('/component/webgpu-audio/views/mjs/audio/basic-processor.js');
 
     const oscillatorNode = new OscillatorNode(audioContext);
     const processorNode = new AudioWorkletNode(audioContext, 'basic-processor', {
@@ -135,7 +134,7 @@ export const gpuAudio = () => {
     audioContext = await initializeAudio();
 
     // Create a WebWorker for Audio Processing.
-    worker = new Worker('worker.js', {type: 'module'});
+    worker = new Worker('/component/webgpu-audio/views/mjs/audio/worker.js', {type: 'module'});
 
     worker.onerror = (event) => {
       console.log('[main.js] Error from worker.js: ', event);
@@ -157,7 +156,7 @@ export const gpuAudio = () => {
     }
 
     // Handle `button` with toggle logic.
-    toggleButton = document.getElementById('toggle-audio');
+    toggleButton = webgpuAudio.shadowRoot.getElementById('toggle-audio');
     toggleButton.onclick = toggleButtonClickHandler;
     toggleButton.disabled = false;
 

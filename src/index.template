@@ -344,108 +344,14 @@
                 <body>
                 <script src="/component/webgpu-audio/views/mjs/audio/coi-serviceworker.js"></script
                     <div>
-                      <div id="header" class="py-12">
+                        <h1>WebGPUAudio Experiment</h1>
+                        <p>An experiment to use Web Audio API and WebGPU together to process audio stream with GPU.</p>
 
-                          <div class="w-full px-6 md:max-w-4xl md:mx-auto">
-
-
-                <div class="flex pb-3">
-
-                    <div class="mr-2">
-                      <a href="../..">
-                        Home
-                      </a>
-                    </div>
-                    <span class="mr-2">
-                      &#9656;
-                    </span>
-
-                    <div class="mr-2">
-                      <a href="..">
-                        Experiments
-                      </a>
-                    </div>
-                    <span class="mr-2">
-                      &#9656;
-                    </span>
-
-                  <div>
-                    WebGPUAudio Experiment
-                  </div>
-                </div>
-
-                          </div>
-
-                      </div>
-
-                      <div id="content">
-                        <div class="w-full px-6 md:max-w-4xl md:mx-auto">
-
-
-                <h1>WebGPUAudio Experiment</h1>
-
-                <p>An experiment to use Web Audio API and WebGPU together to process audio
-                  stream with GPU.</p>
-
-                <div class="demo-box">
-
-
-                  <div id="message-view" class="pb-3 text-sm whitespace-pre"></div>
-                  <button id="toggle-audio" disabled>START</button>
-                </div>
-
+                        <div class="demo-box">
+                          <div id="message-view" class="pb-3 text-sm whitespace-pre"></div>
+                          <button id="toggle-audio" disabled>START</button>
                         </div>
-                      </div>
-
-                      <div id="footer" class="py-8">
-                        <div class="w-full px-6 md:max-w-4xl md:mx-auto">
-                          <div class="footer py-6 text-gray-500">
-                  <div class="flex pb-3">
-
-                      <div class="mr-1">
-                        <a href="https://googlechromelabs.github.io/web-audio-samples/" target="_blank">Home</a>
-                      </div>
-
-                      <span class="mr-1">
-                        &#9585;
-                      </span>
-
-
-                      <div class="mr-1">
-                        <a href="https://github.com/GoogleChromeLabs/web-audio-samples/" target="_blank">Sources</a>
-                      </div>
-
-                      <span class="mr-1">
-                        &#9585;
-                      </span>
-
-
-                      <div class="mr-1">
-                        <a href="https://github.com/GoogleChromeLabs/web-audio-samples/issues/new" target="_blank">Report issues</a>
-                      </div>
-
-                      <span class="mr-1">
-                        &#9585;
-                      </span>
-
-
-                      <div class="mr-1">
-                        <a href="https://bugs.chromium.org/p/chromium/issues/entry?components=Blink%3EWebAudio" target="_blank">Report Chrome issues</a>
-                      </div>
-
-
-                  </div>
-                  <div class="pb-3">
-                    2010-2024 Chromium authors
-                    (b3b0851)
-                  </div>
-                </div>
-
-                        </div>
-                      </div>
                     </div>
-
-
                   </body>
             </template>
 		</webgpu-audio>
