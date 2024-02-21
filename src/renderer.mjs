@@ -177,7 +177,7 @@ export class wDApplication
     check()
     {
         try {
-            if ( navigator.gpu ) {
+            if ( navigator.gpu != null && navigator.gpu != undefined ) {
                 const wgerr = document.getElementById('error');
                 wgerr.style.display = 'none';
                 const wgcontent = document.getElementById('content');
