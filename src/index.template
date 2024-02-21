@@ -338,13 +338,15 @@
 					let memdata = new Float32Array( samplerate * 10 * channels );
 
 					for (let i = 0; i < memdata.length; i = i + 2 ) {
-						memdata[i + 0] = Math.sin( i );
-						memdata[i + 1] = Math.cos( i );
+						memdata[i + 0] = Math.sin( i * ( 2.0 * Math.PI ) / 365 );
+						memdata[i + 1] = Math.cos( i * ( 2.0 * Math.PI ) / 365 );
 					}
 					
 					let memsize = memdata.length * memdata.BYTES_PER_ELEMENT;
 					let memptr = window.malloc( memsize );
 
+					window.assign( memdata, memptr );
+					
 					let retval = window.createfile( channels, samplerate, nameoffile, memptr, memsize );
 					if ( retval > 0 ) {					
 						window.startplayback( nameoffile );
