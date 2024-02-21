@@ -13,7 +13,7 @@
 // limitations under the License.
 import { FIRST_PREOPEN_FD } from './fileSystem.js';
 // @ts-ignore
-import { instantiate } from './node_modules/asyncify-wasm/dist/asyncify.mjs';
+import { instantiate } from './modules/asyncify-wasm/dist/asyncify.mjs';
 import { enumer, string, struct, taggedUnion, int8_t, uint8_t, uint16_t, uint32_t, uint64_t, size_t } from './type-desc.js';
 export var E;
 (function (E) {
