@@ -10,13 +10,11 @@
     "scripts": {
         "start": "redrun -p devServer watch",
         "build": "redrun -s build:webpack build:gulp",
-        "es5": "babel dist -d dist/es5",
-        "watch": "gulp run",
         "deploy": "gh-pages -d dist",
+        "watch": "gulp run",
         "build:gulp": "gulp copy-docs",
         "build:webpack": "webpack --config webpack/webpack.prod.mjs",
-        "devServer": "webpack serve --open --config webpack/webpack.dev.mjs",
-        "server": "nodemon backend/index.mjs --inspect"
+        "devServer": "webpack serve --open --config webpack/webpack.dev.mjs"
     },
     "keywords": [
         "webgpu",
