@@ -513,7 +513,14 @@ export class wDApplication
         let flag = false;
         if ( window.isInit() > 0 ) {
             let nameoffile = window["nameoffile"];
-            if ( window.isExist( nameoffile ) > 0 ) {
+            let _colors = [
+                { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 1.0, 0.0, 0.0, 1.0 ] },
+                { from: [ 0.0, 1.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] },
+            ]             
+            if ( window["hold-chart"] == true && window["hold-buffer"] != undefined ) {
+                await this.spline.drawData( this, window["hold-buffer"], window["channels"], window["rendertype"] , window["samplerate"], 1, window.kdX, window.kdY, window.zoomX, window.zoomY, 1, _colors );
+                flag = true;
+            } else if ( window.isExist( nameoffile ) > 0 ) {
                 if ( window.isPlaying() > 0 ) {
                     /////////////////////////////////////////////////////////////////////////////////
                     // differet render types of channels
@@ -526,10 +533,6 @@ export class wDApplication
                     // samplerate of the file
                     let _samplerate = window.getsamplerate( nameoffile );
                     window["samplerate"] = _samplerate;
-                    let _colors = [
-                        { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 1.0, 0.0, 0.0, 1.0 ] },
-                        { from: [ 0.0, 1.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] },
-                    ] 
                     if ( ( window["hold-chart"] == true || window["hold-chart"] == false ) && window["hold-buffer"] == undefined ) {
                         /////////////////////////////////////////////////////////////////////////////////
                         // frames of the file
@@ -543,19 +546,15 @@ export class wDApplication
                             let _framescount = window.getcurrentbuffer( nameoffile, _frameoffset, _memptr, _countofframes );
                             if ( _framescount > 0 ) { 
                                 let _buffer = window.copy( _memptr, _framescount * _channels * SIZE_OF_FLOAT );
-                                if ( window["hold-chart"] == true )
-                                    window["hold-buffer"] = new Float32Array( _buffer );
+                                if ( window["hold-chart"] == true ) window["hold-buffer"] = new Float32Array( _buffer );
                                 await this.spline.drawData( this, _buffer, _channels, _rendertype, _samplerate, 1, window.kdX, window.kdY, window.zoomX, window.zoomY, 1, _colors );
                                 flag = true;
                             }
                             if ( _memptr > 0 ) window.free( _memptr );
                         } 
-                    } else if ( window["hold-chart"] == true && window["hold-buffer"] != undefined ) {
-                        await this.spline.drawData( this, window["hold-buffer"], window["channels"], window["rendertype"] , window["samplerate"], 1, window.kdX, window.kdY, window.zoomX, window.zoomY, 1, _colors );
-                        flag = true;
                     }
                 }
-            }    
+            } 
         } 
         if ( flag == false ) await this.spline.drawData( this, null, null, "stereo", window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
 
