@@ -26,11 +26,19 @@ export class wDApplication
     {
         this.borderwidth = _w;
     }
-    setCanvas( canvas ) 
+    setCanvas( canvas )
+    {
+        this.setChartCanvas( canvas );
+    }
+    setChartCanvas( canvas ) 
     {
         this.canvas = canvas;
     }
-    getCanvas() 
+    getCanvas()
+    {
+        return this.getChartCanvas();
+    }
+    getChartCanvas() 
     {
         return this.canvas;
     }
