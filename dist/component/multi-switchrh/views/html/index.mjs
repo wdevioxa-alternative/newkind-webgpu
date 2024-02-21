@@ -1,1 +1,0 @@
-import t from"./default/index.mjs";export const loadHTML=(t,e)=>{const o=new URL(t,e).href;return fetch(o).then((t=>t.text()))};export default t;
