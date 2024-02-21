@@ -79,7 +79,6 @@
         <script type="module">
             const index = await import('/index.mjs')
             console.log('API', index)
-
         </script>
 		<script type='text/javascript'>
 			document.addEventListener('holdchart', (event) => {

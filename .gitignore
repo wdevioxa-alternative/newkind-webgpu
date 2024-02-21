@@ -32,4 +32,4 @@ yarn.lock
 temp
 *.map
 node_modules
-./dist
+/dist

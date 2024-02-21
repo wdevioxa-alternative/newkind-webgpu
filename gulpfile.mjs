@@ -2,9 +2,16 @@ import gulp from 'gulp'
 import * as dotenv from 'dotenv'
 import cleanCSS from 'gulp-clean-css';
 import Uglify from 'gulp-uglify-es'
+// import {series} from 'async';
+import {exec} from "child_process";
+
 const uglify = Uglify.default
 console.log('uglify', uglify)
 dotenv.config()
+
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 gulp.task('minify-mjs', function() {
     return gulp.src("component/**/*.mjs")
@@ -35,15 +42,30 @@ gulp.task('copy-html', function() {
         .pipe(gulp.dest('./dist/', {overwrite:true}));
 });
 
-gulp.task('copy-docs', function() {
+gulp.task('copy-docs', async function() {
     return gulp.src('./src/docs/**')
         .pipe(gulp.dest('./dist', {overwrite:true}));
 });
 
+gulp.task('npm:build', function () {
+    return new Promise(async function(resolve, reject) {
+        await exec('npm run build', (error, stdout, stderr) => {
+            if (error) {
+                console.error(`exec error: ${error}`);
+                return;
+            }
+            console.log(`stdout: ${stdout}`);
+            resolve()
+        })
+    });
+})
+
 gulp.task('watch',  () => {
-    gulp.watch([
-        './src/index.template',
-        `./src/docs/**`], gulp.series('copy-docs' ))
+    gulp.watch([`./src/docs/**`], gulp.series('copy-docs' ))
 });
 
-gulp.task('run', gulp.series('copy-docs', 'watch'))
+gulp.task('watch-index',  () => {
+    gulp.watch(['./src/index.template'], gulp.series('npm:build' ))
+});
+
+gulp.task('run', gulp.series('copy-docs'), gulp.parallel('watch', 'watch-index'))
