@@ -33,7 +33,7 @@ class BasicProcessor extends AudioWorkletProcessor {
    * @param {Array<Float32Array>>} outputs
    * @returns {boolean}
    */
-  process(inputs, outputs) {
+  process(inputs, outputs, parameters) {
     const input = inputs[0];
     const output = outputs[0];
 
@@ -43,6 +43,7 @@ class BasicProcessor extends AudioWorkletProcessor {
     // enough.
     if (this.primingCounter > ExpectedPrimingCount) {
       // Pull processed audio data out of `outputQueue` and pass it in output.
+      console.log('------------- output ---------------', output)
       const didPull = this.outputQueue.pull(output, RENDER_QUANTUM);
       if (!didPull) {
         console.log('[basic-processor.js] Not enough data in outputQueue');
@@ -53,6 +54,7 @@ class BasicProcessor extends AudioWorkletProcessor {
 
     // Store incoming audio data `input` into `inputQueue`.
     const didPush = this.inputQueue.push(input, RENDER_QUANTUM);
+    console.log('-------------- input --------------', input)
     if (!didPush) {
       console.log('[basic-processor.js] Not enough space in inputQueue');
     }
