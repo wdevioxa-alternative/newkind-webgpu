@@ -77,9 +77,9 @@
             console.log('API', index)
         </script>
 		<script type='text/javascript'>
-			document.addEventListener('reset_graph', (event) => {
-				const value = event.detail.value
-				console.log('RESET', value)
+			document.addEventListener('holdchart', (event) => {
+                const value = event.detail.value
+                console.log('RESET: ',  value)
 			}, {
 				bubbles: true,
 				composed: true,
@@ -331,7 +331,7 @@
 					});
 */
 					
-					let nameoffile = "test.wav";
+					let nameoffile = "_temp_.wav";
 					
 					window["nameoffile"] = nameoffile;
 
@@ -351,14 +351,14 @@
 					}
 
 					let u8memdata = new Uint8Array( memdata.buffer );
-					
+
 					let memsize = u8memdata.length * u8memdata.BYTES_PER_ELEMENT
 					let memptr = window.malloc( memsize );
 
 					window.assign( u8memdata, memptr );
 
 					let retval = window.createfile( channels, samplerate, nameoffile, memptr, memsize );
-					if ( retval > 0 ) {	
+					if ( retval == memsize ) {	
 						window.startplayback( nameoffile );
 					}
 
@@ -408,11 +408,11 @@
 				<multi-switchrh data-field="settings-2" data-services-path="webgpu">
 					<template>
 						<div class="container">
-							<fieldset data-field="reset_graph" class="multiswitch" data-theme="stoplight">
+							<fieldset data-field="holdchart" class="multiswitch" data-theme="stoplight">
 								<legend>Удержать картинку графика</legend>
 								<div class="slide-container">
-									<input type="radio" name="reset" id="reset">
-									<label for="reset">Удержать картинку</label>
+									<input type="radio" name="holdchart" id="holdchart">
+									<label for="holdchart">Удержать картинку</label>
 									<a class="slide settings-3" aria-hidden="true"></a>
 								</div>
 							</fieldset>

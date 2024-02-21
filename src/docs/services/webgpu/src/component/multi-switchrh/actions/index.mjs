@@ -6,8 +6,8 @@ export const actions = (self) => {
                 const fieldSet = event.target.closest('fieldset')
                 if(event.target.tagName === 'LABEL') {
                     switch (fieldSet.dataset.field) {
-                        case "reset_graph":
-                            document.dispatchEvent(new CustomEvent(`reset_graph`, {
+                        case "holdchart":
+                            document.dispatchEvent(new CustomEvent(`holdchart`, {
                                 bubbles: true,
                                 composed: true,
                                 detail: {
