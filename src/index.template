@@ -11,7 +11,6 @@
 		<script type="text/javascript" src="js/jquery-ui.js"></script>
 		<script type="text/javascript" src="js/libsndfile.js"></script>
 		<script type="text/javascript" src="config/controller.bundle.js"></script>
-    <!--    <link rel="preload" href="/services/webgpu/src/component/wasi-terminal/views/mjs/terminal/coreutils.async.wasm" as="fetch" crossorigin /> -->
 	    <script src="/services/webgpu/src/component/wasi-terminal/views/mjs/terminal/modules/xterm/lib/xterm.js"></script>
         <script src="/services/webgpu/src/component/wasi-terminal/views/mjs/terminal/modules/local-echo/dist/local-echo.js"></script>
         <script src="/services/webgpu/src/component/wasi-terminal/views/mjs/terminal/modules/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
