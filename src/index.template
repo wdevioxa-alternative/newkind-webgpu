@@ -73,7 +73,8 @@
 		</style>
 
         <script type="module">
-            console.log('@@@@@@@@@@@@@@@@@@')
+            const index = await import('/index.mjs')
+            console.log('API', index)
         </script>
 		<script type='text/javascript'>
 			document.addEventListener('reset_graph', (event) => {
@@ -345,7 +346,7 @@
 		>
             <template>
                 <body>
-                <script src="/component/webgpu-audio/views/mjs/audio/coi-serviceworker.js"></script
+                <script src="/services/webgpu/src/component/webgpu-audio/views/mjs/audio/coi-serviceworker.js"></script
                     <div>
                         <h1>WebGPUAudio Experiment</h1>
                         <p>An experiment to use Web Audio API and WebGPU together to process audio stream with GPU.</p>

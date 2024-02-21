@@ -37,7 +37,7 @@ gulp.task('copy-html', function() {
 
 gulp.task('copy-docs', function() {
     return gulp.src('./src/docs/**')
-        .pipe(gulp.dest('./dist/docs', {overwrite:true}));
+        .pipe(gulp.dest('./dist', {overwrite:true}));
 });
 
 gulp.task('watch',  () => {

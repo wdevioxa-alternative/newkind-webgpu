@@ -34,7 +34,6 @@ export default {
             { from: path.resolve(__dirname, 'src', 'font'), to: path.resolve(__dirname, 'dist', 'font') },
             { from: path.resolve(__dirname, 'src', 'js'), to: path.resolve(__dirname, 'dist', 'js') },
             { from: path.resolve(__dirname, 'src', 'assets'), to: path.resolve(__dirname, 'dist', 'assets') },
-            { from: path.resolve(__dirname, 'src', 'components'), to: path.resolve(__dirname, 'dist', 'component') },
             { from: path.resolve(__dirname, 'src', 'config'), to: path.resolve(__dirname, 'dist', 'config') },
             { from: path.resolve(__dirname, 'src', 'sounds'), to: path.resolve(__dirname, 'dist', 'sounds') }
           ]

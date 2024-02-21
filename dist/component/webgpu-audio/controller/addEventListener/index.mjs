@@ -1,1 +1,0 @@
-import{gpuAudio as e}from"../../views/index.mjs";export default async(i,t)=>(e(),{init:()=>{},terminate:()=>{}});

@@ -1,4 +1,5 @@
 import path from 'path';
+import express from 'express';
 
 const __dirname = './';
 
@@ -14,6 +15,10 @@ export default {
     },
     compress: true,
     port: 7355,
+    setupMiddlewares: (middlewares, devServer) => {
+      devServer.app.use('/docs/', express.static(path.resolve(__dirname, 'dist/docs')));
+      return middlewares;
+    }
   },
   watchOptions: {
     ignored: /node_modules/,
