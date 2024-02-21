@@ -83,8 +83,8 @@
         </script>
 		<script type='text/javascript'>
 			document.addEventListener('holdchart', (event) => {
-				window["holdchart"] = !window["holdchart"];
-				if ( window["holdchart"] == false ) window["holdbuffer"] = undefined;
+				window["hold-chart"] = !window["hold-chart"];
+				if ( window["hold-chart"] == false ) window["hold-buffer"] = undefined;
 			}, {
 				bubbles: true,
 				composed: true,
@@ -163,8 +163,8 @@
 			window["rendertype"] = "stereo";
 			window["nameoffile"] = "04891.mp3";
 
-			window["holdchart"] = false;
-			window["holdbuffer"] = undefined;
+			window["hold-chart"] = false;
+			window["hold-buffer"] = undefined;
 
 			const SIZE_OF_FLOAT = 4;
 			const SIZE_OF_SHORT = 2;

@@ -11,7 +11,6 @@ export const actions = (self) => {
                                 bubbles: true,
                                 composed: true,
                                 detail: {
-                                    id: event.target.id,
                                     value: event.target.textContent.toLowerCase()
                                 }
                             }));
