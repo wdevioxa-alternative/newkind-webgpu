@@ -330,25 +330,35 @@
 						if ( memptr > 0 ) window.free( memptr );
 					});
 */
+					
 					let nameoffile = "test.wav";
 					
+					window["nameoffile"] = nameoffile;
+
 					let channels = 2;
 					let samplerate = 44100;
+					let freq = 440;
 
-					let memdata = new Float32Array( samplerate * 10 * channels );
+					let duration = 30;
+					let frames = duration * samplerate;
 
-					for (let i = 0; i < memdata.length; i = i + 2 ) {
-						memdata[i + 0] = Math.sin( i * ( 2.0 * Math.PI ) / 365 );
-						memdata[i + 1] = Math.cos( i * ( 2.0 * Math.PI ) / 365 );
+					let memdata = new Float32Array( frames * channels );
+
+					for (let i = 0; i < frames; i++ ) {
+						let time = i * duration / frames;
+						memdata[i * channels + 0] = Math.sin(2.0 * Math.PI * time * freq);
+						memdata[i * channels + 1] = Math.cos(2.0 * Math.PI * time * freq);
 					}
+
+					let u8memdata = new Uint8Array( memdata.buffer );
 					
-					let memsize = memdata.length * memdata.BYTES_PER_ELEMENT;
+					let memsize = u8memdata.length * u8memdata.BYTES_PER_ELEMENT
 					let memptr = window.malloc( memsize );
 
-					window.assign( memdata, memptr );
-					
+					window.assign( u8memdata, memptr );
+
 					let retval = window.createfile( channels, samplerate, nameoffile, memptr, memsize );
-					if ( retval > 0 ) {					
+					if ( retval > 0 ) {	
 						window.startplayback( nameoffile );
 					}
 
