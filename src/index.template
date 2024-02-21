@@ -315,6 +315,7 @@
 
 				$( "#startplayback" ).click( function() {
 					window.audioinit();
+/*					
 					let nameoffile = window["nameoffile"];
 					window.loadfile( "sounds/" + nameoffile ).then( function( source ) 
 					{
@@ -326,8 +327,31 @@
 						if ( retval > 0 ) {					
 							window.startplayback( nameoffile );
 						}
-						if ( memptr > 0 ) window.free( memptr );									
+						if ( memptr > 0 ) window.free( memptr );
 					});
+*/
+					let nameoffile = "test.wav";
+					
+					let channels = 2;
+					let samplerate = 44100;
+
+					let memdata = new Float32Array( samplerate * 10 * channels );
+
+					for (let i = 0; i < memdata.length; i = i + 2 ) {
+						memdata[i + 0] = Math.sin( i );
+						memdata[i + 1] = Math.cos( i );
+					}
+					
+					let memsize = memdata.length * memdata.BYTES_PER_ELEMENT;
+					let memptr = window.malloc( memsize );
+
+					let retval = window.createfile( channels, samplerate, nameoffile, memptr, memsize );
+					if ( retval > 0 ) {					
+						window.startplayback( nameoffile );
+					}
+
+					if ( memptr > 0 ) window.free( memptr );
+
 				});
 
 				$( "#stopplayback" ).click( function() {

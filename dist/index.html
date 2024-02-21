@@ -53,8 +53,17 @@
 
             .visibleInput {
                 display: flex;
-            }</style><script type="module">const index = await import('/index.mjs')
-            console.log('API', index)</script><script>document.addEventListener('reset_graph', (event) => {
+            }
+		</style>
+		
+		<script type="module">
+			const index = await import('/index.mjs')
+			console.log('API', index)
+		</script>
+
+		<script>
+
+			document.addEventListener('reset_graph', (event) => {
 				const value = event.detail.value
 				console.log('RESET', value)
 			}, {
@@ -62,7 +71,7 @@
 				composed: true,
 			});
 
-         document.addEventListener('goniometer', (event) => {
+         	document.addEventListener('goniometer', (event) => {
                 const value = event.detail.value
                 console.log('GONIOMETER', value)
             }, {

@@ -483,15 +483,6 @@ export class wDApplication
         //     { from: [ this.color, 1.0 - this.color, this.color, 1.0 ], to: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ] },
         //     { from: [ 1.0 - this.color, this.color, 1.0 - this.color, 1.0 ], to: [ this.color, 1.0 - this.color, this.color, 1.0 ] } 
         // ] );
-        
-        ////////////////////////////////////////////////////////////////////////////////////
-        // wDCircle example is completed
-        ////////////////////////////////////////////////////////////////////////////////////
-        //this.circle.set( 10, 10, 6, 1 );
-
-        this.circle.set( sBW + sW / 2.0, sBW + sH / 2.0, 100 * ( 1.0 - this.color ) * 2, 1 );
-        await this.circle.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
-        ////////////////////////////////////////////////////////////////////////////////////
 
 /*
         let sY = sH / window.kdY;
@@ -561,6 +552,14 @@ export class wDApplication
             }    
         } 
         if ( flag == false ) await this.spline.drawData( this, null, null, "stereo", window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
+
+        ////////////////////////////////////////////////////////////////////////////////////
+        // wDCircle example is completed
+        ////////////////////////////////////////////////////////////////////////////////////
+        //this.circle.set( 10, 10, 6, 1 );
+        this.circle.set( sBW + sW / 2.0, sBW + sH / 2.0, 100 * ( 1.0 - this.color ) * 2, 1 );
+        await this.circle.draw( this, [ 1.0, 0.0, 0.0, 1.0 ] );
+        ////////////////////////////////////////////////////////////////////////////////////
 
         this.passEncoder.end();
         this.device.queue.submit( [ this.commandEncoder.finish() ] );
