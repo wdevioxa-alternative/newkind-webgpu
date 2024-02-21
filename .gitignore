@@ -33,3 +33,4 @@ temp
 *.map
 node_modules
 /dist
+./dist
