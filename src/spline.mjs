@@ -422,12 +422,12 @@ export class wDSpline extends wDObject
             /////////////////////////////////////////////////
             // x and y: one step to right side in radians
             let _rs_ex = _ix_center + i * _ix_step;
-            let _rs_ey = _y + _object[ _channels * _rs_ex + _channel ] * _height  / height;
+            let _rs_ey = _object[ _channels * _rs_ex + _channel ] * _height / height;
 
             /////////////////////////////////////////////////
             // x and y: one step to left side in radians
             let _ls_ex = _ix_center - i * _ix_step;
-            let _ls_ey = _y + _object[ _channels * _ls_ex - _channels + _channel ] * _height  / height;
+            let _ls_ey = _object[ _channels * _ls_ex - _channels + _channel ] * _height / height;
 
             if ( i == 0 ) 
             {
@@ -494,7 +494,7 @@ export class wDSpline extends wDObject
         }
     }
 
-    async functionDraw( instance, _object, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, colors ) 
+    async functionDraw( instance, _object, _rateofsamples, _volumescale, x, y, width, height, kdX, kdY, zoomX, zoomY, _t, colors ) 
     {
         ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////
@@ -505,6 +505,12 @@ export class wDSpline extends wDObject
         // let sX = tX * _samplerate;
         ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////
+
+        let _width = width - instance.getBorderWidth() * 2.0;
+        let _height = height - instance.getBorderWidth() * 2.0;
+
+        let _x = x + instance.getBorderWidth();
+        let _y = y + instance.getBorderWidth();
 
         let flag = this.isDuty();
 
@@ -562,19 +568,19 @@ export class wDSpline extends wDObject
             // Step in pixels with scale on x and y axis
             ///////////////////////////////////////////////////////////////////
             let _cX = kX * _width / kdX;
-            let _centX = x + _width / 2.0;
+            let _centX = _x + _width / 2.0;
 
             for ( let i = 0; i < kdX / 2.0; i++ )
             {
                 /////////////////////////////////////////////////
                 // x and y: one step to right side in radians
                 let _rs_ex = (+1) * _ix_step * i + _ix_center;
-                let _rs_ey = _func( _rs_ex );
+                let _rs_ey = _func( _rs_ex ) * _height / height;
 
                 /////////////////////////////////////////////////
                 // x and y: one step to left side in radians
                 let _ls_ex = (-1) * _ix_step * i + _ix_center;
-                let _ls_ey = _func( _ls_ex );
+                let _ls_ey = _func( _ls_ex ) * _height / height;
 
                 if ( i == 0 ) 
                 {
