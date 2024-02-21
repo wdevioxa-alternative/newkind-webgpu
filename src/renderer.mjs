@@ -519,34 +519,50 @@ export class wDApplication
                     /////////////////////////////////////////////////////////////////////////////////
                     // differet render types of channels
                     let _rendertype = window["rendertype"];
+
                     /////////////////////////////////////////////////////////////////////////////////
                     // number of channels
                     let _channels = window.getchannels( nameoffile );
+                    window["channels"] = _channels;
+
                     /////////////////////////////////////////////////////////////////////////////////
                     // samplerate of the file
                     let _samplerate = window.getsamplerate( nameoffile );
-                    /////////////////////////////////////////////////////////////////////////////////
-                    // frames of the file
-                    let _framestotal = window.getframes( nameoffile );
-                    /////////////////////////////////////////////////////////////////////////////////
-                    // current playback offset of the file					
-                    let _frameoffset = window.playbackoffset();
-                    if ( _framestotal != _frameoffset ) {
+                    window["samplerate"] = _samplerate;
+
+                    if ( ( window["holdchart"] == true || window["holdchart"] == false ) && window["holdbuffer"] == undefined ) {
                         /////////////////////////////////////////////////////////////////////////////////
-                        // ( _samplerate / 2 ) 0.5 seconds
-                        let _countofframes = _samplerate * _channels;
-                        let _memptr = window.malloc( _countofframes * _channels * SIZE_OF_FLOAT );
-                        let _framescount = window.getcurrentbuffer( nameoffile, _frameoffset, _memptr, _countofframes );
-                        if ( _framescount > 0 ) { 
-                            let _buffer = window.copy( _memptr, _framescount * _channels * SIZE_OF_FLOAT );
-                            let _colors = [
-                                { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 1.0, 0.0, 0.0, 1.0 ] },
-                                { from: [ 0.0, 1.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] },
-                            ] 
-                            await this.spline.drawData( this, _buffer, _channels, _rendertype, _samplerate, 1, window.kdX, window.kdY, window.zoomX, window.zoomY, 1, _colors );
-                            flag = true;
-                        }
-                        if ( _memptr > 0 ) window.free( _memptr );
+                        // frames of the file
+                        let _framestotal = window.getframes( nameoffile );
+                        /////////////////////////////////////////////////////////////////////////////////
+                        // current playback offset of the file					
+                        let _frameoffset = window.playbackoffset();
+                        if ( _framestotal >= _frameoffset ) {
+                            /////////////////////////////////////////////////////////////////////////////////
+                            // ( _samplerate / 2 ) 0.5 seconds
+                            let _countofframes = _samplerate * _channels;
+                            let _memptr = window.malloc( _countofframes * _channels * SIZE_OF_FLOAT );
+                            let _framescount = window.getcurrentbuffer( nameoffile, _frameoffset, _memptr, _countofframes );
+                            if ( _framescount > 0 ) { 
+                                let _buffer = window.copy( _memptr, _framescount * _channels * SIZE_OF_FLOAT );
+                                if ( window["holdchart"] == true )
+                                    window["holdbuffer"] = new Float32Array( _buffer );
+                                let _colors = [
+                                    { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 1.0, 0.0, 0.0, 1.0 ] },
+                                    { from: [ 0.0, 1.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] },
+                                ] 
+                                await this.spline.drawData( this, _buffer, _channels, _rendertype, _samplerate, 1, window.kdX, window.kdY, window.zoomX, window.zoomY, 1, _colors );
+                                flag = true;
+                            }
+                            if ( _memptr > 0 ) window.free( _memptr );
+                        } 
+                    } else if ( window["holdchart"] == true && window["holdbuffer"] != undefined ) {
+                        let _colors = [
+                            { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 1.0, 0.0, 0.0, 1.0 ] },
+                            { from: [ 0.0, 1.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] },
+                        ] 
+                        await this.spline.drawData( this, window["holdbuffer"], window["channels"], window["rendertype"] , window["samplerate"], 1, window.kdX, window.kdY, window.zoomX, window.zoomY, 1, _colors );
+                        flag = true;
                     }
                 }
             }    

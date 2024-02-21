@@ -78,8 +78,8 @@
         </script>
 		<script type='text/javascript'>
 			document.addEventListener('holdchart', (event) => {
-                const value = event.detail.value
-                console.log('RESET: ',  value)
+				window["holdchart"] = !window["holdchart"];
+				if ( window["holdchart"] == false ) window["holdbuffer"] = undefined;
 			}, {
 				bubbles: true,
 				composed: true,
@@ -119,7 +119,8 @@
             });
 
             document.addEventListener('channels', (event) => {
-                const value = event.detail.value
+				const value = event.detail.value
+				console.log('channels: ',  value)
 				window["rendertype"] = value;
             }, {
                   bubbles: true,
@@ -153,8 +154,12 @@
 			})(jQuery);
 
 			window["isNumber"] = function(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
+
 			window["rendertype"] = "stereo";
 			window["nameoffile"] = "04891.mp3";
+
+			window["holdchart"] = false;
+			window["holdbuffer"] = undefined;
 
 			const SIZE_OF_FLOAT = 4;
 			const SIZE_OF_SHORT = 2;
@@ -243,7 +248,7 @@
 					},
 					range: false,
 					min: 100,
-					max: 400,
+					max: 1000,
 					step: 1
 				});
 
@@ -448,11 +453,11 @@
 								<legend>Left/Stereo/Right</legend>
 								<div class="slide-container">
 								<input type="radio" name="stoplight" id="left">
-								<label for="left">Left</label>
+								<label id="left" for="left">Left</label>
 								<input type="radio" name="stoplight" id="stereo"  checked>
-								<label for="stereo">Stereo</label>
+								<label id="stereo" for="stereo">Stereo</label>
 								<input type="radio" name="stoplight" id="right">
-								<label for="right">Right</label>
+								<label id="right" for="right">Right</label>
 								<a class="slide value" aria-hidden="true"></a>
 								</div>
 							</fieldset>
