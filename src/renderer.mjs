@@ -349,8 +349,8 @@ export class wDApplication
         //this.label = new wDLabel( this, 'lighter', 10, 'Segoe UI Light', 0, 0, 128, 128 );
         //await this.label.init();
 
-        this.pointsline = new wDLine( this );
-        await this.pointsline.init();
+        //this.pointsline = new wDLine( this );
+        //await this.pointsline.init();
 
         this.circle = new wDCircle( this );
         await this.circle.init();
@@ -457,7 +457,7 @@ export class wDApplication
         let sW = this.getCanvasWidth( false );
         let sH = this.getCanvasHeight( false );
 
-        let object = window.getDrawParams.call();
+        //let object = window.getDrawParams.call();
 
         this.spline.set( sBW, sBW, sW, sH );
         //await this.spline.drawConfig( this, object, window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
@@ -511,7 +511,6 @@ export class wDApplication
         ////////////////////////////////////////////////////////////////////////////////////
 
         let flag = false;
-
         if ( window.isInit() > 0 ) {
             let nameoffile = window["nameoffile"];
             if ( window.isExist( nameoffile ) > 0 ) {
@@ -519,22 +518,18 @@ export class wDApplication
                     /////////////////////////////////////////////////////////////////////////////////
                     // differet render types of channels
                     let _rendertype = window["rendertype"];
-
                     /////////////////////////////////////////////////////////////////////////////////
                     // number of channels
                     let _channels = window.getchannels( nameoffile );
                     window["channels"] = _channels;
-
                     /////////////////////////////////////////////////////////////////////////////////
                     // samplerate of the file
                     let _samplerate = window.getsamplerate( nameoffile );
                     window["samplerate"] = _samplerate;
-                    
                     let _colors = [
                         { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 1.0, 0.0, 0.0, 1.0 ] },
                         { from: [ 0.0, 1.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] },
                     ] 
-
                     if ( ( window["hold-chart"] == true || window["hold-chart"] == false ) && window["hold-buffer"] == undefined ) {
                         /////////////////////////////////////////////////////////////////////////////////
                         // frames of the file
@@ -543,8 +538,6 @@ export class wDApplication
                         // current playback offset of the file					
                         let _frameoffset = window.playbackoffset();
                         if ( _framestotal >= _frameoffset ) {
-                            /////////////////////////////////////////////////////////////////////////////////
-                            // ( _samplerate / 2 ) 0.5 seconds
                             let _countofframes = _samplerate * _channels;
                             let _memptr = window.malloc( _countofframes * _channels * SIZE_OF_FLOAT );
                             let _framescount = window.getcurrentbuffer( nameoffile, _frameoffset, _memptr, _countofframes );
