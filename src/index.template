@@ -7,7 +7,7 @@
 		<link href="js/themes/dark-hive/theme.css" rel="stylesheet"/>
 
 		<script type="text/javascript" src="js/jquery-3.7.1.min.js"></script>
-		<script type="text/javascript" src="js/external/jquery/jquery.js"></script>
+<!--		<script type="text/javascript" src="js/external/jquery/jquery.js"></script> -->
 		<script type="text/javascript" src="js/jquery-ui.js"></script>
 		<script type="text/javascript" src="js/libsndfile.js"></script>
 		<script type="text/javascript" src="config/controller.bundle.js"></script>
@@ -32,7 +32,7 @@
 		    	width: 100%;
 	            display: none;
 			}
-			#controlgroup {
+			#content {
 		    	width: 100%;
 	            display: none;
 			}
@@ -40,7 +40,7 @@
         	    text-align: center;
 	            width: 100%;
         	    color: red;
-        	    display: block;
+        	    display: none;
 			}
 			.ui-input {
 				padding: .4em .4em;
@@ -336,6 +336,7 @@
 
 	<body>	
 		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
+		<div id="content">
 		<webgpu-audio
 		    data-field="settings-2"
 		    data-services-path="webgpu"
@@ -362,16 +363,16 @@
 			</div>
 		</div>
 		<div id="accordition" class="settings">
-			<h5>Удержать график</h5>
+			<h5>Удержать картинку графика</h5>
 			<div>
 				<multi-switchrh data-field="settings-2" data-services-path="webgpu">
 					<template>
 						<div class="container">
 							<fieldset data-field="reset_graph" class="multiswitch" data-theme="stoplight">
-								<legend>Удержать график</legend>
+								<legend>Удержать картинку графика</legend>
 								<div class="slide-container">
 									<input type="radio" name="reset" id="reset">
-									<label for="reset">Удержать</label>
+									<label for="reset">Удержать картинку</label>
 									<a class="slide settings-3" aria-hidden="true"></a>
 								</div>
 							</fieldset>

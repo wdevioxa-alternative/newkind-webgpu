@@ -177,16 +177,19 @@ export class wDApplication
     check()
     {
         try {
-            if ( !navigator.gpu ) 
+            if ( navigator.gpu ) {
+                const wgerr = document.getElementById('error');
+                wgerr.style.display = 'none';
+                const wgcontent = document.getElementById('content');
+                wgcontent.style.display = 'block';
+                const wgfx = document.getElementById('gfx');
+                wgfx.style.display = 'block';
+                this.setCanvas( wgfx );
+            } else {
+                const wgerr = document.getElementById('error');
+                wgerr.style.display = 'block';
                 throw('Your browser does`t support WebGPU or it is not enabled.');
-
-            const wgerr = document.getElementById('error');
-            wgerr.style.display = 'none';
-
-            const wgfx = document.getElementById('gfx');
-            wgfx.style.display = 'block';
-
-            this.setCanvas( wgfx );
+            }
         } catch ( e ) {
             throw( e );
         }
