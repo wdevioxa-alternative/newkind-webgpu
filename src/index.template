@@ -341,12 +341,10 @@
 					});
 */
 					
-					let nameoffile = "_temp_.wav";
-					
-					window["nameoffile"] = nameoffile;
+					window["nameoffile"] = "_temp_.wav";
 
 					let channels = 2;
-					let samplerate = 44100;
+					let samplerate = window["samplerate"];
 					let freq = 440;
 
 					let duration = 30;
@@ -367,9 +365,9 @@
 
 					window.assign( u8memdata, memptr );
 
-					let retval = window.createfile( channels, samplerate, nameoffile, memptr, memsize );
+					let retval = window.createfile( channels, samplerate, window["nameoffile"], memptr, memsize );
 					if ( retval == memsize ) {	
-						window.startplayback( nameoffile );
+						window.startplayback( window["nameoffile"] );
 					}
 
 					if ( memptr > 0 ) window.free( memptr );
