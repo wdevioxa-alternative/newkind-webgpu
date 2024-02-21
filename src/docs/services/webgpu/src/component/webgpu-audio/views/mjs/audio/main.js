@@ -2,7 +2,7 @@ import FreeQueue from './lib/free-queue.js'
 import { createTestIR, fetchAudioFileToF32Array } from './ir-helper.js';
 import { QUEUE_SIZE } from './constants.js';
 import Assets from './assets.js';
-export const gpuAudio = () => {
+export const gpuAudio = async () => {
 // Create 2 FreeQueue instances with 4096 buffer length and 1 channel.
   const inputQueue = new FreeQueue(QUEUE_SIZE, 1);
   const outputQueue = new FreeQueue(QUEUE_SIZE, 1);
@@ -27,7 +27,7 @@ export const gpuAudio = () => {
   const initializeAudio = async () => {
     const audioContext = new AudioContext();
 
-    await audioContext.audioWorklet.addModule('/component/webgpu-audio/views/mjs/audio/basic-processor.js');
+    await audioContext.audioWorklet.addModule('/services/webgpu/src/component/webgpu-audio/views/mjs/audio/basic-processor.js');
 
     const oscillatorNode = new OscillatorNode(audioContext);
     const processorNode = new AudioWorkletNode(audioContext, 'basic-processor', {
@@ -123,7 +123,8 @@ export const gpuAudio = () => {
     return areRequiremensMet;
   };
 
-  window.addEventListener('load', async () => {
+  // window.addEventListener('load', async () => {
+  //   debugger
     let webgpuAudio = document.querySelector('webgpu-audio')
     messageView = webgpuAudio.shadowRoot.getElementById('message-view');
 
@@ -134,7 +135,8 @@ export const gpuAudio = () => {
     audioContext = await initializeAudio();
 
     // Create a WebWorker for Audio Processing.
-    worker = new Worker('/component/webgpu-audio/views/mjs/audio/worker.js', {type: 'module'});
+    worker = new Worker('/services/webgpu/src/component/webgpu-audio/views/mjs/audio/worker.js', {type: 'module'});
+
 
     worker.onerror = (event) => {
       console.log('[main.js] Error from worker.js: ', event);
@@ -161,5 +163,5 @@ export const gpuAudio = () => {
     toggleButton.disabled = false;
 
     console.log('[main.js] window onloaded');
-  });
+  // });
 };

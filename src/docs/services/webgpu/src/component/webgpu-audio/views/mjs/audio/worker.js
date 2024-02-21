@@ -16,6 +16,7 @@ let averageTimeSpent = 0;
 let timeElapsed = 0;
 let runningAverageFactor = 1;
 
+console.log('WORKER')
 // This will initialize worker with FreeQueue instance and set loop for audio
 // processing.
 const initialize = async (messageDataFromMainThread) => {
