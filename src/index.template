@@ -17,378 +17,321 @@
         <script src="/services/webgpu/src/component/wasi-terminal/views/mjs/terminal/modules/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
         <script src="/services/webgpu/src/component/wasi-terminal/views/mjs/terminal/modules/xterm-addon-web-links/lib/xterm-addon-web-links.js"></script>
 		<title>WebGPU Test Page</title><link rel="shortcut icon" href="data:image/png;base64, AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbbv+DGW3/mRlt/5kZbf+ZGq6/hIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGa3/ohkt/7/Zbj//2S3/v9lt/6WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGm5/iRlt/74Zbj//2W4//9luP//Zbf++mi4/i4gIPciGhr24hsb9uwbG/bsGhr24CEh9xoAAAAAAAAAAAAAAABnuP5mZLf+/2W4//9luP//Zbj//2S3/v9muP5yGBj2rhMT9v8TE/b/ExP2/xMT9f8YGPWkAAAAAAAAAAAAAAAAb7z/BGW3/tZluP//Zbj//2W4//9lt/7gJzH3ShMT9f8TE/b/ExP2/xMT9v8TE/b/ExP1/CAg9joAAAAAAAAAAAAAAABmuP5GZLf+6GS3/uhkt/7oZbf+UhgY9YQSEvX/ExP2/xMT9v8TE/b/ExP2/xIS9f8aGvZ8AAAAAD4++gQgIPZ6IiL2hiIi9oYgIPZ8KCj5BAAAAAAtLfgUFBT17BMT9v8TE/b/ExP2/xMT9v8VFfXoLCz4DgAAAAAaGvZqEhL1/xMT9v8TE/b/EhL1/xsb9nIAAAAAAAAAABwc9m4SEvX/ExP2/xMT9v8SEvX/HR32ZAAAAAAnJ/gSFRX16hMT9v8TE/b/ExP2/xMT9v8UFPXuJyf4Fp2xlAKNnqUYLC/mfhYW83ATE/VuFxf1aDc3+gIAAAAAGBj1fhIS9f8TE/b/ExP2/xMT9v8TE/b/ExP1/xkZ9YaGn3yIhZ57/4Wee/+Gn3yKAAAAAAAAAAAAAAAAAAAAACMj9zYTE/X8ExP2/xMT9v8TE/b/ExP2/xMT9f9JUshihZ57+IaffP+Gn3z/hZ579oigfiYAAAAAAAAAAAAAAAAAAAAAGBj1oBIS9f8TE/b/ExP2/xMT9f8YGPWmiKB+PIWee/+Gn3z/hp98/4Wee/+HoH06AAAAAAAAAAAAAAAAAAAAACUl9xgVFfXOExP11BMT9dQUFPXQJib3HgAAAACGn3ymhp98/4affP+Gn3ymAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiKB+EIihf0CIoX9AiKB+EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAP//AADg/wAA4MMAAOCBAADggQAA8QEAAOeBAADDwwAAgf8AAIAPAACBDwAAgQ8AAMMPAAD//wAA//8AAA==" type="image/png">
-		<style>
-			@font-face {
-	            font-family: 'Segoe UI Light';
-        	    src: url( font/segoeuil.ttf ) format( 'truetype' );
-	        }
-			body{
-				font-family: 'Segoe UI Light';
-				margin-top: 3em;
-				margin-bottom: 3em;
-				margin-left: auto;
-				margin-right: auto;
-				width: 80%;
-      			overflow-y: scroll;
-      			overflow-x: auto;				
-			}
-			#gfx {
-		    	width: 100%;
-	            display: none;
-			}
-			#content {
-		    	width: 100%;
-	            display: none;
-			}
-			#error {
-        	    text-align: center;
-	            width: 100%;
-        	    color: red;
-        	    display: none;
-			}
-			.ui-input {
-				padding: .4em .4em;
-				display: inline-block;
-				position: relative;
-				line-height: normal;
-				margin-right: .1em;
-				cursor: pointer;
-				vertical-align: middle;
-				text-align: left;
-				-webkit-user-select: none;
-				-moz-user-select: none;
-				-ms-user-select: none;
-				user-select: none;
+	</head>
 
-				/* Support: IE <= 11 */
-				overflow: visible;
-			}
-			.ui-input,
-			.ui-input:link,
-			.ui-input:visited,
-			.ui-input:hover,
-			.ui-input:active {
-				text-decoration: none;
-			}
-
-            .visibleInput {
-                display: flex;
-            }
-		</style>
-
+	<body>
         <script type="module">
             const index = await import('/index.mjs')
             console.log('API', index)
         </script>
-		<script type='text/javascript'>
-			document.addEventListener('holdchart', (event) => {
-				window["hold-chart"] = !window["hold-chart"];
-				if ( window["hold-chart"] == false ) window["hold-buffer"] = undefined;
-			}, {
-				bubbles: true,
-				composed: true,
-			});
-
-         document.addEventListener('goniometer', (event) => {
-                const value = event.detail.value
-                console.log('GONIOMETER', value)
-            }, {
-                bubbles: true,
-                composed: true,
-            });
-
-            document.addEventListener('settingsInput', (event) => {
-                const value = event.detail.value
-                console.log('INPUT', value)
-            }, {
-                bubbles: true,
-                composed: true,
-            });
-
-             document.addEventListener('settingsDelay', (event) => {
-                const value = event.detail.value
-                console.log('DELAY: ', value)
-            }, {
-                  bubbles: true,
-                  composed: true,
-            });
-
-            document.addEventListener('settingsCheckbox', (event) => {
-                const id = event.detail.id
-                const value = event.detail.value
-                console.log('Checkbox: ', id,  value)
-            }, {
-                  bubbles: true,
-                  composed: true,
-            });
-
-            document.addEventListener('channels', (event) => {
-				const value = event.detail.value
-				console.log('channels: ',  value)
-				window["rendertype"] = value;
-            }, {
-                  bubbles: true,
-                  composed: true,
-            });
-
-			(function($)
-			{
-				$.fn.input = function (css)
-				{
-					if (!css) css = {};
-					return this.each(function ()
-					{
-						$(this).addClass("ui-widget ui-widget-content ui-corner-all ui-input");
-						$(this).css(css);
-					});
-				}
-			})(jQuery);
-
-			(function ($)
-			{
-				$.fn.label = function (css)
-				{
-					if (!css) css = {};
-					return this.each(function ()
-					{
-						$(this).addClass("ui-widget ui-input");
-						$(this).css(css);
-					});
-				}
-			})(jQuery);
-
-			window["isNumber"] = function(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
-
-			window["rendertype"] = "stereo";
-			window["nameoffile"] = "04891.mp3";
-
-			window["hold-chart"] = false;
-			window["hold-buffer"] = undefined;
-
-			const SIZE_OF_FLOAT = 4;
-			const SIZE_OF_SHORT = 2;
-			const SIZE_OF_INT = 4;
-			const SIZE_OF_DOUBLE = 8;
-
-			jQuery(document).ready(function () 
-			{	
-				window.wasminit( "js/", function() {
-					window.appinit();
-				});
-		
-				let onchange_samplerate = function() {
-					let value = $( "#sample-rate" ).spinner( "value" );
-					value = window.isNumber( value ) ? value : 44100;
-					$( "#sample-rate" ).spinner( "value", value );
-					window.samplerate = parseFloat( value );					
-				};
-
-				let onchange_volumerate = function() {
-					let value = $("#volume-rate").spinner( "value" );
-					value = window.isNumber( value ) ? value : 1.000;
-					$("#volume-rate").spinner( "value", value );
-					window.volumerate = parseFloat( value );					
-				};
-
-				$( "#sample-rate" ).spinner({
-					create: function( event, ui ){
-						$( "#sample-rate" ).spinner( "value", 44100 );
-						window.samplerate = 44100;
-					},
-					change: function( event, ui ) {
-						onchange_samplerate();
-					},
-					min: 2000,
-					max: 96000,
-					step: 100,
-					value: 44100,
-				});
-
-				$( "#sample-rate" ).click(function(){
-					onchange_samplerate();
-				});
-
-				$( "#sample-rate" ).keyup(function(){
-					if (event.keyCode === 13) {
-						onchange_samplerate();
-					}
-				});
-
-				$( "#volume-rate" ).spinner({
-					create: function( event, ui ) {
-						$("#volume-rate").spinner( "value", 1.000 );
-						window.volumerate = 1.000;
-					},
-					change: function( event, ui ) {
-						onchange_volumerate();
-					},					
-					min: 0.000,
-					max: 1.000,
-					step: 0.001,
-					value: 1.0,
-				});
-
-				$( "#volume-rate" ).click( function() {
-					onchange_volumerate();
-				});
-
-				$( "#volume-rate" ).keyup( function(){
-					if (event.keyCode === 13) {
-						onchange_volumerate();
-					}
-				});
-
-				$( "#zoom-x" ).slider({
-					create: function( event, ui ) {
-						$("#zoom-x").slider( "value", 100 );
-						window.zoomX = 100;
-					},
-					change: function( event, ui ) {
-						$("#zoom-x-value").text( ui.value );
-						window.zoomX = ui.value;
-					},					
-					slide: function( event, ui ) {
-						$("#zoom-x-value").text( ui.value );
-					},
-					range: false,
-					min: 100,
-					max: 1000,
-					step: 1
-				});
-
-				$( "#minimum-x" ).slider({
-					create: function( event, ui ) {
-						$("#minimum-x").slider( "value", 81 );
-						window.kdX = 81;
-					},
-					change: function( event, ui ) {
-						$("#minimum-x-value").text( ui.value );
-						window.kdX = ui.value;
-					},
-					slide: function( event, ui ) {
-						$("#minimum-x-value").text( ui.value );
-					},					
-					range: false,
-					min: 9,
-					max: 999,
-					step: 2,
-				});
-
-				$( "#zoom-y" ).slider({
-					create: function( event, ui ) {
-						$("#zoom-y").slider( "value", 100 );
-						window.zoomY = 100;
-					},
-					change: function( event, ui ) {
-						$("#zoom-y-value").text( ui.value );
-						window.zoomY = ui.value;
-					},
-					slide: function( event, ui ) {
-						$("#zoom-y-value").text( ui.value );
-					},					
-					range: false,
-					min: 100,
-					max: 400,
-					step: 1
-				});
-
-				$( "#minimum-y" ).slider( {
-					create: function( event, ui ) {
-						$("#minimum-y").slider( "value", 11 );
-						window.kdY = 11;
-					},
-					change: function( event, ui ) {
-						$("#minimum-y-value").text( ui.value );
-						window.kdY = ui.value;
-					},
-					slide: function( event, ui ) {
-						$("#minimum-y-value").text( ui.value );
-					},							
-					min: 9,
-					max: 559,
-					step: 2,
-				});
-
-				$( "#startplayback" ).button();
-				$( "#stopplayback" ).button();
-
-				$( "#chart" ).accordion({
-					heightStyle: "content",
-					collapsible: true
-				});
-				
-				$( "#accordition" ).accordion({
-					heightStyle: "content",
-					collapsible: true
-				});
-
-				$( "#startplayback" ).click( function() {
-					window.audioinit();
-/*					
-					let nameoffile = window["nameoffile"];
-					window.loadfile( "sounds/" + nameoffile ).then( function( source ) 
-					{
-						let memdata = new Uint8Array( source );
-						let memsize = memdata.length * memdata.BYTES_PER_ELEMENT;
-						let memptr = window.malloc( memsize );
-						window.assign( memdata, memptr );
-						let retval = window.savefile( nameoffile, memptr, memsize );
-						if ( retval > 0 ) {					
-							window.startplayback( nameoffile );
-						}
-						if ( memptr > 0 ) window.free( memptr );
-					});
-*/
-					
-					window["nameoffile"] = "_temp_.wav";
-
-					let channels = 2;
-					let samplerate = window["samplerate"];
-					let freq = 440;
-
-					let duration = 30;
-					let frames = duration * samplerate;
-
-					let memdata = new Float32Array( frames * channels );
-
-					for (let i = 0; i < frames; i++ ) {
-						let time = i * duration / frames;
-						memdata[i * channels + 0] = Math.sin(2.0 * Math.PI * time * freq);
-						memdata[i * channels + 1] = Math.cos(2.0 * Math.PI * time * freq);
-					}
-
-					let u8memdata = new Uint8Array( memdata.buffer );
-
-					let memsize = u8memdata.length * u8memdata.BYTES_PER_ELEMENT
-					let memptr = window.malloc( memsize );
-
-					window.assign( u8memdata, memptr );
-
-					let retval = window.createfile( channels, samplerate, window["nameoffile"], memptr, memsize );
-					if ( retval == memsize ) {	
-						window.startplayback( window["nameoffile"] );
-					}
-
-					if ( memptr > 0 ) window.free( memptr );
-
-				});
-
-				$( "#stopplayback" ).click( function() {
-					window.stopplayback();
-				});
-				
-			});
-		</script>
-	</head>
-
-	<body>	
-		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
 		<wasi-terminal
             data-field="terminal_0"
             data-services-path="webgpu"
 		>
 		    <template>
+            		<script type='text/javascript'>
+                        const wasiTerminal = document.querySelector('wasi-terminal')
+                        const rootNode = wasiTerminal.shadowRoot
+            			rootNode.addEventListener('holdchart', (event) => {
+            				rootNode["hold-chart"] = !rootNode["hold-chart"];
+            				if ( rootNode["hold-chart"] == false ) rootNode["hold-buffer"] = undefined;
+            			}, {
+            				bubbles: true,
+            				composed: true,
+            			});
+
+                     rootNode.addEventListener('goniometer', (event) => {
+                            const value = event.detail.value
+                            console.log('GONIOMETER', value)
+                        }, {
+                            bubbles: true,
+                            composed: true,
+                        });
+
+                        rootNode.addEventListener('settingsInput', (event) => {
+                            const value = event.detail.value
+                            console.log('INPUT', value)
+                        }, {
+                            bubbles: true,
+                            composed: true,
+                        });
+
+                         rootNode.addEventListener('settingsDelay', (event) => {
+                            const value = event.detail.value
+                            console.log('DELAY: ', value)
+                        }, {
+                              bubbles: true,
+                              composed: true,
+                        });
+
+                        rootNode.addEventListener('settingsCheckbox', (event) => {
+                            const id = event.detail.id
+                            const value = event.detail.value
+                            console.log('Checkbox: ', id,  value)
+                        }, {
+                              bubbles: true,
+                              composed: true,
+                        });
+
+                        rootNode.addEventListener('channels', (event) => {
+            				const value = event.detail.value
+            				console.log('channels: ',  value)
+            				window["rendertype"] = value;
+                        }, {
+                              bubbles: true,
+                              composed: true,
+                        });
+
+            			(function($)
+            			{
+            				$.fn.input = function (css)
+            				{
+            					if (!css) css = {};
+            					return this.each(function ()
+            					{
+            						$(this).addClass("ui-widget ui-widget-content ui-corner-all ui-input");
+            						$(this).css(css);
+            					});
+            				}
+            			})(jQuery);
+
+            			(function ($)
+            			{
+            				$.fn.label = function (css)
+            				{
+            					if (!css) css = {};
+            					return this.each(function ()
+            					{
+            						$(this).addClass("ui-widget ui-input");
+            						$(this).css(css);
+            					});
+            				}
+            			})(jQuery);
+
+            			rootNode["isNumber"] = function(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
+
+            			rootNode["rendertype"] = "stereo";
+            			rootNode["nameoffile"] = "04891.mp3";
+
+            			rootNode["hold-chart"] = false;
+            			rootNode["hold-buffer"] = undefined;
+
+            			const SIZE_OF_FLOAT = 4;
+            			const SIZE_OF_SHORT = 2;
+            			const SIZE_OF_INT = 4;
+            			const SIZE_OF_DOUBLE = 8;
+
+            			jQuery(rootNode).ready(function ()
+            			{
+            				window.wasminit( "js/", function() {
+            					window.appinit();
+            				});
+
+            				let onchange_samplerate = function() {
+            					let value = $( "#sample-rate" ).spinner( "value" );
+            					value = window.isNumber( value ) ? value : 44100;
+            					$( "#sample-rate" ).spinner( "value", value );
+            					window.samplerate = parseFloat( value );
+            				};
+
+            				let onchange_volumerate = function() {
+            					let value = $("#volume-rate").spinner( "value" );
+            					value = window.isNumber( value ) ? value : 1.000;
+            					$("#volume-rate").spinner( "value", value );
+            					window.volumerate = parseFloat( value );
+            				};
+
+            				$( "#sample-rate" ).spinner({
+            					create: function( event, ui ){
+            						$( "#sample-rate" ).spinner( "value", 44100 );
+            						window.samplerate = 44100;
+            					},
+            					change: function( event, ui ) {
+            						onchange_samplerate();
+            					},
+            					min: 2000,
+            					max: 96000,
+            					step: 100,
+            					value: 44100,
+            				});
+
+            				$( "#sample-rate" ).click(function(){
+            					onchange_samplerate();
+            				});
+
+            				$( "#sample-rate" ).keyup(function(){
+            					if (event.keyCode === 13) {
+            						onchange_samplerate();
+            					}
+            				});
+
+            				$( "#volume-rate" ).spinner({
+            					create: function( event, ui ) {
+            						$("#volume-rate").spinner( "value", 1.000 );
+            						window.volumerate = 1.000;
+            					},
+            					change: function( event, ui ) {
+            						onchange_volumerate();
+            					},
+            					min: 0.000,
+            					max: 1.000,
+            					step: 0.001,
+            					value: 1.0,
+            				});
+
+            				$( "#volume-rate" ).click( function() {
+            					onchange_volumerate();
+            				});
+
+            				$( "#volume-rate" ).keyup( function(){
+            					if (event.keyCode === 13) {
+            						onchange_volumerate();
+            					}
+            				});
+
+            				$( "#zoom-x" ).slider({
+            					create: function( event, ui ) {
+            						$("#zoom-x").slider( "value", 100 );
+            						window.zoomX = 100;
+            					},
+            					change: function( event, ui ) {
+            						$("#zoom-x-value").text( ui.value );
+            						window.zoomX = ui.value;
+            					},
+            					slide: function( event, ui ) {
+            						$("#zoom-x-value").text( ui.value );
+            					},
+            					range: false,
+            					min: 100,
+            					max: 1000,
+            					step: 1
+            				});
+
+            				$( "#minimum-x" ).slider({
+            					create: function( event, ui ) {
+            						$("#minimum-x").slider( "value", 81 );
+            						window.kdX = 81;
+            					},
+            					change: function( event, ui ) {
+            						$("#minimum-x-value").text( ui.value );
+            						window.kdX = ui.value;
+            					},
+            					slide: function( event, ui ) {
+            						$("#minimum-x-value").text( ui.value );
+            					},
+            					range: false,
+            					min: 9,
+            					max: 999,
+            					step: 2,
+            				});
+
+            				$( "#zoom-y" ).slider({
+            					create: function( event, ui ) {
+            						$("#zoom-y").slider( "value", 100 );
+            						window.zoomY = 100;
+            					},
+            					change: function( event, ui ) {
+            						$("#zoom-y-value").text( ui.value );
+            						window.zoomY = ui.value;
+            					},
+            					slide: function( event, ui ) {
+            						$("#zoom-y-value").text( ui.value );
+            					},
+            					range: false,
+            					min: 100,
+            					max: 400,
+            					step: 1
+            				});
+
+            				$( "#minimum-y" ).slider( {
+            					create: function( event, ui ) {
+            						$("#minimum-y").slider( "value", 11 );
+            						window.kdY = 11;
+            					},
+            					change: function( event, ui ) {
+            						$("#minimum-y-value").text( ui.value );
+            						window.kdY = ui.value;
+            					},
+            					slide: function( event, ui ) {
+            						$("#minimum-y-value").text( ui.value );
+            					},
+            					min: 9,
+            					max: 559,
+            					step: 2,
+            				});
+
+            				$( "#startplayback" ).button();
+            				$( "#stopplayback" ).button();
+
+            				$( "#chart" ).accordion({
+            					heightStyle: "content",
+            					collapsible: true
+            				});
+
+            				$( "#accordition" ).accordion({
+            					heightStyle: "content",
+            					collapsible: true
+            				});
+
+            				$( "#startplayback" ).click( function() {
+            					window.audioinit();
+            /*
+            					let nameoffile = window["nameoffile"];
+            					window.loadfile( "sounds/" + nameoffile ).then( function( source )
+            					{
+            						let memdata = new Uint8Array( source );
+            						let memsize = memdata.length * memdata.BYTES_PER_ELEMENT;
+            						let memptr = window.malloc( memsize );
+            						window.assign( memdata, memptr );
+            						let retval = window.savefile( nameoffile, memptr, memsize );
+            						if ( retval > 0 ) {
+            							window.startplayback( nameoffile );
+            						}
+            						if ( memptr > 0 ) window.free( memptr );
+            					});
+            */
+
+            					window["nameoffile"] = "_temp_.wav";
+
+            					let channels = 2;
+            					let samplerate = window["samplerate"];
+            					let freq = 440;
+
+            					let duration = 30;
+            					let frames = duration * samplerate;
+
+            					let memdata = new Float32Array( frames * channels );
+
+            					for (let i = 0; i < frames; i++ ) {
+            						let time = i * duration / frames;
+            						memdata[i * channels + 0] = Math.sin(2.0 * Math.PI * time * freq);
+            						memdata[i * channels + 1] = Math.cos(2.0 * Math.PI * time * freq);
+            					}
+
+            					let u8memdata = new Uint8Array( memdata.buffer );
+
+            					let memsize = u8memdata.length * u8memdata.BYTES_PER_ELEMENT
+            					let memptr = window.malloc( memsize );
+
+            					window.assign( u8memdata, memptr );
+
+            					let retval = window.createfile( channels, samplerate, window["nameoffile"], memptr, memsize );
+            					if ( retval == memsize ) {
+            						window.startplayback( window["nameoffile"] );
+            					}
+
+            					if ( memptr > 0 ) window.free( memptr );
+
+            				});
+
+            				$( "#stopplayback" ).click( function() {
+            					window.stopplayback();
+            				});
+
+            			});
+            		</script>
 		            <body>
+            		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
                     <noscript>You need to enable JavaScript to run this app.</noscript>
                     <div id="root"></div>
                     <header>
