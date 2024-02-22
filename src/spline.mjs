@@ -34,7 +34,7 @@ export class wDSpline extends wDObject
         this.discretlines = new wDLine( instance );
         await this.discretlines.init();
 
-        this.fontsize = instance.getCanvasHeight() / 34.0;
+        this.fontsize = instance.getCanvasHeight() / 42.0;
 
         this.labels = [];
 
