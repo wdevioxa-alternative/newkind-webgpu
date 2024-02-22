@@ -61,11 +61,11 @@ gulp.task('npm:build', function () {
 })
 
 gulp.task('watch',  () => {
-    gulp.watch([`./src/docs/**/*.*`], gulp.series('copy-docs' ))
+    gulp.watch([`./src/docs/**/**`], gulp.series('copy-docs' ))
 });
 
 gulp.task('watch-index',  () => {
     gulp.watch(['./src/index.template'], gulp.series('npm:build' ))
 });
 
-gulp.task('run', gulp.series('copy-docs'), gulp.parallel('watch', 'watch-index'))
+gulp.task('run', gulp.parallel('copy-docs', 'watch', 'watch-index'))
