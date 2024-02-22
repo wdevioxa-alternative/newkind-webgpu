@@ -427,7 +427,7 @@ export class wDSpline extends wDObject
             /////////////////////////////////////////////////
             // x and y: one step to left side in radians
             let _ls_ex = _ix_center - i * _ix_step;
-            let _ls_ey = _object[ _channels * _ls_ex - _channels + _channel ] * _height / height;
+            let _ls_ey = _object[ _channels * _ls_ex + _channel ] * _height / height;
 
             if ( i == 0 ) 
             {

@@ -527,16 +527,16 @@ export class wDApplication
                     let _rendertype = window["rendertype"];
                     /////////////////////////////////////////////////////////////////////////////////
                     // number of channels
-                    let _channels = window.getchannels( nameoffile );
+                    let _channels = window.getchannelscount( nameoffile );
                     window["channels"] = _channels;
                     /////////////////////////////////////////////////////////////////////////////////
                     // samplerate of the file
-                    let _samplerate = window.getsamplerate( nameoffile );
+                    let _samplerate = window.getsampleratevalue( nameoffile );
                     window["samplerate"] = _samplerate;
                     if ( ( window["hold-chart"] == true || window["hold-chart"] == false ) && window["hold-buffer"] == undefined ) {
                         /////////////////////////////////////////////////////////////////////////////////
                         // frames of the file
-                        let _framestotal = window.getframes( nameoffile );
+                        let _framestotal = window.getframescount( nameoffile );
                         /////////////////////////////////////////////////////////////////////////////////
                         // current playback offset of the file					
                         let _frameoffset = window.playbackoffset();
