@@ -34,7 +34,7 @@ export class wDSpline extends wDObject
         this.discretlines = new wDLine( instance );
         await this.discretlines.init();
 
-        this.fontsize = instance.getCanvasHeight() * 33 / 1333;
+        this.fontsize = instance.getCanvasHeight() / 34.0;
 
         this.labels = [];
 
@@ -209,7 +209,7 @@ export class wDSpline extends wDObject
                     y + _height / 2.0 + 3,
                     _t, _colors[0] );   
     
-                let Llabel = new wDLabel( instance, 'lighter', this.fontsize, 'Segoe UI Light', 0, 0, 128, 128 );
+                let Llabel = new wDLabel( instance, 'lighter', this.fontsize, 'Segoe UI', 0, 0, 128, 128 );
                 await Llabel.init();
         
                 Llabel.set( this.fontsize, x + _width / 2.0 - i * cX, y + _height / 2.0 );
@@ -239,7 +239,7 @@ export class wDSpline extends wDObject
                     y + _height / 2.0 + 3,
                     _t, _colors[0] );    
 
-                let Rlabel = new wDLabel( instance, 'lighter', this.fontsize, 'Segoe UI Light', 0, 0, 128, 128 );
+                let Rlabel = new wDLabel( instance, 'lighter', this.fontsize, 'Segoe UI', 0, 0, 128, 128 );
                 await Rlabel.init();
 
                 Rlabel.set( this.fontsize, x + _width / 2.0 + i * cX, y + _height / 2.0 );
@@ -284,7 +284,7 @@ export class wDSpline extends wDObject
                     y + _height / 2.0 + i * cY,
                     _t, _colors[0] ); 
                     
-                let Rlabel = new wDLabel( instance, 'lighter', this.fontsize, 'Segoe UI Light', 0, 0, 128, 128 );
+                let Rlabel = new wDLabel( instance, 'lighter', this.fontsize, 'Segoe UI', 0, 0, 128, 128 );
                 await Rlabel.init();
 
                 Rlabel.set( this.fontsize, x + _width / 2.0, y + _height / 2.0 + i * cY );
@@ -314,7 +314,7 @@ export class wDSpline extends wDObject
                     y + _height / 2.0 - i * cY,
                     _t, _colors[0] ); 
 
-                let Llabel = new wDLabel( instance, 'lighter', this.fontsize, 'Segoe UI Light', 0, 0, 128, 128 );
+                let Llabel = new wDLabel( instance, 'lighter', this.fontsize, 'Segoe UI', 0, 0, 128, 128 );
                 await Llabel.init();
 
                 Llabel.set( this.fontsize, x + _width / 2.0, y + _height / 2.0 - i * cY );
