@@ -61,7 +61,7 @@ gulp.task('npm:build', function () {
 })
 
 gulp.task('watch',  () => {
-    gulp.watch([`./src/docs/**`], gulp.series('copy-docs' ))
+    gulp.watch([`./src/docs/**/*.*`], gulp.series('copy-docs' ))
 });
 
 gulp.task('watch-index',  () => {

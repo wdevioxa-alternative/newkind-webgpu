@@ -1,7 +1,7 @@
 import {terminal} from '../../views/index.mjs'
 
 export default async (self, actions) => {
-    terminal(self)
+    // terminal(self)
 
     return {
         init: () => {
