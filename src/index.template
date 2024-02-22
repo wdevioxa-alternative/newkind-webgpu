@@ -663,52 +663,13 @@
 			</div>
 		</div>
 		<wasi-terminal
-		webgpu
             data-field="terminal_0"
             data-services-path="webgpu"
 		>
 		    <template>
 		            <body>
                     <noscript>You need to enable JavaScript to run this app.</noscript>
-                    <div id="root"></div>
-                    <header>
-                      <pre class="__peer-header_logo_value">
-                    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-                    ░░░░░░░░░░░░░░░░░░█░░░░░░░░░░░░░░░░░░░░░░░░░░░
-                    ░░░░░░████░░░░░░█████░░░░░░░░░░░░░░░░░░░░░░░░░
-                    ░░░░████████░░░███████░░░░░░░░░░░░░░░░░░░░░░░░
-                    ░░░██████████░█████████░░░░░░░░░░░░░░░░░░░░░░░
-                    ░░████████████░░█████░░░░░░░░░░░░░░░░░░░░░░░░░
-                    ░░░██████████░░░░░█░░░░░░░░░░░░░░░░░░░░░░░░░░░
-                    ░░░░████████░░░░░░█████╗░██████╗░░██████╗░░░░░
-                    ░░░░░░░░█████░░░░██╔══██╗██╔══██╗██╔════╝░░░░░
-                    ░░░░░░█████████░░██║░░██║██████╔╝██║░░██╗░░░░░
-                    ░░░░░███████████░██║░░██║██╔══██╗██║░░╚██╗░░░░
-                    ░░░░░░█████████░░╚█████╔╝██║░░██║╚██████╔╝░░░░
-                    ░░░░░░░███████░░░░╚════╝░╚═╝░░╚═╝░╚═════╝░░░░░
-                    ░░░░░░░░░███░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-                    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░</pre>
-                        <div class="spinner" id='spinner'></div>
-                        <div class="emscripten" id="status">Downloading...</div>
-                        <span id='controls'>
-                        <span><input type="checkbox" id="resize">Resize canvas</span>
-                        <span><input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer</span>
-                        <span><input type="button" value="Fullscreen" onclick="Module.requestFullscreen(document.getElementById('pointerLock').checked, document.getElementById('resize').checked)"></span>
-                      </span>
-                    </header>
 
-                    <div class="emscripten">
-                        <progress value="0" max="100" id="progress" hidden=1></progress>
-                    </div>
-
-                    <div class="emscripten_border">
-                        <canvas
-                          class="emscripten" id="canvas"
-                          oncontextmenu="event.preventDefault()"
-                          tabindex=-1
-                        >
-                        </canvas>
-                    </div>
                     <div class="term"></div>
                     </body>
 		    </template>
