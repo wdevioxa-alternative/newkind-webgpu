@@ -384,25 +384,6 @@
 	<body>	
 		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
 		<div id="content">
-		<webgpu-audio
-		    data-field="settings-2"
-		    data-services-path="webgpu"
-		>
-            <template>
-                <body>
-                <script src="/services/webgpu/src/component/webgpu-audio/views/mjs/audio/coi-serviceworker.js"></script
-                    <div>
-                        <h1>WebGPUAudio Experiment</h1>
-                        <p>An experiment to use Web Audio API and WebGPU together to process audio stream with GPU.</p>
-
-                        <div class="demo-box">
-                          <div id="message-view" class="pb-3 text-sm whitespace-pre"></div>
-                          <button id="toggle-audio" disabled>START</button>
-                        </div>
-                    </div>
-                  </body>
-            </template>
-		</webgpu-audio>
 		<div id="chart" class="settings">
 			<h5>WebGPU график</h5>
 			<div>
