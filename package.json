@@ -8,7 +8,7 @@
     "type": "module",
     "private": "true",
     "scripts": {
-        "start": "redrun -s build devServer watch",
+        "start": "redrun -s build:webpack build:gulp && redrun -p devServer watch",
         "build": "redrun -s build:webpack build:gulp",
         "deploy": "gh-pages -d dist",
         "watch": "gulp run",
