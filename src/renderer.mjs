@@ -540,7 +540,7 @@ export class wDApplication
                         /////////////////////////////////////////////////////////////////////////////////
                         // current playback offset of the file					
                         let _frameoffset = window.playbackoffset();
-                        if ( _framestotal >= _frameoffset ) {
+                        if ( _framestotal > _frameoffset ) {
                             let _countofframes = _samplerate * _channels;
                             let _memptr = window.malloc( _countofframes * _channels * SIZE_OF_FLOAT );
                             let _framescount = window.getcurrentbuffer( nameoffile, _frameoffset, _memptr, _countofframes );
@@ -551,9 +551,11 @@ export class wDApplication
                                 flag = true;
                             }
                             if ( _memptr > 0 ) window.free( _memptr );
-                        } 
+                        } else {
+                            window.stopplayback();
+                        }
                     }
-                }
+                } 
             } 
         } 
         if ( flag == false ) await this.spline.drawData( this, null, null, "stereo", window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
