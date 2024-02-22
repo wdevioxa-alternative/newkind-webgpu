@@ -186,7 +186,9 @@ export class wDApplication
     {
         try {
             if ( navigator.gpu != null && navigator.gpu != undefined ) {
-                const wasiTerminal = document.querySelector('wasi-terminal')
+                const wasiTerminal = document.querySelector('nk-chart')
+                // console.log('---------------------', wasiTerminal)
+                // debugger
                 const wgerr = wasiTerminal.shadowRoot.getElementById('error');
                 wgerr.style.display = 'none';
                 const wgcontent = wasiTerminal.shadowRoot.getElementById('content');

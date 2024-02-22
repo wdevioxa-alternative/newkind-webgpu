@@ -125,9 +125,7 @@ export const gpuAudio = async () => {
 
   // window.addEventListener('load', async () => {
   //   debugger
-
-  let wasiTerminal = document.querySelector('wasi-terminal')
-    let webgpuAudio = wasiTerminal.shadowRoot.querySelector('webgpu-audio')
+    let webgpuAudio = document.querySelector('webgpu-audio')
     messageView = webgpuAudio.shadowRoot.getElementById('message-view');
 
     if (!detectFeaturesAndReport(messageView)) {
