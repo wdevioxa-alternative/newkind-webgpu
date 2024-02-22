@@ -7,11 +7,11 @@
 		<link href="js/themes/dark-hive/theme.css" rel="stylesheet"/>
 
 		<script type="text/javascript" src="js/jquery-3.7.1.min.js"></script>
-<!--		<script type="text/javascript" src="js/external/jquery/jquery.js"></script> -->
+<!--        <script type="text/javascript" src="js/external/jquery/jquery.js"></script> -->
 		<script type="text/javascript" src="js/jquery-ui.js"></script>
 		<script type="text/javascript" src="js/libsndfile.js"></script>
 		<script type="text/javascript" src="config/controller.bundle.js"></script>
-       <link rel="preload" href="/services/webgpu/src/component/wasi-terminal/views/mjs/terminal/coreutils.async.wasm" as="fetch" crossorigin />
+        <link rel="preload" href="/services/webgpu/src/component/wasi-terminal/views/mjs/terminal/coreutils.async.wasm" as="fetch" crossorigin />
 	    <script src="/services/webgpu/src/component/wasi-terminal/views/mjs/terminal/modules/xterm/lib/xterm.js"></script>
         <script src="/services/webgpu/src/component/wasi-terminal/views/mjs/terminal/modules/local-echo/dist/local-echo.js"></script>
         <script src="/services/webgpu/src/component/wasi-terminal/views/mjs/terminal/modules/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
@@ -325,16 +325,16 @@
 				$( "#startplayback" ).click( function() {
 					window.audioinit();
 /*					
-					let nameoffile = window["nameoffile"];
-					window.loadfile( "sounds/" + nameoffile ).then( function( source ) 
+					window["nameoffile"] = "04891.mp3";
+					window.loadfile( "sounds/" + window["nameoffile"] ).then( function( source ) 
 					{
 						let memdata = new Uint8Array( source );
 						let memsize = memdata.length * memdata.BYTES_PER_ELEMENT;
 						let memptr = window.malloc( memsize );
 						window.assign( memdata, memptr );
-						let retval = window.savefile( nameoffile, memptr, memsize );
+						let retval = window.savefile( window["nameoffile"], memptr, memsize );
 						if ( retval > 0 ) {					
-							window.startplayback( nameoffile );
+							window.startplayback( window["nameoffile"] );
 						}
 						if ( memptr > 0 ) window.free( memptr );
 					});
