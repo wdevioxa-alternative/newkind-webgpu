@@ -14,7 +14,7 @@ export default {
       directory: path.join(__dirname, 'dist'),
     },
     compress: true,
-    port: 7355,
+    port: 7356,
     setupMiddlewares: (middlewares, devServer) => {
       devServer.app.use('/docs/', express.static(path.resolve(__dirname, 'dist/docs')));
       return middlewares;

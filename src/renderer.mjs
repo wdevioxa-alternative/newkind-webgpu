@@ -186,15 +186,18 @@ export class wDApplication
     {
         try {
             if ( navigator.gpu != null && navigator.gpu != undefined ) {
-                const wgerr = document.getElementById('error');
+                const wasiTerminal = document.querySelector('nk-chart')
+                // console.log('---------------------', wasiTerminal)
+                // debugger
+                const wgerr = wasiTerminal.shadowRoot.getElementById('error');
                 wgerr.style.display = 'none';
-                const wgcontent = document.getElementById('content');
+                const wgcontent = wasiTerminal.shadowRoot.getElementById('content');
                 wgcontent.style.display = 'block';
-                const wgfx = document.getElementById('gfx');
+                const wgfx = wasiTerminal.shadowRoot.getElementById('gfx');
                 wgfx.style.display = 'block';
                 this.setCanvas( wgfx );
             } else {
-                const wgerr = document.getElementById('error');
+                const wgerr = wasiTerminal.shadowRoot.getElementById('error');
                 wgerr.style.display = 'block';
                 throw('Your browser does`t support WebGPU or it is not enabled.');
             }

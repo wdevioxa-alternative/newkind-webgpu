@@ -3,7 +3,7 @@ import { actions } from './actions/index.mjs'
 import { controller } from './controller/index.mjs'
 
 // const COMPONENT = path.dirname(import.meta.url).split(path.sep).pop()
-const COMPONENT = 'wasi-terminal';
+const COMPONENT = 'nk-chart';
 
 const defaultState = {
 

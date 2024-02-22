@@ -83,7 +83,7 @@ export default async (self) => {
         return;
     }
 
-    const module = WebAssembly.compileStreaming(fetch('/services/webgpu/src/component/wasi-terminal/views/mjs/terminal/coreutils.async.wasm'));
+    const module = WebAssembly.compileStreaming(fetch('/services/webgpu/src/component/nk-chart/views/mjs/terminal/coreutils.async.wasm'));
     // This is just for the autocomplete, so spawn the task and ignore any errors.
     // await (async () => {
     //     let helpStr = '';
