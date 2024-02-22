@@ -382,7 +382,6 @@
 
 			});
 		</script>
-		<body>
 			<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
 			<noscript>You need to enable JavaScript to run this app.</noscript>
 			<div id="root"></div>
@@ -710,7 +709,6 @@
 						</tbody></table>
 				</div>
 			</div>
-		</body>
 	</template>
 </nk-chart>
 </body>
