@@ -389,8 +389,6 @@
 	<body>	
 		<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
 		<div id="content">
-<<<<<<< Updated upstream
-=======
 <!--		
 		<webgpu-audio data-field="settings-2" data-services-path="webgpu" >
             <template>
@@ -409,7 +407,6 @@
             </template>
 		</webgpu-audio>
 -->		
->>>>>>> Stashed changes
 		<div id="chart" class="settings">
 			<h5>WebGPU график</h5>
 			<div>
