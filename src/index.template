@@ -643,17 +643,5 @@
 				</table>
 			</div>
 		</div>
-		<wasi-terminal
-            data-field="terminal_0"
-            data-services-path="webgpu"
-		>
-		    <template>
-		            <body>
-                    <noscript>You need to enable JavaScript to run this app.</noscript>
-
-                    <div class="term"></div>
-                    </body>
-		    </template>
-		</wasi-terminal>
 	</body>
 </html>
