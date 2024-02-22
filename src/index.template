@@ -2,7 +2,7 @@
 <html lang="ru">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-		
+
 		<link href="js/themes/dark-hive/jquery-ui.css" rel="stylesheet"/>
 		<link href="js/themes/dark-hive/theme.css" rel="stylesheet"/>
 
@@ -11,7 +11,7 @@
 		<script type="text/javascript" src="js/jquery-ui.js"></script>
 		<script type="text/javascript" src="js/libsndfile.js"></script>
 		<script type="text/javascript" src="config/controller.bundle.js"></script>
-       <link rel="preload" href="/services/webgpu/src/component/wasi-terminal/views/mjs/terminal/coreutils.async.wasm" as="fetch" crossorigin />
+       	<link rel="preload" href="/services/webgpu/src/component/wasi-terminal/views/mjs/terminal/coreutils.async.wasm" as="fetch" crossorigin />
 	    <script src="/services/webgpu/src/component/wasi-terminal/views/mjs/terminal/modules/xterm/lib/xterm.js"></script>
         <script src="/services/webgpu/src/component/wasi-terminal/views/mjs/terminal/modules/local-echo/dist/local-echo.js"></script>
         <script src="/services/webgpu/src/component/wasi-terminal/views/mjs/terminal/modules/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
@@ -121,7 +121,9 @@
             			const SIZE_OF_INT = 4;
             			const SIZE_OF_DOUBLE = 8;
 
-            			jQuery(rootNode).ready(function ()
+                        let content = rootNode.querySelector('#content')
+
+            			jQuery(document).ready(function ()
             			{
             				window.wasminit( "js/", function() {
             					window.appinit();
@@ -365,7 +367,7 @@
                     </div>
 
                     <div class="emscripten_border">
-                     	<div id="content">
+                     	<div id="content" style="display: block;">
                      		<webgpu-audio
                      		    data-field="settings-2"
                      		    data-services-path="webgpu"
@@ -385,265 +387,522 @@
                                        </body>
                                  </template>
                      		</webgpu-audio>
-                     		<div id="chart" class="settings">
-                     			<h5>WebGPU график</h5>
-                     			<div>
-                     				<canvas id="gfx">&nbsp;</canvas>
-                     			</div>
-                     		</div>
-                     		<div id="accordition" class="settings">
-                     			<h5>Удержать картинку графика</h5>
-                     			<div>
-                     				<multi-switchrh data-field="settings-2" data-services-path="webgpu">
-                     					<template>
-                     						<div class="container">
-                     							<fieldset data-field="holdchart" class="multiswitch" data-theme="stoplight">
-                     								<legend>Удержать картинку графика</legend>
-                     								<div class="slide-container">
-                     									<input type="radio" name="holdchart" id="holdchart">
-                     									<label for="holdchart">Удержать картинку</label>
-                     									<a class="slide settings-3" aria-hidden="true"></a>
-                     								</div>
-                     							</fieldset>
-                     						</div>
-                     					</template>
-                     				</multi-switchrh>
-                     			</div>
-                     			<h5>Goniometer</h5>
-                     			<div>
-                     				<multi-switchrh data-field="settings-2" data-services-path="webgpu">
-                     					<template>
-                     						<div class="container">
-                     							<fieldset data-field="goniometer" class="multiswitch" data-theme="stoplight">
-                     								<legend>Goniometer</legend>
-                     								<div class="slide-container">
-                     									<input type="radio" name="goniometer" id="off" checked>
-                     									<label for="off">Выключено</label>
-                     									<input type="radio" name="goniometer" id="on">
-                     									<label for="on">Включено</label>
-                     									<a class="slide settings-2" aria-hidden="true"></a>
-                     								</div>
-                     							</fieldset>
-                     						</div>
-                     					</template>
-                     				</multi-switchrh>
-                     			</div>
-                     			<h5>Left/Stereo/Right</h5>
-                     			<div>
-                     				<multi-switchrh data-field="settings-2" data-services-path="webgpu">
-                     					<template>
-                     						<div class="container">
-                     							<fieldset data-field="LCR" class="multiswitch" data-theme="stoplight">
-                     								<legend>Left/Stereo/Right</legend>
-                     								<div class="slide-container">
-                     								<input type="radio" name="stoplight" id="left">
-                     								<label id="left" for="left">Left</label>
-                     								<input type="radio" name="stoplight" id="stereo"  checked>
-                     								<label id="stereo" for="stereo">Stereo</label>
-                     								<input type="radio" name="stoplight" id="right">
-                     								<label id="right" for="right">Right</label>
-                     								<a class="slide value" aria-hidden="true"></a>
-                     								</div>
-                     							</fieldset>
-                     						</div>
-                     					</template>
-                     				</multi-switchrh>
-                     			</div>
-                     			<h5>Input Data</h5>
-                     			<div>
-                     				<multi-switchrh data-field="settings-1" data-services-path="webgpu">
-                     					<template>
-                     						<div class="container">
-                     							<fieldset data-field="settingsInput" class="multiswitch" data-theme="stoplight">
-                     								<legend>Input Data</legend>
-                     								<div class="slide-container">
-                     									<input type="radio" name="stoplight" id="audioInput" checked>
-                     									<label for="audioInput">Audio</label>
-                     									<input type="radio" name="stoplight" id="oscInput">
-                     									<label for="oscInput">OSC</label>
-                     									<input type="radio" name="stoplight" id="dataInput">
-                     									<label for="dataInput">Data</label>
-                     									<a class="slide value" aria-hidden="true"></a>
-                     								</div>
-                     							</fieldset>
-                     						</div>
-                     					</template>
-                     				</multi-switchrh>
-                     				<multi-switchrh data-field="settings-1" data-services-path="webgpu">
-                     					<template>
-                     						<div class="container">
-                     							<fieldset data-field="settingsDelay" class="multiswitch">
-                     								<legend>Sample position</legend>
-                     								<div class="slide-container">
-                     									<input type="radio" name="sample" id="sample-0">
-                     									<label for="sample-0">-16</label>
-                     									<input type="radio" name="sample" id="sample-1">
-                     									<label for="sample-1">-15</label>
-                     									<input type="radio" name="sample" id="sample-2">
-                     									<label for="sample-2">-14</label>
-                     									<input type="radio" name="sample" id="sample-3">
-                     									<label for="sample-3">-13</label>
-                     									<input type="radio" name="sample" id="sample-4">
-                     									<label for="sample-4">-12</label>
-                     									<input type="radio" name="sample" id="sample-5">
-                     									<label for="sample-5">-11</label>
-                     									<input type="radio" name="sample" id="sample-6">
-                     									<label for="sample-6">-10</label>
-                     									<input type="radio" name="sample" id="sample-7">
-                     									<label for="sample-7">-9</label>
-                     									<input type="radio" name="sample" id="sample-8" checked>
-                     									<label for="sample-8">-8</label>
-                     									<input type="radio" name="sample" id="sample-9">
-                     									<label for="sample-9">-7</label>
-                     									<input type="radio" name="sample" id="sample-10">
-                     									<label for="sample-10">-6</label>
-                     									<input type="radio" name="sample" id="sample-11">
-                     									<label for="sample-11">-5</label>
-                     									<input type="radio" name="sample" id="sample-12">
-                     									<label for="sample-12">-4</label>
-                     									<input type="radio" name="sample" id="sample-13">
-                     									<label for="sample-13">-3</label>
-                     									<input type="radio" name="sample" id="sample-14">
-                     									<label for="sample-14">-2</label>
-                     									<input type="radio" name="sample" id="sample-15">
-                     									<label for="sample-15">-1</label>
-                     									<input type="radio" name="sample" id="sample-16">
-                     									<label for="sample-16">0</label>
-                     									<a class="slide" aria-hidden="true"></a>
-                     								</div>
-                     							</fieldset>
-                     						</div>
-                     					</template>
-                     				</multi-switchrh>
-                     				<checklist-checkbox data-id="checkbox_0" data-services-path="webgpu">
-                     					<template>
-                     						<ul class="container">
-                     							<li class="checkbox">
-                     								<input class="custom-checkbox" id="checkbox-0" type="checkbox">
-                     								<label for="checkbox-0"></label>
-                     							</li>
-                     							<li class="checkbox">
-                     								<input class="custom-checkbox" id="checkbox-1" type="checkbox">
-                     								<label for="checkbox-1"></label>
-                     							</li>
-                     							<li class="checkbox">
-                     								<input class="custom-checkbox" id="checkbox-2" type="checkbox">
-                     								<label for="checkbox-2"></label>
-                     							</li>
-                     							<li class="checkbox">
-                     								<input class="custom-checkbox" id="checkbox-3" type="checkbox">
-                     								<label for="checkbox-3"></label>
-                     							</li>
-                     							<li class="checkbox">
-                     								<input class="custom-checkbox" id="checkbox-4" type="checkbox">
-                     								<label for="checkbox-4"></label>
-                     							</li>
-                     							<li class="checkbox">
-                     								<input class="custom-checkbox" id="checkbox-5" type="checkbox">
-                     								<label for="checkbox-5"></label>
-                     							</li>
-                     							<li class="checkbox">
-                     								<input class="custom-checkbox" id="checkbox-6" type="checkbox">
-                     								<label for="checkbox-6"></label>
-                     							</li>
-                     							<li class="checkbox">
-                     								<input class="custom-checkbox" id="checkbox-7" type="checkbox">
-                     								<label for="checkbox-7"></label>
-                     							</li>
-                     							<li class="checkbox">
-                     								<input class="custom-checkbox" id="checkbox-8" type="checkbox" checked>
-                     								<label for="checkbox-8"></label>
-                     							</li>
-                     							<li class="checkbox">
-                     								<input class="custom-checkbox" id="checkbox-9" type="checkbox">
-                     								<label for="checkbox-9"></label>
-                     							</li>
-                     							<li class="checkbox">
-                     								<input class="custom-checkbox" id="checkbox-10" type="checkbox">
-                     								<label for="checkbox-10"></label>
-                     							</li>
-                     							<li class="checkbox">
-                     								<input class="custom-checkbox" id="checkbox-11" type="checkbox">
-                     								<label for="checkbox-11"></label>
-                     							</li>
-                     							<li class="checkbox">
-                     								<input class="custom-checkbox" id="checkbox-12" type="checkbox">
-                     								<label for="checkbox-12"></label>
-                     							</li>
-                     							<li class="checkbox">
-                     								<input class="custom-checkbox" id="checkbox-13" type="checkbox">
-                     								<label for="checkbox-13"></label>
-                     							</li>
-                     							<li class="checkbox">
-                     								<input class="custom-checkbox" id="checkbox-14" type="checkbox">
-                     								<label for="checkbox-14"></label>
-                     							</li>
-                     							<li class="checkbox">
-                     								<input class="custom-checkbox" id="checkbox-15" type="checkbox">
-                     								<label for="checkbox-15"></label>
-                     							</li>
-                     							<li class="checkbox">
-                     								<input class="custom-checkbox" id="checkbox-16" type="checkbox">
-                     								<label for="checkbox-16"></label>
-                     							</li>
-                     						</ul>
-                     					</template>
-                     				</checklist-checkbox>
-                     			</div>
-                     			<h5>Параметры графика</h5>
-                     			<div>
-                     				<table style="width: 100%" cellpadding="0" cellspacing="8" >
-                     					<tr>
-                     						<td style="width: 100%">
-                     							<label for="zoom-x">Масштаб по x:&nbsp;<span id="zoom-x-value">0</span></label>
-                     							<div style="width: 100%;" id="zoom-x"></div>
-                     						</td>
-                     					</tr>
-                     					<tr>
-                     						<td style="width: 100%">
-                     							<label for="minimum-x">Дискретное пространство по x:&nbsp;<span id="minimum-x-value">0</span></label>
-                     							<div style="width: 100%;" id="minimum-x"></div>
-                     						</td>
-                     					</tr>
-                     					<tr>
-                     						<td style="width: 100%">
-                     							<label for="zoom-y">Масштаб по y:&nbsp;<span id="zoom-y-value">0</span></label>
-                     							<div style="width: 100%;" id="zoom-y"></div>
-                     						</td>
-                     					</tr>
-                     					<tr>
-                     						<td style="width: 100%">
-                     							<label for="minimum-y">Дискретное пространство по y:&nbsp;<span id="minimum-y-value">0</span></label>
-                     							<div style="width: 100%;" id="minimum-y"></div>
-                     						</td>
-                     					</tr>
-                     				</table>
-                     			</div>
-                     			<h5>Воспроизведение файла</h5>
-                     			<div>
-                     				<table style="width: 100%" cellpadding="0" cellspacing="0" >
-                     					<tr>
-                     						<td style="width: 20%">
-                     							<label for="sample-rate">Частота дискретизации:</label>
-                     							<div><input style="width: 160px;" id="sample-rate"/></div>
-                     						</td>
-                     						<td style="width: 20%; text-align: left; padding-left: 10px">
-                     							<label for="volume-rate">Величина громкости:</label>
-                     							<div><input style="width: 140px;" id="volume-rate"/></div>
-                     						</td>
-                     						<td style="width: auto; text-align: left; padding-left: 10px">
-                     							&nbsp;
-                     						</td>
-                     						<td style="width: 20%; text-align: right; vertical-align: bottom; padding-left: 10px">
-                     							<input id="startplayback" type="button" style="width:200px;" value="Playback" />
-                     						</td>
-                     						<td style="width: 20%; text-align: right; vertical-align: bottom; padding-left: 10px">
-                     							<input id="stopplayback" type="button" style="width:200px;" value="Stop" />
-                     						</td>
-                     					</tr>
-                     				</table>
-                     			</div>
-                     		</div>
+                            <div id="chart" class="settings ui-accordion ui-widget ui-helper-reset" role="tablist">
+                    			<h5 class="ui-accordion-header ui-corner-top ui-state-default ui-accordion-header-active ui-state-active ui-accordion-icons" role="tab" id="ui-id-1" aria-controls="ui-id-2" aria-selected="true" aria-expanded="true" tabindex="0"><span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span>WebGPU график</h5>
+                    			<div class="ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content ui-accordion-content-active" id="ui-id-2" aria-labelledby="ui-id-1" role="tabpanel" aria-hidden="false" style="">
+                    				<canvas id="gfx" width="1366" height="472" style="display: block;">&nbsp;</canvas>
+                    			</div>
+                    		</div>
+							<div id="accordition" class="settings ui-accordion ui-widget ui-helper-reset" role="tablist">
+								<h5 class="ui-accordion-header ui-corner-top ui-state-default ui-accordion-header-active ui-state-active ui-accordion-icons" role="tab" id="ui-id-3" aria-controls="ui-id-4" aria-selected="true" aria-expanded="true" tabindex="0"><span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-s"></span>Удержать картинку графика</h5>
+								<div class="ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content ui-accordion-content-active" id="ui-id-4" aria-labelledby="ui-id-3" role="tabpanel" aria-hidden="false" style="">
+									<multi-switchrh data-field="settings-2" data-services-path="webgpu">
+										<template>
+											<div class="container">
+												<fieldset data-field="holdchart" class="multiswitch" data-theme="stoplight">
+													<legend>Удержать картинку графика</legend>
+													<div class="slide-container">
+														<input type="radio" name="holdchart" id="holdchart">
+														<label for="holdchart">Удержать картинку</label>
+														<a class="slide settings-3" aria-hidden="true"></a>
+													</div>
+												</fieldset>
+											</div>
+										</template>
+									</multi-switchrh>
+								</div>
+								<h5 class="ui-accordion-header ui-corner-top ui-accordion-header-collapsed ui-corner-all ui-state-default ui-accordion-icons ui-state-hover" role="tab" id="ui-id-5" aria-controls="ui-id-6" aria-selected="false" aria-expanded="false" tabindex="-1"><span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e"></span>Goniometer</h5>
+								<div class="ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content" id="ui-id-6" aria-labelledby="ui-id-5" role="tabpanel" aria-hidden="true" style="display: none;">
+									<multi-switchrh data-field="settings-2" data-services-path="webgpu">
+										<template>
+											<div class="container">
+												<fieldset data-field="goniometer" class="multiswitch" data-theme="stoplight">
+													<legend>Goniometer</legend>
+													<div class="slide-container">
+														<input type="radio" name="goniometer" id="off" checked>
+														<label for="off">Выключено</label>
+														<input type="radio" name="goniometer" id="on">
+														<label for="on">Включено</label>
+														<a class="slide settings-2" aria-hidden="true"></a>
+													</div>
+												</fieldset>
+											</div>
+										</template>
+									</multi-switchrh>
+								</div>
+								<h5 class="ui-accordion-header ui-corner-top ui-accordion-header-collapsed ui-corner-all ui-state-default ui-accordion-icons" role="tab" id="ui-id-7" aria-controls="ui-id-8" aria-selected="false" aria-expanded="false" tabindex="-1"><span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e"></span>Left/Stereo/Right</h5>
+								<div class="ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content" id="ui-id-8" aria-labelledby="ui-id-7" role="tabpanel" aria-hidden="true" style="display: none;">
+									<template>
+										<div class="container">
+											<fieldset data-field="LCR" class="multiswitch" data-theme="stoplight">
+												<legend>Left/Stereo/Right</legend>
+												<div class="slide-container">
+													<input type="radio" name="stoplight" id="left">
+													<label id="left" for="left">Left</label>
+													<input type="radio" name="stoplight" id="stereo"  checked>
+													<label id="stereo" for="stereo">Stereo</label>
+													<input type="radio" name="stoplight" id="right">
+													<label id="right" for="right">Right</label>
+													<a class="slide value" aria-hidden="true"></a>
+												</div>
+											</fieldset>
+										</div>
+									</template>
+									</multi-switchrh>
+								</div>
+								<h5 class="ui-accordion-header ui-corner-top ui-accordion-header-collapsed ui-corner-all ui-state-default ui-accordion-icons" role="tab" id="ui-id-9" aria-controls="ui-id-10" aria-selected="false" aria-expanded="false" tabindex="-1"><span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e"></span>Input Data</h5>
+								<div class="ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content" id="ui-id-10" aria-labelledby="ui-id-9" role="tabpanel" aria-hidden="true" style="display: none;">
+									<multi-switchrh data-field="settings-1" data-services-path="webgpu">
+										<template>
+											<div class="container">
+												<fieldset data-field="settingsInput" class="multiswitch" data-theme="stoplight">
+													<legend>Input Data</legend>
+													<div class="slide-container">
+														<input type="radio" name="stoplight" id="audioInput" checked>
+														<label for="audioInput">Audio</label>
+														<input type="radio" name="stoplight" id="oscInput">
+														<label for="oscInput">OSC</label>
+														<input type="radio" name="stoplight" id="dataInput">
+														<label for="dataInput">Data</label>
+														<a class="slide value" aria-hidden="true"></a>
+													</div>
+												</fieldset>
+											</div>
+										</template>
+									</multi-switchrh>
+									<multi-switchrh data-field="settings-1" data-services-path="webgpu">
+										<template>
+											<div class="container">
+												<fieldset data-field="settingsDelay" class="multiswitch">
+													<legend>Sample position</legend>
+													<div class="slide-container">
+														<input type="radio" name="sample" id="sample-0">
+														<label for="sample-0">-16</label>
+														<input type="radio" name="sample" id="sample-1">
+														<label for="sample-1">-15</label>
+														<input type="radio" name="sample" id="sample-2">
+														<label for="sample-2">-14</label>
+														<input type="radio" name="sample" id="sample-3">
+														<label for="sample-3">-13</label>
+														<input type="radio" name="sample" id="sample-4">
+														<label for="sample-4">-12</label>
+														<input type="radio" name="sample" id="sample-5">
+														<label for="sample-5">-11</label>
+														<input type="radio" name="sample" id="sample-6">
+														<label for="sample-6">-10</label>
+														<input type="radio" name="sample" id="sample-7">
+														<label for="sample-7">-9</label>
+														<input type="radio" name="sample" id="sample-8" checked>
+														<label for="sample-8">-8</label>
+														<input type="radio" name="sample" id="sample-9">
+														<label for="sample-9">-7</label>
+														<input type="radio" name="sample" id="sample-10">
+														<label for="sample-10">-6</label>
+														<input type="radio" name="sample" id="sample-11">
+														<label for="sample-11">-5</label>
+														<input type="radio" name="sample" id="sample-12">
+														<label for="sample-12">-4</label>
+														<input type="radio" name="sample" id="sample-13">
+														<label for="sample-13">-3</label>
+														<input type="radio" name="sample" id="sample-14">
+														<label for="sample-14">-2</label>
+														<input type="radio" name="sample" id="sample-15">
+														<label for="sample-15">-1</label>
+														<input type="radio" name="sample" id="sample-16">
+														<label for="sample-16">0</label>
+														<a class="slide" aria-hidden="true"></a>
+													</div>
+												</fieldset>
+											</div>
+										</template>
+									</multi-switchrh>
+									<checklist-checkbox data-id="checkbox_0" data-services-path="webgpu">
+										<template>
+											<ul class="container">
+												<li class="checkbox">
+													<input class="custom-checkbox" id="checkbox-0" type="checkbox">
+													<label for="checkbox-0"></label>
+												</li>
+												<li class="checkbox">
+													<input class="custom-checkbox" id="checkbox-1" type="checkbox">
+													<label for="checkbox-1"></label>
+												</li>
+												<li class="checkbox">
+													<input class="custom-checkbox" id="checkbox-2" type="checkbox">
+													<label for="checkbox-2"></label>
+												</li>
+												<li class="checkbox">
+													<input class="custom-checkbox" id="checkbox-3" type="checkbox">
+													<label for="checkbox-3"></label>
+												</li>
+												<li class="checkbox">
+													<input class="custom-checkbox" id="checkbox-4" type="checkbox">
+													<label for="checkbox-4"></label>
+												</li>
+												<li class="checkbox">
+													<input class="custom-checkbox" id="checkbox-5" type="checkbox">
+													<label for="checkbox-5"></label>
+												</li>
+												<li class="checkbox">
+													<input class="custom-checkbox" id="checkbox-6" type="checkbox">
+													<label for="checkbox-6"></label>
+												</li>
+												<li class="checkbox">
+													<input class="custom-checkbox" id="checkbox-7" type="checkbox">
+													<label for="checkbox-7"></label>
+												</li>
+												<li class="checkbox">
+													<input class="custom-checkbox" id="checkbox-8" type="checkbox" checked>
+													<label for="checkbox-8"></label>
+												</li>
+												<li class="checkbox">
+													<input class="custom-checkbox" id="checkbox-9" type="checkbox">
+													<label for="checkbox-9"></label>
+												</li>
+												<li class="checkbox">
+													<input class="custom-checkbox" id="checkbox-10" type="checkbox">
+													<label for="checkbox-10"></label>
+												</li>
+												<li class="checkbox">
+													<input class="custom-checkbox" id="checkbox-11" type="checkbox">
+													<label for="checkbox-11"></label>
+												</li>
+												<li class="checkbox">
+													<input class="custom-checkbox" id="checkbox-12" type="checkbox">
+													<label for="checkbox-12"></label>
+												</li>
+												<li class="checkbox">
+													<input class="custom-checkbox" id="checkbox-13" type="checkbox">
+													<label for="checkbox-13"></label>
+												</li>
+												<li class="checkbox">
+													<input class="custom-checkbox" id="checkbox-14" type="checkbox">
+													<label for="checkbox-14"></label>
+												</li>
+												<li class="checkbox">
+													<input class="custom-checkbox" id="checkbox-15" type="checkbox">
+													<label for="checkbox-15"></label>
+												</li>
+												<li class="checkbox">
+													<input class="custom-checkbox" id="checkbox-16" type="checkbox">
+													<label for="checkbox-16"></label>
+												</li>
+											</ul>
+										</template>
+									</checklist-checkbox>
+								</div>
+								<h5 class="ui-accordion-header ui-corner-top ui-accordion-header-collapsed ui-corner-all ui-state-default ui-accordion-icons" role="tab" id="ui-id-11" aria-controls="ui-id-12" aria-selected="false" aria-expanded="false" tabindex="-1"><span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e"></span>Параметры графика</h5>
+								<div class="ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content" id="ui-id-12" aria-labelledby="ui-id-11" role="tabpanel" aria-hidden="true" style="display: none;">
+									<table style="width: 100%" cellpadding="0" cellspacing="8">
+										<tbody><tr>
+											<td style="width: 100%">
+												<label for="zoom-x">Масштаб по x:&nbsp;<span id="zoom-x-value">100</span></label>
+												<div style="width: 100%;" id="zoom-x" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 0%;"></span></div>
+											</td>
+										</tr>
+										<tr>
+											<td style="width: 100%">
+												<label for="minimum-x">Дискретное пространство по x:&nbsp;<span id="minimum-x-value">81</span></label>
+												<div style="width: 100%;" id="minimum-x" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 7.27273%;"></span></div>
+											</td>
+										</tr>
+										<tr>
+											<td style="width: 100%">
+												<label for="zoom-y">Масштаб по y:&nbsp;<span id="zoom-y-value">100</span></label>
+												<div style="width: 100%;" id="zoom-y" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 0%;"></span></div>
+											</td>
+										</tr>
+										<tr>
+											<td style="width: 100%">
+												<label for="minimum-y">Дискретное пространство по y:&nbsp;<span id="minimum-y-value">11</span></label>
+												<div style="width: 100%;" id="minimum-y" class="ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"><span tabindex="0" class="ui-slider-handle ui-corner-all ui-state-default" style="left: 0.363636%;"></span></div>
+											</td>
+										</tr>
+										</tbody></table>
+								</div>
+								<h5 class="ui-accordion-header ui-corner-top ui-accordion-header-collapsed ui-corner-all ui-state-default ui-accordion-icons" role="tab" id="ui-id-13" aria-controls="ui-id-14" aria-selected="false" aria-expanded="false" tabindex="-1"><span class="ui-accordion-header-icon ui-icon ui-icon-triangle-1-e"></span>Воспроизведение файла</h5>
+								<div class="ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content" id="ui-id-14" aria-labelledby="ui-id-13" role="tabpanel" aria-hidden="true" style="display: none;">
+									<table style="width: 100%" cellpadding="0" cellspacing="0">
+										<tbody><tr>
+											<td style="width: 20%">
+												<label for="sample-rate">Частота дискретизации:</label>
+												<div><span class="ui-spinner ui-corner-all ui-widget ui-widget-content"><input style="width: 160px;" id="sample-rate" aria-valuemin="2000" aria-valuemax="96000" autocomplete="off" class="ui-spinner-input" role="spinbutton" aria-valuenow="44100"><a tabindex="-1" aria-hidden="true" class="ui-button ui-widget ui-spinner-button ui-spinner-up ui-corner-tr ui-button-icon-only" role="button"><span class="ui-button-icon ui-icon ui-icon-triangle-1-n"></span><span class="ui-button-icon-space"> </span></a><a tabindex="-1" aria-hidden="true" class="ui-button ui-widget ui-spinner-button ui-spinner-down ui-corner-br ui-button-icon-only" role="button"><span class="ui-button-icon ui-icon ui-icon-triangle-1-s"></span><span class="ui-button-icon-space"> </span></a></span></div>
+											</td>
+											<td style="width: 20%; text-align: left; padding-left: 10px">
+												<label for="volume-rate">Величина громкости:</label>
+												<div><span class="ui-spinner ui-corner-all ui-widget ui-widget-content"><input style="width: 140px;" id="volume-rate" aria-valuemin="0" aria-valuemax="1" autocomplete="off" class="ui-spinner-input" role="spinbutton" aria-valuenow="1"><a tabindex="-1" aria-hidden="true" class="ui-button ui-widget ui-spinner-button ui-spinner-up ui-corner-tr ui-button-icon-only" role="button"><span class="ui-button-icon ui-icon ui-icon-triangle-1-n"></span><span class="ui-button-icon-space"> </span></a><a tabindex="-1" aria-hidden="true" class="ui-button ui-widget ui-spinner-button ui-spinner-down ui-corner-br ui-button-icon-only" role="button"><span class="ui-button-icon ui-icon ui-icon-triangle-1-s"></span><span class="ui-button-icon-space"> </span></a></span></div>
+											</td>
+											<td style="width: auto; text-align: left; padding-left: 10px">
+												&nbsp;
+											</td>
+											<td style="width: 20%; text-align: right; vertical-align: bottom; padding-left: 10px">
+												<input id="startplayback" type="button" style="width:200px;" value="Playback" class="ui-button ui-corner-all ui-widget" role="button">
+											</td>
+											<td style="width: 20%; text-align: right; vertical-align: bottom; padding-left: 10px">
+												<input id="stopplayback" type="button" style="width:200px;" value="Stop" class="ui-button ui-corner-all ui-widget" role="button">
+											</td>
+										</tr>
+										</tbody></table>
+								</div>
+							</div>
+
+
+
+                    		<div id="accordition" class="settings">
+                                                 			<h5>Удержать картинку графика</h5>
+                                                 			<div>
+                                                 				<multi-switchrh data-field="settings-2" data-services-path="webgpu">
+                                                                             					<template>
+                                                                             						<div class="container">
+                                                                             							<fieldset data-field="holdchart" class="multiswitch" data-theme="stoplight">
+                                                                             								<legend>Удержать картинку графика</legend>
+                                                                             								<div class="slide-container">
+                                                                             									<input type="radio" name="holdchart" id="holdchart">
+                                                                             									<label for="holdchart">Удержать картинку</label>
+                                                                             									<a class="slide settings-3" aria-hidden="true"></a>
+                                                                             								</div>
+                                                                             							</fieldset>
+                                                                             						</div>
+                                                                             					</template>
+                                                                             				</multi-switchrh>
+                                                 			</div>
+                                                 			<h5>Goniometer</h5>
+                                                 			<div>
+                                                                <multi-switchrh data-field="settings-2" data-services-path="webgpu">
+                                                                      					<template>
+                                                                      						<div class="container">
+                                                                      							<fieldset data-field="goniometer" class="multiswitch" data-theme="stoplight">
+                                                                      								<legend>Goniometer</legend>
+                                                                      								<div class="slide-container">
+                                                                      									<input type="radio" name="goniometer" id="off" checked>
+                                                                      									<label for="off">Выключено</label>
+                                                                      									<input type="radio" name="goniometer" id="on">
+                                                                      									<label for="on">Включено</label>
+                                                                      									<a class="slide settings-2" aria-hidden="true"></a>
+                                                                      								</div>
+                                                                      							</fieldset>
+                                                                      						</div>
+                                                                      					</template>
+                                                                      				</multi-switchrh>
+                                                 			</div>
+                                                 			<h5>Left/Stereo/Right</h5>
+                                                 			<div>
+                                                 		<multi-switchrh data-field="settings-2" data-services-path="webgpu">
+                                                                             					<template>
+                                                                             						<div class="container">
+                                                                             							<fieldset data-field="LCR" class="multiswitch" data-theme="stoplight">
+                                                                             								<legend>Left/Stereo/Right</legend>
+                                                                             								<div class="slide-container">
+                                                                             								<input type="radio" name="stoplight" id="left">
+                                                                             								<label id="left" for="left">Left</label>
+                                                                             								<input type="radio" name="stoplight" id="stereo"  checked>
+                                                                             								<label id="stereo" for="stereo">Stereo</label>
+                                                                             								<input type="radio" name="stoplight" id="right">
+                                                                             								<label id="right" for="right">Right</label>
+                                                                             								<a class="slide value" aria-hidden="true"></a>
+                                                                             								</div>
+                                                                             							</fieldset>
+                                                                             						</div>
+                                                                             					</template>
+                                                                             				</multi-switchrh>
+                                                 			</div>
+                                                 			<h5>Input Data</h5>
+                                                 			<div>
+                                                 	<multi-switchrh data-field="settings-1" data-services-path="webgpu">
+                                                                      					<template>
+                                                                      						<div class="container">
+                                                                      							<fieldset data-field="settingsInput" class="multiswitch" data-theme="stoplight">
+                                                                      								<legend>Input Data</legend>
+                                                                      								<div class="slide-container">
+                                                                      									<input type="radio" name="stoplight" id="audioInput" checked>
+                                                                      									<label for="audioInput">Audio</label>
+                                                                      									<input type="radio" name="stoplight" id="oscInput">
+                                                                      									<label for="oscInput">OSC</label>
+                                                                      									<input type="radio" name="stoplight" id="dataInput">
+                                                                      									<label for="dataInput">Data</label>
+                                                                      									<a class="slide value" aria-hidden="true"></a>
+                                                                      								</div>
+                                                                      							</fieldset>
+                                                                      						</div>
+                                                                      					</template>
+                                                                      				</multi-switchrh>
+                                                                      				<multi-switchrh data-field="settings-1" data-services-path="webgpu">
+                                                                      					<template>
+                                                                      						<div class="container">
+                                                                      							<fieldset data-field="settingsDelay" class="multiswitch">
+                                                                      								<legend>Sample position</legend>
+                                                                      								<div class="slide-container">
+                                                                      									<input type="radio" name="sample" id="sample-0">
+                                                                      									<label for="sample-0">-16</label>
+                                                                      									<input type="radio" name="sample" id="sample-1">
+                                                                      									<label for="sample-1">-15</label>
+                                                                      									<input type="radio" name="sample" id="sample-2">
+                                                                      									<label for="sample-2">-14</label>
+                                                                      									<input type="radio" name="sample" id="sample-3">
+                                                                      									<label for="sample-3">-13</label>
+                                                                      									<input type="radio" name="sample" id="sample-4">
+                                                                      									<label for="sample-4">-12</label>
+                                                                      									<input type="radio" name="sample" id="sample-5">
+                                                                      									<label for="sample-5">-11</label>
+                                                                      									<input type="radio" name="sample" id="sample-6">
+                                                                      									<label for="sample-6">-10</label>
+                                                                      									<input type="radio" name="sample" id="sample-7">
+                                                                      									<label for="sample-7">-9</label>
+                                                                      									<input type="radio" name="sample" id="sample-8" checked>
+                                                                      									<label for="sample-8">-8</label>
+                                                                      									<input type="radio" name="sample" id="sample-9">
+                                                                      									<label for="sample-9">-7</label>
+                                                                      									<input type="radio" name="sample" id="sample-10">
+                                                                      									<label for="sample-10">-6</label>
+                                                                      									<input type="radio" name="sample" id="sample-11">
+                                                                      									<label for="sample-11">-5</label>
+                                                                      									<input type="radio" name="sample" id="sample-12">
+                                                                      									<label for="sample-12">-4</label>
+                                                                      									<input type="radio" name="sample" id="sample-13">
+                                                                      									<label for="sample-13">-3</label>
+                                                                      									<input type="radio" name="sample" id="sample-14">
+                                                                      									<label for="sample-14">-2</label>
+                                                                      									<input type="radio" name="sample" id="sample-15">
+                                                                      									<label for="sample-15">-1</label>
+                                                                      									<input type="radio" name="sample" id="sample-16">
+                                                                      									<label for="sample-16">0</label>
+                                                                      									<a class="slide" aria-hidden="true"></a>
+                                                                      								</div>
+                                                                      							</fieldset>
+                                                                      						</div>
+                                                                      					</template>
+                                                                      				</multi-switchrh>
+                                                                      				<checklist-checkbox data-id="checkbox_0" data-services-path="webgpu">
+                                                                      					<template>
+                                                                      						<ul class="container">
+                                                                      							<li class="checkbox">
+                                                                      								<input class="custom-checkbox" id="checkbox-0" type="checkbox">
+                                                                      								<label for="checkbox-0"></label>
+                                                                      							</li>
+                                                                      							<li class="checkbox">
+                                                                      								<input class="custom-checkbox" id="checkbox-1" type="checkbox">
+                                                                      								<label for="checkbox-1"></label>
+                                                                      							</li>
+                                                                      							<li class="checkbox">
+                                                                      								<input class="custom-checkbox" id="checkbox-2" type="checkbox">
+                                                                      								<label for="checkbox-2"></label>
+                                                                      							</li>
+                                                                      							<li class="checkbox">
+                                                                      								<input class="custom-checkbox" id="checkbox-3" type="checkbox">
+                                                                      								<label for="checkbox-3"></label>
+                                                                      							</li>
+                                                                      							<li class="checkbox">
+                                                                      								<input class="custom-checkbox" id="checkbox-4" type="checkbox">
+                                                                      								<label for="checkbox-4"></label>
+                                                                      							</li>
+                                                                      							<li class="checkbox">
+                                                                      								<input class="custom-checkbox" id="checkbox-5" type="checkbox">
+                                                                      								<label for="checkbox-5"></label>
+                                                                      							</li>
+                                                                      							<li class="checkbox">
+                                                                      								<input class="custom-checkbox" id="checkbox-6" type="checkbox">
+                                                                      								<label for="checkbox-6"></label>
+                                                                      							</li>
+                                                                      							<li class="checkbox">
+                                                                      								<input class="custom-checkbox" id="checkbox-7" type="checkbox">
+                                                                      								<label for="checkbox-7"></label>
+                                                                      							</li>
+                                                                      							<li class="checkbox">
+                                                                      								<input class="custom-checkbox" id="checkbox-8" type="checkbox" checked>
+                                                                      								<label for="checkbox-8"></label>
+                                                                      							</li>
+                                                                      							<li class="checkbox">
+                                                                      								<input class="custom-checkbox" id="checkbox-9" type="checkbox">
+                                                                      								<label for="checkbox-9"></label>
+                                                                      							</li>
+                                                                      							<li class="checkbox">
+                                                                      								<input class="custom-checkbox" id="checkbox-10" type="checkbox">
+                                                                      								<label for="checkbox-10"></label>
+                                                                      							</li>
+                                                                      							<li class="checkbox">
+                                                                      								<input class="custom-checkbox" id="checkbox-11" type="checkbox">
+                                                                      								<label for="checkbox-11"></label>
+                                                                      							</li>
+                                                                      							<li class="checkbox">
+                                                                      								<input class="custom-checkbox" id="checkbox-12" type="checkbox">
+                                                                      								<label for="checkbox-12"></label>
+                                                                      							</li>
+                                                                      							<li class="checkbox">
+                                                                      								<input class="custom-checkbox" id="checkbox-13" type="checkbox">
+                                                                      								<label for="checkbox-13"></label>
+                                                                      							</li>
+                                                                      							<li class="checkbox">
+                                                                      								<input class="custom-checkbox" id="checkbox-14" type="checkbox">
+                                                                      								<label for="checkbox-14"></label>
+                                                                      							</li>
+                                                                      							<li class="checkbox">
+                                                                      								<input class="custom-checkbox" id="checkbox-15" type="checkbox">
+                                                                      								<label for="checkbox-15"></label>
+                                                                      							</li>
+                                                                      							<li class="checkbox">
+                                                                      								<input class="custom-checkbox" id="checkbox-16" type="checkbox">
+                                                                      								<label for="checkbox-16"></label>
+                                                                      							</li>
+                                                                      						</ul>
+                                                                      					</template>
+                                                                      				</checklist-checkbox>
+                                                 			</div>
+                                                 			<h5>Параметры графика</h5>
+                                                 			<div>
+                                                 				<table style="width: 100%" cellpadding="0" cellspacing="8">
+                                                 					<tbody><tr>
+                                                 						<td style="width: 100%">
+                                                 							<label for="zoom-x">Масштаб по x:&nbsp;<span id="zoom-x-value">0</span></label>
+                                                 							<div style="width: 100%;" id="zoom-x"></div>
+                                                 						</td>
+                                                 					</tr>
+                                                 					<tr>
+                                                 						<td style="width: 100%">
+                                                 							<label for="minimum-x">Дискретное пространство по x:&nbsp;<span id="minimum-x-value">0</span></label>
+                                                 							<div style="width: 100%;" id="minimum-x"></div>
+                                                 						</td>
+                                                 					</tr>
+                                                 					<tr>
+                                                 						<td style="width: 100%">
+                                                 							<label for="zoom-y">Масштаб по y:&nbsp;<span id="zoom-y-value">0</span></label>
+                                                 							<div style="width: 100%;" id="zoom-y"></div>
+                                                 						</td>
+                                                 					</tr>
+                                                 					<tr>
+                                                 						<td style="width: 100%">
+                                                 							<label for="minimum-y">Дискретное пространство по y:&nbsp;<span id="minimum-y-value">0</span></label>
+                                                 							<div style="width: 100%;" id="minimum-y"></div>
+                                                 						</td>
+                                                 					</tr>
+                                                 				</tbody></table>
+                                                 			</div>
+                                                 			<h5>Воспроизведение файла</h5>
+                                                 			<div>
+                                                 				<table style="width: 100%" cellpadding="0" cellspacing="0">
+                                                 					<tbody><tr>
+                                                 						<td style="width: 20%">
+                                                 							<label for="sample-rate">Частота дискретизации:</label>
+                                                 							<div><input style="width: 160px;" id="sample-rate"></div>
+                                                 						</td>
+                                                 						<td style="width: 20%; text-align: left; padding-left: 10px">
+                                                 							<label for="volume-rate">Величина громкости:</label>
+                                                 							<div><input style="width: 140px;" id="volume-rate"></div>
+                                                 						</td>
+                                                 						<td style="width: auto; text-align: left; padding-left: 10px">
+                                                 							&nbsp;
+                                                 						</td>
+                                                 						<td style="width: 20%; text-align: right; vertical-align: bottom; padding-left: 10px">
+                                                 							<input id="startplayback" type="button" style="width:200px;" value="Playback">
+                                                 						</td>
+                                                 						<td style="width: 20%; text-align: right; vertical-align: bottom; padding-left: 10px">
+                                                 							<input id="stopplayback" type="button" style="width:200px;" value="Stop">
+                                                 						</td>
+                                                 					</tr>
+                                                 				</tbody></table>
+                                                 			</div>
+                                                 		</div>
+
+
                     </div>
                     <div class="term"></div>
                     </body>
