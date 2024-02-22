@@ -26,11 +26,8 @@
 		src: url( font/segoeui.ttf ) format( 'truetype' );
 	}
 	body{
-		font-family: 'Segoe UI';
-		margin-top: 3em;
-		margin-bottom: 3em;
-		margin-left: auto;
-		margin-right: auto;
+		margin: 0;
+		font-family: 'Segoe UI', sans-serif;
 		width: 100%;
 		overflow-y: scroll;
 		overflow-x: auto;
