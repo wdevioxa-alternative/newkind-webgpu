@@ -23,7 +23,7 @@
 <style>
 	@font-face {
 		font-family: 'Segoe UI';
-		src: url( font/segoeui.ttf ) format( 'truetype' );
+		src: url( 'fonts/segoeui.ttf' ) format( 'truetype' );
 	}
 	body{
 		margin: 0;
