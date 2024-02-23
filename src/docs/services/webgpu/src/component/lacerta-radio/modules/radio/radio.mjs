@@ -41,15 +41,23 @@ const newAudio = async (CONFIG) => {
         CONFIG.stream.song = new Audio(CONFIG.stream.path)
         CONFIG.stream.source = CONFIG.audio.ctx.createMediaElementSource(CONFIG.stream.song)
         CONFIG.stream.song.crossOrigin = 'anonymous'
-        CONFIG.stream.source.connect(CONFIG.audio.master.gain)
-        await CONFIG.stream.song.play()
-        // await player
-        console.log('----------- player ----------', player)
-        // debugger
-        CONFIG.html.button.start.textContent = 'Stop Audio 1'
-        return true
+        await CONFIG.stream.source.connect(CONFIG.audio.master.gain)
+
+
+        CONFIG.stream.song.addEventListener("canplay", async (event) => {
+            await CONFIG.stream.song.play()
+            CONFIG.html.button.start.textContent = 'Stop Audio'
+            return true
+        });
+
+        CONFIG.stream.song.addEventListener("canplaythrough", async (event) => {
+            await CONFIG.stream.song.play()
+            CONFIG.html.button.start.textContent = 'Stop Audio'
+            return true
+        });
+
     } catch (e) {
-        CONFIG.html.button.start.textContent = 'Stop Audio 2'
+        CONFIG.html.button.start.textContent = 'Stop Audio'
         return true
     }
 }
@@ -77,14 +85,14 @@ const drawOscilloscope = () => {
     window.requestAnimationFrame(drawOscilloscope)
 }
 
-const ctx = (CONFIG) => {
+const ctx = async (CONFIG) => {
     CONFIG.audio.ctx = new (window.AudioContext || window.webkitAudioContext)();
     CONFIG.audio.analyser =  CONFIG.audio.ctx.createAnalyser()
     CONFIG.audio.waveform = new Float32Array(CONFIG.audio.analyser.frequencyBinCount)
-    CONFIG.audio.analyser.getFloatTimeDomainData(CONFIG.audio.waveform)
+    await CONFIG.audio.analyser.getFloatTimeDomainData(CONFIG.audio.waveform)
     CONFIG.audio.master.gain = CONFIG.audio.ctx.createGain()
-    CONFIG.audio.master.gain.connect(CONFIG.audio.ctx.destination)
-    CONFIG.audio.master.gain.connect(CONFIG.audio.analyser)
+    await CONFIG.audio.master.gain.connect(CONFIG.audio.ctx.destination)
+    await CONFIG.audio.master.gain.connect(CONFIG.audio.analyser)
 }
 
 const init = (self) => {
@@ -104,11 +112,13 @@ export default async () => {
                         CONFIG.stream.path = CONFIG.html.button.radios.this[i].value
                     }
                 }
+
                 CONFIG.stream.song = new Audio(CONFIG.stream.source)
+
                 for (let i = 0, max = CONFIG.html.button.radios.length; i < max; i++) {
                     CONFIG.html.button.radios.this[i].addEventListener('change', async (event) => {
                         if (CONFIG.player.isPlaying) {
-                            CONFIG.stream.song.pause()
+                            await CONFIG.stream.song.pause()
                             CONFIG.html.button.start.textContent = 'Start Audio'
                             CONFIG.player.isPlaying = !CONFIG.player.isPlaying
                             CONFIG.stream.path = event.target.value
@@ -119,13 +129,15 @@ export default async () => {
                         }
                     })
                 }
+
                 CONFIG.html.button.start.addEventListener('click', async (e) => {
                    console.log(CONFIG.player.isPlaying)
+
                     if (CONFIG.player.isPlaying) {
-                        CONFIG.stream.song.pause()
+                        await CONFIG.stream.song.pause()
                         CONFIG.html.button.start.textContent = 'Start Audio'
                     } else {
-                        ctx(CONFIG)
+                        await ctx(CONFIG)
                         await newAudio(CONFIG)
                         drawOscilloscope()
                     }
