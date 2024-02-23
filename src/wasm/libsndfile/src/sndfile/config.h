@@ -41,7 +41,7 @@
 /* Define to 1 if you have the <endian.h> header file. */
 #define HAVE_ENDIAN_H 0
 
-/* Will be set to 1 if flac, ogg and vorbis are available. */
+/* Will be set to 1 if flac, ogg, mp3 and vorbis are available. */
 #define HAVE_EXTERNAL_XIPH_LIBS 1
 
 /* Define to 1 if you have the `floor' function. */
