@@ -1,5 +1,4 @@
 Module.onRuntimeInitialized = () => { 
-
   window["audioexit"] = function() {
     Module.ccall(
       'AL_exit',
@@ -8,7 +7,6 @@ Module.onRuntimeInitialized = () => {
       []
     );
   };
-
   window["audioinit"] = function() {
     Module.ccall(
       'AL_init',
@@ -17,7 +15,6 @@ Module.onRuntimeInitialized = () => {
       []
     );
   };
-
   window["startplayback"] = function( nameoffile ) {
     window["disable-spinners"]();
     let retval = Module.ccall(
@@ -28,7 +25,6 @@ Module.onRuntimeInitialized = () => {
     );
     return retval;
   };
-  
   window["stopplayback"] = function() {
     window["enable-spinners"]();
     let retval = Module.ccall(
@@ -40,7 +36,6 @@ Module.onRuntimeInitialized = () => {
     return retval;
     
   };
-  
   window["malloc"] = function( memsize ) {
     return Module.ccall(
       'wasm_malloc',
@@ -49,7 +44,6 @@ Module.onRuntimeInitialized = () => {
       [ memsize ]
     );
   };
-  
   window["free"] = function( memptr ) {
     Module.ccall(
       'wasm_free',
@@ -58,16 +52,13 @@ Module.onRuntimeInitialized = () => {
       [ memptr ]
     );
   };
-  
   window["copy"] = function( memptr, memsize ) {
     var tempdb = new Int8Array( Module.HEAPU8.buffer, memptr, memsize );
     return new Float32Array( tempdb.buffer, memptr, memsize / 4 );
   };
-
   window["assign"] = function( memdata, memptr ) {
     Module.HEAPU8.set( memdata, memptr );
   };
-
   window["isExist"] = function ( url ) {
     return Module.ccall(
       'isExist',
@@ -76,7 +67,6 @@ Module.onRuntimeInitialized = () => {
       [ url ]
     );
   };
-
   window["isInit"] = function () {
     return Module.ccall(
       'isInit',
@@ -85,7 +75,6 @@ Module.onRuntimeInitialized = () => {
       []
     );
   };
-
   window["isPlaying"] = function () {
     return Module.ccall(
       'isPlaying',
@@ -94,7 +83,6 @@ Module.onRuntimeInitialized = () => {
       []
     );
   };
-
   window["playbackoffset"] = function () {
     return Module.ccall(
       'playbackoffset',
@@ -103,7 +91,6 @@ Module.onRuntimeInitialized = () => {
       []
     );
   };
-
   window["createfile"] = function ( channels, samplerate, url, memptr, memsize ) {
     return Module.ccall(
       'createsoundfile',
@@ -112,8 +99,6 @@ Module.onRuntimeInitialized = () => {
       [ channels, samplerate, url, memptr, memsize ]
     );
   };
-
-
   window["savefile"] = function ( url, memptr, memsize ) {
     return Module.ccall(
       'savesoundfile',
@@ -122,7 +107,6 @@ Module.onRuntimeInitialized = () => {
       [ url, memptr, memsize ]
     );
   };
-
   window["getchannelscount"] = function ( url ) {
     return Module.ccall(
       'getchannelscount',
@@ -131,7 +115,6 @@ Module.onRuntimeInitialized = () => {
       [ url ]
     );
   };
-
   window["getsampleratevalue"] = function ( url ) {
     return Module.ccall(
       'getsampleratevalue',
@@ -140,7 +123,6 @@ Module.onRuntimeInitialized = () => {
       [ url ]
     );
   };
-
   window["getframescount"] = function ( url ) {
     return Module.ccall(
       'getframescount',
@@ -149,7 +131,6 @@ Module.onRuntimeInitialized = () => {
       [ url ]
     );
   };
-
   window["getcurrentbuffer"] = function ( url, startframe, memptr, memsize ) {
     return Module.ccall(
       'getcurrentbuffer',
@@ -158,7 +139,6 @@ Module.onRuntimeInitialized = () => {
       [ url, startframe, memptr, memsize ]
     );
   };
-
   window["version"] = function()
   {
     return Module.ccall(
@@ -168,7 +148,5 @@ Module.onRuntimeInitialized = () => {
       []
     );
   };
-
   func();
-
 };};
