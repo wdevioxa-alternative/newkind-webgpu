@@ -8,13 +8,9 @@
     "type": "module",
     "private": "true",
     "scripts": {
-        "start": "redrun -s build:webpack build:gulp && redrun -p devServer watch",
-        "build": "redrun -s build:webpack build:gulp",
-        "deploy": "gh-pages -d dist",
-        "watch": "gulp run",
-        "build:gulp": "gulp copy-docs",
-        "build:webpack": "webpack --config webpack/webpack.prod.mjs",
-        "devServer": "webpack serve --open --config webpack/webpack.dev.mjs"
+        "start": "webpack serve --open --config webpack/webpack.dev.mjs",
+        "build": "webpack --config webpack/webpack.prod.mjs",
+        "deploy": "gh-pages -d dist"
     },
     "keywords": [
         "webgpu",
