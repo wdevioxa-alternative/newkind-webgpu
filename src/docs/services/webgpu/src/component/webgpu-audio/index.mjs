@@ -137,8 +137,7 @@ const INDEX = class extends HTMLElement {
 
 if (customElements.get(COMPONENT) === undefined) {
     customElements.define(COMPONENT, INDEX);
-}
-;
+};
 export default {
     component: COMPONENT,
     description: `Компонент ${COMPONENT}`
