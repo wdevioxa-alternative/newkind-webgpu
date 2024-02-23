@@ -1,0 +1,49 @@
+lpc.lo: lpc.c ../../config.h c:\mingw\include\math.h \
+ c:\mingw\include\_mingw.h c:\mingw\include\msvcrtver.h \
+ c:\mingw\include\w32api.h c:\mingw\include\sdkddkver.h \
+ c:\mingw\include\features.h ../../include/FLAC/assert.h \
+ ../../include/FLAC/format.h ../../include/FLAC/export.h \
+ ../../include/FLAC/ordinals.h c:\mingw\include\inttypes.h \
+ c:\mingw\lib\gcc\mingw32\9.2.0\include\stdint.h \
+ c:\mingw\include\stdint.h \
+ c:\mingw\lib\gcc\mingw32\9.2.0\include\stddef.h \
+ include/private/bitmath.h ../../include/FLAC/ordinals.h \
+ include/private/lpc.h include/private/float.h
+
+../../config.h:
+
+c:\mingw\include\math.h:
+
+c:\mingw\include\_mingw.h:
+
+c:\mingw\include\msvcrtver.h:
+
+c:\mingw\include\w32api.h:
+
+c:\mingw\include\sdkddkver.h:
+
+c:\mingw\include\features.h:
+
+../../include/FLAC/assert.h:
+
+../../include/FLAC/format.h:
+
+../../include/FLAC/export.h:
+
+../../include/FLAC/ordinals.h:
+
+c:\mingw\include\inttypes.h:
+
+c:\mingw\lib\gcc\mingw32\9.2.0\include\stdint.h:
+
+c:\mingw\include\stdint.h:
+
+c:\mingw\lib\gcc\mingw32\9.2.0\include\stddef.h:
+
+include/private/bitmath.h:
+
+../../include/FLAC/ordinals.h:
+
+include/private/lpc.h:
+
+include/private/float.h:
