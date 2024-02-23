@@ -35,15 +35,23 @@ const CONFIG = {
     }
 }
 
-const newAudio = (CONFIG) => {
-    CONFIG.stream.song.pause()
-    CONFIG.stream.song = new Audio(CONFIG.stream.path)
-    CONFIG.stream.source = CONFIG.audio.ctx.createMediaElementSource(CONFIG.stream.song)
-    CONFIG.stream.song.crossOrigin = 'anonymous'
-    CONFIG.stream.source.connect(CONFIG.audio.master.gain)
-    CONFIG.stream.song.play()
-    CONFIG.html.button.start.textContent = 'Stop Audio'
-    return true
+const newAudio = async (CONFIG) => {
+    try {
+        await CONFIG.stream.song.pause()
+        CONFIG.stream.song = new Audio(CONFIG.stream.path)
+        CONFIG.stream.source = CONFIG.audio.ctx.createMediaElementSource(CONFIG.stream.song)
+        CONFIG.stream.song.crossOrigin = 'anonymous'
+        CONFIG.stream.source.connect(CONFIG.audio.master.gain)
+        await CONFIG.stream.song.play()
+        // await player
+        console.log('----------- player ----------', player)
+        // debugger
+        CONFIG.html.button.start.textContent = 'Stop Audio 1'
+        return true
+    } catch (e) {
+        CONFIG.html.button.start.textContent = 'Stop Audio 2'
+        return true
+    }
 }
 
 const drawOscilloscope = () => {
@@ -98,7 +106,7 @@ export default async () => {
                 }
                 CONFIG.stream.song = new Audio(CONFIG.stream.source)
                 for (let i = 0, max = CONFIG.html.button.radios.length; i < max; i++) {
-                    CONFIG.html.button.radios.this[i].addEventListener('change', (event) => {
+                    CONFIG.html.button.radios.this[i].addEventListener('change', async (event) => {
                         if (CONFIG.player.isPlaying) {
                             CONFIG.stream.song.pause()
                             CONFIG.html.button.start.textContent = 'Start Audio'
@@ -106,7 +114,7 @@ export default async () => {
                             CONFIG.stream.path = event.target.value
                             if(CONFIG.audio.ctx) {
                                 CONFIG.player.isPlaying = !CONFIG.player.isPlaying
-                                newAudio(CONFIG)
+                                await newAudio(CONFIG)
                             }
                         }
                     })
