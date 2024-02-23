@@ -46,7 +46,7 @@ static inline ALenum format( short channels, short samples )
 		if ( channels == 1 ) {
 			return AL_FORMAT_MONO16;
 		} else if ( channels == 2 ) {
-		        return AL_FORMAT_STEREO16;
+		    return AL_FORMAT_STEREO16;
 		} 
 /*
 		else if ( channels == 4 ) {
@@ -60,11 +60,12 @@ static inline ALenum format( short channels, short samples )
 		}
 */
         case 8:
-                if ( channels == 1 ) {
-                        return AL_FORMAT_MONO8;                        
-                } else if ( channels == 2 ) {
-                        return AL_FORMAT_STEREO8;
+            if ( channels == 1 ) {
+                return AL_FORMAT_MONO8;                        
+            } else if ( channels == 2 ) {
+                return AL_FORMAT_STEREO8;
 		}
+
         default:
                 return -1;
         }
@@ -210,38 +211,30 @@ size_t createsoundfile( int _channels, int _samplerate, const char* _filename, c
 {
 	SF_INFO sfinfo;
 	memset ( (void*)&sfinfo, 0, sizeof(sfinfo) );
-
 	printf( "channels: %d; samplerate: %d; name: %s\n", _channels, _samplerate, _filename );
-
 	sfinfo.channels = _channels;
 	sfinfo.samplerate = _samplerate;
 	sfinfo.format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
-
 	if ( !sf_format_check( &sfinfo ) ) {
 		printf("createsoundfile: sfinfo has wrong combination...\n");
 		return 0;
 	}
-
 	int fd = open( _filename, O_CREAT|O_WRONLY|O_TRUNC, 0644 );
 	if ( fd < 0 ) {	
 		printf("createsoundfile: couldn't open file '%s' for writing...\n", _filename);
 		return 0;
 	}
-
 	SNDFILE	*infile = sf_open_fd( fd, SFM_WRITE, &sfinfo, 1 ) ;
 	if ( !infile ) {
 		printf("createsoundfile: couldn't open file '%s' for writing...\n", _filename);		
 		return 0;
 	}
-
 	sf_count_t totalframes = ( _len / sizeof( float ) ) / _channels;
-
 	sf_count_t count = sf_writef_float( infile, (float *)_ptr, totalframes );
 	if ( count != totalframes ) {
 		sf_close( infile );
 		return count * sizeof(float) * _channels;
 	}
-
 	sf_close( infile );
 	return totalframes * sizeof(float) * _channels;
 }
@@ -315,7 +308,6 @@ char* WASM_version()
 	strcpy( buf, WASM_CODE_VERSION );
 	return buf;
 }
-
 
 int main( int argc, char* argv[] )
 {
