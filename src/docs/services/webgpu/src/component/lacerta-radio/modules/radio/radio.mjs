@@ -118,7 +118,7 @@ export default async () => {
                         CONFIG.html.button.start.textContent = 'Start Audio'
                     } else {
                         ctx(CONFIG)
-                        newAudio(CONFIG)
+                        await newAudio(CONFIG)
                         drawOscilloscope()
                     }
                     CONFIG.player.isPlaying = !CONFIG.player.isPlaying
