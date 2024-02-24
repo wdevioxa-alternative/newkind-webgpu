@@ -82,7 +82,7 @@ const drawOscilloscope = () => {
 const ctx = async (CONFIG) => {
     CONFIG.audio.ctx = new (window.AudioContext || window.webkitAudioContext)();
 
-    await CONFIG.audio.ctx.audioWorklet.addModule("/services/webgpu/src/component/lacerta-radio/modules/radio/random-noise-processor.mjs");
+    await CONFIG.audio.ctx.audioWorklet.addModule("/services/webgpu/src/component/lacerta-radio/modules/radio/stream-radio.mjs");
 
     CONFIG.audio.noise = new AudioWorkletNode(
         CONFIG.audio.ctx,
