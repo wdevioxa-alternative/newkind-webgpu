@@ -41,32 +41,15 @@ const newAudio = async (CONFIG) => {
         CONFIG.stream.song = new Audio(CONFIG.stream.path)
         CONFIG.stream.source = CONFIG.audio.ctx.createMediaElementSource(CONFIG.stream.song)
         CONFIG.stream.song.crossOrigin = 'anonymous'
-        await CONFIG.stream.source.connect(CONFIG.audio.master.gain)
-
 
         CONFIG.stream.song.addEventListener("canplay", async (event) => {
             await CONFIG.stream.song.play()
-
-            /**
-             *        CONFIG.stream.song.on('play', function() {
-             *                 CONFIG.stream.song.on('data', function(chunk) {
-             *                     console.log('@@@@@@@@@@@@@@@@@', chunk)
-             *                     // stream.write(chunk);
-             *                 });
-             *             });
-             * @type {string}
-             */
+            console.log('await CONFIG.stream.song', CONFIG.stream.song)
             CONFIG.html.button.start.textContent = 'Stop Audio'
             return true
         });
 
-        CONFIG.stream.song.addEventListener("canplaythrough", async (event) => {
-            console.log('################ canplaythrough ################')
-            // await CONFIG.stream.song.play()
-            // CONFIG.html.button.start.textContent = 'Stop Audio'
-            // return true
-        });
-
+        await CONFIG.stream.source.connect(CONFIG.audio.master.gain)
     } catch (e) {
         CONFIG.html.button.start.textContent = 'Stop Audio'
         return true
@@ -98,12 +81,24 @@ const drawOscilloscope = () => {
 
 const ctx = async (CONFIG) => {
     CONFIG.audio.ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+    await CONFIG.audio.ctx.audioWorklet.addModule("/services/webgpu/src/component/lacerta-radio/modules/radio/random-noise-processor.mjs");
+
+    CONFIG.audio.noise = new AudioWorkletNode(
+        CONFIG.audio.ctx,
+        "random-noise-processor",
+    );
+
     CONFIG.audio.analyser =  CONFIG.audio.ctx.createAnalyser()
-    CONFIG.audio.waveform = new Float32Array(CONFIG.audio.analyser.frequencyBinCount)
-    await CONFIG.audio.analyser.getFloatTimeDomainData(CONFIG.audio.waveform)
     CONFIG.audio.master.gain = CONFIG.audio.ctx.createGain()
-    await CONFIG.audio.master.gain.connect(CONFIG.audio.ctx.destination)
-    await CONFIG.audio.master.gain.connect(CONFIG.audio.analyser)
+    CONFIG.audio.waveform = new Float32Array(CONFIG.audio.analyser.frequencyBinCount)
+
+    await CONFIG.audio.analyser.getFloatTimeDomainData(CONFIG.audio.waveform)
+
+    await CONFIG.audio.master.gain.connect(CONFIG.audio.noise);
+    await CONFIG.audio.noise.connect(CONFIG.audio.analyser)
+    await CONFIG.audio.noise.connect(CONFIG.audio.ctx.destination)
+
 }
 
 const init = (self) => {
