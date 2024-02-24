@@ -2,8 +2,10 @@ export const actions = (self) => {
     return new Promise(async (resolve, reject) => {
 
         resolve({
-            click: async (event) => {
-
+            mount: {
+                click: async (event) => {
+                    console.log('<<<<< @@@@@@@@@@@@@@@@@@@@@@ >>>>>')
+                }
             }
         });
     });

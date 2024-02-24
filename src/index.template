@@ -405,10 +405,11 @@
 				<div class="spinner" id='spinner'></div>
 				<div class="emscripten" id="status">Downloading...</div>
 				<span id='controls'>
-							<span><input type="checkbox" id="resize">Resize canvas</span>
-							<span><input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer</span>
-							<span><input type="button" value="Fullscreen" onclick="Module.requestFullscreen(document.getElementById('pointerLock').checked, document.getElementById('resize').checked)"></span>
-						  </span>
+						<button id="mount">Mount</button>
+						<span><input type="checkbox" id="resize">Resize canvas</span>
+						<span><input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer</span>
+						<span><input type="button" value="Fullscreen" onclick="Module.requestFullscreen(document.getElementById('pointerLock').checked, document.getElementById('resize').checked)"></span>
+			  	</span>
 			</header>
 
 <!--			<div class="emscripten">-->
@@ -458,8 +459,8 @@
                 slot="radio"
                 data-field="settings-2"
                 data-services-path="webgpu"
-		    >
-		    </lacerta-radio>
+		    ></lacerta-radio>
+
 			<div
 					data-exclusion
 					slot="accordeon"

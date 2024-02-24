@@ -1,4 +1,4 @@
-import terminal from './terminal/browser.js'
+import Terminal from './terminal/browser.js'
 
-console.log('dddddddddddddddddddddddddddddd', terminal)
-export {terminal}
+console.log('TERMIANAL: ', Terminal)
+export {Terminal}

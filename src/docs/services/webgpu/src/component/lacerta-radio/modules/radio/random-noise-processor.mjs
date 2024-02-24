@@ -1,12 +1,14 @@
 class RandomNoiseProcessor extends AudioWorkletProcessor {
-    process(inputs, outputs, parameters) {
+    process(inputs, outputs) {
+        // By default, the node has single input and output.
+        const input = inputs[0];
         const output = outputs[0];
-        console.log('------------', inputs)
-        output.forEach((channel) => {
-            for (let i = 0; i < channel.length; i++) {
-                channel[i] = Math.random() * 2 - 1;
-            }
-        });
+
+        console.log('out', output)
+        for (let channel = 0; channel < output.length; ++channel) {
+            output[channel].set(input[channel]);
+        }
+
         return true;
     }
 }
