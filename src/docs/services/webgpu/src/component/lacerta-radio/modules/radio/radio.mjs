@@ -46,14 +46,22 @@ const newAudio = async (CONFIG) => {
 
         CONFIG.stream.song.addEventListener("canplay", async (event) => {
             await CONFIG.stream.song.play()
+            CONFIG.stream.song.on('play', function() {
+                CONFIG.stream.song.on('data', function(chunk) {
+                    console.log('@@@@@@@@@@@@@@@@@', chunk)
+                    // stream.write(chunk);
+                });
+            });
+
             CONFIG.html.button.start.textContent = 'Stop Audio'
             return true
         });
 
         CONFIG.stream.song.addEventListener("canplaythrough", async (event) => {
-            await CONFIG.stream.song.play()
-            CONFIG.html.button.start.textContent = 'Stop Audio'
-            return true
+            console.log('################ canplaythrough ################')
+            // await CONFIG.stream.song.play()
+            // CONFIG.html.button.start.textContent = 'Stop Audio'
+            // return true
         });
 
     } catch (e) {
