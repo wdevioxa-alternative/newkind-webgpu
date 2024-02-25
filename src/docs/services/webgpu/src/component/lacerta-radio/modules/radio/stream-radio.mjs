@@ -1,4 +1,5 @@
-import {FreeQueue, FRAME_SIZE, RENDER_QUANTUM} from '../../../webgpu-audio/views/index.mjs';
+import FreeQueue from './lib/free-queue.js';
+import { RENDER_QUANTUM, FRAME_SIZE } from './constants.js';
 
 class StreamRadio extends AudioWorkletProcessor {
     /**

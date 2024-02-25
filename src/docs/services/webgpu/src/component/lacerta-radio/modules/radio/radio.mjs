@@ -84,11 +84,11 @@ const ctx = async (CONFIG) => {
     await CONFIG.audio.ctx.audioWorklet.addModule("/services/webgpu/src/component/lacerta-radio/modules/radio/stream-radio.mjs");
     CONFIG.audio.radio = new AudioWorkletNode(CONFIG.audio.ctx, "random-noise-processor");
 
-    // worker = new Worker('/services/webgpu/src/component/lacerta-radio/modules/radio/worker.js', {type: 'module'});
-    //
-    // worker.onerror = (event) => {
-    //     console.log('[main.js] Error from worker.js: ', event);
-    // };
+    const worker = new Worker('/services/webgpu/src/component/lacerta-radio/modules/radio/worker.js', {type: 'module'});
+
+    worker.onerror = (event) => {
+        console.log('[main.js] Error from worker.js: ', event);
+    };
 
 
     CONFIG.audio.analyser =  CONFIG.audio.ctx.createAnalyser()

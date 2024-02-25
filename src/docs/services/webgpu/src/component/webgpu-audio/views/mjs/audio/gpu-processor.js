@@ -1,4 +1,4 @@
-import { FRAME_SIZE, WORKGROUP_SIZE } from "./constants.js";
+import { FRAME_SIZE, WORKGROUP_SIZE } from "../../index.mjs";
 
 console.assert(navigator.gpu);
 console.assert(navigator.gpu.requestAdapter);
