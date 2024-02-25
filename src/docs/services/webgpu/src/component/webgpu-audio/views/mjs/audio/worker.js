@@ -1,6 +1,4 @@
-import FreeQueue from "./lib/free-queue.js";
-import GPUProcessor from "./gpu-processor.js";
-import { FRAME_SIZE } from "./constants.js";
+import { GPUProcessor, FreeQueue, FRAME_SIZE } from "../../index.mjs";
 
 let inputQueue = null;
 let outputQueue = null;

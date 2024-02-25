@@ -81,13 +81,15 @@ const drawOscilloscope = () => {
 
 const ctx = async (CONFIG) => {
     CONFIG.audio.ctx = new (window.AudioContext || window.webkitAudioContext)();
-
     await CONFIG.audio.ctx.audioWorklet.addModule("/services/webgpu/src/component/lacerta-radio/modules/radio/stream-radio.mjs");
+    CONFIG.audio.radio = new AudioWorkletNode(CONFIG.audio.ctx, "random-noise-processor");
 
-    CONFIG.audio.noise = new AudioWorkletNode(
-        CONFIG.audio.ctx,
-        "random-noise-processor",
-    );
+    // worker = new Worker('/services/webgpu/src/component/lacerta-radio/modules/radio/worker.js', {type: 'module'});
+    //
+    // worker.onerror = (event) => {
+    //     console.log('[main.js] Error from worker.js: ', event);
+    // };
+
 
     CONFIG.audio.analyser =  CONFIG.audio.ctx.createAnalyser()
     CONFIG.audio.master.gain = CONFIG.audio.ctx.createGain()
@@ -95,10 +97,11 @@ const ctx = async (CONFIG) => {
 
     await CONFIG.audio.analyser.getFloatTimeDomainData(CONFIG.audio.waveform)
 
-    await CONFIG.audio.master.gain.connect(CONFIG.audio.noise);
+    await CONFIG.audio.master.gain.connect(CONFIG.audio.radio);
     await CONFIG.audio.noise.connect(CONFIG.audio.analyser)
     await CONFIG.audio.noise.connect(CONFIG.audio.ctx.destination)
 
+    return CONFIG.audio.ctx
 }
 
 const init = (self) => {

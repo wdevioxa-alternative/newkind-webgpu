@@ -1,5 +1,4 @@
-import FreeQueue from './lib/free-queue.js';
-import { FRAME_SIZE, RENDER_QUANTUM } from './constants.js';
+import {FreeQueue, FRAME_SIZE, RENDER_QUANTUM} from '../../index.mjs';
 
 const ExpectedPrimingCount = FRAME_SIZE / RENDER_QUANTUM;
 
