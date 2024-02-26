@@ -514,6 +514,9 @@ export class wDApplication
         ////////////////////////////////////////////////////////////////////////////////////
 
         let flag = false;
+
+	let thickness = 3;
+
         if ( window.isInit() > 0 ) {
             let nameoffile = window["nameoffile"];
             let _colors = [
@@ -521,7 +524,7 @@ export class wDApplication
                 { from: [ 0.0, 1.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] },
             ]             
             if ( window["hold-chart"] == true && window["hold-buffer"] != undefined ) {
-                await this.spline.drawData( this, window["hold-buffer"], window["channels"], window["rendertype"] , window["samplerate"], 1, window.kdX, window.kdY, window.zoomX, window.zoomY, 1, _colors );
+                await this.spline.drawData( this, window["hold-buffer"], window["channels"], window["rendertype"] , window["samplerate"], 1, window.kdX, window.kdY, window.zoomX, window.zoomY, thickness, _colors );
                 flag = true;
             } else if ( window.isExist( nameoffile ) > 0 ) {
                 if ( window.isPlaying() > 0 ) {
@@ -550,7 +553,7 @@ export class wDApplication
                             if ( _framescount > 0 ) { 
                                 let _buffer = window.copy( _memptr, _framescount * _channels * SIZE_OF_FLOAT );
                                 if ( window["hold-chart"] == true ) window["hold-buffer"] = new Float32Array( _buffer );
-                                await this.spline.drawData( this, _buffer, _channels, _rendertype, _samplerate, 1, window.kdX, window.kdY, window.zoomX, window.zoomY, 1, _colors );
+                                await this.spline.drawData( this, _buffer, _channels, _rendertype, _samplerate, 1, window.kdX, window.kdY, window.zoomX, window.zoomY, thickness, _colors );
                                 flag = true;
                             }
                             if ( _memptr > 0 ) window.free( _memptr );
@@ -561,7 +564,7 @@ export class wDApplication
                 } 
             } 
         } 
-        if ( flag == false ) await this.spline.drawData( this, null, null, "stereo", window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY, 1 );
+        if ( flag == false ) await this.spline.drawData( this, null, null, "stereo", window.samplerate, window.volumerate, window.kdX, window.kdY, window.zoomX, window.zoomY, thickness );
 
         ////////////////////////////////////////////////////////////////////////////////////
         // wDCircle example is completed
