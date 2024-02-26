@@ -2,7 +2,7 @@ import FreeQueue from './lib/free-queue.js';
 import { RENDER_QUANTUM, FRAME_SIZE } from './constants.js';
 const ExpectedPrimingCount = FRAME_SIZE / RENDER_QUANTUM;
 
-class StreamRadio extends AudioWorkletProcessor {
+class StreamProcessor extends AudioWorkletProcessor {
     /**
      * Constructor to initialize, input and output FreeQueue instances
      * and atomicState to synchronise Worker with AudioWorklet
@@ -30,7 +30,7 @@ class StreamRadio extends AudioWorkletProcessor {
         // enough.
         if (this.primingCounter > ExpectedPrimingCount) {
             // Pull processed audio data out of `outputQueue` and pass it in output.
-            console.log('------------- output ---------------', output, RENDER_QUANTUM)
+            // console.log('------------- output ---------------', output, RENDER_QUANTUM)
             const didPull = this.outputQueue.pull(output, RENDER_QUANTUM);
             if (!didPull) {
                 console.log('[basic-processor.js] Not enough data in outputQueue');
@@ -57,4 +57,4 @@ class StreamRadio extends AudioWorkletProcessor {
     }
 }
 
-registerProcessor("random-noise-processor", StreamRadio);
+registerProcessor("stream-processor", StreamProcessor);

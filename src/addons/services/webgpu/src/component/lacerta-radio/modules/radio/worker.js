@@ -16,7 +16,6 @@ let averageTimeSpent = 0;
 let timeElapsed = 0;
 let runningAverageFactor = 1;
 
-console.log('--------------------------- 🟩 WORKER RADIO STREAM')
 // This will initialize worker with FreeQueue instance and set loop for audio
 // processing.
 const initialize = async (messageDataFromMainThread) => {
@@ -24,7 +23,6 @@ const initialize = async (messageDataFromMainThread) => {
       = messageDataFromMainThread);
   Object.setPrototypeOf(inputQueue, FreeQueue.prototype);
   Object.setPrototypeOf(outputQueue, FreeQueue.prototype);
-  console.log('WORKER INITIALIZE ===================================')
   // A local buffer to store data pulled out from `inputQueue`.
   inputBuffer = new Float32Array(FRAME_SIZE);
 
@@ -47,11 +45,11 @@ const process = async () => {
 
 
   // 1. Bypassing
-  const outputBuffer = inputBuffer;
-  console.log('@@@@@@@@@@ PROCESS @@@@@@@@@@@@@@', outputBuffer)
-  // 2. Bypass via GPU.
-  // const outputBuffer = await gpuProcessor.processBypass(inputBuffer);
+  // const outputBuffer = inputBuffer;
 
+  // 2. Bypass via GPU.
+  const outputBuffer = await gpuProcessor.processBypass(inputBuffer);
+  // console.log('@@@@@@@@@@ PROCESS @@@@@@@@@@@@@@', outputBuffer)
   // 3. Convolution via GPU
   // const outputBuffer = await gpuProcessor.processConvolution(inputBuffer);
 

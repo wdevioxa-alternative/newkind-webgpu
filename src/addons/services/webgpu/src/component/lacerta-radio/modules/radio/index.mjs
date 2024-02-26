@@ -126,9 +126,9 @@ const drawOscilloscope = () => {
 
 const ctx = async (CONFIG) => {
     CONFIG.audio.ctx = new (window.AudioContext || window.webkitAudioContext)();
-    await CONFIG.audio.ctx.audioWorklet.addModule("/services/webgpu/src/component/lacerta-radio/modules/radio/stream-radio.mjs");
+    await CONFIG.audio.ctx.audioWorklet.addModule("/services/webgpu/src/component/lacerta-radio/modules/radio/stream-processor.mjs");
     CONFIG.audio.oscillatorNode = new OscillatorNode(CONFIG.audio.ctx);
-    CONFIG.audio.processorNode = new AudioWorkletNode(CONFIG.audio.ctx, 'random-noise-processor', {
+    CONFIG.audio.processorNode = new AudioWorkletNode(CONFIG.audio.ctx, 'stream-processor', {
         processorOptions: {inputQueue, outputQueue, atomicState}
     });
 
@@ -146,21 +146,11 @@ const ctx = async (CONFIG) => {
     CONFIG.audio.waveform = new Float32Array(CONFIG.audio.analyser.frequencyBinCount)
     await CONFIG.audio.analyser.getFloatTimeDomainData(CONFIG.audio.waveform)
 
+    // TODO переключатель между радио и осцилятором
+    CONFIG.audio.master.gain.connect(CONFIG.audio.processorNode).connect(CONFIG.audio.analyser).connect(CONFIG.audio.ctx.destination);
+    // CONFIG.audio.oscillatorNode.connect(CONFIG.audio.processorNode).connect(CONFIG.audio.analyser).connect(CONFIG.audio.ctx.destination);
 
-    CONFIG.audio.master.gain.connect(CONFIG.audio.processorNode).connect(CONFIG.audio.ctx.destination);
-    CONFIG.audio.master.gain.connect(CONFIG.audio.analyser)
-    // CONFIG.audio.oscillatorNode.start();
-
-    // await CONFIG.audio.master.gain.connect(CONFIG.audio.analyser);
-    // await CONFIG.audio.master.gain.connect(CONFIG.audio.processorNode);
-    // await CONFIG.audio.master.gain.connect(CONFIG.audio.ctx.destination)
-    //
-    // await CONFIG.audio.master.gain.connect(CONFIG.audio.analyser).connect(CONFIG.audio.ctx.destination);
-    // Form an audio graph and start the source. When the renderer is resumed,
-    // the pipeline will be flowing.
-    // CONFIG.audio.oscillatorNode.connect(CONFIG.audio.processorNode).connect(CONFIG.audio.ctx.destination);
-    // CONFIG.audio.oscillatorNode.start();
-    // await CONFIG.audio.processorNode.connect(CONFIG.audio.ctx.destination)
+    CONFIG.audio.oscillatorNode.start();
 
     return CONFIG.audio.ctx
 }

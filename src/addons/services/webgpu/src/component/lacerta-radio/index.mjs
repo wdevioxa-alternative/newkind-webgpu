@@ -1,4 +1,4 @@
-import modules from './modules/radio/radio.mjs'
+import modules from './modules/radio/index.mjs'
 import preset from './template/index.mjs'
 
 const getTemplate = (html) => {
