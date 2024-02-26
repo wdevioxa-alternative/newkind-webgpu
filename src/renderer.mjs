@@ -515,7 +515,7 @@ export class wDApplication
 
         let flag = false;
 
-	let thickness = 3;
+	let thickness = 2;
 
         if ( window.isInit() > 0 ) {
             let nameoffile = window["nameoffile"];

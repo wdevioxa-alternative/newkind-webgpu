@@ -710,8 +710,8 @@ export class wDSpline extends wDObject
         let x = this.getX();
         let y = this.getY();
 
-        await this.borderDraw( instance, x, y, _width, _height, _t, _colors );
-        await this.axisDraw( instance, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, _t, [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] );
+        await this.borderDraw( instance, x, y, _width, _height, 1, _colors );
+        await this.axisDraw( instance, _rateofsamples, _volumescale, x, y, _width, _height, kdX, kdY, zoomX, zoomY, 1, [ { from: [ 1.0, 1.0, 1.0, 1.0 ], to: [ 1.0, 1.0, 1.0, 1.0 ] } ] );
 
         if ( _object != null ) {
             if ( _object.length > 0 ) {
