@@ -30,7 +30,7 @@ class StreamRadio extends AudioWorkletProcessor {
         // enough.
         if (this.primingCounter > ExpectedPrimingCount) {
             // Pull processed audio data out of `outputQueue` and pass it in output.
-            // console.log('------------- output ---------------', output)
+            console.log('------------- output ---------------', output, RENDER_QUANTUM)
             const didPull = this.outputQueue.pull(output, RENDER_QUANTUM);
             if (!didPull) {
                 console.log('[basic-processor.js] Not enough data in outputQueue');

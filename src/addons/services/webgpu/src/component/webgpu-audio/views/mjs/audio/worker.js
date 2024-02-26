@@ -23,6 +23,7 @@ const initialize = async (messageDataFromMainThread) => {
   Object.setPrototypeOf(inputQueue, FreeQueue.prototype);
   Object.setPrototypeOf(outputQueue, FreeQueue.prototype);
 
+  console.log('WORKER INITIALIZE ===================================')
   // A local buffer to store data pulled out from `inputQueue`.
   inputBuffer = new Float32Array(FRAME_SIZE);
 

@@ -18,7 +18,6 @@ let isPlaying = false;
 let messageView = null;
 let impulseResponseSelect = null;
 
-
 const CONFIG = {
     audio: {
         ctx: false,
@@ -133,30 +132,28 @@ const ctx = async (CONFIG) => {
         processorOptions: {inputQueue, outputQueue, atomicState}
     });
 
-    CONFIG.worker = new Worker('/services/webgpu/src/component/lacerta-radio/modules/radio/worker.js', {type: 'module'});
+    worker = new Worker('/services/webgpu/src/component/lacerta-radio/modules/radio/worker.js', {type: 'module'});
 
-    CONFIG.worker.onerror = (event) => {
+    worker.onerror = (event) => {
         console.log('[main.js] Error from worker.js: ', event);
     };
 
+    CONFIG.audio.ctx.suspend();
 
     CONFIG.audio.analyser =  CONFIG.audio.ctx.createAnalyser()
     CONFIG.audio.master.gain = CONFIG.audio.ctx.createGain()
-    CONFIG.audio.waveform = new Float32Array(CONFIG.audio.analyser.frequencyBinCount)
 
+    CONFIG.audio.waveform = new Float32Array(CONFIG.audio.analyser.frequencyBinCount)
     await CONFIG.audio.analyser.getFloatTimeDomainData(CONFIG.audio.waveform)
 
 
-    // CONFIG.audio.master.gain
-    // Initially suspend the context to prevent the renderer from hammering the
-    // Worker.
-    // await CONFIG.audio.ctx.suspend();
-    // CONFIG.audio.processorNode
+    CONFIG.audio.oscillatorNode.connect(CONFIG.audio.processorNode).connect(CONFIG.audio.ctx.destination);
+    CONFIG.audio.oscillatorNode.start();
 
-    await CONFIG.audio.master.gain.connect(CONFIG.audio.analyser);
-    await CONFIG.audio.master.gain.connect(CONFIG.audio.processorNode);
-    await CONFIG.audio.master.gain.connect(CONFIG.audio.ctx.destination)
-
+    // await CONFIG.audio.master.gain.connect(CONFIG.audio.analyser);
+    // await CONFIG.audio.master.gain.connect(CONFIG.audio.processorNode);
+    // await CONFIG.audio.master.gain.connect(CONFIG.audio.ctx.destination)
+    //
     // await CONFIG.audio.master.gain.connect(CONFIG.audio.analyser).connect(CONFIG.audio.ctx.destination);
     // Form an audio graph and start the source. When the renderer is resumed,
     // the pipeline will be flowing.
@@ -196,7 +193,7 @@ const initializeWorkerIfNecessary = async () => {
 
     console.log('SAMPLE RATE:', CONFIG.audio.ctx.sampleRate)
     // Send FreeQueue instance and atomic state to worker.
-    CONFIG.worker.postMessage({
+    worker.postMessage({
         type: 'init',
         data: {
             inputQueue,
@@ -243,14 +240,14 @@ export default async () => {
                    console.log('isPlaying',CONFIG.player.isPlaying)
 
                     if (CONFIG.player.isPlaying) {
-                        CONFIG.audio.ctx.suspend();
                         await CONFIG.stream.song.pause()
+                        CONFIG.audio.ctx.suspend();
                         CONFIG.html.button.start.textContent = 'Start Audio'
                     } else {
                         CONFIG.html.button.start.textContent = 'Stop Audio'
                         await ctx(CONFIG)
-                        await newAudio(CONFIG)
                         await initializeWorkerIfNecessary();
+                        await newAudio(CONFIG)
                         drawOscilloscope()
                     }
                     CONFIG.player.isPlaying = !CONFIG.player.isPlaying
