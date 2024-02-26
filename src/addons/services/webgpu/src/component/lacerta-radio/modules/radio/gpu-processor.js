@@ -50,7 +50,7 @@ class GPUProcessor {
         usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC
     });
     gpuComputeBuffer.unmap();
-    console.log('GPU PROCESSOR: ', this)
+
     // Compute shader code defining the group, bindings and the WORKGROUP_SIZE
     // needed to parallelize the work.
     const computeModule = this.device_.createShaderModule({

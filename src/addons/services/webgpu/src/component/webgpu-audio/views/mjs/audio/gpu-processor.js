@@ -27,6 +27,7 @@ class GPUProcessor {
   }
 
   setIRArray (irFloat32Array) {
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', this)
     this.irArray_ = irFloat32Array;
   }
 

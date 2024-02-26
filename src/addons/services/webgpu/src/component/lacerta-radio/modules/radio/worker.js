@@ -20,7 +20,8 @@ console.log('🟩 WORKER RADIO STREAM')
 // This will initialize worker with FreeQueue instance and set loop for audio
 // processing.
 const initialize = async (messageDataFromMainThread) => {
-  ({inputQueue, outputQueue, atomicState, irArray, sampleRate} 
+  console.log('INITIALIZE WORKER')
+  ({inputQueue, outputQueue, atomicState, irArray, sampleRate}
       = messageDataFromMainThread);
   Object.setPrototypeOf(inputQueue, FreeQueue.prototype);
   Object.setPrototypeOf(outputQueue, FreeQueue.prototype);

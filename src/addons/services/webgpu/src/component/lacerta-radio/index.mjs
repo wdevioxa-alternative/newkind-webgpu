@@ -47,7 +47,7 @@ const LacertaRadio =  class extends HTMLElement {
       .then(component => template(component))
       .then(async component => {
         let radio = new (await modules())(component)
-        console.log("component", radio)
+        console.log("RADIO: ", radio)
       })
   }
 }

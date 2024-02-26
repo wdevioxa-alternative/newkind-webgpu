@@ -80,13 +80,15 @@ const detectFeaturesAndReport = (viewElement) => {
 };
 const newAudio = async (CONFIG) => {
     try {
-
         await CONFIG.stream.song.pause()
+        await CONFIG.audio.ctx.suspend();
+
         CONFIG.stream.song = new Audio(CONFIG.stream.path)
         CONFIG.stream.source = CONFIG.audio.ctx.createMediaElementSource(CONFIG.stream.song)
         CONFIG.stream.song.crossOrigin = 'anonymous'
 
         CONFIG.stream.song.addEventListener("canplay", async (event) => {
+            await CONFIG.audio.ctx.resume();
             await CONFIG.stream.song.play()
             console.log('await CONFIG.stream.song', CONFIG.stream.song)
             CONFIG.html.button.start.textContent = 'Stop Audio'
@@ -245,9 +247,9 @@ export default async () => {
                         await CONFIG.stream.song.pause()
                         CONFIG.html.button.start.textContent = 'Start Audio'
                     } else {
+                        CONFIG.html.button.start.textContent = 'Stop Audio'
                         await ctx(CONFIG)
                         await newAudio(CONFIG)
-                        await CONFIG.audio.ctx.resume();
                         await initializeWorkerIfNecessary();
                         drawOscilloscope()
                     }
@@ -255,6 +257,7 @@ export default async () => {
                 })
             }
         }
+
         resolve(Radio)
     })
 }
