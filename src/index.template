@@ -90,7 +90,6 @@
 				<div>Используется</div>
 				<div>Длинна</div>
 			</div>
-
 			<slot name="nk-chart"></slot>
 		</div>
 		<nk-chart
