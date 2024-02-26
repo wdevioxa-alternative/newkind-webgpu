@@ -1,7 +1,5 @@
-import FreeQueue from './lib/free-queue.js'
-import { createTestIR, fetchAudioFileToF32Array } from './ir-helper.js';
-import { QUEUE_SIZE } from './constants.js';
-import Assets from './assets.js';
+import {FreeQueue, createTestIR, fetchAudioFileToF32Array, QUEUE_SIZE, Assets } from '../../index.mjs'
+
 export const gpuAudio = async () => {
 // Create 2 FreeQueue instances with 4096 buffer length and 1 channel.
   const inputQueue = new FreeQueue(QUEUE_SIZE, 1);

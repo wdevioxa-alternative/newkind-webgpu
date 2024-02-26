@@ -1,6 +1,4 @@
-import FreeQueue from "./lib/free-queue.js";
-import GPUProcessor from "./gpu-processor.js";
-import { FRAME_SIZE } from "./constants.js";
+import { GPUProcessor, FreeQueue, FRAME_SIZE } from "../../index.mjs";
 
 let inputQueue = null;
 let outputQueue = null;
@@ -28,6 +26,7 @@ const initialize = async (messageDataFromMainThread) => {
   // A local buffer to store data pulled out from `inputQueue`.
   inputBuffer = new Float32Array(FRAME_SIZE);
 
+
   // Create an instance of GPUProcessor and provide an IR array.
   gpuProcessor = new GPUProcessor();
   gpuProcessor.setIRArray(irArray);
@@ -46,10 +45,11 @@ const process = async () => {
   }
 
   // 1. Bypassing
-  // const outputBuffer = inputBuffer;
+  const outputBuffer = inputBuffer;
 
+  // debugger
   // 2. Bypass via GPU.
-  const outputBuffer = await gpuProcessor.processBypass(inputBuffer);
+  // const outputBuffer = await gpuProcessor.processBypass(inputBuffer);
 
   // 3. Convolution via GPU
   // const outputBuffer = await gpuProcessor.processConvolution(inputBuffer);
@@ -62,7 +62,6 @@ const process = async () => {
 
 self.onmessage = async (message) => {
   console.log('[worker.js] onmessage: ' + message.data.type);
-
   if (message.data.type !== 'init') {
     console.error(`[worker.js] Invalid message type: ${message.data.type}`);
     return;

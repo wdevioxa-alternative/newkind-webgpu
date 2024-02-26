@@ -127,6 +127,8 @@ class FreeQueue {
         blockB.set(input[channel].subarray(blockA.length));
       }
     } else {
+      console.log('####### 22 ##########', input)
+
       for (let channel = 0; channel < this.channelCount; channel++) {
         this.channelData[channel]
             .subarray(currentWrite, nextWrite)
