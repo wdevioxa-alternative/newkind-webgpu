@@ -43,7 +43,7 @@ gulp.task('copy-html', function() {
 });
 
 gulp.task('copy-docs', async function() {
-    return gulp.src('./src/docs/**')
+    return gulp.src('./src/addons/**')
         .pipe(gulp.dest('./dist', {overwrite:true}));
 });
 
@@ -61,7 +61,7 @@ gulp.task('npm:build', function () {
 })
 
 gulp.task('watch',  () => {
-    gulp.watch([`./src/docs/**/**`], gulp.series('copy-docs' ))
+    gulp.watch([`./src/addons/**/**`], gulp.series('copy-docs' ))
 });
 
 gulp.task('watch-index',  () => {
