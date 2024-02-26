@@ -68,4 +68,4 @@ gulp.task('watch-index',  () => {
     gulp.watch(['./src/index.template'], gulp.series('npm:build' ))
 });
 
-gulp.task('run', gulp.parallel('copy-docs', 'watch'))
+gulp.task('run', gulp.parallel('copy-docs', 'watch', 'watch-index'))
