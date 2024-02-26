@@ -1,4 +1,5 @@
-import { FreeQueue, FRAME_SIZE, GPUProcessor } from "../../../webgpu-audio/views/index.mjs";
+import FreeQueue from './lib/free-queue'
+import { FRAME_SIZE, GPUProcessor } from "../../../webgpu-audio/views/index.mjs";
 
 let inputQueue = null;
 let outputQueue = null;
@@ -14,7 +15,7 @@ let averageTimeSpent = 0;
 let timeElapsed = 0;
 let runningAverageFactor = 1;
 
-console.log('WORKER RADIO STREAM')
+console.log('🟩 WORKER RADIO STREAM')
 // This will initialize worker with FreeQueue instance and set loop for audio
 // processing.
 const initialize = async (messageDataFromMainThread) => {
@@ -43,11 +44,12 @@ const process = async () => {
     return;
   }
 
+  console.log('@@@@@@@@@@ PROCESS @@@@@@@@@@@@@@')
   // 1. Bypassing
-  // const outputBuffer = inputBuffer;
+  const outputBuffer = inputBuffer;
 
   // 2. Bypass via GPU.
-  const outputBuffer = await gpuProcessor.processBypass(inputBuffer);
+  // const outputBuffer = await gpuProcessor.processBypass(inputBuffer);
 
   // 3. Convolution via GPU
   // const outputBuffer = await gpuProcessor.processConvolution(inputBuffer);

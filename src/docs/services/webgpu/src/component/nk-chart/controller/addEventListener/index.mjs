@@ -1,7 +1,7 @@
 import {Terminal} from '../../views/index.mjs'
 
 export default async (self, actions) => {
-    const terminal = Terminal(self)
+    const terminal = await Terminal(self)
     let mount = self.shadowRoot.querySelector('#mount')
 
     console.log('STREEM', terminal, mount)

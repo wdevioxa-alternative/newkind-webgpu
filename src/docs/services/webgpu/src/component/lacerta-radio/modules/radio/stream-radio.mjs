@@ -1,5 +1,6 @@
 import FreeQueue from './lib/free-queue.js';
 import { RENDER_QUANTUM, FRAME_SIZE } from './constants.js';
+const ExpectedPrimingCount = FRAME_SIZE / RENDER_QUANTUM;
 
 class StreamRadio extends AudioWorkletProcessor {
     /**

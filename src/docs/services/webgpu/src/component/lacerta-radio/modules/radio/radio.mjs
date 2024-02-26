@@ -1,3 +1,24 @@
+import FreeQueue from './lib/free-queue.js'
+import {createTestIR, fetchAudioFileToF32Array, QUEUE_SIZE, Assets } from '../../../webgpu-audio/views/index.mjs'
+
+// Create 2 FreeQueue instances with 4096 buffer length and 1 channel.
+const inputQueue = new FreeQueue(QUEUE_SIZE, 1);
+const outputQueue = new FreeQueue(QUEUE_SIZE, 1);
+
+// Create an atomic state for synchronization between Worker and AudioWorklet.
+const atomicState =
+    new Int32Array(new SharedArrayBuffer(1 * Int32Array.BYTES_PER_ELEMENT));
+
+let audioContext = null;
+let worker = null;
+let isWorkerInitialized = false;
+
+let toggleButton = null;
+let isPlaying = false;
+let messageView = null;
+let impulseResponseSelect = null;
+
+
 const CONFIG = {
     audio: {
         ctx: false,
@@ -35,14 +56,38 @@ const CONFIG = {
     }
 }
 
+const detectFeaturesAndReport = (viewElement) => {
+    let areRequiremensMet = true;
+
+    if (typeof navigator.gpu !== 'object') {
+        viewElement.textContent +=
+            'ERROR: WebGPU is not available on your browser.\r\n';
+        areRequiremensMet = false;
+    }
+
+    if (typeof SharedArrayBuffer !== 'function') {
+        viewElement.textContent +=
+            'ERROR: SharedArrayBuffer is not available on your browser.\r\n';
+        areRequiremensMet = false;
+    }
+
+    if (areRequiremensMet) {
+        viewElement.textContent +=
+            'All requirements have been met. The experiment is ready to run.\r\n';
+    }
+
+    return areRequiremensMet;
+};
 const newAudio = async (CONFIG) => {
     try {
+
         await CONFIG.stream.song.pause()
         CONFIG.stream.song = new Audio(CONFIG.stream.path)
         CONFIG.stream.source = CONFIG.audio.ctx.createMediaElementSource(CONFIG.stream.song)
         CONFIG.stream.song.crossOrigin = 'anonymous'
 
         CONFIG.stream.song.addEventListener("canplay", async (event) => {
+            await CONFIG.audio.ctx.resume();
             await CONFIG.stream.song.play()
             console.log('await CONFIG.stream.song', CONFIG.stream.song)
             CONFIG.html.button.start.textContent = 'Stop Audio'
@@ -82,11 +127,14 @@ const drawOscilloscope = () => {
 const ctx = async (CONFIG) => {
     CONFIG.audio.ctx = new (window.AudioContext || window.webkitAudioContext)();
     await CONFIG.audio.ctx.audioWorklet.addModule("/services/webgpu/src/component/lacerta-radio/modules/radio/stream-radio.mjs");
-    CONFIG.audio.radio = new AudioWorkletNode(CONFIG.audio.ctx, "random-noise-processor");
+    CONFIG.audio.oscillatorNode = new OscillatorNode(CONFIG.audio.ctx);
+    CONFIG.audio.processorNode = new AudioWorkletNode(CONFIG.audio.ctx, 'random-noise-processor', {
+        processorOptions: {inputQueue, outputQueue, atomicState}
+    });
 
-    const worker = new Worker('/services/webgpu/src/component/lacerta-radio/modules/radio/worker.js', {type: 'module'});
+    CONFIG.worker = new Worker('/services/webgpu/src/component/lacerta-radio/modules/radio/worker.js', {type: 'module'});
 
-    worker.onerror = (event) => {
+    CONFIG.worker.onerror = (event) => {
         console.log('[main.js] Error from worker.js: ', event);
     };
 
@@ -97,9 +145,18 @@ const ctx = async (CONFIG) => {
 
     await CONFIG.audio.analyser.getFloatTimeDomainData(CONFIG.audio.waveform)
 
-    await CONFIG.audio.master.gain.connect(CONFIG.audio.radio);
-    await CONFIG.audio.noise.connect(CONFIG.audio.analyser)
-    await CONFIG.audio.noise.connect(CONFIG.audio.ctx.destination)
+
+    // CONFIG.audio.master.gain
+    // Initially suspend the context to prevent the renderer from hammering the
+    // Worker.
+    // await CONFIG.audio.ctx.suspend();
+
+    await CONFIG.audio.master.gain.connect( CONFIG.audio.processorNode).connect(CONFIG.audio.ctx.destination);
+    // Form an audio graph and start the source. When the renderer is resumed,
+    // the pipeline will be flowing.
+    // CONFIG.audio.oscillatorNode.connect(CONFIG.audio.processorNode).connect(CONFIG.audio.ctx.destination);
+    // CONFIG.audio.oscillatorNode.start();
+    // await CONFIG.audio.processorNode.connect(CONFIG.audio.ctx.destination)
 
     return CONFIG.audio.ctx
 }
@@ -111,6 +168,43 @@ const init = (self) => {
     CONFIG.html.button.radios.length = CONFIG.html.button.radios.this.length;
 }
 
+const initializeWorkerIfNecessary = async () => {
+    if (isWorkerInitialized) {
+        return;
+    }
+
+    console.assert(CONFIG.audio.ctx);
+
+    let filePath = null;
+    let irArray = null;
+    if (impulseResponseSelect) {
+        // When the file path is `TEST` generates a test IR (10 samples). See
+        // `assets.js` for details.
+        filePath = impulseResponseSelect.value;
+        irArray = (filePath === 'TEST')
+            ? createTestIR()
+            : await fetchAudioFileToF32Array(CONFIG.audio.ctx, filePath);
+
+        impulseResponseSelect.disabled = true;
+    }
+
+    console.log('SAMPLE RATE:', CONFIG.audio.ctx.sampleRate)
+    // Send FreeQueue instance and atomic state to worker.
+    CONFIG.worker.postMessage({
+        type: 'init',
+        data: {
+            inputQueue,
+            outputQueue,
+            atomicState,
+            irArray,
+            sampleRate: CONFIG.audio.ctx.sampleRate,
+        }
+    });
+
+    console.log('[main.js] initializeWorkerIfNecessary(): ' + filePath);
+
+    isWorkerInitialized = true;
+};
 export default async () => {
     return new Promise((resolve, reject) => {
         class Radio {
@@ -144,9 +238,11 @@ export default async () => {
 
                     if (CONFIG.player.isPlaying) {
                         await CONFIG.stream.song.pause()
+                        CONFIG.audio.ctx.suspend();
                         CONFIG.html.button.start.textContent = 'Start Audio'
                     } else {
                         await ctx(CONFIG)
+                        await initializeWorkerIfNecessary();
                         await newAudio(CONFIG)
                         drawOscilloscope()
                     }
