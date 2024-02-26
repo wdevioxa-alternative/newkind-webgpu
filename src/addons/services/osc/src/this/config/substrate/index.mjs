@@ -209,12 +209,12 @@ export const verification = (types, pathname) => {
     for(let type of types) {
         switch (type) {
             case "relation":
-                if(['/dex/processor/', '/docs/', '/dex/'].some(item => pathname === item)) {
+                if(['/dex/processor/', '/addons/', '/dex/'].some(item => pathname === item)) {
                     return true
                 }
                 break
             case "property":
-                if(['/dex/processor/', '/docs/', '/dex/'].some(item => pathname === item)) {
+                if(['/dex/processor/', '/addons/', '/dex/'].some(item => pathname === item)) {
                     return true
                 }
                 break
