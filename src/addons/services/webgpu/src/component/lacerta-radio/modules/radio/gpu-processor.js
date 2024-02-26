@@ -63,7 +63,7 @@ class GPUProcessor {
 
         @compute @workgroup_size(${WORKGROUP_SIZE})
         fn main(@builtin(global_invocation_id) global_id : vec3<u32>) {
-          output[global_id.x] = input[global_id.x] * 0.1;
+          output[global_id.x] = input[global_id.x] * 1;
         }
       `
     });
