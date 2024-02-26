@@ -147,8 +147,9 @@ const ctx = async (CONFIG) => {
     await CONFIG.audio.analyser.getFloatTimeDomainData(CONFIG.audio.waveform)
 
 
-    CONFIG.audio.oscillatorNode.connect(CONFIG.audio.processorNode).connect(CONFIG.audio.ctx.destination);
-    CONFIG.audio.oscillatorNode.start();
+    CONFIG.audio.master.gain.connect(CONFIG.audio.processorNode).connect(CONFIG.audio.ctx.destination);
+    CONFIG.audio.master.gain.connect(CONFIG.audio.analyser)
+    // CONFIG.audio.oscillatorNode.start();
 
     // await CONFIG.audio.master.gain.connect(CONFIG.audio.analyser);
     // await CONFIG.audio.master.gain.connect(CONFIG.audio.processorNode);
