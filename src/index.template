@@ -84,6 +84,13 @@
 >
 	<template>
 		<div class="container">
+			<div class="settings">
+				<h1>Память</h1>
+				<div>Всего памяти</div>
+				<div>Используется</div>
+				<div>Длинна</div>
+			</div>
+
 			<slot name="nk-chart"></slot>
 		</div>
 		<nk-chart

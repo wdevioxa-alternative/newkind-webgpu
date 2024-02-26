@@ -147,8 +147,8 @@ const ctx = async (CONFIG) => {
     await CONFIG.audio.analyser.getFloatTimeDomainData(CONFIG.audio.waveform)
 
     // TODO переключатель между радио и осцилятором
-    // CONFIG.audio.master.gain.connect(CONFIG.audio.processorNode).connect(CONFIG.audio.analyser).connect(CONFIG.audio.ctx.destination);
-    CONFIG.audio.oscillatorNode.connect(CONFIG.audio.processorNode).connect(CONFIG.audio.analyser).connect(CONFIG.audio.ctx.destination);
+    CONFIG.audio.master.gain.connect(CONFIG.audio.processorNode).connect(CONFIG.audio.analyser).connect(CONFIG.audio.ctx.destination);
+    // CONFIG.audio.oscillatorNode.connect(CONFIG.audio.processorNode).connect(CONFIG.audio.analyser).connect(CONFIG.audio.ctx.destination);
 
     CONFIG.audio.oscillatorNode.start();
 
