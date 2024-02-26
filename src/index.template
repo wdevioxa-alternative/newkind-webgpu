@@ -78,7 +78,7 @@
 </head>
 
 <body>
-<nk-mem
+<nk-memory
 	data-field="mem_0"
 	data-services-path="webgpu"
 >
@@ -731,6 +731,6 @@
 			</template>
 		</nk-chart>
 	</template>
-</nk-mem>
+</nk-memory>
 </body>
 </html>
