@@ -1,5 +1,6 @@
 import FreeQueue from './lib/free-queue'
-import { FRAME_SIZE, GPUProcessor } from "../../../webgpu-audio/views/index.mjs";
+import GPUProcessor from './gpu-processor'
+import { FRAME_SIZE } from "../../../webgpu-audio/views/index.mjs";
 
 let inputQueue = null;
 let outputQueue = null;
