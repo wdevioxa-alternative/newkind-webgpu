@@ -87,7 +87,6 @@ const newAudio = async (CONFIG) => {
         CONFIG.stream.song.crossOrigin = 'anonymous'
 
         CONFIG.stream.song.addEventListener("canplay", async (event) => {
-            await CONFIG.audio.ctx.resume();
             await CONFIG.stream.song.play()
             console.log('await CONFIG.stream.song', CONFIG.stream.song)
             CONFIG.html.button.start.textContent = 'Stop Audio'
@@ -150,8 +149,13 @@ const ctx = async (CONFIG) => {
     // Initially suspend the context to prevent the renderer from hammering the
     // Worker.
     // await CONFIG.audio.ctx.suspend();
+    // CONFIG.audio.processorNode
 
-    await CONFIG.audio.master.gain.connect( CONFIG.audio.processorNode).connect(CONFIG.audio.ctx.destination);
+    await CONFIG.audio.master.gain.connect(CONFIG.audio.analyser);
+    await CONFIG.audio.master.gain.connect(CONFIG.audio.processorNode);
+    await CONFIG.audio.master.gain.connect(CONFIG.audio.ctx.destination)
+
+    // await CONFIG.audio.master.gain.connect(CONFIG.audio.analyser).connect(CONFIG.audio.ctx.destination);
     // Form an audio graph and start the source. When the renderer is resumed,
     // the pipeline will be flowing.
     // CONFIG.audio.oscillatorNode.connect(CONFIG.audio.processorNode).connect(CONFIG.audio.ctx.destination);
@@ -234,16 +238,17 @@ export default async () => {
                 }
 
                 CONFIG.html.button.start.addEventListener('click', async (e) => {
-                   console.log(CONFIG.player.isPlaying)
+                   console.log('isPlaying',CONFIG.player.isPlaying)
 
                     if (CONFIG.player.isPlaying) {
-                        await CONFIG.stream.song.pause()
                         CONFIG.audio.ctx.suspend();
+                        await CONFIG.stream.song.pause()
                         CONFIG.html.button.start.textContent = 'Start Audio'
                     } else {
                         await ctx(CONFIG)
-                        await initializeWorkerIfNecessary();
                         await newAudio(CONFIG)
+                        await CONFIG.audio.ctx.resume();
+                        await initializeWorkerIfNecessary();
                         drawOscilloscope()
                     }
                     CONFIG.player.isPlaying = !CONFIG.player.isPlaying
