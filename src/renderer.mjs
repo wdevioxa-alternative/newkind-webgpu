@@ -544,7 +544,7 @@ export class wDApplication
                         // current playback offset of the file					
                         let _frameoffset = window.playbackoffset();
                         if ( _framestotal > _frameoffset ) {
-                            let _countofframes = _samplerate * _channels;
+                            let _countofframes = 128 * _channels;
                             let _memptr = window.malloc( _countofframes * _channels * SIZE_OF_FLOAT );
                             let _framescount = window.getcurrentbuffer( nameoffile, _frameoffset, _memptr, _countofframes );
                             if ( _framescount > 0 ) { 
