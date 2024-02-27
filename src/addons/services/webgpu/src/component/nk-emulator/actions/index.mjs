@@ -13,6 +13,7 @@ export const actions = (self) => {
                 } else {
                     event.currentTarget.textContent = 'Старт'
                     apiEmulator.stop(self)
+                    // console.clear();
                 }
             }
         });
