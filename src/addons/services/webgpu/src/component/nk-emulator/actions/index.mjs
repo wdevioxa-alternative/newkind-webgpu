@@ -1,11 +1,11 @@
+import {processor} from '../views/index.mjs'
+
 export const actions = (self) => {
     return new Promise(async (resolve, reject) => {
 
         resolve({
-            mount: {
-                click: async (event) => {
-                    console.log('<<<<< @@@@@@@@@@@@@@@@@@@@@@ >>>>>')
-                }
+            click: async (event) => {
+                processor()
             }
         });
     });

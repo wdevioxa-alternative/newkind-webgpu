@@ -1,14 +1,13 @@
-import {processor} from '../../views/index.mjs'
-
 export default async (self, actions) => {
 
+    const start = self.shadowRoot.querySelector('.start')
     console.log('PROCESSOR')
     return {
         init: () => {
-            // mount.addEventListener('click', actions.mount.click)
+            start.addEventListener('click', actions.click)
         },
         terminate: () => {
-            // mount.removeEventListener('fer-button-in', actions.mount.click)
+            start.removeEventListener('fer-button-in', actions.click)
         }
     }
 }

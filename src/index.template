@@ -97,9 +97,8 @@
 						<template>
 							<div class="container">
 								<h2>Эмулятор</h2>
-								<div class="array">
-
-								</div>
+								<button class="start"> Start </button>
+								<div class="array"></div>
 							</div>
 						</template>
 					</nk-emulator>
