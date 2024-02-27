@@ -1,7 +1,7 @@
 import {template} from '../index.mjs'
+let timerId = false
+let object = false
 export const emulator = (self, obj) => {
-    let timerId = false
-    let object = false
     const PI = 3.14159265
     const sys = [0,0,0,0]
     const phase = [0,0,0,0]
@@ -54,17 +54,17 @@ export const emulator = (self, obj) => {
 
 
     let l_count_in = {
-        sys: sys,
-        i_l: i_l,
-        c_l: c_l
+        sys: structuredClone(sys),
+        i_l: structuredClone(i_l),
+        c_l: structuredClone(c_l)
     }
 
     let l_temp = {
-        temp_phase: temp_phase
+        temp_phase: structuredClone(temp_phase)
     }
 
     let l_phase = {
-        phase: phase
+        phase: structuredClone(phase)
     }
 
     let l_triger = {
@@ -78,10 +78,10 @@ export const emulator = (self, obj) => {
     }
 
     let l_param = {
-        win: win,
-        pos_00: pos_00,
-        neg_00: neg_00,
-        min_max: min_max,
+        win: structuredClone(win),
+        pos_00: structuredClone(pos_00),
+        neg_00: structuredClone(neg_00),
+        min_max: structuredClone(min_max),
     }
 
     // let l_memory = {
@@ -96,50 +96,50 @@ export const emulator = (self, obj) => {
     // }
 
     let l_memory = {
-        data_i: data_i,
-        data_k: data_k,
-        tr_p_i: tr_p_i,
-        tr_p_k: tr_p_k,
-        i_det: i_det,
-        line_k: line_k,
-        line_00: line_00,
-        line_01: line_01,
+        data_i: structuredClone(data_i),
+        data_k: structuredClone(data_k),
+        tr_p_i: structuredClone(tr_p_i),
+        tr_p_k: structuredClone(tr_p_k),
+        i_det: structuredClone(i_det),
+        line_k: structuredClone(line_k),
+        line_00: structuredClone(line_00),
+        line_01: structuredClone(line_01),
     }
 
     let l_count = {
-        i_d: i_d,
-        j_d: j_d,
-        k_d: k_d,
+        i_d: structuredClone(i_d),
+        j_d: structuredClone(j_d),
+        k_d: structuredClone(k_d),
 
-        i_d_del: i_d_del,
-        i_c_temp: i_c_temp,
+        i_d_del: structuredClone(i_d_del),
+        i_c_temp: structuredClone(i_c_temp),
 
-        i_c: i_c,
-        ph_c: ph_c,
+        i_c: structuredClone(i_c),
+        ph_c: structuredClone(ph_c),
 
-        zero: zero,
+        zero: structuredClone(zero),
 
-        z_c_00: z_c_00,
-        z_c_01: z_c_01,
+        z_c_00: structuredClone(z_c_00),
+        z_c_01: structuredClone(z_c_01),
 
-        k_co: k_co,
-        z_c_i: z_c_i,
-        z_c_k: z_c_k,
+        k_co: structuredClone(k_co),
+        z_c_i: structuredClone(z_c_i),
+        z_c_k: structuredClone(z_c_k),
 
-        phase_c: phase_c,
+        phase_c: structuredClone(phase_c),
     }
 
     let l_limit = {
-        lim_k_d: lim_k_d,
+        lim_k_d: structuredClone(lim_k_d),
     }
 
     let line_out = {
-        write: write,
-        out: out,
-        sin_phase: sin_phase,
-        cos_phase: cos_phase,
-        dry: dry,
-        wet: wet,
+        write: structuredClone(write),
+        out: structuredClone(out),
+        sin_phase: structuredClone(sin_phase),
+        cos_phase: structuredClone(cos_phase),
+        dry: structuredClone(dry),
+        wet: structuredClone(wet),
     }
 
     let l_in_func = {
@@ -291,8 +291,6 @@ export const emulator = (self, obj) => {
 
         return object
     }
-
-    object = init()
 
     // return l_count_in
     const count = (l_count_input) => {
@@ -1186,13 +1184,13 @@ export const emulator = (self, obj) => {
 
     return {
         start: (self) => {
+            object = init()
             timerId = setInterval(async () => {
                 console.log('🖤 process 🖤', object.line_c_in.i_l, object.line_c_in.c_l, object.line_c_in.sys)
                 let container = self.shadowRoot.querySelector('.array')
                 container.innerHTML = ''
                 for(let i of object.line_c_in.i_l) {
                     container.insertAdjacentHTML('beforeend', await template.get('default')[0].render(self, i))
-                    console.log('-------------', i)
                 }
                 Process()
             }, 1000);
@@ -1202,47 +1200,6 @@ export const emulator = (self, obj) => {
                 clearInterval(timerId)
                 timerId = false
                 RootCount = 0
-
-                let line_l = l_limit;
-                let line_te = l_temp;
-                let line_c = l_count;
-                let line_p = l_param;
-                let line_f = l_in_func;
-                let line_t = l_triger
-                let line_m = l_memory
-                let line_ph = l_phase
-                let line_c_in = l_count_in
-                let wave_in = [0,0,0,0,0,0,0,0]
-
-                object = {
-                    line_te: line_te,
-                    line_c: line_c,
-                    line_p: line_p,
-                    line_f: line_f,
-                    line_t: line_t,
-                    line_m: line_m,
-                    line_l: line_l,
-                    line_out: line_out,
-                    line_ph: line_ph,
-                    line_c_in: line_c_in,
-                    wave_in: wave_in,
-                    count: (data) => {
-
-                    },
-                    delay_one: (data) => {
-
-                    },
-                    zero_sample_count: (zero, data) => {
-
-                    },
-                    true_peack: (phase_num) => {
-
-                    },
-                    first_tr_p_k: () => {
-
-                    },
-                    win_line: 0
-                }
             }
         }
     }
