@@ -4,14 +4,8 @@ let components = new Map();
 
 components.set('default', [{
     type: 'component',
-    template: async (slot, props = {}) => {
-        let template = ''
-        let keys = []
-        switch(slot) { 
-            default:
-                return `<div>test</div>`
-            break
-        }
+    render: async (self, data) => {
+        return `<div class="item clolor_${data}"><span>${data}</span></div>`
     }
 }])
 export default components

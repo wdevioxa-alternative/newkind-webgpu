@@ -1,5 +1,7 @@
-export default (self, obj) => {
-
+import {template} from '../index.mjs'
+export const emulator = (self, obj) => {
+    let timerId = false
+    let object = false
     const PI = 3.14159265
     const sys = [0,0,0,0]
     const phase = [0,0,0,0]
@@ -58,11 +60,11 @@ export default (self, obj) => {
     }
 
     let l_temp = {
-        temp_phase: temp_phase // ��� ���������� ��������� ������ ��������� ������� ������
+        temp_phase: temp_phase
     }
 
     let l_phase = {
-        phase: phase // ��� ���������� ��������� ������ ��������� ������� ������
+        phase: phase
     }
 
     let l_triger = {
@@ -255,7 +257,7 @@ export default (self, obj) => {
         let line_c_in = l_count_in
         let wave_in = [0,0,0,0,0,0,0,0]
 
-        let object = {
+        object = {
             line_te: line_te,
             line_c: line_c,
             line_p: line_p,
@@ -290,9 +292,7 @@ export default (self, obj) => {
         return object
     }
 
-    let object = init()
-
-
+    object = init()
 
     // return l_count_in
     const count = (l_count_input) => {
@@ -1138,7 +1138,7 @@ export default (self, obj) => {
         //   filter.osc.osc_core(osc_ini.osc_first_init, osc_ini.osc_second_init, osc_ini.osc_third_init);
         //
         object = filter.line.core_line(RootCount, object);
-        console.log('🖤 process 🖤', object.line_c_in.i_l, object.line_c_in.c_l, object.line_c_in.sys)
+        // console.log('🖤 process 🖤', object.line_c_in.i_l, object.line_c_in.c_l, object.line_c_in.sys)
 
         //   filter.line.core_line(filter.osc.osc_out[0].line);
         //   filter.hilbert.hilbert_core(dval);
@@ -1184,5 +1184,70 @@ export default (self, obj) => {
         ++RootCount
     }
 
-    setInterval(Process, 1000);
+    return {
+        start: (self) => {
+            timerId = setInterval(async () => {
+                console.log('🖤 process 🖤', object.line_c_in.i_l, object.line_c_in.c_l, object.line_c_in.sys)
+                let container = self.shadowRoot.querySelector('.array')
+                container.innerHTML = ''
+                for(let i of object.line_c_in.i_l) {
+                    container.insertAdjacentHTML('beforeend', await template.get('default')[0].render(self, i))
+                    console.log('-------------', i)
+                }
+                Process()
+            }, 1000);
+        },
+        stop: (self) => {
+            if(timerId) {
+                clearInterval(timerId)
+                timerId = false
+                RootCount = 0
+
+                let line_l = l_limit;
+                let line_te = l_temp;
+                let line_c = l_count;
+                let line_p = l_param;
+                let line_f = l_in_func;
+                let line_t = l_triger
+                let line_m = l_memory
+                let line_ph = l_phase
+                let line_c_in = l_count_in
+                let wave_in = [0,0,0,0,0,0,0,0]
+
+                object = {
+                    line_te: line_te,
+                    line_c: line_c,
+                    line_p: line_p,
+                    line_f: line_f,
+                    line_t: line_t,
+                    line_m: line_m,
+                    line_l: line_l,
+                    line_out: line_out,
+                    line_ph: line_ph,
+                    line_c_in: line_c_in,
+                    wave_in: wave_in,
+                    count: (data) => {
+
+                    },
+                    delay_one: (data) => {
+
+                    },
+                    zero_sample_count: (zero, data) => {
+
+                    },
+                    true_peack: (phase_num) => {
+
+                    },
+                    first_tr_p_k: () => {
+
+                    },
+                    win_line: 0
+                }
+            }
+        }
+    }
+}
+
+export default {
+    description: ""
 }

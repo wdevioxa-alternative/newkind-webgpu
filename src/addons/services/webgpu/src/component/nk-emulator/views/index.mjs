@@ -1,9 +1,6 @@
-import html from './html/index.mjs'
-import processor from './mjs/index.mjs'
-
-export { html, processor }
+export {emulator} from './mjs/index.mjs'
+export {template} from './html/index.mjs'
 
 export default {
-    html: html,
-    processor: processor
+    "description":""
 }
