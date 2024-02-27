@@ -336,4 +336,5 @@ canvas.emscripten { border: 0px none; background-color: black; }
 
 button.start {
     min-width: 65px;
+    cursor: pointer;
 }
