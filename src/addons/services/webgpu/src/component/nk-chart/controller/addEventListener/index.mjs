@@ -1,9 +1,7 @@
-import {Terminal} from '../../views/index.mjs'
-
 export default async (self, actions) => {
-    const terminal = Terminal(self)
+
     let mount = self.shadowRoot.querySelector('#mount')
-    
+
     return {
         init: () => {
             mount.addEventListener('click', actions.mount.click)
