@@ -438,13 +438,11 @@ export class wDSpline extends wDObject
             let _ls_ex = _ix_center - i * _ix_step;
             let _ls_ey = _new_object[ _channels * _ls_ex + _nchannel ] * _height / height;
 
-            if ( i == 0 ) 
-            {
+            if ( i == 0 ) {
                 _rs_bx = _rs_ex;
                 _rs_by = _rs_ey;
                 _ls_bx = _ls_ex;
                 _ls_by = _ls_ey;
-
                 _i_last_bi = i;
                 continue;
             }
@@ -453,14 +451,14 @@ export class wDSpline extends wDObject
             let _sc_rs_by = instance.calcYtoS ( _rs_by * kY ); 
 
             let _sc_rs_ex = _centX + instance.calcXtoS ( instance.calcStoX ( i * _cX ) );
-            let _sc_rs_ey = instance.calcYtoS ( _rs_ey * kY );
+            let _sc_rs_ey = instance.calcYtoS ( _rs_ey * kY ); 
 
             ///////////////////////////////////////////////////////////////////
             // console.log( "i: " + i + "; " + _x + ": " + _y );
             ///////////////////////////////////////////////////////////////////
                         
-                // if ( _rs_sc_bx == _rs_sc_ex || _rs_sc_by == _rs_sc_ey ) console.log( "possible skipping" );
-                // if ( _rs_sc_ex > ( x + _width - offX ) ) continue;
+            // if ( _rs_sc_bx == _rs_sc_ex || _rs_sc_by == _rs_sc_ey ) console.log( "possible skipping" );
+            // if ( _rs_sc_ex > ( x + _width - offX ) ) continue;
 
             this.discretlines.append( 
                 _sc_rs_bx, 

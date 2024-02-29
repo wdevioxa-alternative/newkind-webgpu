@@ -393,9 +393,10 @@
 								let retval = window.createfile( channels, samplerate, window["nameoffile"], memptr, memsize );
 								if ( retval == memsize ) window.startplayback( window["nameoffile"] );
 								if ( memptr > 0 ) window.free( memptr );
+							} else if ( window["inputtype"] == "data" ) {
+
 							}
 						});
-
 
 						$( "#stopplayback" ).click( function() {
 							window.stopplayback();
