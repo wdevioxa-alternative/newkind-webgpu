@@ -1,4 +1,4 @@
-const IRDirPath = '../../sounds/impulse-responses/';
+const IRDirPath = './sounds/impulse-responses/';
 
 const Assets = [
   {

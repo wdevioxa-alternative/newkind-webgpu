@@ -1,4 +1,4 @@
-import modules from './modules/radio/radio.mjs'
+import modules from './modules/radio/index.mjs'
 import preset from './template/index.mjs'
 
 const getTemplate = (html) => {
@@ -47,7 +47,6 @@ const LacertaRadio =  class extends HTMLElement {
       .then(component => template(component))
       .then(async component => {
         let radio = new (await modules())(component)
-        console.log("component", radio)
       })
   }
 }

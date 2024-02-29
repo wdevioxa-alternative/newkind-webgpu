@@ -4,6 +4,8 @@ import webgpuAudio from '/services/webgpu/src/component/webgpu-audio/index.mjs'
 import wasi from '/services/webgpu/src/component/nk-chart/index.mjs'
 import nkMem from '/services/webgpu/src/component/nk-memory/index.mjs'
 import { LacertaRadio } from '/services/webgpu/src/component/lacerta-radio/index.mjs'
+import nkEmulator from '/services/webgpu/src/component/nk-emulator/index.mjs'
+
 import { store } from '/services/webgpu/src/this/index.mjs';
 
 store.set('location', {

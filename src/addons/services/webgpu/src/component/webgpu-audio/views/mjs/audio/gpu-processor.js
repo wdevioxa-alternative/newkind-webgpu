@@ -1,4 +1,4 @@
-import { FRAME_SIZE, WORKGROUP_SIZE } from "./constants.js";
+import { FRAME_SIZE, WORKGROUP_SIZE } from "../../index.mjs";
 
 console.assert(navigator.gpu);
 console.assert(navigator.gpu.requestAdapter);
@@ -27,6 +27,7 @@ class GPUProcessor {
   }
 
   setIRArray (irFloat32Array) {
+    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', this)
     this.irArray_ = irFloat32Array;
   }
 

@@ -84,6 +84,28 @@
 >
 	<template>
 		<div class="container">
+			<div class="settings">
+				<h2>Память</h2>
+				<div>Всего памяти</div>
+				<div>Используется</div>
+				<div>Длинна</div>
+				<div class="emulator">
+					<nk-emulator
+						data-field="emulator_0"
+						data-services-path="webgpu"
+					>
+						<template>
+							<div class="container">
+								<h2>Эмулятор</h2>
+								<div class="wrapper">
+									<button class="start"> Start </button>
+									<div class="array"></div>
+								</div>
+							</div>
+						</template>
+					</nk-emulator>
+				</div>
+			</div>
 			<slot name="nk-chart"></slot>
 		</div>
 		<nk-chart
