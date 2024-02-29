@@ -101,18 +101,23 @@ export class wDPoint extends wDObject
     {
         let instance = this.getInstance();
 
-        let _da = this.getPointsArray();
-        let _cnt = this.getPointsArrayCount();
+        let _width = instance.getCanvasWidth() - instance.getBorderWidth() * 2.0;
+        let _height = instance.getCanvasHeight() - instance.getBorderWidth() * 2.0;
 
-        let vb = new Float32Array( 12 * _cnt );
+        let _da = this.getPointsArray();
+        let _cc = this.getPointsArrayCount();
+
+        let vb = new Float32Array( 12 * _cc );
         let ii = 0;
 
-        for ( let i = 0; i < _cnt; i++ )        
+        for ( let i = 0; i < _cc; i++ )        
         {
             let Xv = _da[ i ].x;
             let Yv = _da[ i ].y;
             let Wv = _da[ i ].thickness;
 
+            //let wGv = ( 2.0 / _width ) * Wv;
+            //let hGv = ( 2.0 / _height ) * Wv;
             let Xw = Wv / 2.0;
             let Yw = Wv / 2.0;
 

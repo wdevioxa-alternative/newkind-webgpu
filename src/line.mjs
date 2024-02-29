@@ -184,7 +184,6 @@ export class wDLine extends wDObject
             this.setDuty();
         }                          
     }
-
     async draw( instance ) 
     {
         let flag = this.isDuty();
