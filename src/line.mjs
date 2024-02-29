@@ -1,6 +1,32 @@
 import { wDObject } from './object.mjs';
 import { wDPoint } from './point.mjs';
 
+/*
+export class cp {
+    constructor( _x = 0.0, _y = 0.0 ) 
+    {
+        this.xxx = _x;
+        this.yyy = _y;
+    }
+    set x( _x )
+    {
+        this.xxx = _x;
+    }
+    get x() 
+    {
+        return this.xxx;
+    }
+    set y( _y )
+    {
+        this.yyy = _y;
+    }
+    get y()
+    {
+        return this.yyy;
+    }
+};
+*/
+
 export class wDLine extends wDObject
 {
     constructor( instance ) 
@@ -18,6 +44,15 @@ export class wDLine extends wDObject
 	    this.vertex = new wDPoint( instance );
 	    await this.vertex.init();
     }
+    /*
+    approximate( x, c, b, e )
+    {
+        let fd = ( c.y - e.y ) / ( c.x - e.x ) * ( x - c.x );
+        let hh = e.x - b.x;
+        let sd = ( e.y - 2.0 * c.y + b.y ) / ( hh * hh );
+        return c.x + fd + 0.5 * sd * ( x - c.x ) * ( x - c.x );
+    }
+    */
     getLinesCount()
     {
 	    return this.lines.length;
@@ -157,8 +192,54 @@ export class wDLine extends wDObject
         {
             this.vertex.clear();
 
+            let points = [];
+
             let lines = this.getLines();
             let count = this.getLinesCount();
+
+/*            
+            for ( let i = 0; i < count; i++ ) {
+                points.push( new cp( lines[i].x1, lines[i].y1 ) );
+
+//                points.push( new cp( lines[i].x2, lines[i].y2 ) );
+            }
+ 
+            let _t = ( lines[0].t < 1.0 ) ? 1.0 : lines[0].t;
+            let _colors = lines[0].colors;
+
+            for ( let  i = 0; i < points.length; i++ ) {
+                console.log( i + ":: x: " + points[i].x + "; y: " + points[i].y );
+            }
+
+
+      
+            for ( let i = 0; i < points.length; i = i + 2 ) {
+                if ( (points.length - (i + 1)) < 3 ) break;
+                let cc = 20;
+                let bx = points[i + 0].x;
+                let cx = points[i + 1].x;
+                let ex = points[i + 2].x;
+                let by = points[i + 0].y;
+                let cy = points[i + 1].y;
+                let ey = points[i + 2].y;
+                let hh = ex - bx;
+                let ss = hh / cc;
+                let sd = ( ey - 2.0 * cy + by ) / ( hh * hh );
+
+                console.log( "hh: " + hh + "; ss: " + ss + "; sd: " + sd );
+
+                this.vertex.append( bx, by, _t, _colors[0] );
+
+                for ( let j = 0; j < cc; j++ ) {                    
+                    let xx = bx + ss * j + ss;
+                    let yy = by + j * sd;
+                    this.vertex.append( xx, yy, _t, _colors[0] );
+                }
+
+                this.vertex.append( ex, ey, _t, _colors[0] );
+            }
+*/
+
 
             let _skipcount = 0;
 
@@ -217,10 +298,9 @@ export class wDLine extends wDObject
 
                     this.vertex.append( _x0 + _x, _y0 + _y, _t, color );
                 }          
-            }
+            }       
         }
-        if ( this.vertex.count() > 0 ) 
-                await this.vertex.draw( instance );
+        if ( this.vertex.count() > 0 ) await this.vertex.draw( instance );
         this.resetDuty();
     }
 };

@@ -4,7 +4,6 @@ import { wDBox } from './box.mjs';
 import { wDLine } from './line.mjs';
 import { wDNativeLine } from './line-native.mjs';
 
-
 export class wDSpline extends wDObject
 {
     constructor( instance, x, y, _width, _height, _weight = 1 ) 
@@ -379,8 +378,19 @@ export class wDSpline extends wDObject
         }
     }
 
-    async floatarrayDraw( instance, _object, _channels, _channel, _rateofsamples, _volumescale, x, y, width, height, kdX, kdY, zoomX, zoomY, _t, _colors ) 
+    async floatarrayDraw( instance, _object, _channels, _nchannel, _rateofsamples, _volumescale, x, y, width, height, kdX, kdY, zoomX, zoomY, _t, _colors ) 
     {
+        let _new_object = new Float32Array( _object );
+
+        for( let ii = 0; ii < 60; ii++ ) {
+            for ( let j = 0; j < _object.length; j = j + _channels) {
+                if ( _object.length - j <= 2 ) break;
+                for ( let nchannel = 0; nchannel < _channels; nchannel++ ) {
+                    _new_object[ j + nchannel ] = 0.5 * ( _new_object[ j + nchannel + _channels ] + _new_object[ j + nchannel ] );
+                }
+            }
+        }
+
         let _width = width - instance.getBorderWidth() * 2.0;
         let _height = height - instance.getBorderWidth() * 2.0;
 
@@ -421,12 +431,12 @@ export class wDSpline extends wDObject
             /////////////////////////////////////////////////
             // x and y: one step to right side in radians
             let _rs_ex = _ix_center + i * _ix_step;
-            let _rs_ey = _object[ _channels * _rs_ex + _channel ] * _height / height;
+            let _rs_ey = _new_object[ _channels * _rs_ex + _nchannel ] * _height / height;
 
             /////////////////////////////////////////////////
             // x and y: one step to left side in radians
             let _ls_ex = _ix_center - i * _ix_step;
-            let _ls_ey = _object[ _channels * _ls_ex + _channel ] * _height / height;
+            let _ls_ey = _new_object[ _channels * _ls_ex + _nchannel ] * _height / height;
 
             if ( i == 0 ) 
             {
@@ -458,11 +468,11 @@ export class wDSpline extends wDObject
                 _sc_rs_ex, 
                 _sc_rs_ey,
                 _t, 
-                _colors[_channel] 
+                _colors[ _nchannel ] 
             );
 
-            await this.drawScalePoint( _vdp, _sc_rs_bx, _sc_rs_by, _t, _colors[_channel]  );
-            await this.drawScalePoint( _vdp, _sc_rs_ex, _sc_rs_ey, _t, _colors[_channel]  );
+            await this.drawScalePoint( _vdp, _sc_rs_bx, _sc_rs_by, _t, _colors[ _nchannel ]  );
+            await this.drawScalePoint( _vdp, _sc_rs_ex, _sc_rs_ey, _t, _colors[ _nchannel ]  );
         
             let _sc_ls_bx = _centX - instance.calcXtoS ( instance.calcStoX ( _i_last_bi * _cX ) );
             let _sc_ls_by = instance.calcYtoS ( _ls_by * kY );
@@ -478,11 +488,11 @@ export class wDSpline extends wDObject
                 _sc_ls_by,
                 _sc_ls_ex, 
                 _sc_ls_ey,
-                _t, _colors[_channel] 
+                _t, _colors[ _nchannel ] 
             );                             
 
-            await this.drawScalePoint( _vdp, _sc_ls_bx, _sc_ls_by, _t, _colors[_channel]  );
-            await this.drawScalePoint( _vdp, _sc_ls_ex, _sc_ls_ey, _t, _colors[_channel]  );
+            await this.drawScalePoint( _vdp, _sc_ls_bx, _sc_ls_by, _t, _colors[ _nchannel ]  );
+            await this.drawScalePoint( _vdp, _sc_ls_ex, _sc_ls_ey, _t, _colors[ _nchannel ]  );
 
             _rs_bx = _rs_ex;
             _rs_by = _rs_ey;
