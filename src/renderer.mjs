@@ -525,7 +525,6 @@ export class wDApplication
             ]             
 
 
-
             if ( window["hold-chart"] == true && window["hold-buffer"] != undefined ) {
                 await this.spline.drawData( this, window["hold-buffer"], window["channels"], window["rendertype"] , window["samplerate"], 1, window.kdX, window.kdY, window.zoomX, window.zoomY, thickness, _colors );
                 flag = true;

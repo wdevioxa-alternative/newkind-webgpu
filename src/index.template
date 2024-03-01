@@ -724,7 +724,7 @@
 							</tr>
 							<tr>
 								<td>
-								<audio id="audiostream" crossorigin="anonymous" preload="metadata" controls src="https://hermitage.hostingradio.ru/hermitage128.mp3">
+								<audio id="audiostream" crossorigin="anonymous" preload="metadata" src="https://hermitage.hostingradio.ru/hermitage128.mp3">
 								Ваш браузер не поддерживает элемент <code>audio</code>.
 								</audio>
 								</td>
