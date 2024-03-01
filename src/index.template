@@ -4,8 +4,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<link href="js/themes/dark-hive/jquery-ui.css" rel="stylesheet"/>
 	<link href="js/themes/dark-hive/theme.css" rel="stylesheet"/>
+	<link href="js/jquery-ui-fix.css" rel="stylesheet"/>
 	<script type="text/javascript" src="js/jquery-3.7.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery-ui.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-fix.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript" src="js/libsndfile.js"></script>
 	<script type="text/javascript" src="config/controller.bundle.js"></script>
 	<link rel="preload" href="/services/webgpu/src/component/nk-chart/views/mjs/terminal/coreutils.async.wasm" as="fetch" crossorigin />
@@ -13,75 +16,50 @@
 	<script src="/services/webgpu/src/component/nk-chart/views/mjs/terminal/modules/local-echo/dist/local-echo.js"></script>
 	<script src="/services/webgpu/src/component/nk-chart/views/mjs/terminal/modules/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
 	<script src="/services/webgpu/src/component/nk-chart/views/mjs/terminal/modules/xterm-addon-web-links/lib/xterm-addon-web-links.js"></script>
+
 	<title>WebGPU Test Page</title>
+
 	<link rel="shortcut icon" href="data:image/png;base64, AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAbbv+DGW3/mRlt/5kZbf+ZGq6/hIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGa3/ohkt/7/Zbj//2S3/v9lt/6WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGm5/iRlt/74Zbj//2W4//9luP//Zbf++mi4/i4gIPciGhr24hsb9uwbG/bsGhr24CEh9xoAAAAAAAAAAAAAAABnuP5mZLf+/2W4//9luP//Zbj//2S3/v9muP5yGBj2rhMT9v8TE/b/ExP2/xMT9f8YGPWkAAAAAAAAAAAAAAAAb7z/BGW3/tZluP//Zbj//2W4//9lt/7gJzH3ShMT9f8TE/b/ExP2/xMT9v8TE/b/ExP1/CAg9joAAAAAAAAAAAAAAABmuP5GZLf+6GS3/uhkt/7oZbf+UhgY9YQSEvX/ExP2/xMT9v8TE/b/ExP2/xIS9f8aGvZ8AAAAAD4++gQgIPZ6IiL2hiIi9oYgIPZ8KCj5BAAAAAAtLfgUFBT17BMT9v8TE/b/ExP2/xMT9v8VFfXoLCz4DgAAAAAaGvZqEhL1/xMT9v8TE/b/EhL1/xsb9nIAAAAAAAAAABwc9m4SEvX/ExP2/xMT9v8SEvX/HR32ZAAAAAAnJ/gSFRX16hMT9v8TE/b/ExP2/xMT9v8UFPXuJyf4Fp2xlAKNnqUYLC/mfhYW83ATE/VuFxf1aDc3+gIAAAAAGBj1fhIS9f8TE/b/ExP2/xMT9v8TE/b/ExP1/xkZ9YaGn3yIhZ57/4Wee/+Gn3yKAAAAAAAAAAAAAAAAAAAAACMj9zYTE/X8ExP2/xMT9v8TE/b/ExP2/xMT9f9JUshihZ57+IaffP+Gn3z/hZ579oigfiYAAAAAAAAAAAAAAAAAAAAAGBj1oBIS9f8TE/b/ExP2/xMT9f8YGPWmiKB+PIWee/+Gn3z/hp98/4Wee/+HoH06AAAAAAAAAAAAAAAAAAAAACUl9xgVFfXOExP11BMT9dQUFPXQJib3HgAAAACGn3ymhp98/4affP+Gn3ymAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAiKB+EIihf0CIoX9AiKB+EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAP//AADg/wAA4MMAAOCBAADggQAA8QEAAOeBAADDwwAAgf8AAIAPAACBDwAAgQ8AAMMPAAD//wAA//8AAA==" type="image/png">
-<script type="module">
-	const index = await import('/index.mjs')
-	console.log('API', index)
-</script>
 
-<style>
-	@font-face {
-		font-family: 'Segoe UI';
-		src: url( 'fonts/segoeui.ttf' ) format( 'truetype' );
-	}
-	body{
-		margin: 0;
-		font-family: 'Segoe UI', sans-serif;
-		width: 100%;
-		overflow-y: scroll;
-		overflow-x: auto;
-	}
-	#gfx {
-		width: 100%;
-		display: none;
-	}
-	#content {
-		width: 100%;
-		display: none;
-	}
-	#error {
-		text-align: center;
-		width: 100%;
-		color: red;
-		display: none;
-	}
-	.ui-input {
-		padding: .4em .4em;
-		display: inline-block;
-		position: relative;
-		line-height: normal;
-		margin-right: .1em;
-		cursor: pointer;
-		vertical-align: middle;
-		text-align: left;
-		-webkit-user-select: none;
-		-moz-user-select: none;
-		-ms-user-select: none;
-		user-select: none;
+	<script type="module">
+		const index = await import('/index.mjs')
+		console.log('API', index)
+	</script>
 
-		/* Support: IE <= 11 */
-		overflow: visible;
-	}
-	.ui-input,
-	.ui-input:link,
-	.ui-input:visited,
-	.ui-input:hover,
-	.ui-input:active {
-		text-decoration: none;
-	}
-
-	.visibleInput {
-		display: flex;
-	}
-</style>
+	<style>
+		@font-face {
+			font-family: 'Segoe UI';
+			src: url( 'fonts/segoeui.ttf' ) format( 'truetype' );
+		}
+		body {
+			margin: 0;
+			font-family: 'Segoe UI', sans-serif;
+			width: 100%;
+			overflow-y: scroll;
+			overflow-x: auto;
+		}
+		#gfx {
+			width: 100%;
+			display: none;
+		}
+		#content {
+			width: 100%;
+			display: none;
+		}
+		#error {
+			text-align: center;
+			width: 100%;
+			color: red;
+			display: none;
+		}
+		.visibleInput {
+			display: flex;
+		}
+	</style>
 </head>
 
 <body>
-<nk-memory
-	data-field="mem_0"
-	data-services-path="webgpu"
->
+<nk-memory data-field="mem_0" data-services-path="webgpu">
 	<template>
 		<div class="container">
 			<div class="settings">
@@ -90,10 +68,7 @@
 				<div>Используется</div>
 				<div>Длинна</div>
 				<div class="emulator">
-					<nk-emulator
-						data-field="emulator_0"
-						data-services-path="webgpu"
-					>
+					<nk-emulator data-field="emulator_0" data-services-path="webgpu">
 						<template>
 							<div class="container">
 								<h2>Эмулятор</h2>
@@ -108,11 +83,7 @@
 			</div>
 			<slot name="nk-chart"></slot>
 		</div>
-		<nk-chart
-			slot="nk-chart"
-			data-field="terminal_0"
-			data-services-path="webgpu"
-		>
+		<nk-chart slot="nk-chart" data-field="terminal_0" data-services-path="webgpu">
 			<template>
 				<script type='text/javascript'>
 					document.addEventListener('holdchart', (event) => {
@@ -165,45 +136,6 @@
 						bubbles: true,
 						composed: true,
 					});
-
-					(function($)
-					{
-						$.fn.input = function (css)
-						{
-							if (!css) css = {};
-							return this.each(function ()
-							{
-								$(this).addClass("ui-widget ui-widget-content ui-corner-all ui-input");
-								$(this).css(css);
-							});
-						}
-					})(jQuery);
-
-					(function ($)
-					{
-						$.fn.label = function (css)
-						{
-							if (!css) css = {};
-							return this.each(function ()
-							{
-								$(this).addClass("ui-widget ui-input");
-								$(this).css(css);
-							});
-						}
-					})(jQuery);
-
-					window["isNumber"] = function(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
-
-					window["rendertype"] = "stereo";
-					window["inputtype"] = "audio";
-
-					window["hold-chart"] = false;
-					window["hold-buffer"] = undefined;
-
-					const SIZE_OF_FLOAT = 4;
-					const SIZE_OF_SHORT = 2;
-					const SIZE_OF_INT = 4;
-					const SIZE_OF_DOUBLE = 8;
 
 					jQuery(document).ready(function ()
 					{
@@ -362,8 +294,7 @@
 
 							if ( window["inputtype"] == "audio" ) {
 								window["nameoffile"] = "04891.mp3";
-								window.loadfile( "sounds/" + window["nameoffile"] ).then( function( source )
-								{
+								window.loadfile( "sounds/" + window["nameoffile"] ).then( function( source ) {
 									let memdata = new Uint8Array( source );
 									let memsize = memdata.length * memdata.BYTES_PER_ELEMENT;
 									let memptr = window.malloc( memsize );
@@ -394,12 +325,55 @@
 								if ( retval == memsize ) window.startplayback( window["nameoffile"] );
 								if ( memptr > 0 ) window.free( memptr );
 							} else if ( window["inputtype"] == "data" ) {
-
+								if ( window["audioCtx"] == undefined ) { 
+									window["audioCtx"] = new (window.AudioContext || window.webkitAudioContext)();
+								}
+								const audioSrc = "https://hermitage.hostingradio.ru/hermitage128.mp3";
+								$( "#audiostream" ).attr( "src", audioSrc );
+								window["audioElement"] = $( "#audiostream" )[0];
+								if ( window["audioSrc"] == undefined ) { 
+									window["audioSrc"] = window["audioCtx"].createMediaElementSource( window["audioElement"] );
+								} 
+								if ( window["audioSrc"] ) {
+									window["audioSrc"].connect( window["audioCtx"].destination );
+								}
+								if ( window["audioRec"] == undefined ) {
+									const bufferSize = 256;
+									const channels = 2;
+									window["audioRec"] = window["audioCtx"].createScriptProcessor(bufferSize, channels, channels);
+									window["audioRec"].onaudioprocess = function(e) 
+									{										
+										let inputBuffer = e.inputBuffer;
+										let floatArray = new Float32Array( bufferSize * channels );
+										let inputDataLeft = inputBuffer.getChannelData(0);
+										let inputDataRight = inputBuffer.getChannelData(1);
+										window["samplerate"] = inputBuffer.sampleRate;
+										for ( let i = 0; i < bufferSize; i++ ) {
+											floatArray[ i * channels + 0 ] = inputDataLeft[ i ];
+											floatArray[ i * channels + 1 ] = inputDataRight[ i ];
+										}
+										window["channels"] = inputBuffer.numberOfChannels;
+										window["render-buffer"] = floatArray;
+									};
+								} 
+								if ( window["audioRec"] ) {
+									window["audioSrc"].connect( window["audioRec"] );
+									window["audioRec"].connect( window["audioCtx"].destination );
+								}
+								window["audioElement"].play();
 							}
 						});
 
 						$( "#stopplayback" ).click( function() {
-							window.stopplayback();
+							if ( window["inputtype"] == "data" ) {
+								window["audioElement"].pause();
+								window["render-buffer"] = undefined;
+								window["audioSrc"].disconnect( window["audioCtx"].destination );
+								window["audioSrc"].disconnect( window["audioRec"] );
+								window["audioRec"].disconnect( window["audioCtx"].destination );
+							} else {
+								window.stopplayback();
+							}
 						});
 
 						window["enable-spinners"] = function() {
@@ -748,7 +722,15 @@
 									<input id="stopplayback" type="button" style="width:200px;" value="Stop">
 								</td>
 							</tr>
-							</tbody></table>
+							<tr>
+								<td>
+								<audio id="audiostream" crossorigin="anonymous" preload="metadata" controls src="https://hermitage.hostingradio.ru/hermitage128.mp3">
+								Ваш браузер не поддерживает элемент <code>audio</code>.
+								</audio>
+								</td>
+							</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</template>

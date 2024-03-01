@@ -515,7 +515,7 @@ export class wDApplication
 
         let flag = false;
 
-	let thickness = 2;
+	    let thickness = 2;
 
         if ( window.isInit() > 0 ) {
             let nameoffile = window["nameoffile"];
@@ -523,10 +523,23 @@ export class wDApplication
                 { from: [ 1.0, 0.0, 0.0, 1.0 ], to: [ 1.0, 0.0, 0.0, 1.0 ] },
                 { from: [ 0.0, 1.0, 0.0, 1.0 ], to: [ 0.0, 1.0, 0.0, 1.0 ] },
             ]             
+
+
+
             if ( window["hold-chart"] == true && window["hold-buffer"] != undefined ) {
                 await this.spline.drawData( this, window["hold-buffer"], window["channels"], window["rendertype"] , window["samplerate"], 1, window.kdX, window.kdY, window.zoomX, window.zoomY, thickness, _colors );
                 flag = true;
-            } else if ( window.isExist( nameoffile ) > 0 ) {
+            }
+
+            if ( window["render-buffer"] != undefined ) {
+                if( ( window["hold-chart"] == true || window["hold-chart"] == false ) && window["hold-buffer"] == undefined ) {
+                    if ( window["hold-chart"] == true ) window["hold-buffer"] = new Float32Array(  window["render-buffer"] );
+                }
+                await this.spline.drawData( this, window["render-buffer"], window["channels"], window["rendertype"] , window["samplerate"], 1, window.kdX, window.kdY, window.zoomX, window.zoomY, thickness, _colors );
+                flag = true;
+            }
+
+            if ( window.isExist( nameoffile ) > 0 ) {
                 if ( window.isPlaying() > 0 ) {
                     /////////////////////////////////////////////////////////////////////////////////
                     // differet render types of channels

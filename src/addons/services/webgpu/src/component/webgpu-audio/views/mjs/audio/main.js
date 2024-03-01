@@ -29,7 +29,7 @@ export const gpuAudio = async () => {
 
     const oscillatorNode = new OscillatorNode(audioContext);
     const processorNode = new AudioWorkletNode(audioContext, 'basic-processor', {
-      processorOptions: {inputQueue, outputQueue, atomicState}
+      processorOptions: { inputQueue, outputQueue, atomicState }
     });
 
     // Initially suspend the context to prevent the renderer from hammering the
