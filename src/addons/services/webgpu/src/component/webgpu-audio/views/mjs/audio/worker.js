@@ -23,7 +23,6 @@ const initialize = async (messageDataFromMainThread) => {
   Object.setPrototypeOf(inputQueue, FreeQueue.prototype);
   Object.setPrototypeOf(outputQueue, FreeQueue.prototype);
 
-  console.log('WORKER INITIALIZE ===================================')
   // A local buffer to store data pulled out from `inputQueue`.
   inputBuffer = new Float32Array(FRAME_SIZE);
 
@@ -39,15 +38,20 @@ const initialize = async (messageDataFromMainThread) => {
   console.log('[worker.js] initialize()');
 };
 
-const process = async () => {
-  if (!inputQueue.pull([inputBuffer], FRAME_SIZE)) {
+const process = () => {
+  console.log('@@@@@@@@@@@@@@ process @@@@@@@@@@@@@@@@', inputQueue)
+  if (!inputQueue[0].pull([inputBuffer[0]], FRAME_SIZE)) {
     console.error('[worker.js] Pulling from inputQueue failed.');
     return;
   }
 
+  if (!inputQueue[1].pull([inputBuffer[1]], FRAME_SIZE)) {
+    console.error('[worker.js] Pulling from inputQueue failed.');
+    return;
+  }
   // 1. Bypassing
-  const outputBuffer = inputBuffer;
-
+  let outputBuffer[0] = inputBuffer[0];
+  outputBuffer[1] = inputBuffer[1];
   // debugger
   // 2. Bypass via GPU.
   // const outputBuffer = await gpuProcessor.processBypass(inputBuffer);
@@ -55,7 +59,12 @@ const process = async () => {
   // 3. Convolution via GPU
   // const outputBuffer = await gpuProcessor.processConvolution(inputBuffer);
 
-  if (!outputQueue.push([outputBuffer], FRAME_SIZE)) {
+  if (!outputQueue[0].push([outputBuffer], FRAME_SIZE)) {
+    console.error('[worker.js] Pushing to outputQueue failed.');
+    return;
+  }
+
+  if (!outputQueue[1].push([outputBuffer], FRAME_SIZE)) {
     console.error('[worker.js] Pushing to outputQueue failed.');
     return;
   }

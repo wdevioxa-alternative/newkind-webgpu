@@ -111,7 +111,6 @@ class FreeQueue {
    * @return {boolean} False if the operation fails.
    */
   push(input, blockLength) {
-    console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ >>>>>>>>>>>>>', this)
     const currentRead = Atomics.load(this.states, this.States.READ);
     const currentWrite = Atomics.load(this.states, this.States.WRITE);
     if (this._getAvailableWrite(currentRead, currentWrite) < blockLength) {
@@ -128,8 +127,6 @@ class FreeQueue {
         blockB.set(input[channel].subarray(blockA.length));
       }
     } else {
-      // console.log('####### 22 ##########', input)
-
       for (let channel = 0; channel < this.channelCount; channel++) {
         this.channelData[channel]
             .subarray(currentWrite, nextWrite)
@@ -151,7 +148,6 @@ class FreeQueue {
    * @return {boolean} False if the operation fails.
    */
   pull(output, blockLength) {
-    console.log('@@@@@@@@@@@@@@@@@@@ pull @@@@@@@@@@@@@@ >>>>>>>>>>>>>', this)
     const currentRead = Atomics.load(this.states, this.States.READ);
     const currentWrite = Atomics.load(this.states, this.States.WRITE);
     if (this._getAvailableRead(currentRead, currentWrite) < blockLength) {

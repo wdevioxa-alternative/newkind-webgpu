@@ -472,7 +472,7 @@
 				>
 					<template>
 						<body>
-						<script src="/services/webgpu/src/component/webgpu-audio/views/mjs/audio/coi-serviceworker.js"></script
+<!--						<script src="/services/webgpu/src/component/webgpu-audio/views/mjs/audio/coi-serviceworker.js"></script-->
 						<div>
 							<h1>WebGPUAudio Experiment</h1>
 							<p>An experiment to use Web Audio API and WebGPU together to process audio stream with GPU.</p>
@@ -702,25 +702,25 @@
 							<tbody><tr>
 								<td style="width: 100%">
 									<label for="zoom-x">Масштаб по x:&nbsp;<span id="zoom-x-value">0</span></label>
-									<div style="width: 100%;" id="zoom-x"></div>
+									<input style="width: 100%;" id="zoom-x">
 								</td>
 							</tr>
 							<tr>
 								<td style="width: 100%">
 									<label for="minimum-x">Дискретное пространство по x:&nbsp;<span id="minimum-x-value">0</span></label>
-									<div style="width: 100%;" id="minimum-x"></div>
+									<input style="width: 100%;" id="minimum-x">
 								</td>
 							</tr>
 							<tr>
 								<td style="width: 100%">
 									<label for="zoom-y">Масштаб по y:&nbsp;<span id="zoom-y-value">0</span></label>
-									<div style="width: 100%;" id="zoom-y"></div>
+									<input style="width: 100%;" id="zoom-y"></input>
 								</td>
 							</tr>
 							<tr>
 								<td style="width: 100%">
 									<label for="minimum-y">Дискретное пространство по y:&nbsp;<span id="minimum-y-value">0</span></label>
-									<div style="width: 100%;" id="minimum-y"></div>
+									<input style="width: 100%;" id="minimum-y">
 								</td>
 							</tr>
 							</tbody></table>

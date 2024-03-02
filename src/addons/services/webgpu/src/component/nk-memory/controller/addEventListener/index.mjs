@@ -1,6 +1,7 @@
+import {FreeQueue} from '../../views/index.mjs';
 export default async (self, actions) => {
 
-    console.log('MEMORY')
+    console.log('MEMORY', FreeQueue)
     return {
         init: () => {
             // mount.addEventListener('click', actions.mount.click)

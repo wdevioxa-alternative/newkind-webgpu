@@ -2,8 +2,8 @@ import FreeQueue from './lib/free-queue.js'
 import {createTestIR, fetchAudioFileToF32Array, QUEUE_SIZE, Assets } from '../../../webgpu-audio/views/index.mjs'
 
 // Create 2 FreeQueue instances with 4096 buffer length and 1 channel.
-const inputQueue = new FreeQueue(QUEUE_SIZE, 1);
-const outputQueue = new FreeQueue(QUEUE_SIZE, 1);
+const inputQueue = new FreeQueue(QUEUE_SIZE, 2);
+const outputQueue = new FreeQueue(QUEUE_SIZE, 2);
 
 // Create an atomic state for synchronization between Worker and AudioWorklet.
 const atomicState =
@@ -150,8 +150,8 @@ const ctx = async (CONFIG) => {
     CONFIG.audio.master.gain.connect(CONFIG.audio.processorNode).connect(CONFIG.audio.analyser).connect(CONFIG.audio.ctx.destination);
     // CONFIG.audio.oscillatorNode.connect(CONFIG.audio.processorNode).connect(CONFIG.audio.analyser).connect(CONFIG.audio.ctx.destination);
 
-    CONFIG.audio.oscillatorNode.start();
-
+    // CONFIG.audio.oscillatorNode.start();
+    //
     return CONFIG.audio.ctx
 }
 
@@ -231,6 +231,7 @@ export default async () => {
                    console.log('isPlaying',CONFIG.player.isPlaying)
 
                     if (CONFIG.player.isPlaying) {
+                        worker.terminate();
                         await CONFIG.stream.song.pause()
                         CONFIG.audio.ctx.suspend();
                         CONFIG.html.button.start.textContent = 'Start Audio'

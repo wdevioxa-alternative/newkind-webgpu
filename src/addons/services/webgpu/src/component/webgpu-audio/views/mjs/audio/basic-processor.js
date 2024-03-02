@@ -35,8 +35,10 @@ class BasicProcessor extends AudioWorkletProcessor {
    */
   process(inputs, outputs, parameters) {
     const input = inputs[0];
+    const input1 = inputs[1];
     const output = outputs[0];
-
+    const output1 = outputs[1];
+    console.log('------------- output ---------------', output)
     // The first |ExpectedPrimingCount| number of callbacks won't get any
     // data from the queue because the it's empty. This check is not perfect;
     // waking up the worker can be slow and priming N callbacks might not be
@@ -44,29 +46,43 @@ class BasicProcessor extends AudioWorkletProcessor {
     if (this.primingCounter > ExpectedPrimingCount) {
       // Pull processed audio data out of `outputQueue` and pass it in output.
       // console.log('------------- output ---------------', output)
-      console.log('------------- output ---------------', output, RENDER_QUANTUM)
-      const didPull = this.outputQueue.pull(output, RENDER_QUANTUM);
+      const didPull = this.outputQueue[0].pull(output, RENDER_QUANTUM);
+      const didPull1 = this.outputQueue[1].pull(output1, RENDER_QUANTUM);
+
+      if (!didPull1) {
+        console.log('[basic-processor.js] Not enough data in outputQueue 1');
+      }
+
       if (!didPull) {
-        console.log('[basic-processor.js] Not enough data in outputQueue');
+        console.log('[basic-processor.js] Not enough data in outputQueue 0');
       }
     } else {
       this.primingCounter++;
     }
 
     // Store incoming audio data `input` into `inputQueue`.
-    const didPush = this.inputQueue.push(input, RENDER_QUANTUM);
-    // console.log('-------------- input --------------', input)
+    const didPush = this.inputQueue[0].push(input, RENDER_QUANTUM);
+    const didPush1 = this.inputQueue[1].push(input1, RENDER_QUANTUM);
+    console.log('-------------- input --------------', input)
     if (!didPush) {
-      console.log('[basic-processor.js] Not enough space in inputQueue');
+      console.log('[basic-processor.js] Not enough space in inputQueue 0');
+    }
+
+    if (!didPush1) {
+      console.log('[basic-processor.js] Not enough space in inputQueue 1');
     }
 
     // Notify worker.js if `inputQueue` has enough data to perform the batch
     // processing of FRAME_SIZE.
-    if (this.inputQueue.hasEnoughFramesFor(FRAME_SIZE)) {
+    if (this.inputQueue[0].hasEnoughFramesFor(FRAME_SIZE)) {
       Atomics.store(this.atomicState, 0, 1);
       Atomics.notify(this.atomicState, 0);
     }
 
+    if (this.inputQueue[1].hasEnoughFramesFor(FRAME_SIZE)) {
+      Atomics.store(this.atomicState, 0, 1);
+      Atomics.notify(this.atomicState, 0);
+    }
     return true;
   }
 }
