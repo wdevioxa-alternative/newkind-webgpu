@@ -14,7 +14,7 @@ let averageTimeSpent = 0;
 let timeElapsed = 0;
 let runningAverageFactor = 1;
 
-console.log('WORKER')
+console.log('/services/webgpu/src/component/webgpu-audio/views/mjs/audio/worker.js WORKER')
 // This will initialize worker with FreeQueue instance and set loop for audio
 // processing.
 const initialize = async (messageDataFromMainThread) => {
@@ -23,6 +23,7 @@ const initialize = async (messageDataFromMainThread) => {
   Object.setPrototypeOf(inputQueue, FreeQueue.prototype);
   Object.setPrototypeOf(outputQueue, FreeQueue.prototype);
 
+  debugger
   // A local buffer to store data pulled out from `inputQueue`.
   inputBuffer = new Float32Array(FRAME_SIZE);
 
@@ -49,8 +50,10 @@ const process = () => {
     console.error('[worker.js] Pulling from inputQueue failed.');
     return;
   }
+
+  let outputBuffer = []
   // 1. Bypassing
-  let outputBuffer[0] = inputBuffer[0];
+  outputBuffer[0] = inputBuffer[0];
   outputBuffer[1] = inputBuffer[1];
   // debugger
   // 2. Bypass via GPU.
@@ -59,12 +62,12 @@ const process = () => {
   // 3. Convolution via GPU
   // const outputBuffer = await gpuProcessor.processConvolution(inputBuffer);
 
-  if (!outputQueue[0].push([outputBuffer], FRAME_SIZE)) {
+  if (!outputQueue[0].push([outputBuffer[0]], FRAME_SIZE)) {
     console.error('[worker.js] Pushing to outputQueue failed.');
     return;
   }
 
-  if (!outputQueue[1].push([outputBuffer], FRAME_SIZE)) {
+  if (!outputQueue[1].push([outputBuffer[1]], FRAME_SIZE)) {
     console.error('[worker.js] Pushing to outputQueue failed.');
     return;
   }
