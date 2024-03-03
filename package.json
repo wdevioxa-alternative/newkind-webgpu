@@ -8,13 +8,14 @@
     "type": "module",
     "private": "true",
     "scripts": {
-        "start": "redrun -p watch server",
+        "start": "redrun -p watch server open",
         "build": "node esbuild.config.mjs",
-        "open browser": "open-cli http://localhost:4012/ --incognito",
+        "open": "npm run sleep5s && open-cli http://localhost:4012/ --incognito",
         "================": "",
         "watch": "nodemon --config esbuild.watch.json esbuild.config.mjs",
         "server": "node index.cjs",
         "deploy": "gh-pages -d dist",
+        "sleep5s": "node -e \"setTimeout(() => process.exit(0), 6000)\"",
         "=== DEPRECATED ===": "",
         "start:webpack": "webpack --open --config webpack/webpack.dev.mjs",
         "build:webpack": "webpack --config webpack/webpack.prod.mjs"
