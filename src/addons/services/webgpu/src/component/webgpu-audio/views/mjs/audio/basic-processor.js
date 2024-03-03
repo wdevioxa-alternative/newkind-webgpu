@@ -35,8 +35,9 @@ class BasicProcessor extends AudioWorkletProcessor {
   process(inputs, outputs, parameters) {
     const input = inputs[0];
     const output = outputs[0];
+    const input1 = inputs[1];
+    const output1 = outputs[1];
 
-    debugger
     // The first |ExpectedPrimingCount| number of callbacks won't get any
     // data from the queue because the it's empty. This check is not perfect;
     // waking up the worker can be slow and priming N callbacks might not be
@@ -45,7 +46,7 @@ class BasicProcessor extends AudioWorkletProcessor {
       // Pull processed audio data out of `outputQueue` and pass it in output.
       // console.log('------------- output ---------------', output)
       console.log('------------- output ---------------', output, RENDER_QUANTUM)
-      const didPull = this.outputQueue.pull(output, RENDER_QUANTUM);
+      const didPull = this.outputQueue.pull(outputs, RENDER_QUANTUM);
       if (!didPull) {
         console.log('[basic-processor.js] Not enough data in outputQueue');
       }
@@ -54,7 +55,7 @@ class BasicProcessor extends AudioWorkletProcessor {
     }
 
     // Store incoming audio data `input` into `inputQueue`.
-    const didPush = this.inputQueue.push(input, RENDER_QUANTUM);
+    const didPush = this.inputQueue.push(inputs, RENDER_QUANTUM);
     console.log('-------------- input --------------', input)
     if (!didPush) {
       console.log('[basic-processor.js] Not enough space in inputQueue');

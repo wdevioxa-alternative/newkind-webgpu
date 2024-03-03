@@ -2,12 +2,12 @@ import {FreeQueue, createTestIR, fetchAudioFileToF32Array, QUEUE_SIZE, Assets } 
 
 export const gpuAudio = async () => {
 // Create 2 FreeQueue instances with 4096 buffer length and 1 channel.
-  const inputQueue = new FreeQueue(QUEUE_SIZE, 1);
-  const outputQueue = new FreeQueue(QUEUE_SIZE, 1);
+  const inputQueue = new FreeQueue(QUEUE_SIZE, 2);
+  const outputQueue = new FreeQueue(QUEUE_SIZE, 2);
 
 // Create an atomic state for synchronization between Worker and AudioWorklet.
-  const atomicState =
-      new Int32Array(new SharedArrayBuffer(1 * Int32Array.BYTES_PER_ELEMENT));
+  let atomicState = []
+  atomicState = new Int32Array(new SharedArrayBuffer(1 * Int32Array.BYTES_PER_ELEMENT));
 
   let audioContext = null;
   let worker = null;
@@ -26,11 +26,15 @@ export const gpuAudio = async () => {
     const audioContext = new AudioContext();
 
     await audioContext.audioWorklet.addModule('/services/webgpu/src/component/webgpu-audio/views/mjs/audio/basic-processor.js');
+    await audioContext.audioWorklet.addModule('/services/webgpu/src/component/webgpu-audio/views/mjs/audio/bypass-processor.js');
 
     const oscillatorNode = new OscillatorNode(audioContext);
-    const processorNode = new AudioWorkletNode(audioContext, 'basic-processor', {
+    const processorNode = new AudioWorkletNode(audioContext, 'bypass-processor', {
       processorOptions: { inputQueue, outputQueue, atomicState }
     });
+    // const processorNode = new AudioWorkletNode(audioContext, 'basic-processor', {
+    //   processorOptions: { inputQueue, outputQueue, atomicState }
+    // });
 
     // Initially suspend the context to prevent the renderer from hammering the
     // Worker.
