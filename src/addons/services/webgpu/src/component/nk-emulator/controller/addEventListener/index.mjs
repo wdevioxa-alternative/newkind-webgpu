@@ -1,7 +1,7 @@
 export default async (self, actions) => {
 
     const start = self.shadowRoot.querySelector('.start')
-    console.log('PROCESSOR')
+    console.log('EMULATOR')
     return {
         init: () => {
             start.addEventListener('click', actions.click)

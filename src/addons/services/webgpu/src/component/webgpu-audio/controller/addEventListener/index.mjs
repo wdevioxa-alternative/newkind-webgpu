@@ -1,7 +1,7 @@
 import {gpuAudio} from '../../views/index.mjs'
 
 export default async (self, actions) => {
-    gpuAudio()
+    await gpuAudio()
 
     return {
         init: () => {
