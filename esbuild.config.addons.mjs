@@ -6,24 +6,6 @@ import path from 'path';
 const entryPoints = [path.resolve(__dirname, 'src/addons')]
 const outdir = [path.resolve(__dirname, 'dist')]
 
-var copyRecursiveSync = function(src, dest) {
-    var exists = fs.existsSync(src);
-    var existsDest = fs.existsSync(dest);
-    var stats = exists && fs.statSync(src);
-    var isDirectory = exists && stats.isDirectory();
-    if (isDirectory) {
-        if(!existsDest) {
-            fs.mkdirSync(dest);
-        }
-        fs.readdirSync(src).forEach(function(childItemName) {
-            copyRecursiveSync(path.join(src, childItemName),
-                path.join(dest, childItemName));
-        });
-    } else {
-        fs.copyFileSync(src, dest, {encoding:'utf8',flag:'w'});
-    }
-};
-
 try {
     fs.rmSync(`${outdir[0]}/services`, { recursive: true, force: true });
     fs.rmSync(`${outdir[0]}/env.json`, { recursive: false, force: true });
