@@ -1,23 +1,10 @@
-import * as esbuild from 'esbuild'
 import fs from "fs";
 import fse from 'fs-extra/esm'
-import { copy } from 'esbuild-plugin-copy';
 const __dirname = process.cwd();
-import cssModulesPlugin from "esbuild-css-modules-plugin";
-import { polyfillNode } from "esbuild-plugin-polyfill-node";
-import aliasPlugin from 'esbuild-plugin-path-alias';
-import { glsl } from "esbuild-plugin-glsl";
 import path from 'path';
-
-//_sandbox/metamart-subscription-service-ui
-// _sandbox/metamart-subscription-service-ui/docs/api/swagger-js/src/minim/lib/minim.js
-
-// _sandbox/metamart-subscription-service-ui/docs/api/swagger-js/src/ramda-adjunct/src/index.js
 
 const entryPoints = [path.resolve(__dirname, 'src/addons')]
 const outdir = [path.resolve(__dirname, 'dist')]
-// const entryPoints = [path.resolve(__dirname, 'docs/api/swagger-js/src/lib.js')]
-// const outdir = [path.resolve(__dirname, '/dist')]
 
 var copyRecursiveSync = function(src, dest) {
     var exists = fs.existsSync(src);
