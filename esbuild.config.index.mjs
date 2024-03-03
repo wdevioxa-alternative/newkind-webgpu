@@ -54,7 +54,7 @@ const outfile = path.resolve(__dirname, 'dist/main.bundle.mjs')
 // const outfile = path.join(__dirname, './docs/openapi/index.mjs')
 
 
-fs.emptyDirSync(outdir);
+// fs.emptyDirSync(outdir);
 
 console.time("⚡ [esbuild] Done");
 try {
