@@ -3,6 +3,7 @@ import fse from 'fs-extra/esm'
 const __dirname = process.cwd();
 import path from 'path';
 
+console.time("⚡ [esbuild] ADDONS Done");
 const entryPoints = [path.resolve(__dirname, 'src/addons')]
 const outdir = [path.resolve(__dirname, 'dist')]
 
@@ -16,6 +17,7 @@ try {
     fs.rmSync(`${outdir[0]}/jquery-ui.min.js`, { recursive: false, force: true });
     fse.copySync(entryPoints[0], outdir[0])
     console.log('COPY success!')
+    console.timeEnd("⚡ [esbuild] ADDONS Done")
 } catch (err) {
     console.error(err)
 }
