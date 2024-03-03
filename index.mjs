@@ -9,6 +9,7 @@ import * as dotenv from 'dotenv';
 import JiraApi from 'jira-client';
 import express from 'express';
 import { env } from './env.node.mjs'
+import open from 'open';
 
 let __dirname = process.cwd();
 dotenv.config();
@@ -270,7 +271,10 @@ export const modules = async (app) => {
 
     app.use(queue.getErrorMiddleware());
 
-    return app
+    return {
+        app: app,
+        open: open
+    }
 }
 
 export default {

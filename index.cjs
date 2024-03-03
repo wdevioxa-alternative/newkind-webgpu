@@ -1,5 +1,4 @@
 const { init } = require('./tracing.cjs');
-
 init('mss', 'development');
 require('dotenv').config()
 const server = import('./index.mjs');
@@ -50,14 +49,15 @@ server.then(async (data) => {
     // app.use('/dashboard', dashboard);
     // app.use('/parse', server.app);
 
-    app = await data.modules(app).catch(e => console.error(e));
+    data.modules(app).then(({app, open})=>{
+        app.listen(port, () => {
+            open('http://localhost:4012/')
+            console.log('pid: ', process.pid);
+            console.log('listening on http://localhost:' + port);
+        });
 
-    app.listen(port, () => {
-        console.log('pid: ', process.pid);
-        console.log('listening on http://localhost:' + port);
-    });
-
-    process.on('SIGINT', function () {
-        process.exit(0);
-    });
+        process.on('SIGINT', function () {
+            process.exit(0);
+        });
+    }).catch(e => console.error(e));
 });
