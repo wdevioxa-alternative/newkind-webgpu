@@ -1,5 +1,4 @@
 {
-  "verbose": true,
   "ignore": [
     ".git",
     ".idea",
@@ -11,8 +10,7 @@
     "typings"
   ],
   "watch": [
-    "./docs/api/swagger-js/src/**"
+    "src"
   ],
-  "ext": "mjs js css json tsx ts",
-  "delay": 10
+  "ext": "mjs js html css json tsx ts glsl"
 }
