@@ -25,11 +25,15 @@ export const gpuAudio = async () => {
   const initializeAudio = async () => {
     const audioContext = new AudioContext();
 
+    await audioContext.audioWorklet.addModule('/services/webgpu/src/component/webgpu-audio/views/mjs/audio/base-processor.js');
     await audioContext.audioWorklet.addModule('/services/webgpu/src/component/webgpu-audio/views/mjs/audio/basic-processor.js');
     await audioContext.audioWorklet.addModule('/services/webgpu/src/component/webgpu-audio/views/mjs/audio/bypass-processor.js');
 
     const oscillatorNode = new OscillatorNode(audioContext);
     const processorNode = new AudioWorkletNode(audioContext, 'bypass-processor', {
+      processorOptions: { inputQueue, outputQueue, atomicState }
+    });
+    const processorNodeBase = new AudioWorkletNode(audioContext, 'base-processor', {
       processorOptions: { inputQueue, outputQueue, atomicState }
     });
     // const processorNode = new AudioWorkletNode(audioContext, 'basic-processor', {
@@ -43,6 +47,7 @@ export const gpuAudio = async () => {
     // Form an audio graph and start the source. When the renderer is resumed,
     // the pipeline will be flowing.
     oscillatorNode.connect(processorNode).connect(audioContext.destination);
+    // oscillatorNode.connect(processorNodeBase).connect(audioContext.destination);
     oscillatorNode.start();
 
     console.log('[main.js] initializeAudio()');

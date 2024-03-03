@@ -40,13 +40,14 @@ const initialize = async (messageDataFromMainThread) => {
 };
 
 const process = async () => {
-  if (!inputQueue.pull([inputBuffer], FRAME_SIZE)) {
-    console.error('[worker.js] Pulling from inputQueue failed.');
-    return;
-  }
+  console.log('++++++++++++ worker precess: ', inputBuffer)
+  // if (!inputQueue.pull([inputBuffer], FRAME_SIZE)) {
+  //   console.error('[worker.js] Pulling from inputQueue failed.');
+  //   return;
+  // }
 
   // 1. Bypassing
-  const outputBuffer = inputBuffer;
+  // const outputBuffer = inputBuffer;
 
   // debugger
   // 2. Bypass via GPU.
@@ -55,14 +56,14 @@ const process = async () => {
   // 3. Convolution via GPU
   // const outputBuffer = await gpuProcessor.processConvolution(inputBuffer);
 
-  if (!outputQueue.push([outputBuffer], FRAME_SIZE)) {
-    console.error('[worker.js] Pushing to outputQueue failed.');
-    return;
-  }
+  // if (!outputQueue.push([outputBuffer], FRAME_SIZE)) {
+  //   console.error('[worker.js] Pushing to outputQueue failed.');
+  //   return;
+  // }
 };
 
 self.onmessage = async (message) => {
-  console.log('[worker.js] onmessage: ' + message.data.type);
+  console.log('++++++++++++ [worker.js] onmessage: ' + message.data.type);
   if (message.data.type !== 'init') {
     console.error(`[worker.js] Invalid message type: ${message.data.type}`);
     return;
