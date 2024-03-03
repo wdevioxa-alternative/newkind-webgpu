@@ -1,5 +1,6 @@
 import FreeQueue from './lib/free-queue.js'
 import {createTestIR, fetchAudioFileToF32Array, QUEUE_SIZE, Assets } from '../../../webgpu-audio/views/index.mjs'
+import { isEmpty } from '../../../../this/index.mjs';
 
 // Create 2 FreeQueue instances with 4096 buffer length and 1 channel.
 const inputQueue = new FreeQueue(QUEUE_SIZE, 1);
@@ -132,7 +133,9 @@ const ctx = async (CONFIG) => {
         processorOptions: {inputQueue, outputQueue, atomicState}
     });
 
-    worker = new Worker('/services/webgpu/src/component/lacerta-radio/modules/radio/worker.js', {type: 'module'});
+    if(isEmpty(worker)) {
+        worker =  new Worker('/services/webgpu/src/component/lacerta-radio/modules/radio/worker.js', {type: 'module'});
+    }
 
     worker.onerror = (event) => {
         console.log('[main.js] Error from worker.js: ', event);

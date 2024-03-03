@@ -1,5 +1,5 @@
 # Dependency directory
-
+.idea
 # Logs
 logs
 *.log
