@@ -17,7 +17,8 @@
         "server": "node index.cjs",
         "deploy": "gh-pages -d dist",
         "open": "npm run sleep && open-cli http://localhost:4012/ --incognito",
-        "sleep": "node -e \"setTimeout(() => process.exit(0), 20000)\"",
+        "clean": "node esbuild.config.emptyDirSync.mjs",
+        "sleep": "node -e \"setTimeout(() => process.exit(0), 15000)\"",
         "=== DEPRECATED ===": "",
         "start:webpack": "webpack --open --config webpack/webpack.dev.mjs",
         "build:webpack": "webpack --config webpack/webpack.prod.mjs"

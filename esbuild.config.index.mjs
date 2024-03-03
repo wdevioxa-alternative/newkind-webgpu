@@ -20,41 +20,10 @@ for (const k in process.env) {
         define[`process.env.${k}`] = JSON.stringify(process.env[k]);
     }
 }
-//_sandbox/metamart-subscription-service-ui
-// _sandbox/metamart-subscription-service-ui/docs/api/swagger-js/src/minim/lib/minim.js
-
-// _sandbox/metamart-subscription-service-ui/docs/api/swagger-js/src/ramda-adjunct/src/index.js
 
 const entryPoints = [path.resolve(__dirname, 'src/app.mjs')]
-// const entryPoints = [path.resolve(__dirname, 'docs/api/swagger-js/src/lib.js')]
 const outdir = path.resolve(__dirname, 'dist')
-// const outfile = path.resolve(__dirname, 'docs/api/swagger-js/es/lib.mjs')
 const outfile = path.resolve(__dirname, 'dist/main.bundle.mjs')
-
-
-// const entryPoints = [path.resolve(__dirname, 'docs/api/swagger-js/src/short-unique-id/src/index.ts')]
-// const outdir = path.resolve(__dirname, 'docs/api/swagger-js/src/short-unique-id/dist')
-// const outfile = path.resolve(__dirname, 'docs/api/swagger-js/src/short-unique-id/dist/index.mjs')
-
-
-// const entryPoints = [path.resolve(__dirname, 'docs/api/swagger-js/src/minim/lib/minim.js')]
-// const outdir = path.resolve(__dirname, 'docs/api/swagger-js/src/minim/dist')
-// const outfile = path.resolve(__dirname, 'docs/api/swagger-js/src/minim/dist/index.mjs')
-
-// const entryPoints = [path.resolve(__dirname, 'docs/api/swagger-js/src/http/qs/lib/index.js')]
-// const outdir = path.resolve(__dirname, 'docs/api/swagger-js/src/http/qs/dist')
-// const outfile = path.resolve(__dirname, 'docs/api/swagger-js/src/http/qs/dist/index.mjs')
-//
-// const entryPoints = [path.resolve(__dirname, 'src/index.tsx')]
-// const outdir = path.resolve(__dirname, 'public/this/virualDom')
-// const outfile = path.resolve(__dirname, 'public/this/virualDom/index.mjs')
-
-// const entryPoints = [path.join(__dirname, './tmp/test/src/index.js')]
-// const outdir = path.join(__dirname, './services/mss/src/this/openapi')
-// const outfile = path.join(__dirname, './docs/openapi/index.mjs')
-
-
-// fs.emptyDirSync(outdir);
 
 console.time("⚡ [esbuild] Done");
 try {
@@ -158,9 +127,8 @@ try {
         ]
     }
 
-    console.log('CONFIG: ', buildParams)
     let result = await esbuild.build(buildParams)
-    console.log(result)
+    console.log('BUILD: SUCCESS', result)
     console.timeEnd("⚡ [esbuild] Done")
 } catch (e) {
     console.timeEnd("⚡ [esbuild] Done")
