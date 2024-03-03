@@ -10,11 +10,11 @@
     "scripts": {
         "start": "redrun -p watch server open",
         "build": "node esbuild.config.mjs",
-        "open": "npm run sleep5s && open-cli http://localhost:4012/ --incognito",
         "================": "",
         "watch": "nodemon --config esbuild.watch.json esbuild.config.mjs",
         "server": "node index.cjs",
         "deploy": "gh-pages -d dist",
+        "open": "npm run sleep5s && open-cli http://localhost:4012/ --incognito",
         "sleep5s": "node -e \"setTimeout(() => process.exit(0), 6000)\"",
         "=== DEPRECATED ===": "",
         "start:webpack": "webpack --open --config webpack/webpack.dev.mjs",
