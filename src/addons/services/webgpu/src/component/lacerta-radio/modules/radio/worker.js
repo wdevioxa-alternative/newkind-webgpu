@@ -43,7 +43,7 @@ const process = async () => {
     return;
   }
 
-  console.log('*******************************', inputBuffer)
+  console.log('****** worker process ******', inputBuffer)
   // 1. Bypassing
   const outputBuffer = inputBuffer;
 
