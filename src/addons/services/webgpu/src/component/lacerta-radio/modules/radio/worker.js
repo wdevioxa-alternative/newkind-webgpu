@@ -19,13 +19,12 @@ let runningAverageFactor = 1;
 // This will initialize worker with FreeQueue instance and set loop for audio
 // processing.
 const initialize = async (messageDataFromMainThread) => {
-  ({inputQueue, outputQueue, atomicState, irArray, sampleRate}
-      = messageDataFromMainThread);
+  ({inputQueue, outputQueue, atomicState, irArray, sampleRate} = messageDataFromMainThread);
   Object.setPrototypeOf(inputQueue, FreeQueue.prototype);
   Object.setPrototypeOf(outputQueue, FreeQueue.prototype);
-  // A local buffer to store data pulled out from `inputQueue`.
-  inputBuffer = new Float32Array(FRAME_SIZE);
 
+  // A local buffer to store data pulled out from `inputQueue`.
+  inputBuffer = [new Float32Array(FRAME_SIZE), new Float32Array(FRAME_SIZE)]
   // Create an instance of GPUProcessor and provide an IR array.
   gpuProcessor = new GPUProcessor();
   gpuProcessor.setIRArray(irArray);
@@ -38,22 +37,23 @@ const initialize = async (messageDataFromMainThread) => {
 };
 
 const process = async () => {
-  if (!inputQueue.pull([inputBuffer], FRAME_SIZE)) {
+  const data = inputQueue.pull(inputBuffer, FRAME_SIZE)
+  if (!data) {
     console.error('[worker.js] Pulling from inputQueue failed.');
     return;
   }
 
-
+  console.log('*******************************', inputBuffer)
   // 1. Bypassing
-  // const outputBuffer = inputBuffer;
+  const outputBuffer = inputBuffer;
 
   // 2. Bypass via GPU.
-  const outputBuffer = await gpuProcessor.processBypass(inputBuffer);
-  // console.log('@@@@@@@@@@ PROCESS @@@@@@@@@@@@@@', outputBuffer)
+  // const outputBuffer = await gpuProcessor.processBypass(inputBuffer);
+
   // 3. Convolution via GPU
   // const outputBuffer = await gpuProcessor.processConvolution(inputBuffer);
 
-  if (!outputQueue.push([outputBuffer], FRAME_SIZE)) {
+  if (!outputQueue.push(outputBuffer, FRAME_SIZE)) {
     console.error('[worker.js] Pushing to outputQueue failed.');
     return;
   }
@@ -67,6 +67,8 @@ self.onmessage = async (message) => {
     return;
   }
 
+
+  console.log('ssssssss inputBuffer sssssssss', inputBuffer)
   await initialize(message.data.data);
 
   // This loop effectively disables the interaction (postMessage) with the
@@ -89,12 +91,13 @@ self.onmessage = async (message) => {
       // Throttle the log by 1 second.
       if (timeElapsed >= 1000) {
         console.log(
-          `[worker.js] process() = ${timeSpent.toFixed(3)}ms : ` +
-          `avg = ${averageTimeSpent.toFixed(3)}ms : ` +
-          `callback interval = ${(callbackInterval).toFixed(3)}ms`);  
+            `[worker.js] process() = ${timeSpent.toFixed(3)}ms : ` +
+            `avg = ${averageTimeSpent.toFixed(3)}ms : ` +
+            `callback interval = ${(callbackInterval).toFixed(3)}ms`);
         timeElapsed -= 1000;
       }
 
+      console.log('ssssssssss WORKER PROCESS ssssssssssss')
       Atomics.store(atomicState, 0, 0);
     }
   }

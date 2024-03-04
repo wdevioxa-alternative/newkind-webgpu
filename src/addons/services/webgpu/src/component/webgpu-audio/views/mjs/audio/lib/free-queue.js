@@ -127,7 +127,7 @@ class FreeQueue {
         blockB.set(input[channel].subarray(blockA.length));
       }
     } else {
-      console.log('=============== push ===============', input )
+      console.log('=============== push = @@@@ ==============', input)
       for (let channel = 0; channel < this.channelCount; channel++) {
         this.channelData[channel]
             .subarray(currentWrite, nextWrite)
@@ -223,10 +223,10 @@ class FreeQueue {
   printAvailableReadAndWrite() {
     const currentRead = Atomics.load(this.states, this.States.READ);
     const currentWrite = Atomics.load(this.states, this.States.WRITE);
-    console.log(this, {
-        availableRead: this._getAvailableRead(currentRead, currentWrite),
-        availableWrite: this._getAvailableWrite(currentRead, currentWrite),
-    });
+    // console.log(this, {
+    //     availableRead: this._getAvailableRead(currentRead, currentWrite),
+    //     availableWrite: this._getAvailableWrite(currentRead, currentWrite),
+    // });
   }
 }
 

@@ -41,6 +41,10 @@ class BasicProcessor extends AudioWorkletProcessor {
     // waking up the worker can be slow and priming N callbacks might not be
     // enough.
     if (this.primingCounter > ExpectedPrimingCount) {
+      console.log('-------- inputs ----------', {
+        inputs: inputs,
+        outputs: outputs
+      })
       // Pull processed audio data out of `outputQueue` and pass it in output.
       const didPull = this.outputQueue.pull(output, RENDER_QUANTUM);
       if (!didPull) {

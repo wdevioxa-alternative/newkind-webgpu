@@ -113,6 +113,8 @@ class FreeQueue {
   push(input, blockLength) {
     const currentRead = Atomics.load(this.states, this.States.READ);
     const currentWrite = Atomics.load(this.states, this.States.WRITE);
+    console.log('----------- PUSH -----------', input)
+    // console.trace()
     if (this._getAvailableWrite(currentRead, currentWrite) < blockLength) {
       this.printAvailableReadAndWrite();
       return false;
@@ -134,6 +136,7 @@ class FreeQueue {
       }
       if (nextWrite === this.bufferLength) nextWrite = 0;
     }
+
     Atomics.store(this.states, this.States.WRITE, nextWrite);
     return true;
   }
@@ -148,6 +151,7 @@ class FreeQueue {
    * @return {boolean} False if the operation fails.
    */
   pull(output, blockLength) {
+    console.log('------------ PULL --------------', output, this.channelCount)
     const currentRead = Atomics.load(this.states, this.States.READ);
     const currentWrite = Atomics.load(this.states, this.States.WRITE);
     if (this._getAvailableRead(currentRead, currentWrite) < blockLength) {
@@ -173,6 +177,7 @@ class FreeQueue {
         nextRead = 0;
       }
     }
+
     Atomics.store(this.states, this.States.READ, nextRead);
     return true;
   }
@@ -222,10 +227,10 @@ class FreeQueue {
   printAvailableReadAndWrite() {
     const currentRead = Atomics.load(this.states, this.States.READ);
     const currentWrite = Atomics.load(this.states, this.States.WRITE);
-    console.log(this, {
-        availableRead: this._getAvailableRead(currentRead, currentWrite),
-        availableWrite: this._getAvailableWrite(currentRead, currentWrite),
-    });
+    // console.log(this, {
+    //     availableRead: this._getAvailableRead(currentRead, currentWrite),
+    //     availableWrite: this._getAvailableWrite(currentRead, currentWrite),
+    // });
   }
 }
 

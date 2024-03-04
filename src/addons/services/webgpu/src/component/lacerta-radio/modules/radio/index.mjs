@@ -3,8 +3,8 @@ import {createTestIR, fetchAudioFileToF32Array, QUEUE_SIZE, Assets } from '../..
 import { isEmpty } from '../../../../this/index.mjs';
 
 // Create 2 FreeQueue instances with 4096 buffer length and 1 channel.
-const inputQueue = new FreeQueue(QUEUE_SIZE, 1);
-const outputQueue = new FreeQueue(QUEUE_SIZE, 1);
+const inputQueue = new FreeQueue(QUEUE_SIZE, 2);
+const outputQueue = new FreeQueue(QUEUE_SIZE, 2);
 
 // Create an atomic state for synchronization between Worker and AudioWorklet.
 const atomicState =
@@ -90,7 +90,6 @@ const newAudio = async (CONFIG) => {
         CONFIG.stream.song.addEventListener("canplay", async (event) => {
             await CONFIG.audio.ctx.resume();
             await CONFIG.stream.song.play()
-            console.log('await CONFIG.stream.song', CONFIG.stream.song)
             CONFIG.html.button.start.textContent = 'Stop Audio'
             return true
         });

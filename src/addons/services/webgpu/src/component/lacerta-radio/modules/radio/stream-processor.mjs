@@ -2,7 +2,13 @@ import FreeQueue from './lib/free-queue.js';
 import { RENDER_QUANTUM, FRAME_SIZE } from './constants.js';
 const ExpectedPrimingCount = FRAME_SIZE / RENDER_QUANTUM;
 
-class StreamProcessor extends AudioWorkletProcessor {
+/**
+ * A simple AudioWorkletProcessor node.
+ *
+ * @class BasicProcessor
+ * @extends AudioWorkletProcessor
+ */
+class BasicProcessor extends AudioWorkletProcessor {
     /**
      * Constructor to initialize, input and output FreeQueue instances
      * and atomicState to synchronise Worker with AudioWorklet
@@ -11,7 +17,6 @@ class StreamProcessor extends AudioWorkletProcessor {
      */
     constructor(options) {
         super();
-        console.log('STREAM RADIO', options)
         this.inputQueue = options.processorOptions.inputQueue;
         this.outputQueue = options.processorOptions.outputQueue;
         this.atomicState = options.processorOptions.atomicState;
@@ -20,7 +25,14 @@ class StreamProcessor extends AudioWorkletProcessor {
 
         this.primingCounter = 0;
     }
-    process(inputs, outputs, parameters) {
+
+    /**
+     * The AudioWorkletProcessor's isochronous callback.
+     * @param {Array<Float32Array>>} inputs
+     * @param {Array<Float32Array>>} outputs
+     * @returns {boolean}
+     */
+    process(inputs, outputs) {
         const input = inputs[0];
         const output = outputs[0];
 
@@ -30,8 +42,8 @@ class StreamProcessor extends AudioWorkletProcessor {
         // enough.
         if (this.primingCounter > ExpectedPrimingCount) {
             // Pull processed audio data out of `outputQueue` and pass it in output.
-            // console.log('------------- output ---------------', output, RENDER_QUANTUM)
             const didPull = this.outputQueue.pull(output, RENDER_QUANTUM);
+            console.log('sssssss processor sssssss output ssssssssssss processor ssssss',didPull, output)
             if (!didPull) {
                 console.log('[basic-processor.js] Not enough data in outputQueue');
             }
@@ -39,15 +51,15 @@ class StreamProcessor extends AudioWorkletProcessor {
             this.primingCounter++;
         }
 
-        // Store incoming audio data `input` into `inputQueue`.
         const didPush = this.inputQueue.push(input, RENDER_QUANTUM);
-        // console.log('-------------- input --------------', input)
+        console.log('sssssss processor sssssss input ssssssssssss processor ssssss',didPush, input)
         if (!didPush) {
             console.log('[basic-processor.js] Not enough space in inputQueue');
         }
 
         // Notify worker.js if `inputQueue` has enough data to perform the batch
         // processing of FRAME_SIZE.
+        console.log('sssssss processor sssssss hasEnoughFramesFor ssssssssssss processor ssssss', this.inputQueue.hasEnoughFramesFor(FRAME_SIZE))
         if (this.inputQueue.hasEnoughFramesFor(FRAME_SIZE)) {
             Atomics.store(this.atomicState, 0, 1);
             Atomics.notify(this.atomicState, 0);
@@ -57,4 +69,4 @@ class StreamProcessor extends AudioWorkletProcessor {
     }
 }
 
-registerProcessor("stream-processor", StreamProcessor);
+registerProcessor('stream-processor', BasicProcessor);
