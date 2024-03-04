@@ -111,7 +111,6 @@ class FreeQueue {
    * @return {boolean} False if the operation fails.
    */
   push(input, blockLength) {
-    console.log('input ===============', input)
     const currentRead = Atomics.load(this.states, this.States.READ);
     const currentWrite = Atomics.load(this.states, this.States.WRITE);
     if (this._getAvailableWrite(currentRead, currentWrite) < blockLength) {
@@ -128,6 +127,7 @@ class FreeQueue {
         blockB.set(input[channel].subarray(blockA.length));
       }
     } else {
+      console.log('=============== push ===============', input )
       for (let channel = 0; channel < this.channelCount; channel++) {
         this.channelData[channel]
             .subarray(currentWrite, nextWrite)
