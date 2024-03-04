@@ -14,19 +14,16 @@ let averageTimeSpent = 0;
 let timeElapsed = 0;
 let runningAverageFactor = 1;
 
-console.log('WORKER')
 // This will initialize worker with FreeQueue instance and set loop for audio
 // processing.
 const initialize = async (messageDataFromMainThread) => {
-  ({inputQueue, outputQueue, atomicState, irArray, sampleRate} 
+  ({inputQueue, outputQueue, atomicState, irArray, sampleRate}
       = messageDataFromMainThread);
   Object.setPrototypeOf(inputQueue, FreeQueue.prototype);
   Object.setPrototypeOf(outputQueue, FreeQueue.prototype);
 
-  console.log('WORKER INITIALIZE ===================================')
   // A local buffer to store data pulled out from `inputQueue`.
   inputBuffer = new Float32Array(FRAME_SIZE);
-
 
   // Create an instance of GPUProcessor and provide an IR array.
   gpuProcessor = new GPUProcessor();
@@ -40,30 +37,29 @@ const initialize = async (messageDataFromMainThread) => {
 };
 
 const process = async () => {
-  console.log('++++++++++++ worker precess: ', inputBuffer)
-  // if (!inputQueue.pull([inputBuffer], FRAME_SIZE)) {
-  //   console.error('[worker.js] Pulling from inputQueue failed.');
-  //   return;
-  // }
+  if (!inputQueue.pull([inputBuffer], FRAME_SIZE)) {
+    console.error('[worker.js] Pulling from inputQueue failed.');
+    return;
+  }
 
   // 1. Bypassing
   // const outputBuffer = inputBuffer;
 
-  // debugger
   // 2. Bypass via GPU.
-  // const outputBuffer = await gpuProcessor.processBypass(inputBuffer);
+  const outputBuffer = await gpuProcessor.processBypass(inputBuffer);
 
   // 3. Convolution via GPU
   // const outputBuffer = await gpuProcessor.processConvolution(inputBuffer);
 
-  // if (!outputQueue.push([outputBuffer], FRAME_SIZE)) {
-  //   console.error('[worker.js] Pushing to outputQueue failed.');
-  //   return;
-  // }
+  if (!outputQueue.push([outputBuffer], FRAME_SIZE)) {
+    console.error('[worker.js] Pushing to outputQueue failed.');
+    return;
+  }
 };
 
 self.onmessage = async (message) => {
-  console.log('++++++++++++ [worker.js] onmessage: ' + message.data.type);
+  console.log('[worker.js] onmessage: ' + message.data.type);
+
   if (message.data.type !== 'init') {
     console.error(`[worker.js] Invalid message type: ${message.data.type}`);
     return;
@@ -91,9 +87,9 @@ self.onmessage = async (message) => {
       // Throttle the log by 1 second.
       if (timeElapsed >= 1000) {
         console.log(
-          `[worker.js] process() = ${timeSpent.toFixed(3)}ms : ` +
-          `avg = ${averageTimeSpent.toFixed(3)}ms : ` +
-          `callback interval = ${(callbackInterval).toFixed(3)}ms`);  
+            `[worker.js] process() = ${timeSpent.toFixed(3)}ms : ` +
+            `avg = ${averageTimeSpent.toFixed(3)}ms : ` +
+            `callback interval = ${(callbackInterval).toFixed(3)}ms`);
         timeElapsed -= 1000;
       }
 

@@ -1,13 +1,13 @@
 import {FreeQueue, createTestIR, fetchAudioFileToF32Array, QUEUE_SIZE, Assets } from '../../index.mjs'
 
-export const gpuAudio = async () => {
+export const gpuAudio = async (self, actions) => {
 // Create 2 FreeQueue instances with 4096 buffer length and 1 channel.
-  const inputQueue = new FreeQueue(QUEUE_SIZE, 2);
-  const outputQueue = new FreeQueue(QUEUE_SIZE, 2);
+  const inputQueue = new FreeQueue(QUEUE_SIZE, 1);
+  const outputQueue = new FreeQueue(QUEUE_SIZE, 1);
 
 // Create an atomic state for synchronization between Worker and AudioWorklet.
-  let atomicState = []
-  atomicState = new Int32Array(new SharedArrayBuffer(1 * Int32Array.BYTES_PER_ELEMENT));
+  const atomicState =
+      new Int32Array(new SharedArrayBuffer(1 * Int32Array.BYTES_PER_ELEMENT));
 
   let audioContext = null;
   let worker = null;
@@ -24,21 +24,12 @@ export const gpuAudio = async () => {
    */
   const initializeAudio = async () => {
     const audioContext = new AudioContext();
-
-    await audioContext.audioWorklet.addModule('/services/webgpu/src/component/webgpu-audio/views/mjs/audio/base-processor.js');
     await audioContext.audioWorklet.addModule('/services/webgpu/src/component/webgpu-audio/views/mjs/audio/basic-processor.js');
-    await audioContext.audioWorklet.addModule('/services/webgpu/src/component/webgpu-audio/views/mjs/audio/bypass-processor.js');
 
     const oscillatorNode = new OscillatorNode(audioContext);
-    // const processorNode = new AudioWorkletNode(audioContext, 'bypass-processor', {
-    //   processorOptions: { inputQueue, outputQueue, atomicState }
-    // });
-    const processorNodeBase = new AudioWorkletNode(audioContext, 'base-processor', {
-      processorOptions: { inputQueue, outputQueue, atomicState }
+    const processorNode = new AudioWorkletNode(audioContext, 'basic-processor', {
+      processorOptions: {inputQueue, outputQueue, atomicState}
     });
-    // const processorNode = new AudioWorkletNode(audioContext, 'basic-processor', {
-    //   processorOptions: { inputQueue, outputQueue, atomicState }
-    // });
 
     // Initially suspend the context to prevent the renderer from hammering the
     // Worker.
@@ -46,8 +37,7 @@ export const gpuAudio = async () => {
 
     // Form an audio graph and start the source. When the renderer is resumed,
     // the pipeline will be flowing.
-    oscillatorNode.connect(processorNodeBase).connect(audioContext.destination);
-    // oscillatorNode.connect(processorNodeBase).connect(audioContext.destination);
+    oscillatorNode.connect(processorNode).connect(audioContext.destination);
     oscillatorNode.start();
 
     console.log('[main.js] initializeAudio()');
@@ -131,10 +121,8 @@ export const gpuAudio = async () => {
   };
 
   // window.addEventListener('load', async () => {
-  //   debugger
-    let webgpuAudio = document.querySelector('webgpu-audio')
-    messageView = webgpuAudio.shadowRoot.getElementById('message-view');
 
+    messageView = self.shadowRoot.getElementById('message-view');
     if (!detectFeaturesAndReport(messageView)) {
       return;
     }
@@ -143,8 +131,6 @@ export const gpuAudio = async () => {
 
     // Create a WebWorker for Audio Processing.
     worker = new Worker('/services/webgpu/src/component/webgpu-audio/views/mjs/audio/worker.js', {type: 'module'});
-
-
     worker.onerror = (event) => {
       console.log('[main.js] Error from worker.js: ', event);
     };
@@ -152,11 +138,10 @@ export const gpuAudio = async () => {
     // Handle `select` menu for IRs.
     // TODO: Currently the dropdown menu is disabled. Revisit this when the
     // IR selection is implemented.
-    impulseResponseSelect = webgpuAudio.shadowRoot.getElementById('select-impulse-response');
-
+    impulseResponseSelect = document.getElementById('select-impulse-response');
     if (impulseResponseSelect) {
       Assets.forEach((asset) => {
-        const optionEl = document.createElement('option');
+        const optionEl = self.shadowRoot.createElement('option');
         optionEl.value = asset.path;
         optionEl.textContent = asset.label;
         impulseResponseSelect.appendChild(optionEl);
@@ -165,7 +150,7 @@ export const gpuAudio = async () => {
     }
 
     // Handle `button` with toggle logic.
-    toggleButton = webgpuAudio.shadowRoot.getElementById('toggle-audio');
+    toggleButton = self.shadowRoot.getElementById('toggle-audio');
     toggleButton.onclick = toggleButtonClickHandler;
     toggleButton.disabled = false;
 
