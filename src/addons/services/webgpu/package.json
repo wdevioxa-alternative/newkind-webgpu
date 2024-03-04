@@ -1,10 +1,10 @@
 {
-  "name": "@newkind/welcombook",
+  "name": "@newkind/webgpu",
   "version": "1.0.0",
   "description": "service",
   "main": "main.mjs",
   "scripts": {
-    "build": "nodemon --config esbuild.nodemon.public.json esbuild.config.public.mjs"
+    "build": "node esbuild.config.app.mjs"
   },
   "author": "Zababurin Sergej",
   "license": "GPL-3.0-or-later",

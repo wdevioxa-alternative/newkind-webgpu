@@ -14,9 +14,9 @@ function delay(ms) {
 }
 
 gulp.task('minify-mjs', function() {
-    return gulp.src("component/**/*.mjs")
+    return gulp.src("src/addons/services/**/*.mjs")
         .pipe(uglify())
-        .pipe(gulp.dest("../build/component"));
+        .pipe(gulp.dest("./build/component"));
 });
 
 gulp.task('minify-css', () => {

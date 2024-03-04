@@ -37,8 +37,8 @@ for (const k in process.env) {
  * @link https://esbuild.github.io/api/#build-api
  */
 const buildParams = {
-  entryPoints: ["./main.mjs"],
-  outfile: '../this/main.mjs',
+  entryPoints: ["./src/this/index.mjs"],
+  outfile: './build/src/this/index.mjs',
   format: "esm",
   target: "es2022",
   loader: {  '.css': 'copy', '.data': 'base64' , ".js": "jsx",".ttf":"base64", ".json": "copy", ".png": "file", ".jpeg": "file", ".jpg": "file", ".svg": "dataurl", ".woff": "file" },
@@ -49,7 +49,7 @@ const buildParams = {
   mainFields : [ 'module' , 'main' ],
   define,
   logLevel: "error",
-  external: ["*.gif"],
+  external: ["*.gif", "/env.mjs"],
   plugins: [
     aliasPlugin({
       '@src': path.resolve(__dirname, './')
@@ -60,14 +60,17 @@ const buildParams = {
       define
     }),
     cssModulesPlugin({
-      localsConvention: "dashes",
-      inject: true,
-      generateScopedName: (name, filename, css) => {
-        let prefix = path.dirname(filename).split('/')
-        prefix = prefix[prefix.length - 1]
-        return `${prefix}_${name}__${cyrb53(css, 2)}`
-      },
-      generateTsFile: true
+      v2: true,
+      v2CssModulesOption: {
+        dashedIndents: true,
+        /**
+         * Optional. The currently supported segments are:
+         * [name] - the base name of the CSS file, without the extension
+         * [hash] - a hash of the full file path
+         * [local] - the original class name
+         */
+        pattern: `[name]_[local]__[hash]`
+      }
     }),
     copy({
       resolveFrom: 'cwd',
@@ -87,8 +90,16 @@ const buildParams = {
 };
 
 console.time("⚡ [esbuild] Done");
-esbuild.build(buildParams).catch((e) => {
+
+try {
+  let result = await esbuild.build(buildParams)
+  console.log('BUILD: SUCCESS', result)
+  console.timeEnd("⚡ [esbuild] Done")
+} catch (e) {
   console.error('ERROR ESBUILD', e)
   process.exit(1)
-});
-console.timeEnd("⚡ [esbuild] Done")
+  console.timeEnd("⚡ [esbuild] Done")
+}
+
+
+
