@@ -424,7 +424,7 @@
 
 				<div class="emscripten_border">
 					<div id="content" style="display: block;">
-						<div>
+						<div class="slot-container">
 							<slot name="radio"></slot>
 						</div>
 						<slot name="audio"></slot>
@@ -440,23 +440,23 @@
 					</div>
 					<div class="term"></div>
 				</div>
-				<webgpu-audio
-					slot="audio"
-					data-field="settings-2"
-					data-services-path="webgpu"
-				>
-					<template>
-						<body>
+<!--				<webgpu-audio-->
+<!--					slot="audio"-->
+<!--					data-field="settings-2"-->
+<!--					data-services-path="webgpu"-->
+<!--				>-->
+<!--					<template>-->
+<!--						<body>-->
 <!--						<script src="/services/webgpu/src/component/webgpu-audio/views/mjs/audio/coi-serviceworker.js"></script-->
-						<div>
-							<div class="demo-box">
-								<div id="message-view" class="pb-3 text-sm whitespace-pre"></div>
-								<button id="toggle-audio" disabled>START</button>
-							</div>
-						</div>
-						</body>
-					</template>
-				</webgpu-audio>
+<!--						<div>-->
+<!--							<div class="demo-box">-->
+<!--								<div id="message-view" class="pb-3 text-sm whitespace-pre"></div>-->
+<!--								<button id="toggle-audio" disabled>START</button>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						</body>-->
+<!--					</template>-->
+<!--				</webgpu-audio>-->
 				<lacerta-radio
 					slot="radio"
 					data-field="settings-2"

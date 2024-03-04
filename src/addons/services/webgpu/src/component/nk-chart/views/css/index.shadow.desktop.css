@@ -288,3 +288,7 @@ canvas.emscripten { border: 0px none; background-color: black; }
 .xterm-underline {
     text-decoration: underline;
 }
+
+.slot-container {
+    margin-bottom: 24px;
+}
