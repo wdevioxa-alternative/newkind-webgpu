@@ -132,6 +132,7 @@ class GPUProcessor {
 
   // TODO: Currently not used. Enable this when IR selection is implemented.
   async processConvolution (input) {
+    console.log('GPU PROCESSOS', input)
     // let modified_input = new Float32Array(input.length + this.irArray_.length);
     let modified_input = new Float32Array(input.length );
 
@@ -183,7 +184,6 @@ class GPUProcessor {
               // Out of bounds.
               return;
           }
-
           for(var i = 0u; i < arrayLength(&input) - 1; i = i + 1u) {
               output[i] = 0.0;
               for(var j = 0u; j < arrayLength(&impulse); j = j + 1u) {

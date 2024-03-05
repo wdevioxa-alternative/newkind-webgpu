@@ -2,7 +2,7 @@ export default () => {
 return `
     <template>
     <div class="audio-newkind">
-        <h1 class="audio-newkind__title">NewKind Radio</h1>
+        <h1 class="audio-newkind__title">NK Radio</h1>
         <form class="audio-newkind__form">
             <input type="radio" class="audio-newkind__radio" id="raxxla" name="radio-selection" value="https://hermitage.hostingradio.ru/hermitage128.mp3" checked>
             <label for="raxxla"><span></span>Raxxla Radio</label>
