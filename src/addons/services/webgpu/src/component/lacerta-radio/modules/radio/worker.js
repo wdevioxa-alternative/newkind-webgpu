@@ -46,10 +46,10 @@ const process = async () => {
   }
 
   // 1. Bypassing
-  const outputBuffer = inputBuffer;
+  // const outputBuffer = inputBuffer;
 
   // 2. Bypass via GPU.
-  // outputBuffer[0] = await gpuProcessor.processBypass(inputBuffer[0]);
+  outputBuffer = await gpuProcessor.processBypass(inputBuffer);
   // outputBuffer[1] = await gpuProcessor.processBypass(inputBuffer[1]);
   // 3. Convolution via GPU
   // const outputBuffer = await gpuProcessor.processConvolution(inputBuffer);

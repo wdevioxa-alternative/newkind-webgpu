@@ -7,8 +7,7 @@ const inputQueue = new FreeQueue(QUEUE_SIZE, 2);
 const outputQueue = new FreeQueue(QUEUE_SIZE, 2);
 
 // Create an atomic state for synchronization between Worker and AudioWorklet.
-const atomicState =
-    new Int32Array(new SharedArrayBuffer(1 * Int32Array.BYTES_PER_ELEMENT));
+const atomicState = new Int32Array(new SharedArrayBuffer(1 * Int32Array.BYTES_PER_ELEMENT));
 
 let audioContext = null;
 let worker = null;

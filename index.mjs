@@ -156,6 +156,28 @@ export const modules = async (app) => {
     //     }
     // }));
 
+    app.get('/sse', (req, res) => {
+        console.log('111111111111')
+        res.setHeader('Cache-Control', 'no-cache');
+        res.setHeader('Content-Type', 'text/event-stream');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Connection', 'keep-alive');
+        res.flushHeaders(); // flush the headers to establish SSE with client
+
+        let counter = 0;
+        let interValID = setInterval(() => {
+            counter++;
+            res.write(`data: ${JSON.stringify({num: counter})}\n\n`); // res.write() instead of res.send()
+        }, 1000);
+
+        // If client closes connection, stop sending events
+        res.on('close', (e) => {
+            console.log('client dropped me', e);
+            clearInterval(interValID);
+            res.end();
+        });
+    });
+
     app.use(express.static(`${__dirname}/dist`));
     app.use('/checklist', express.static(`${__dirname}/services/checklist/src`));
     app.use('/json-ld', express.static(`${__dirname}/services/json-ld`));

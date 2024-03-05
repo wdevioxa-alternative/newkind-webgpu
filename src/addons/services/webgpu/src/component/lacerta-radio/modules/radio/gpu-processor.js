@@ -31,6 +31,7 @@ class GPUProcessor {
   }
 
   async processBypass (input) {
+    console.log('GPU PROCESSOR', input)
     // Get a GPU buffer in a mapped state and an arrayBuffer for writing.
     const gpuWriteBuffer = this.device_.createBuffer({
         mappedAtCreation: true,

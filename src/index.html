@@ -734,5 +734,39 @@
 	</template>
 </nk-memory>
 <script type="module" src="./main.bundle.mjs"></script>
+<script type="module">
+	let eventSource = new EventSource(`/sse`);
+	eventSource.onmessage = function(event) {
+		try {
+			console.log('!!!!!!!!!!!!', event.data)
+		} catch (e) {
+			let error = e
+			console.log('error',error)
+		}
+	};
+
+	eventSource.onopen = function (event) {
+		let state = ''
+		switch (eventSource.readyState) {
+			case 0:
+				state = "CONNECTING"
+				break
+			case 1:
+				state = "OPEN"
+				break
+			case 2:
+				state = "CLOSED"
+				break
+			default:
+				break
+		}
+
+		console.log('events',  state)
+	};
+
+	eventSource.onerror = function(e) {
+		console.log('error events', e)
+	};
+</script>
 </body>
 </html>

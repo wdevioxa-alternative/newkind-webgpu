@@ -56,6 +56,7 @@ server.then(async (data) => {
         app.listen(port, () => {
             console.log('pid: ', process.pid);
             console.log('listening on http://localhost:' + port);
+            open('http://localhost:4012/')
         });
 
         process.on('SIGINT', function () {
