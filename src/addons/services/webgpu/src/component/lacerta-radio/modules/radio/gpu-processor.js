@@ -31,7 +31,6 @@ class GPUProcessor {
   }
 
   async processBypass (input) {
-    console.log('GPU PROCESSOR', input)
     // Get a GPU buffer in a mapped state and an arrayBuffer for writing.
     const gpuWriteBuffer = this.device_.createBuffer({
         mappedAtCreation: true,
@@ -42,6 +41,7 @@ class GPUProcessor {
     // Write data to the GPUWriteBuffer first and unmap so that it can be used
     // later for copying.
     const arrayBuffer = gpuWriteBuffer.getMappedRange();
+    console.log('GPU PROCESSOR', input, arrayBuffer)
     new Float32Array(arrayBuffer).set(input);
     gpuWriteBuffer.unmap();
 

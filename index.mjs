@@ -178,6 +178,7 @@ export const modules = async (app) => {
         });
     });
 
+    app.use(express.static(`${__dirname}/src/addons`));
     app.use(express.static(`${__dirname}/dist`));
     app.use('/checklist', express.static(`${__dirname}/services/checklist/src`));
     app.use('/json-ld', express.static(`${__dirname}/services/json-ld`));

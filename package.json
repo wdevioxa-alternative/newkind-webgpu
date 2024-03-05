@@ -8,7 +8,7 @@
     "type": "module",
     "private": "true",
     "scripts": {
-        "start": "redrun -P  watch:index watch:addons server",
+        "start": "redrun -P  watch:index  server",
         "build": "redrun -S clean build:template_0",
         "================": "",
         "build:template_0": "redrun -P build:index build:addons",
