@@ -132,7 +132,9 @@ class GPUProcessor {
 
   // TODO: Currently not used. Enable this when IR selection is implemented.
   async processConvolution (input) {
-    let modified_input = new Float32Array(input.length + this.irArray_.length);
+    // let modified_input = new Float32Array(input.length + this.irArray_.length);
+    let modified_input = new Float32Array(input.length );
+
     for(let i = 0; i < modified_input.length; i++) {
       modified_input[i] = (i < input.length) ? input[i] : 0;
     }
@@ -142,7 +144,9 @@ class GPUProcessor {
       size: modified_input.length * Float32Array.BYTES_PER_ELEMENT,
       usage: GPUBufferUsage.STORAGE
     });
+
     const inputArrayBuffer = inputDataBuffer.getMappedRange();
+
     new Float32Array(inputArrayBuffer).set(modified_input);
     inputDataBuffer.unmap();
 
@@ -159,6 +163,7 @@ class GPUProcessor {
       size: modified_input.length * Float32Array.BYTES_PER_ELEMENT,
       usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC
     });
+
     gpuComputeBuffer.unmap();
 
     const computeModule = this.device_.createShaderModule({

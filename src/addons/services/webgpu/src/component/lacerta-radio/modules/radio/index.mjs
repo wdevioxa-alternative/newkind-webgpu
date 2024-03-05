@@ -1,5 +1,7 @@
 import FreeQueue from './lib/free-queue.js'
-import {createTestIR, fetchAudioFileToF32Array, QUEUE_SIZE, Assets } from '../../../webgpu-audio/views/index.mjs'
+import {createTestIR, fetchAudioFileToF32Array } from './ir-helper.js'
+import {QUEUE_SIZE} from './constants.js'
+import  Assets  from './assets.js'
 import { isEmpty } from '../../../../this/index.mjs';
 
 // Create 2 FreeQueue instances with 4096 buffer length and 1 channel.
@@ -16,7 +18,9 @@ let isWorkerInitialized = false;
 let toggleButton = null;
 let isPlaying = false;
 let messageView = null;
-let impulseResponseSelect = null;
+let impulseResponseSelect = {
+    value: 'TEST'
+};
 
 const CONFIG = {
     audio: {
@@ -128,7 +132,11 @@ const ctx = async (CONFIG) => {
     await CONFIG.audio.ctx.audioWorklet.addModule("/services/webgpu/src/component/lacerta-radio/modules/radio/stream-processor.mjs");
     CONFIG.audio.oscillatorNode = new OscillatorNode(CONFIG.audio.ctx);
     CONFIG.audio.processorNode = new AudioWorkletNode(CONFIG.audio.ctx, 'stream-processor', {
-        processorOptions: {inputQueue, outputQueue, atomicState}
+        processorOptions: {
+            inputQueue,
+            outputQueue,
+            atomicState
+        }
     });
 
     if(isEmpty(worker)) {
