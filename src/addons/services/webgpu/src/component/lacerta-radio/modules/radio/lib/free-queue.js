@@ -113,7 +113,6 @@ class FreeQueue {
   push(input, blockLength) {
     const currentRead = Atomics.load(this.states, this.States.READ);
     const currentWrite = Atomics.load(this.states, this.States.WRITE);
-    console.log('----------- PUSH -----------', input)
     // console.trace()
     if (this._getAvailableWrite(currentRead, currentWrite) < blockLength) {
       this.printAvailableReadAndWrite();

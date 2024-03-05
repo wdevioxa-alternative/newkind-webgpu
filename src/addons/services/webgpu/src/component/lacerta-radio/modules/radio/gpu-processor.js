@@ -1,4 +1,4 @@
-import { FRAME_SIZE, WORKGROUP_SIZE } from "../../../webgpu-audio/views/index.mjs";
+import { FRAME_SIZE, WORKGROUP_SIZE } from "./constants.js";
 
 console.assert(navigator.gpu);
 console.assert(navigator.gpu.requestAdapter);
@@ -40,9 +40,9 @@ class GPUProcessor {
 
     // Write data to the GPUWriteBuffer first and unmap so that it can be used
     // later for copying.
+    // console.log('3333333333333 input 3333333333333', input[0])
     const arrayBuffer = gpuWriteBuffer.getMappedRange();
-    console.log('GPU PROCESSOR', input, arrayBuffer)
-    new Float32Array(arrayBuffer).set(input);
+    new Float32Array(arrayBuffer).set(input[0]);
     gpuWriteBuffer.unmap();
 
     // Create a compute buffer that is used for storing computed data.
@@ -50,6 +50,7 @@ class GPUProcessor {
         size: FRAME_SIZE * Float32Array.BYTES_PER_ELEMENT,
         usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC
     });
+
     gpuComputeBuffer.unmap();
 
     // Compute shader code defining the group, bindings and the WORKGROUP_SIZE
@@ -64,7 +65,7 @@ class GPUProcessor {
 
         @compute @workgroup_size(${WORKGROUP_SIZE})
         fn main(@builtin(global_invocation_id) global_id : vec3<u32>) {
-          output[global_id.x] = input[global_id.x] * 1;
+          output[global_id.x] = input[global_id.x] * 0.5;
         }
       `
     });
