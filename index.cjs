@@ -7,6 +7,9 @@ const express = require('express');
 // let ParseDashboard = require('parse-dashboard');
 let app = express();
 
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 server.then(async (data) => {
 
     const port = (process.env.PORT)
@@ -51,7 +54,6 @@ server.then(async (data) => {
 
     data.modules(app).then(({app, open})=>{
         app.listen(port, () => {
-            open('http://localhost:4012/')
             console.log('pid: ', process.pid);
             console.log('listening on http://localhost:' + port);
         });

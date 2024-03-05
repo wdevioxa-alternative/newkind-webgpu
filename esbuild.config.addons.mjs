@@ -2,6 +2,7 @@ import fs from "fs";
 import fse from 'fs-extra/esm'
 const __dirname = process.cwd();
 import path from 'path';
+import open from 'open';
 
 console.time("⚡ [esbuild] ADDONS Done");
 const entryPoints = [path.resolve(__dirname, 'src/addons')]
@@ -18,6 +19,8 @@ try {
     fse.copySync(entryPoints[0], outdir[0])
     console.log('COPY success!')
     console.timeEnd("⚡ [esbuild] ADDONS Done")
+    open('http://localhost:4012/')
+
 } catch (err) {
     console.error(err)
 }
