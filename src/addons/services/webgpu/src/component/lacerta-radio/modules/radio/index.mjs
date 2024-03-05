@@ -230,8 +230,6 @@ export default async () => {
                 }
 
                 CONFIG.html.button.start.addEventListener('click', async (e) => {
-                   console.log('isPlaying',CONFIG.player.isPlaying)
-
                     if (CONFIG.player.isPlaying) {
                         await CONFIG.stream.song.pause()
                         CONFIG.audio.ctx.suspend();

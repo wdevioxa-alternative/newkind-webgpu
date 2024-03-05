@@ -43,7 +43,10 @@ class BasicProcessor extends AudioWorkletProcessor {
         if (this.primingCounter > ExpectedPrimingCount) {
             // Pull processed audio data out of `outputQueue` and pass it in output.
             const didPull = this.outputQueue.pull(output, RENDER_QUANTUM);
-            console.log('sssssss processor sssssss output ssssssssssss processor ssssss',didPull, output)
+            console.log('🟢 ==== processor ==== 🟢',{
+                input: input,
+                output: output
+            })
             if (!didPull) {
                 console.log('[basic-processor.js] Not enough data in outputQueue');
             }
@@ -52,14 +55,12 @@ class BasicProcessor extends AudioWorkletProcessor {
         }
 
         const didPush = this.inputQueue.push(input, RENDER_QUANTUM);
-        console.log('sssssss processor sssssss input ssssssssssss processor ssssss',didPush, input)
         if (!didPush) {
             console.log('[basic-processor.js] Not enough space in inputQueue');
         }
 
         // Notify worker.js if `inputQueue` has enough data to perform the batch
         // processing of FRAME_SIZE.
-        console.log('sssssss processor sssssss hasEnoughFramesFor ssssssssssss processor ssssss', this.inputQueue.hasEnoughFramesFor(FRAME_SIZE))
         if (this.inputQueue.hasEnoughFramesFor(FRAME_SIZE)) {
             Atomics.store(this.atomicState, 0, 1);
             Atomics.notify(this.atomicState, 0);

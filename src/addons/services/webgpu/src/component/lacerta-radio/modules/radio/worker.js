@@ -1,12 +1,13 @@
 import FreeQueue from './lib/free-queue.js'
 import GPUProcessor from './gpu-processor.js'
-import { FRAME_SIZE } from "../../../webgpu-audio/views/index.mjs";
+import { FRAME_SIZE } from "./constants.js";
 
 let inputQueue = null;
 let outputQueue = null;
 let atomicState = null;
 let gpuProcessor = null;
 let inputBuffer = null;
+let outputBuffer = null
 let irArray = null;
 let sampleRate = null;
 
@@ -37,19 +38,19 @@ const initialize = async (messageDataFromMainThread) => {
 };
 
 const process = async () => {
+  console.log('###############', inputBuffer, FRAME_SIZE)
   const data = inputQueue.pull(inputBuffer, FRAME_SIZE)
   if (!data) {
     console.error('[worker.js] Pulling from inputQueue failed.');
     return;
   }
 
-  console.log('****** worker process ******', inputBuffer)
   // 1. Bypassing
   const outputBuffer = inputBuffer;
 
   // 2. Bypass via GPU.
-  // const outputBuffer = await gpuProcessor.processBypass(inputBuffer);
-
+  // outputBuffer[0] = await gpuProcessor.processBypass(inputBuffer[0]);
+  // outputBuffer[1] = await gpuProcessor.processBypass(inputBuffer[1]);
   // 3. Convolution via GPU
   // const outputBuffer = await gpuProcessor.processConvolution(inputBuffer);
 
@@ -97,7 +98,6 @@ self.onmessage = async (message) => {
         timeElapsed -= 1000;
       }
 
-      console.log('ssssssssss WORKER PROCESS ssssssssssss')
       Atomics.store(atomicState, 0, 0);
     }
   }

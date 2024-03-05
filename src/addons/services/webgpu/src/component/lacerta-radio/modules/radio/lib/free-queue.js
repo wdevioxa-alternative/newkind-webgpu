@@ -151,7 +151,6 @@ class FreeQueue {
    * @return {boolean} False if the operation fails.
    */
   pull(output, blockLength) {
-    console.log('------------ PULL --------------', output, this.channelCount)
     const currentRead = Atomics.load(this.states, this.States.READ);
     const currentWrite = Atomics.load(this.states, this.States.WRITE);
     if (this._getAvailableRead(currentRead, currentWrite) < blockLength) {

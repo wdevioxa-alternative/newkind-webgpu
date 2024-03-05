@@ -16,6 +16,7 @@ header {
     width: min-content;
     white-space: normal;
     height: min-content;
+    line-height: 1.37;
 }
 
 body {
