@@ -54,7 +54,7 @@ const process = async () => {
   // outputBuffer[1] = await gpuProcessor.processBypass(inputBuffer[1]);
   // 3. Convolution via GPU
   const dataGPU = await gpuProcessor.processConvolution(inputBuffer[0]);
-  outputBuffer[0] = dataGPU
+  outputBuffer[1] = dataGPU
 
   if (!outputQueue.push(outputBuffer, FRAME_SIZE)) {
     console.error('[worker.js] Pushing to outputQueue failed.');
