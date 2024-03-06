@@ -51,8 +51,8 @@ const LacertaRadio =  class extends HTMLElement {
   }
 }
 
-if (customElements.get('lacerta-radio') === undefined) {
-  customElements.define('lacerta-radio', LacertaRadio );
+if (customElements.get('nk-radio') === undefined) {
+  customElements.define('nk-radio', LacertaRadio );
 };
 
 export { LacertaRadio }

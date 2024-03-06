@@ -5,7 +5,7 @@ import checklistCheckbox from './checklist-checkbox/index.mjs'
 import webgpuAudio from './webgpu-audio/index.mjs'
 import wasi from './nk-chart/index.mjs'
 import nkMem from './nk-memory/index.mjs'
-import { LacertaRadio } from './lacerta-radio/index.mjs'
+import { LacertaRadio } from './nk-radio/index.mjs'
 import nkEmulator from './nk-emulator/index.mjs'
 
 export default {

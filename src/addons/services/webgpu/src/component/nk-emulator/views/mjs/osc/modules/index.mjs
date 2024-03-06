@@ -557,7 +557,7 @@ export const OSC = async () => {
         let l = 0
 
         for (let i = 0; i < 8; i++) {
-            console.log('state.osc_p[i].up_lim', state.osc_p[i].up_lim)
+            // console.log('state.osc_p[i].up_lim', state.osc_p[i].up_lim)
             while (state.osc_p[i].up_lim <= 1 - state.osc_substrate_s.step[i]){
                 state.osc_p[i].up_lim = state.osc_substrate_s.step[i] * l;
                 l++;
