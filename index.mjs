@@ -10,9 +10,17 @@ import JiraApi from 'jira-client';
 import express from 'express';
 import { env } from './env.node.mjs'
 import open from 'open';
+import EventEmitter from "events";
+
+const Stream = new EventEmitter();
 
 let __dirname = process.cwd();
 dotenv.config();
+
+let sse = null
+export const stream = () => {
+    return Stream
+}
 export const modules = async (app) => {
     let whitelist = []
 
@@ -71,7 +79,7 @@ export const modules = async (app) => {
     app.use(queue.getMiddleware());
 
     app.use((req, res, next) => {
-        console.log(`node: 'icd-11': ${req.method}: ${req.path}`);
+        // console.log(`node: 'icd-11': ${req.method}: ${req.path}`);
         res.set('Cross-Origin-Embedder-Policy', 'require-corp');
         res.set('Cross-Origin-Opener-Policy', 'same-origin');
         next();
@@ -110,11 +118,12 @@ export const modules = async (app) => {
     let corsOptions = {
         origin: function (origin, callback) {
             console.log('origin', origin);
-            if (whitelist.indexOf(origin) !== -1) {
-                callback(null, true);
-            } else {
-                callback(new Error('Not allowed by CORS'));
-            }
+            callback(null, true);
+            // if (whitelist.indexOf(origin) !== -1) {
+            //     callback(null, true);
+            // } else {
+            //     callback(new Error('Not allowed by CORS'));
+            // }
         }
     };
 
@@ -156,26 +165,30 @@ export const modules = async (app) => {
     //     }
     // }));
 
-    app.get('/sse', (req, res) => {
-        console.log('111111111111')
-        res.setHeader('Cache-Control', 'no-cache');
-        res.setHeader('Content-Type', 'text/event-stream');
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Connection', 'keep-alive');
-        res.flushHeaders(); // flush the headers to establish SSE with client
-
+    app.options('/stream', cors(corsOptions));
+    app.get('/stream', async function(req, res) {
         let counter = 0;
-        let interValID = setInterval(() => {
-            counter++;
-            res.write(`data: ${JSON.stringify({num: counter})}\n\n`); // res.write() instead of res.send()
-        }, 1000);
 
-        // If client closes connection, stop sending events
-        res.on('close', (e) => {
-            console.log('client dropped me', e);
-            clearInterval(interValID);
-            res.end();
-        });
+        // Send a message on connection
+        res.write('event: connected\n');
+        res.write(`data: You are now subscribed!\n`);
+        res.write(`id: ${counter}\n\n`);
+        counter += 1;
+
+        // Send a subsequent message every five seconds
+        setInterval(() => {
+            res.write('event: message\n');
+            res.write(`data: ${new Date().toLocaleString()}\n`);
+            res.write(`id: ${counter}\n\n`);
+            counter += 1;
+        }, 5000);
+
+        // Close the connection when the client disconnects
+        req.on('close', () => res.end('OK'))
+        // Stream.on("push", function(event, data) {
+        //     console.log('################ SEND #############', JSON.stringify(data))
+        //     res.write(`data: ${JSON.stringify(data)}\n\n`);
+        // });
     });
 
     app.use(express.static(`${__dirname}/src/addons`));
@@ -294,7 +307,10 @@ export const modules = async (app) => {
 
     app.use(queue.getErrorMiddleware());
 
+    sse = Stream
+
     return {
+        Stream: Stream,
         app: app,
         open: open
     }

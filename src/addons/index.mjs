@@ -12,5 +12,4 @@ store.set('location', {
     pathname: '/services/webgpu/src'
 });
 
-
 export default 'API for DAPP'

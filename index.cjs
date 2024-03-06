@@ -1,6 +1,7 @@
-const { init } = require('./tracing.cjs');
-init('mss', 'development');
+// const { init } = require('./tracing.cjs');
+// init('mss', 'development');
 require('dotenv').config()
+const fs = require('fs')
 const server = import('./index.mjs');
 const express = require('express');
 // const ParseServer = require('./node/parse-server/lib/index.js').ParseServer;
@@ -10,6 +11,7 @@ let app = express();
 function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
 server.then(async (data) => {
 
     const port = (process.env.PORT)
@@ -52,7 +54,20 @@ server.then(async (data) => {
     // app.use('/dashboard', dashboard);
     // app.use('/parse', server.app);
 
-    data.modules(app).then(({app, open})=>{
+    data.modules(app).then(({app, open, Stream})=>{
+        Stream.emit("push", "message", {
+            type: 'dev',
+            msg: 'init'
+        });
+
+        fs.watch('./src/addons', (eventType, filename) => {
+            console.log('events change',eventType, filename);
+            Stream.emit("push", "message", {
+                type: 'dev',
+                msg: 'reload'
+            });
+        })
+
         app.listen(port, () => {
             console.log('pid: ', process.pid);
             console.log('listening on http://localhost:' + port);
@@ -60,6 +75,10 @@ server.then(async (data) => {
         });
 
         process.on('SIGINT', function () {
+            Stream.emit("push", "message", {
+                type: 'dev',
+                msg: 'close'
+            });
             process.exit(0);
         });
     }).catch(e => console.error(e));

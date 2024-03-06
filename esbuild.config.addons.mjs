@@ -2,11 +2,11 @@ import fs from "fs";
 import fse from 'fs-extra/esm'
 const __dirname = process.cwd();
 import path from 'path';
+import { stream } from './index.mjs';
 
 console.time("⚡ [esbuild] ADDONS Done");
 const entryPoints = [path.resolve(__dirname, 'src/addons')]
 const outdir = [path.resolve(__dirname, 'dist')]
-
 try {
     fs.rmSync(`${outdir[0]}/services`, { recursive: true, force: true });
     fs.rmSync(`${outdir[0]}/env.json`, { recursive: false, force: true });
