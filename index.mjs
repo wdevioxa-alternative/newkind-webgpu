@@ -24,6 +24,18 @@ export const stream = () => {
 export const modules = async (app) => {
     let whitelist = []
 
+    let corsOptions = {
+        origin: function (origin, callback) {
+            console.log('origin', origin);
+            callback(null, true);
+            // if (whitelist.indexOf(origin) !== -1) {
+            //     callback(null, true);
+            // } else {
+            //     callback(new Error('Not allowed by CORS'));
+            // }
+        }
+    };
+
     const transporter = nodemailer.createTransport({
         host: 'mail.digitalms.ru',
         port: 587,
@@ -55,7 +67,6 @@ export const modules = async (app) => {
 //     }),
 // );
 
-    app.use(compression());
     app.use(express.json());
 
     const jira = new JiraApi({
@@ -79,7 +90,7 @@ export const modules = async (app) => {
     app.use(queue.getMiddleware());
 
     app.use((req, res, next) => {
-        // console.log(`node: 'icd-11': ${req.method}: ${req.path}`);
+        console.log(`node: 'icd-11': ${req.method}: ${req.path}`);
         res.set('Cross-Origin-Embedder-Policy', 'require-corp');
         res.set('Cross-Origin-Opener-Policy', 'same-origin');
         next();
@@ -90,6 +101,23 @@ export const modules = async (app) => {
         // res.set('Cache-Control', 'no-store')
         // next()
     // })
+
+    // app.options('/stream', cors(corsOptions))
+    app.get('/stream', cors(corsOptions), async function(req, res) {
+        console.log('############## STREAM ##############')
+        res.writeHead(200, {
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive'
+        });
+        res.flushHeaders();
+        // res.write('retry: 10000\n\n');
+        Stream.on("push", function(event, data) {
+            res.write(`data: ${JSON.stringify(data)}\n\n`);
+        });
+    });
+
+    app.use(compression());
 
     app.get(`/welcomebook`, (req, res, next) => {
         next();
@@ -114,18 +142,6 @@ export const modules = async (app) => {
     app.get(`/mss`, (req, res, next) => {
         next();
     });
-
-    let corsOptions = {
-        origin: function (origin, callback) {
-            console.log('origin', origin);
-            callback(null, true);
-            // if (whitelist.indexOf(origin) !== -1) {
-            //     callback(null, true);
-            // } else {
-            //     callback(new Error('Not allowed by CORS'));
-            // }
-        }
-    };
 
     app.post(`/smtp_client`, async (req, res) => {
         try {
@@ -164,32 +180,6 @@ export const modules = async (app) => {
     //         return data;
     //     }
     // }));
-
-    app.options('/stream', cors(corsOptions));
-    app.get('/stream', async function(req, res) {
-        let counter = 0;
-
-        // Send a message on connection
-        res.write('event: connected\n');
-        res.write(`data: You are now subscribed!\n`);
-        res.write(`id: ${counter}\n\n`);
-        counter += 1;
-
-        // Send a subsequent message every five seconds
-        setInterval(() => {
-            res.write('event: message\n');
-            res.write(`data: ${new Date().toLocaleString()}\n`);
-            res.write(`id: ${counter}\n\n`);
-            counter += 1;
-        }, 5000);
-
-        // Close the connection when the client disconnects
-        req.on('close', () => res.end('OK'))
-        // Stream.on("push", function(event, data) {
-        //     console.log('################ SEND #############', JSON.stringify(data))
-        //     res.write(`data: ${JSON.stringify(data)}\n\n`);
-        // });
-    });
 
     app.use(express.static(`${__dirname}/src/addons`));
     app.use(express.static(`${__dirname}/dist`));

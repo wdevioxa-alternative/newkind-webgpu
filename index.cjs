@@ -55,13 +55,7 @@ server.then(async (data) => {
     // app.use('/parse', server.app);
 
     data.modules(app).then(({app, open, Stream})=>{
-        Stream.emit("push", "message", {
-            type: 'dev',
-            msg: 'init'
-        });
-
-        fs.watch('./src/addons', (eventType, filename) => {
-            console.log('events change',eventType, filename);
+        fs.watch('./src', (eventType, filename) => {
             Stream.emit("push", "message", {
                 type: 'dev',
                 msg: 'reload'

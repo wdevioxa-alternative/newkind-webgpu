@@ -737,6 +737,21 @@
 <script type="module">
 	let eventSource = new EventSource(`/stream`);
 
+	eventSource.onmessage = (event) => {
+		const data = JSON.parse(event.data)
+		if(data.type === 'dev') {
+			if(data.msg === 'reload') {
+				window.location.reload();
+			}
+		}
+		if(data.type === 'dev') {
+			if(data.msg === 'close') {
+				window.close();
+			}
+		}
+
+	};
+
 	eventSource.addEventListener("open", (event) => {
 		let state = ''
 		switch (eventSource.readyState) {
@@ -756,7 +771,6 @@
 	});
 
 	eventSource.onerror = function(e) {
-		// window.close()
 		console.log('error events', e)
 	};
 </script>
