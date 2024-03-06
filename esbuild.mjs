@@ -128,8 +128,8 @@ export const build = async () => {
         }
 
         let result = await esbuild.build(buildParams)
-        console.log('BUILD: SUCCESS', result)
-        return true
+        console.log('BUILD: SUCCESS')
+        return result
     } catch (e) {
         console.log('nk-error',e)
         process.exit(1)

@@ -86,7 +86,6 @@ server.then(async (data) => {
             })
             .on('change', async function(path) {
                 const build = await esbuild
-                console.log('################ 1 #####################',build.build)
                 await build.build()
                 Stream.emit("push", "message", {
                     type: 'dev',
