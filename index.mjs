@@ -26,7 +26,6 @@ export const modules = async (app) => {
 
     let corsOptions = {
         origin: function (origin, callback) {
-            console.log('origin', origin);
             callback(null, true);
             // if (whitelist.indexOf(origin) !== -1) {
             //     callback(null, true);

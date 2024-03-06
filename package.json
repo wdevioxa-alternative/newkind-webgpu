@@ -8,8 +8,8 @@
     "type": "module",
     "private": "true",
     "scripts": {
-        "start": "redrun -P  watch:index watch:server",
-        "build": "redrun -S clean build:template_0",
+        "start": "redrun -s watch:server",
+        "build": "redrun -s clean build:template_0",
         "================": "",
         "build:template_0": "redrun -P build:index build:addons",
         "build:all": "node esbuild.config.all.mjs",

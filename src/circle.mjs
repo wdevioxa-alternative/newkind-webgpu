@@ -6,8 +6,8 @@ export class wDCircle extends wDObject
     constructor( instance ) 
     {	
         super( instance, 0, 0, 0, 0 );
-    }  
-    
+    }
+
     destroy()
     {
 	    this.vertex.destroy();

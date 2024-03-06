@@ -6,7 +6,8 @@ export class wDImage extends wDObject
     {
         super( instance, 0, 0, 0, 0 );
 	    this.setURL( url );
-    }  
+    }
+
     destroy() {
         this.setColorsBuffer( null );
         this.setFragUVBuffer( null );

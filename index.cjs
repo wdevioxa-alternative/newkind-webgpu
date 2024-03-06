@@ -4,6 +4,7 @@ require('dotenv').config()
 const chokidar = require('chokidar');
 const fs = require('fs')
 const server = import('./index.mjs');
+const esbuild = import('./esbuild.mjs');
 const express = require('express');
 // const ParseServer = require('./node/parse-server/lib/index.js').ParseServer;
 // let ParseDashboard = require('parse-dashboard');
@@ -56,17 +57,41 @@ server.then(async (data) => {
     // app.use('/parse', server.app);
 
     data.modules(app).then(({app, open, Stream})=>{
-        const watcher = chokidar.watch('./src', {ignored: /^\./, persistent: true});
+        const watcher = chokidar.watch('./src', {
+            ignored: ['**/node_modules', /^\./, './src/addons'],
+            persistent: true
+        });
+
+        const watcherComponents = chokidar.watch('./src/addons', {
+            ignored: ['**/node_modules', /^\./],
+            persistent: true
+        });
+
+        watcherComponents
+            .on('add', async function(path) {
+                // console.log('File', path, 'has been added');
+            })
+            .on('change', async function(path) {
+                Stream.emit("push", "message", {
+                    type: 'dev',
+                    msg: 'reload'
+                });
+            })
+            .on('unlink', function(path) {console.log('File', path, 'has  2 been removed');})
+            .on('error', function(error) {console.error('Error  2 happened', error);})
 
         watcher
-            .on('add', async function(path) {console.log('File', path, 'has been added');})
+            .on('add', async function(path) {
+                // console.log('File', path, 'has been added');
+            })
             .on('change', async function(path) {
-                delay(3500).then(() => {
-                    Stream.emit("push", "message", {
-                        type: 'dev',
-                        msg: 'reload'
-                    });
-                })
+                const build = await esbuild
+                console.log('################ 1 #####################',build.build)
+                await build.build()
+                Stream.emit("push", "message", {
+                    type: 'dev',
+                    msg: 'reload'
+                });
             })
             .on('unlink', function(path) {console.log('File', path, 'has been removed');})
             .on('error', function(error) {console.error('Error happened', error);})

@@ -8,7 +8,8 @@ export class wDBox extends wDObject
     {	
         super( instance, 0, 0, 0, 0 );
         this.setDuty( false );
-    }  
+    }
+
 
     destroy()
     {
