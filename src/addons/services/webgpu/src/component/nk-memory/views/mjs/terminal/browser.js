@@ -56,7 +56,7 @@ export default async (self) => {
     }
     term.loadAddon(localEcho);
     term.loadAddon(new WebLinksAddon.WebLinksAddon());
-    term.open(self.shadowRoot.querySelector('.term'));
+    term.open(self.querySelector('.term'));
     fitAddon.fit();
     onresize = () => fitAddon.fit();
     const ANSI_GRAY = '\x1B[38;5;251m';

@@ -1,6 +1,7 @@
 // const { init } = require('./tracing.cjs');
 // init('mss', 'development');
 require('dotenv').config()
+const chokidar = require('chokidar');
 const fs = require('fs')
 const server = import('./index.mjs');
 const express = require('express');
@@ -55,12 +56,20 @@ server.then(async (data) => {
     // app.use('/parse', server.app);
 
     data.modules(app).then(({app, open, Stream})=>{
-        fs.watch('./src', (eventType, filename) => {
-            Stream.emit("push", "message", {
-                type: 'dev',
-                msg: 'reload'
-            });
-        })
+        const watcher = chokidar.watch('./src', {ignored: /^\./, persistent: true});
+
+        watcher
+            .on('add', function(path) {console.log('File', path, 'has been added');})
+            .on('change', function(path) {
+                console.log('--- CHANGE ---')
+                Stream.emit("push", "message", {
+                    type: 'dev',
+                    msg: 'reload'
+                });
+            })
+            .on('unlink', function(path) {console.log('File', path, 'has been removed');})
+            .on('error', function(error) {console.error('Error happened', error);})
+
 
         app.listen(port, () => {
             console.log('pid: ', process.pid);

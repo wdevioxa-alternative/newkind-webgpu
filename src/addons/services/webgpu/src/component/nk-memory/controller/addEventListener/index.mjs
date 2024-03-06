@@ -1,6 +1,6 @@
 export default async (self, actions) => {
 
-    console.log('MEMORY')
+    console.log('MEMORY 2')
     return {
         init: () => {
             // mount.addEventListener('click', actions.mount.click)

@@ -111,7 +111,6 @@ export const modules = async (app) => {
             'Connection': 'keep-alive'
         });
         res.flushHeaders();
-        // res.write('retry: 10000\n\n');
         Stream.on("push", function(event, data) {
             res.write(`data: ${JSON.stringify(data)}\n\n`);
         });

@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link href="/services/webgpu/src/this/css/index.light.css" rel="stylesheet"/>
 	<link href="js/themes/dark-hive/jquery-ui.css" rel="stylesheet"/>
 	<link href="js/themes/dark-hive/theme.css" rel="stylesheet"/>
 	<link href="js/jquery-ui-fix.css" rel="stylesheet"/>
@@ -11,11 +12,11 @@
 	<script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript" src="js/libsndfile.js"></script>
 	<script type="text/javascript" src="config/controller.bundle.js"></script>
-	<link rel="preload" href="/services/webgpu/src/component/nk-chart/views/mjs/terminal/coreutils.async.wasm" as="fetch" crossorigin />
-	<script src="/services/webgpu/src/component/nk-chart/views/mjs/terminal/modules/xterm/lib/xterm.js"></script>
-	<script src="/services/webgpu/src/component/nk-chart/views/mjs/terminal/modules/local-echo/dist/local-echo.js"></script>
-	<script src="/services/webgpu/src/component/nk-chart/views/mjs/terminal/modules/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
-	<script src="/services/webgpu/src/component/nk-chart/views/mjs/terminal/modules/xterm-addon-web-links/lib/xterm-addon-web-links.js"></script>
+	<link rel="preload" href="/services/webgpu/src/component/nk-memory/views/mjs/terminal/coreutils.async.wasm" as="fetch" crossorigin />
+	<script src="/services/webgpu/src/component/nk-memory/views/mjs/terminal/modules/xterm/lib/xterm.js"></script>
+	<script src="/services/webgpu/src/component/nk-memory/views/mjs/terminal/modules/local-echo/dist/local-echo.js"></script>
+	<script src="/services/webgpu/src/component/nk-memory/views/mjs/terminal/modules/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
+	<script src="/services/webgpu/src/component/nk-memory/views/mjs/terminal/modules/xterm-addon-web-links/lib/xterm-addon-web-links.js"></script>
 
 	<title>WebGPU Test Page</title>
 
@@ -62,27 +63,46 @@
 <nk-memory data-field="mem_0" data-services-path="webgpu">
 	<template>
 		<div class="container">
-			<div class="settings">
-				<h2>Память</h2>
-				<div>Всего памяти</div>
-				<div>Используется</div>
-				<div>Длинна</div>
-				<div class="emulator">
-					<nk-emulator data-field="emulator_0" data-services-path="webgpu">
-						<template>
-							<div class="container">
-								<h2>Эмулятор</h2>
-								<div class="wrapper">
-									<button class="start"> Start </button>
-									<div class="array"></div>
-								</div>
-							</div>
-						</template>
-					</nk-emulator>
-				</div>
+			<div class="nk-settings">
+				<slot name="nk-settings"></slot>
 			</div>
-			<slot name="nk-chart"></slot>
+			<div class="nk-radio">
+				<slot name="lacerta-radio"></slot>
+			</div>
+			<div class="nk-chart">
+				<slot name="nk-chart"></slot>
+			</div>
+			<div class="nk-terminal">
+				<slot name="nk-terminal"></slot>
+			</div>
 		</div>
+		<div slot="nk-settings" data-exclusion="true" class="settings">
+			<h2>Память</h2>
+			<div>Всего памяти</div>
+			<div>Используется</div>
+			<div>Длинна</div>
+			<div class="emulator">
+				<nk-emulator data-field="emulator_0" data-services-path="webgpu">
+					<template>
+						<div class="container">
+							<h2>Эмулятор</h2>
+							<div class="wrapper">
+								<button class="start"> Start </button>
+								<div class="array"></div>
+							</div>
+						</div>
+					</template>
+				</nk-emulator>
+			</div>
+		</div>
+		<div slot="nk-terminal" data-exclusion="true" class="term"></div>
+		<lacerta-radio
+			slot="radio"
+			data-field="settings-2"
+			data-services-path="webgpu"
+			slot="nk-radio"
+		></lacerta-radio>
+
 		<nk-chart slot="nk-chart" data-field="terminal_0" data-services-path="webgpu">
 			<template>
 				<script type='text/javascript'>
@@ -438,7 +458,6 @@
 							<slot name="accordeon"></slot>
 						</div>
 					</div>
-					<div class="term"></div>
 				</div>
 <!--				<webgpu-audio-->
 <!--					slot="audio"-->
@@ -457,12 +476,6 @@
 <!--						</body>-->
 <!--					</template>-->
 <!--				</webgpu-audio>-->
-				<lacerta-radio
-					slot="radio"
-					data-field="settings-2"
-					data-services-path="webgpu"
-				></lacerta-radio>
-
 				<div
 					data-exclusion
 					slot="accordeon"
@@ -767,7 +780,6 @@
 			default:
 				break
 		}
-		console.log('sse state: ', state)
 	});
 
 	eventSource.onerror = function(e) {
