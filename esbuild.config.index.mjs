@@ -132,6 +132,6 @@ try {
     console.timeEnd("⚡ [esbuild] Done")
 } catch (e) {
     console.timeEnd("⚡ [esbuild] Done")
-    console.log(e)
+    console.log('nk-error',e)
     process.exit(1)
 }

@@ -59,13 +59,15 @@ server.then(async (data) => {
         const watcher = chokidar.watch('./src', {ignored: /^\./, persistent: true});
 
         watcher
-            .on('add', function(path) {console.log('File', path, 'has been added');})
-            .on('change', function(path) {
-                console.log('--- CHANGE ---')
-                Stream.emit("push", "message", {
-                    type: 'dev',
-                    msg: 'reload'
-                });
+            .on('add', async function(path) {console.log('File', path, 'has been added');})
+            .on('change', async function(path) {
+                delay(3000).then(() => {
+                    console.log('=========================================')
+                    Stream.emit("push", "message", {
+                        type: 'dev',
+                        msg: 'reload'
+                    });
+                })
             })
             .on('unlink', function(path) {console.log('File', path, 'has been removed');})
             .on('error', function(error) {console.error('Error happened', error);})

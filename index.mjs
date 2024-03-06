@@ -90,7 +90,7 @@ export const modules = async (app) => {
     app.use(queue.getMiddleware());
 
     app.use((req, res, next) => {
-        console.log(`node: 'icd-11': ${req.method}: ${req.path}`);
+        // console.log(`node: 'icd-11': ${req.method}: ${req.path}`);
         res.set('Cross-Origin-Embedder-Policy', 'require-corp');
         res.set('Cross-Origin-Opener-Policy', 'same-origin');
         next();
@@ -104,7 +104,6 @@ export const modules = async (app) => {
 
     // app.options('/stream', cors(corsOptions))
     app.get('/stream', cors(corsOptions), async function(req, res) {
-        console.log('############## STREAM ##############')
         res.writeHead(200, {
             'Content-Type': 'text/event-stream',
             'Cache-Control': 'no-cache',
