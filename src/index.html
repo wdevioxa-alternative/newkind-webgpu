@@ -66,8 +66,11 @@
 			<div class="nk-settings">
 				<slot name="nk-settings"></slot>
 			</div>
+			<div class="emulator">
+				<slot name="nk-emulator"></slot>
+			</div>
 			<div class="nk-radio">
-				<slot name="lacerta-radio"></slot>
+				<slot name="nk-radio"></slot>
 			</div>
 			<div class="nk-chart">
 				<slot name="nk-chart"></slot>
@@ -76,28 +79,30 @@
 				<slot name="nk-terminal"></slot>
 			</div>
 		</div>
+		<nk-emulator
+			slot="nk-emulator"
+			data-field="emulator_0"
+			data-services-path="webgpu"
+		>
+			<template>
+				<div class="container">
+					<h2>Эмулятор</h2>
+					<div class="wrapper">
+						<button class="start"> Start </button>
+						<div class="array"></div>
+					</div>
+				</div>
+			</template>
+		</nk-emulator>
 		<div slot="nk-settings" data-exclusion="true" class="settings">
 			<h2>Память</h2>
 			<div>Всего памяти</div>
 			<div>Используется</div>
 			<div>Длинна</div>
-			<div class="emulator">
-				<nk-emulator data-field="emulator_0" data-services-path="webgpu">
-					<template>
-						<div class="container">
-							<h2>Эмулятор</h2>
-							<div class="wrapper">
-								<button class="start"> Start </button>
-								<div class="array"></div>
-							</div>
-						</div>
-					</template>
-				</nk-emulator>
-			</div>
 		</div>
 		<div slot="nk-terminal" data-exclusion="true" class="term"></div>
 		<lacerta-radio
-			slot="radio"
+			slot="nk-radio"
 			data-field="settings-2"
 			data-services-path="webgpu"
 			slot="nk-radio"
