@@ -61,8 +61,7 @@ server.then(async (data) => {
         watcher
             .on('add', async function(path) {console.log('File', path, 'has been added');})
             .on('change', async function(path) {
-                delay(3000).then(() => {
-                    console.log('=========================================')
+                delay(3500).then(() => {
                     Stream.emit("push", "message", {
                         type: 'dev',
                         msg: 'reload'
