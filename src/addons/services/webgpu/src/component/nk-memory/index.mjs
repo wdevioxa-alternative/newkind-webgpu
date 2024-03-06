@@ -9,7 +9,6 @@ const defaultState = {
 
 };
 
-
 const INDEX = class extends HTMLElement {
     static get observedAttributes () {
         return ['disabled', 'open'];

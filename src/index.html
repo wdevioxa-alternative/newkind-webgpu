@@ -12,7 +12,6 @@
 	<script type="text/javascript" src="js/main.js"></script>
 	<script type="text/javascript" src="js/libsndfile.js"></script>
 	<script type="text/javascript" src="config/controller.bundle.js"></script>
-	<link rel="preload" href="/services/webgpu/src/component/nk-memory/views/mjs/terminal/coreutils.async.wasm" as="fetch" crossorigin />
 	<script src="/services/webgpu/src/component/nk-memory/views/mjs/terminal/modules/xterm/lib/xterm.js"></script>
 	<script src="/services/webgpu/src/component/nk-memory/views/mjs/terminal/modules/local-echo/dist/local-echo.js"></script>
 	<script src="/services/webgpu/src/component/nk-memory/views/mjs/terminal/modules/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
@@ -94,18 +93,31 @@
 				</div>
 			</template>
 		</nk-emulator>
-		<div slot="nk-settings" data-exclusion="true" class="settings">
-			<h2>Память</h2>
-			<div>Всего памяти</div>
-			<div>Используется</div>
-			<div>Длинна</div>
-		</div>
-		<div slot="nk-terminal" data-exclusion="true" class="term"></div>
+		<nk-settings
+			slot="nk-settings"
+			data-field="settings"
+			data-services-path="webgpu"
+		>
+			<div class="settings">
+				<h2>Память</h2>
+				<div>Всего памяти</div>
+				<div>Используется</div>
+				<div>Длинна</div>
+			</div>
+		</nk-settings>
+
+		<nk-terminal
+			slot="nk-terminal"
+			data-field="terminal_0"
+			data-services-path="webgpu"
+		>
+			<div class="term"></div>
+		</nk-terminal>
+
 		<lacerta-radio
 			slot="nk-radio"
 			data-field="settings-2"
 			data-services-path="webgpu"
-			slot="nk-radio"
 		></lacerta-radio>
 
 		<nk-chart slot="nk-chart" data-field="terminal_0" data-services-path="webgpu">
