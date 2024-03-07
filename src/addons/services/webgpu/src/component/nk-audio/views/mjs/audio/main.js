@@ -24,7 +24,7 @@ export const gpuAudio = async (self, actions) => {
    */
   const initializeAudio = async () => {
     const audioContext = new AudioContext();
-    await audioContext.audioWorklet.addModule('/services/webgpu/src/component/webgpu-audio/views/mjs/audio/basic-processor.js');
+    await audioContext.audioWorklet.addModule('/services/webgpu/src/component/nk-audio/views/mjs/audio/basic-processor.js');
     const gainNode = audioContext.createGain(audioContext);
     const oscillatorNode = new OscillatorNode(audioContext);
     const processorNode = new AudioWorkletNode(audioContext, 'basic-processor', {
@@ -130,7 +130,7 @@ export const gpuAudio = async (self, actions) => {
     audioContext = await initializeAudio();
 
     // Create a WebWorker for Audio Processing.
-    worker = new Worker('/services/webgpu/src/component/webgpu-audio/views/mjs/audio/worker.js', {type: 'module'});
+    worker = new Worker('/services/webgpu/src/component/nk-audio/views/mjs/audio/worker.js', {type: 'module'});
     worker.onerror = (event) => {
       console.log('[main.js] Error from worker.js: ', event);
     };

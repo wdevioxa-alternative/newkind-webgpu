@@ -440,14 +440,14 @@
 					</div>
 					<div class="term"></div>
 				</div>
-				<webgpu-audio
+				<nk-audio
 					slot="audio"
 					data-field="settings-2"
 					data-services-path="webgpu"
 				>
 					<template>
 						<body>
-<!--						<script src="/services/webgpu/src/component/webgpu-audio/views/mjs/audio/coi-serviceworker.js"></script-->
+<!--						<script src="/services/webgpu/src/component/nk-audio/views/mjs/audio/coi-serviceworker.js"></script-->
 						<div>
 							<div class="demo-box">
 								<div id="message-view" class="pb-3 text-sm whitespace-pre"></div>
@@ -456,7 +456,7 @@
 						</div>
 						</body>
 					</template>
-				</webgpu-audio>
+				</nk-audio>
 
 				<lacerta-radio
 					slot="radio"
