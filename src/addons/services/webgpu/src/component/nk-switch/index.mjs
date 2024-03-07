@@ -3,7 +3,7 @@ import { actions } from './actions/index.mjs'
 import { controller } from './controller/index.mjs'
 
 // const COMPONENT = path.dirname(import.meta.url).split(path.sep).pop()
-const COMPONENT = 'multi-switchrh';
+const COMPONENT = 'nk-switch';
 
 const defaultState = {
 

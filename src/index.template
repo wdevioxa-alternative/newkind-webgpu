@@ -472,7 +472,7 @@
 				>
 					<h5>Удержать картинку графика</h5>
 					<div>
-						<multi-switchrh data-field="settings-2" data-services-path="webgpu">
+						<nk-switch data-field="settings-2" data-services-path="webgpu">
 							<template>
 								<div class="container">
 									<fieldset data-field="holdchart" class="multiswitch" data-theme="stoplight">
@@ -485,11 +485,11 @@
 									</fieldset>
 								</div>
 							</template>
-						</multi-switchrh>
+						</nk-switch>
 					</div>
 					<h5>Goniometer</h5>
 					<div>
-						<multi-switchrh data-field="settings-2" data-services-path="webgpu">
+						<nk-switch data-field="settings-2" data-services-path="webgpu">
 							<template>
 								<div class="container">
 									<fieldset data-field="goniometer" class="multiswitch" data-theme="stoplight">
@@ -504,11 +504,11 @@
 									</fieldset>
 								</div>
 							</template>
-						</multi-switchrh>
+						</nk-switch>
 					</div>
 					<h5>Left/Stereo/Right</h5>
 					<div>
-						<multi-switchrh data-field="settings-2" data-services-path="webgpu">
+						<nk-switch data-field="settings-2" data-services-path="webgpu">
 							<template>
 								<div class="container">
 									<fieldset data-field="LCR" class="multiswitch" data-theme="stoplight">
@@ -525,11 +525,11 @@
 									</fieldset>
 								</div>
 							</template>
-						</multi-switchrh>
+						</nk-switch>
 					</div>
 					<h5>Input Data</h5>
 					<div>
-						<multi-switchrh data-field="settings-1" data-services-path="webgpu">
+						<nk-switch data-field="settings-1" data-services-path="webgpu">
 							<template>
 								<div class="container">
 									<fieldset data-field="settingsInput" class="multiswitch" data-theme="stoplight">
@@ -546,8 +546,8 @@
 									</fieldset>
 								</div>
 							</template>
-						</multi-switchrh>
-						<multi-switchrh data-field="settings-1" data-services-path="webgpu">
+						</nk-switch>
+						<nk-switch data-field="settings-1" data-services-path="webgpu">
 							<template>
 								<div class="container">
 									<fieldset data-field="settingsDelay" class="multiswitch">
@@ -592,7 +592,7 @@
 									</fieldset>
 								</div>
 							</template>
-						</multi-switchrh>
+						</nk-switch>
 						<checklist-checkbox data-id="checkbox_0" data-services-path="webgpu">
 							<template>
 								<ul class="container">
