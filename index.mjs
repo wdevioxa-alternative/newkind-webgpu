@@ -297,6 +297,7 @@ export const modules = async (app) => {
     sse = Stream
 
     return {
+        env: env,
         Stream: Stream,
         app: app,
         open: open

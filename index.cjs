@@ -15,11 +15,6 @@ function delay(ms) {
 }
 
 server.then(async (data) => {
-
-    const port = (process.env.PORT)
-        ? process.env.PORT
-        : 3001;
-
     // var options = { allowInsecureHTTP: false };
     // const server = new ParseServer({
     //     databaseURI: 'mongodb://localhost:27017/dev', // Connection string for your MongoDB database
@@ -56,7 +51,11 @@ server.then(async (data) => {
     // app.use('/dashboard', dashboard);
     // app.use('/parse', server.app);
 
-    data.modules(app).then(({app, open, Stream})=> {
+    data.modules(app).then(({app, open, Stream, env})=> {
+        const port = (env().PORT)
+            ? env().PORT
+            : 3001;
+
         const watcher = chokidar.watch('./src', {
             ignored: ['**/node_modules', /^\./, './src/addons'],
             persistent: true
@@ -102,7 +101,7 @@ server.then(async (data) => {
         app.listen(port, () => {
             console.log('pid: ', process.pid);
             console.log('listening on http://localhost:' + port);
-            open('http://localhost:4012/')
+            open(`http://localhost:${port}/`)
         });
 
         process.on('SIGINT', function () {
