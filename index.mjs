@@ -8,7 +8,7 @@ import proxy from 'express-http-proxy';
 import * as dotenv from 'dotenv';
 import JiraApi from 'jira-client';
 import express from 'express';
-import { env } from './env.node.mjs'
+import { env } from './env.mjs'
 import open from 'open';
 import EventEmitter from "events";
 

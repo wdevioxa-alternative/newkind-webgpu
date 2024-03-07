@@ -16,7 +16,6 @@ class BypassProcessor extends AudioWorkletProcessor {
         this.atomicState = options.processorOptions.atomicState;
         Object.setPrototypeOf(this.inputQueue, FreeQueue.prototype);
         Object.setPrototypeOf(this.outputQueue, FreeQueue.prototype);
-        console.log('################################', options)
         this.primingCounter = 0;
     }
 

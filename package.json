@@ -8,7 +8,7 @@
     "type": "module",
     "private": "true",
     "scripts": {
-        "start": "redrun -s build:index watch:server",
+        "start": "redrun -s clean build:index copy:env watch:server",
         "build": "redrun -s clean build:template_0",
         "================": "",
         "build:template_0": "redrun -P build:index build:addons",
@@ -18,6 +18,7 @@
         "watch:addons": "nodemon --config esbuild.watch.addons.json esbuild.config.addons.mjs",
         "watch:index": "nodemon --config esbuild.watch.index.json esbuild.config.index.mjs",
         "watch:server": "nodemon --config esbuild.watch.server.json index.cjs",
+        "copy:env": "node esbuild.config.env.mjs",
         "deploy": "gh-pages -d dist",
         "clean": "node esbuild.config.emptyDirSync.mjs",
         "sleep": "node -e \"setTimeout(() => process.exit(0), 15000)\"",

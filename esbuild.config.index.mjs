@@ -1,5 +1,5 @@
 import * as esbuild from 'esbuild'
-import * as fs from "fs-extra";
+import fs from 'fs'
 import { copy } from 'esbuild-plugin-copy';
 import cssModulesPlugin from "esbuild-css-modules-plugin";
 import { polyfillNode } from "esbuild-plugin-polyfill-node";
@@ -19,6 +19,10 @@ for (const k in process.env) {
     if (k.startsWith('REACT_APP_') || k.startsWith('PUBLIC_URL') || k.startsWith('PORT')) {
         define[`process.env.${k}`] = JSON.stringify(process.env[k]);
     }
+}
+
+if (!fs.existsSync(path.resolve(__dirname, 'dist'))) {
+    fs.mkdirSync(path.resolve(__dirname, 'dist'));
 }
 
 const entryPoints = [path.resolve(__dirname, 'src/app.mjs')]

@@ -5,7 +5,7 @@ let ENV = {}
 try {
     const json = JSON.parse(
         await readFile(
-            new URL('./dist/env.json', import.meta.url)
+            new URL('./env.json', import.meta.url)
         )
     );
 
