@@ -128,8 +128,8 @@ const drawOscilloscope = () => {
 }
 
 const ctx = async (CONFIG) => {
-    CONFIG.audio.ctx = new (window.AudioContext || window.webkitAudioContext)();
-    await CONFIG.audio.ctx.audioWorklet.addModule("/services/webgpu/src/component/lacerta-radio/modules/radio/stream-processor.mjs");
+    CONFIG.audio.ctx = new window.AudioContext;
+    await CONFIG.audio.ctx.audioWorklet.addModule("/services/webgpu/src/component/nk-radio/modules/radio/stream-processor.mjs");
     CONFIG.audio.oscillatorNode = new OscillatorNode(CONFIG.audio.ctx);
     CONFIG.audio.processorNode = new AudioWorkletNode(CONFIG.audio.ctx, 'stream-processor', {
         processorOptions: {
@@ -140,7 +140,7 @@ const ctx = async (CONFIG) => {
     });
 
     if(isEmpty(worker)) {
-        worker =  new Worker('/services/webgpu/src/component/lacerta-radio/modules/radio/worker.js', {type: 'module'});
+        worker =  new Worker('/services/webgpu/src/component/nk-radio/modules/radio/worker.js', {type: 'module'});
     }
 
     worker.onerror = (event) => {

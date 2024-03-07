@@ -40,7 +40,7 @@ const template = (component) => {
   })
 }
 
-const LacertaRadio =  class extends HTMLElement {
+const nkRadio =  class extends HTMLElement {
   constructor () {
     super()
     props(this)
@@ -52,7 +52,7 @@ const LacertaRadio =  class extends HTMLElement {
 }
 
 if (customElements.get('nk-radio') === undefined) {
-  customElements.define('nk-radio', LacertaRadio );
+  customElements.define('nk-radio', nkRadio );
 };
 
-export { LacertaRadio }
+export default { nkRadio }

@@ -1,4 +1,4 @@
-const IRDirPath = '/services/webgpu/src/component/lacerta-radio/modules/radio/sounds/impulse-responses';
+const IRDirPath = '/services/webgpu/src/component/nk-radio/modules/radio/sounds/impulse-responses';
 
 const Assets = [
   {
