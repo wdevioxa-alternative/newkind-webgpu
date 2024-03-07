@@ -427,7 +427,7 @@ components.set('create', [{
                 if (isCheckbox) {
                     const checkbox = obj.checkbox[indexCheckbox]
 
-                    dataBody = dataBody + `<checklist-checkbox
+                    dataBody = dataBody + `<nk-checkbox
                                               data-id="checkbox_6"
                                               data-services-path="mss"
                                               data-css-shadow="mss"
@@ -440,7 +440,7 @@ components.set('create', [{
                                                         </li>
                                                     </ul>
                                                 </template>
-                                            </checklist-checkbox>`
+                                            </nk-checkbox>`
                 }
 
                 if (isDatapicker) {

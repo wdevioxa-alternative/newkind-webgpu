@@ -593,7 +593,7 @@
 								</div>
 							</template>
 						</nk-switch>
-						<checklist-checkbox data-id="checkbox_0" data-services-path="webgpu">
+						<nk-checkbox data-id="checkbox_0" data-services-path="webgpu">
 							<template>
 								<ul class="container">
 									<li class="checkbox">
@@ -666,7 +666,7 @@
 									</li>
 								</ul>
 							</template>
-						</checklist-checkbox>
+						</nk-checkbox>
 					</div>
 					<h5>Параметры графика</h5>
 					<div>

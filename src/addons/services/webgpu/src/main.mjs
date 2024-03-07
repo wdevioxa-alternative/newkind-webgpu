@@ -115,7 +115,7 @@ export const rules = (mount = {}) => {
             events,
         } = await import(`${pathname}/this/index.mjs`)
 
-        const components = ['mss-settings', 'mss-select', 'mss-input', 'mss-datapicker', 'mss-button','checklist-checkbox', 'mss-filter','fer-pagination', 'fer-select','fer-tree', 'fer-region', 'fer-form','fer-hash','fer-table', 'fer-link', 'fer-hash', 'fer-button', 'welcome-menu', 'welcome-section', 'welcome-header']
+        const components = ['mss-settings', 'mss-select', 'mss-input', 'mss-datapicker', 'mss-button','nk-checkbox', 'mss-filter','fer-pagination', 'fer-select','fer-tree', 'fer-region', 'fer-form','fer-hash','fer-table', 'fer-link', 'fer-hash', 'fer-button', 'welcome-menu', 'welcome-section', 'welcome-header']
 
         for (let i = 0; i < components.length; ++i) {
             import(`${pathname}/component/${components[i]}/index.mjs`)
