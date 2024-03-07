@@ -56,7 +56,7 @@ server.then(async (data) => {
     // app.use('/dashboard', dashboard);
     // app.use('/parse', server.app);
 
-    data.modules(app).then(({app, open, Stream})=>{
+    data.modules(app).then(({app, open, Stream})=> {
         const watcher = chokidar.watch('./src', {
             ignored: ['**/node_modules', /^\./, './src/addons'],
             persistent: true
