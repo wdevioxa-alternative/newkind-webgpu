@@ -4,7 +4,7 @@ export const actions = (self) => {
         resolve({
             mount: {
                 click: async (event) => {
-                    console.trace()
+
                     console.log('<<<<< @@@@@@@@@@@@@@@@@@@@@@ >>>>>')
                 }
             }

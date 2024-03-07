@@ -61,6 +61,32 @@
 <body>
 <nk-memory data-field="mem_0" data-services-path="webgpu">
 	<template>
+		<header>
+			<pre class="__peer-header_logo_value">
+						░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+						░░░░░░░░░░░░░░░░░░█░░░░░░░░░░░░░░░░░░░░░░░░░░░
+						░░░░░░████░░░░░░█████░░░░░░░░░░░░░░░░░░░░░░░░░
+						░░░░████████░░░███████░░░░░░░░░░░░░░░░░░░░░░░░
+						░░░██████████░█████████░░░░░░░░░░░░░░░░░░░░░░░
+						░░████████████░░█████░░░░░░░░░░░░░░░░░░░░░░░░░
+						░░░██████████░░░░░█░░░░░░░░░░░░░░░░░░░░░░░░░░░
+						░░░░████████░░░░░░█████╗░██████╗░░██████╗░░░░░
+						░░░░░░░░█████░░░░██╔══██╗██╔══██╗██╔════╝░░░░░
+						░░░░░░█████████░░██║░░██║██████╔╝██║░░██╗░░░░░
+						░░░░░███████████░██║░░██║██╔══██╗██║░░╚██╗░░░░
+						░░░░░░█████████░░╚█████╔╝██║░░██║╚██████╔╝░░░░
+						░░░░░░░███████░░░░╚════╝░╚═╝░░╚═╝░╚═════╝░░░░░
+						░░░░░░░░░███░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+						░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░</pre>
+			<div class="spinner" id='spinner'></div>
+			<div class="emscripten" id="status">Downloading...</div>
+			<span id='controls'>
+						<button id="mount">Mount</button>
+						<span><input type="checkbox" id="resize">Resize canvas</span>
+						<span><input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer</span>
+						<span><input type="button" value="Fullscreen" onclick="Module.requestFullscreen(document.getElementById('pointerLock').checked, document.getElementById('resize').checked)"></span>
+			  	</span>
+		</header>
 		<div class="container">
 			<div class="nk-settings">
 				<slot name="nk-settings"></slot>
@@ -440,32 +466,7 @@
 				<div id="error">[ Your browser does not support WebGPU or it is not enabled ]</div>
 				<noscript>You need to enable JavaScript to run this app.</noscript>
 				<div id="root"></div>
-				<header>
-						  <pre class="__peer-header_logo_value">
-						░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-						░░░░░░░░░░░░░░░░░░█░░░░░░░░░░░░░░░░░░░░░░░░░░░
-						░░░░░░████░░░░░░█████░░░░░░░░░░░░░░░░░░░░░░░░░
-						░░░░████████░░░███████░░░░░░░░░░░░░░░░░░░░░░░░
-						░░░██████████░█████████░░░░░░░░░░░░░░░░░░░░░░░
-						░░████████████░░█████░░░░░░░░░░░░░░░░░░░░░░░░░
-						░░░██████████░░░░░█░░░░░░░░░░░░░░░░░░░░░░░░░░░
-						░░░░████████░░░░░░█████╗░██████╗░░██████╗░░░░░
-						░░░░░░░░█████░░░░██╔══██╗██╔══██╗██╔════╝░░░░░
-						░░░░░░█████████░░██║░░██║██████╔╝██║░░██╗░░░░░
-						░░░░░███████████░██║░░██║██╔══██╗██║░░╚██╗░░░░
-						░░░░░░█████████░░╚█████╔╝██║░░██║╚██████╔╝░░░░
-						░░░░░░░███████░░░░╚════╝░╚═╝░░╚═╝░╚═════╝░░░░░
-						░░░░░░░░░███░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-						░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░</pre>
-					<div class="spinner" id='spinner'></div>
-					<div class="emscripten" id="status">Downloading...</div>
-					<span id='controls'>
-						<button id="mount">Mount</button>
-						<span><input type="checkbox" id="resize">Resize canvas</span>
-						<span><input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer</span>
-						<span><input type="button" value="Fullscreen" onclick="Module.requestFullscreen(document.getElementById('pointerLock').checked, document.getElementById('resize').checked)"></span>
-			  	</span>
-				</header>
+
 
 				<!--			<div class="emscripten">-->
 				<!--				<progress value="0" max="100" id="progress" hidden=1></progress>-->
