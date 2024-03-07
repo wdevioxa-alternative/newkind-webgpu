@@ -86,10 +86,23 @@
 			<template>
 				<div class="container">
 					<h2>Эмулятор</h2>
-					<div class="wrapper">
-						<button class="start"> Start </button>
+					<div class="constants">
+						<div class="settings" id="RENDER_QUANTUM">RENDER_QUANTUM<span class="value"></span></div>
+						<div class="settings" id="KERNEL_LENGTH">KERNEL_LENGTH<span class="value"></span></div>
+						<div class="settings" id="FRAME_SIZE">FRAME_SIZE<span class="value"></span></div>
+						<div class="settings" id="QUEUE_SIZE">QUEUE_SIZE<span class="value"></span></div>
+						<div class="settings" id="WORKGROUP_SIZE">WORKGROUP_SIZE<span class="value"></span></div>
+					</div>
+
+					<div class="frames">
 						<div class="array"></div>
 					</div>
+
+					<div class="filters">
+						<div class="array line"></div>
+						<button class="start"> Start </button>
+					</div>
+
 				</div>
 			</template>
 		</nk-emulator>

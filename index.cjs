@@ -63,7 +63,7 @@ server.then(async (data) => {
         });
 
         const watcherComponents = chokidar.watch('./src/addons', {
-            ignored: ['**/node_modules', /^\./],
+            ignored: ['**/node_modules', /^\./, './src/index.html'],
             persistent: true
         });
 
@@ -72,6 +72,7 @@ server.then(async (data) => {
                 // console.log('File', path, 'has been added');
             })
             .on('change', async function(path) {
+                console.log('reload html')
                 Stream.emit("push", "message", {
                     type: 'dev',
                     msg: 'reload'
@@ -86,7 +87,9 @@ server.then(async (data) => {
             })
             .on('change', async function(path) {
                 const build = await esbuild
-                await build.build()
+                const data = await build.build()
+
+                console.log('Reload html')
                 Stream.emit("push", "message", {
                     type: 'dev',
                     msg: 'reload'

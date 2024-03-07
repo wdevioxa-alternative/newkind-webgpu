@@ -1195,7 +1195,7 @@ export const Line = async (self, obj) => {
             object = init()
             timerId = setInterval(async () => {
                 console.log('🖤 process 🖤', object.line_c_in.i_l, object.line_c_in.c_l, object.line_c_in.sys)
-                let container = self.shadowRoot.querySelector('.array')
+                let container = self.shadowRoot.querySelector('.line')
                 container.innerHTML = ''
                 for(let i of object.line_c_in.i_l) {
                     container.insertAdjacentHTML('beforeend', await template.get('default')[0].render(self, i))
