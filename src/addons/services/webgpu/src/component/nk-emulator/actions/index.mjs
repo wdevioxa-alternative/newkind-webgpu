@@ -49,6 +49,7 @@ export const actions = (self) => {
                       }
                   } else {
                       button.textContent = 'Start sample'
+                      array.innerHTML = ''
                       // console.clear();
                   }
               }
