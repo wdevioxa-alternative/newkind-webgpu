@@ -44,7 +44,9 @@ const fetchAudioFileToF32Array = async (audioContext, url) => {
   const response = await fetch(url);
   const responseBuffer = await response.arrayBuffer();
   const audioBuffer = await audioContext.decodeAudioData(responseBuffer);
-  const float32Array = audioBuffer.getChannelData(0);
+  const float32Array = []
+  float32Array[0] = audioBuffer.getChannelData(0);
+  float32Array[1] = audioBuffer.getChannelData(1);
   return float32Array;
 };
 
