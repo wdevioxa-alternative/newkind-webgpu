@@ -95,7 +95,10 @@ export default (symbol, mountPoint) => {
             
                 const root = ReactDOM.createRoot(mountPoint.querySelector('#root'));
                 const style = document.createElement('style');
+                const styleLight = document.createElement('style');
                 style.textContent = `@import '/this/css/index.shadow.css';`;
+                styleLight.textContent = `@import '/this/css/index.light.css';`;
+                document.body.appendChild(styleLight);
                 mountPoint.appendChild(style);
 
                 root[symbol] = {
