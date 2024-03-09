@@ -40,8 +40,6 @@ export const Header = ({
       setUserRole(userContextValue?.userInfo?.realm_access?.roles[0]);
   }, [userContextValue?.userInfo]);
 
-  console.log('-----------------all--------------------', style)
-  console.log('-------------------------------------', style.header__wrapper)
   return (
     <>
       <div className={style.header__wrapper}>
