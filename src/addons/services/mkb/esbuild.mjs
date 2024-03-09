@@ -65,25 +65,23 @@ const buildParams = {
   define,
   logLevel: "error",
   plugins: [
-    svgrPlugin({ template }),
-    sassPlugin(),
+    cssModulesPlugin({
+      inject: 'body',
+      force: true,
+      emitDeclarationFile: true,
+      localsConvention: 'camelCaseOnly',
+    }),
     aliasPlugin({
       '@src': path.resolve(__dirname, './src'),
       '@react-hook': path.resolve(__dirname, './src/hooks')
     }),
+    svgrPlugin({ template }),
     polyfillNode({
       process: true,
       buffer: true,
       define
     }),
     inlineImage(),
-    cssModulesPlugin({
-      v3: true,
-      inject: 'body',
-      // force: true,
-      // emitDeclarationFile: true,
-      // localsConvention: 'camelCaseOnly',
-    }),
     copyStaticFiles({
       src: './src/index.html',
       dest: './docs/index.html',
@@ -99,7 +97,8 @@ const buildParams = {
       errorOnExist: false,
       preserveTimestamps: true,
       recursive: true,
-    })
+    }),
+    sassPlugin(),
   ]
 };
 

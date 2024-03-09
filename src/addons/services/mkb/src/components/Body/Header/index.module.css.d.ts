@@ -1,0 +1,23 @@
+declare const ClassNames: {
+  "aside": string;
+  "bellImgWrapper": string;
+  "content": string;
+  "headerMenu": string;
+  "headerContainerLeft": string;
+  "headerContainerRight": string;
+  "headerLogoName": string;
+  "headerName": string;
+  "headerNavigation": string;
+  "headerWrapper": string;
+  "iconWrapper": string;
+  "iconWrapperClose": string;
+  "linkNavigation": string;
+  "linkNavigationChapter": string;
+  "linkNavigationChapters": string;
+  "navWrapper": string;
+  "personImgWrapper": string;
+  "signIn": string;
+  "signInText": string;
+  "userHeaderText": string;
+};
+export default ClassNames;
