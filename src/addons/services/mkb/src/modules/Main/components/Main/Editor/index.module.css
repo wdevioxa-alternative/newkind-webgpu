@@ -1,0 +1,230 @@
+.container {
+    border: 2px dashed var(--blue-20per);
+    width: 100%;
+    padding: 14px 20px;
+    box-sizing: border-box;
+    background: var(--blue-5per);
+    margin-top: 12px;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.uri {
+    font-size: 11px;
+}
+
+.detailsTitle {
+    font-size: 14px;
+    display: flex;
+    gap: 4px;
+    /*margin-bottom: 12px;*/
+		color: var(--blue-100per);
+	}
+
+	.detailsTitleLabel {
+    width: max-content;
+    width: -moz-max-content;
+    white-space: pre;
+		color: var(--blue-100per);
+}
+
+.detailsAgent, .detailsConnection {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    margin-bottom: 14px;
+}
+
+.detailsAgent {
+    margin-bottom: 0;
+}
+
+.detailsAgentTitle {
+    color: var(--blue-100per);
+    font-size: 14px;
+}
+
+.detailsAgentInfo {
+    font-size: 14px;
+}
+
+.editor {
+    padding-left: 40px;
+}
+
+.editorItem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 8px;
+}
+
+.editorItem:last-child {
+    margin-bottom: 0;
+}
+
+.editorButton {
+    cursor: pointer;
+}
+
+.editorDescription {
+    color: var(--black-100per);
+    font-size: 12px;
+    cursor: pointer;
+	}
+
+	.editorDescription > span {
+    font-weight: bold;
+    margin-right: 12px;
+}
+
+.crossHelp {
+    cursor: pointer;
+}
+
+.editorItemChildSecond, .editorItemChild {
+    margin-left: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 8px;
+}
+
+.editorItemChildSecond:last-child, .editorItemChild:last-child {
+    margin-bottom: 0;
+}
+
+.editorItemChildSecond {
+    margin-left: 32px;
+}
+
+.button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+}
+
+.wrapperToc {
+    cursor: pointer;
+    position: relative;
+}
+
+.axisModalContainer {
+    width: 100%;
+    /*height: fit-content;*/
+    height: 100%;
+    /*height: auto;*/
+    background: #FFFFFF;
+    box-shadow: 0px 5px 24px rgb(148 152 170 / 48%);
+    border-radius: 4px;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+.axisTocHeader {
+    border-bottom: 1px solid #EAEAEF;
+    height: 72px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    padding: 0 32px;
+    width: -webkit-fill-available;
+    width: -moz-available;
+    background: white;
+}
+
+.axisTocHeader > span {
+    font-family: 'Golos 14pt Medium 14x20';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+    box-sizing: border-box;
+}
+
+.treeViews {
+    padding: 0;
+    height: -webkit-fill-available;
+    margin-top: 18px;
+}
+
+.icon {
+    cursor: pointer;
+}
+
+.windowPostcoordination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid 1px #ddd;
+    background: #f0f0f0;
+}
+
+.children__inputSearch {
+    width: -webkit-fill-available;
+    background: white;
+}
+
+.search__wrapper {
+    min-width: unset!important;
+    min-height: 52px;
+    width: 100%!important;
+}
+
+.inputSearch {
+    width: 100%!important;
+}
+
+
+@media only all and (max-width: 479px) {
+    .container {
+        width: 100%;
+    }
+
+    .search {
+        width: 100%;
+    }
+}
+
+.axisContainer {
+    position: fixed;
+    width: calc(100% - 16px);
+    height: 48vh;
+    top: 30vh;
+    left: 8px;
+}
+
+@media only all and (max-width: 767px) {
+    .axisTocHeader {
+        width: calc(100% - 16px);
+        box-sizing: border-box;
+    }
+}
+
+@media all and (min-width: 768px) and (max-width: 1368px) {
+    .container {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .search {
+        width: 100%;
+    }
+
+    .axisTocHeader {
+        margin-right: 8px;
+    }
+}
+
+@media all and (min-width: 1025px) {
+
+}

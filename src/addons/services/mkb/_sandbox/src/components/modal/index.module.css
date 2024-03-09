@@ -1,0 +1,53 @@
+.container {
+    /*width: 560px;*/
+    /*min-height: min-content;*/
+    max-height: 80vh;
+    border-radius: 0.21668vw;
+		width: 30.33586vw;
+}
+
+.title {
+    padding-bottom: 1.51679vw;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 3.90033vw;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 1.73348vw;
+}
+
+.titleHeader, .title {
+    font-weight: 600;
+    font-size: 0.97508vw;
+}
+
+.icon {
+    cursor: pointer;
+}
+
+.body {
+    padding: 1.30011vw 1.73348vw;
+}
+
+.content {
+
+}
+
+.paragraph {
+    padding-bottom: 1.51679vw;
+    font-size: 0.7584vw;
+    line-height: 1.08342vw;
+}
+
+.ul {
+    margin-left: 0.97508vw;
+}
+
+.li {
+    font-size: 0.7584vw;
+    line-height: 1.08342vw;
+}

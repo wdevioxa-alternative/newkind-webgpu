@@ -1,0 +1,13 @@
+export default {"adminCloseImg":"custom-prefix_adminCloseImg_1_n2MG","aside":"custom-prefix_aside_1_n2MG","asideMobile":"custom-prefix_asideMobile_1_n2MG","banner":"custom-prefix_banner_1_n2MG","container":"custom-prefix_container_1_n2MG","content":"custom-prefix_content_1_n2MG","info":"custom-prefix_info_1_n2MG","mobileInfoStatus":"custom-prefix_mobileInfoStatus_1_n2MG","moveReason":"custom-prefix_moveReason_1_n2MG","reload":"custom-prefix_reload_1_n2MG","titleMobile":"custom-prefix_titleMobile_1_n2MG","wrapper":"custom-prefix_wrapper_1_n2MG"} as const;
+export const adminCloseImg = "custom-prefix_adminCloseImg_1_n2MG" as const;
+export const aside = "custom-prefix_aside_1_n2MG" as const;
+export const asideMobile = "custom-prefix_asideMobile_1_n2MG" as const;
+export const banner = "custom-prefix_banner_1_n2MG" as const;
+export const container = "custom-prefix_container_1_n2MG" as const;
+export const content = "custom-prefix_content_1_n2MG" as const;
+export const info = "custom-prefix_info_1_n2MG" as const;
+export const mobileInfoStatus = "custom-prefix_mobileInfoStatus_1_n2MG" as const;
+export const moveReason = "custom-prefix_moveReason_1_n2MG" as const;
+export const reload = "custom-prefix_reload_1_n2MG" as const;
+export const titleMobile = "custom-prefix_titleMobile_1_n2MG" as const;
+export const wrapper = "custom-prefix_wrapper_1_n2MG" as const;

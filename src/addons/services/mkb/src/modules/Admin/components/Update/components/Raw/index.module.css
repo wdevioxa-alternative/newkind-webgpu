@@ -1,0 +1,81 @@
+.container {
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px dashed var(--black-15per);
+  background: var(--black-10per);
+}
+
+.emptyList {
+  font-style: italic;
+}
+
+.componentTitle {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  padding-bottom: 12px;
+}
+
+.item {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.item:last-child {
+  margin-bottom: 0;
+}
+
+.loading .title,
+.item .title {
+  font-family: 'Golos 12pt Medium 12x18';
+  line-height: 20px;
+  color: var(--blue-100per);
+	width: 240px;
+}
+
+.item .status {
+  font-family: 'Golos 12pt Medium 12x18';
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.actions {
+  display: flex;
+  font-family: 'Golos 12pt Medium 12x18';
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.actions > div {
+  cursor: pointer;
+}
+
+.actions .report {
+  color: var(--blue-100per);
+}
+.actions .approve {
+  color: var(--green-100per);
+}
+.actions .cancel {
+  color: var(--orange-100per);
+}
+.actions .delete {
+  color: var(--red-100per);
+}
+
+.actions > div:not(:last-child) {
+  margin-right: 16px;
+}
+
+.loading {
+	display: flex;
+}
+
+.loading .title {
+	padding-top: 7px;
+}

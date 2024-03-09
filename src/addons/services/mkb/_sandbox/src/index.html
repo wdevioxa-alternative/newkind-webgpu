@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body></body>
+<script type="module">
+    import MKB from '/index.mjs'
+    const shadow = document.body.attachShadow({mode: "open"});
+    let root = document.createElement('div')
+    root.id = 'root'
+    shadow.appendChild(root)
+    const virtual = Symbol("virtual");
+    const shadowRoot = await MKB(virtual, document.body.shadowRoot)
+    shadowRoot.render(shadowRoot[virtual].app);
+
+    // import Tabs from '/component/auction-tabs/index.mjs'
+    // import Auth from '/component/auction-auth/index.mjs'
+
+    // import { store } from '/this/store/index.mjs'
+    import main from '/index.mjs'
+    // import { loadHTML } from '/this/index.mjs'
+    console.log('main', main)
+    // const auctionTabs = document.body.querySelector('auction-tabs')
+
+    // window.addEventListener('login', async () => {
+    //     auctionTabs.style.display = 'none'
+    //     store.set('service', {
+    //         system: {
+    //             header: true,
+    //             relation: true,
+    //             body: true,
+    //             property: true,
+    //             footer: true
+    //         }
+    //     })
+        // const mountPointSystem = {
+        //     pathname: '.',
+        //     pathTemplate: 'mkb',
+        //     mountPoint: document.body
+        // }
+        //
+        // store.set('mount_self', mountPointSystem)
+        //
+        // main(mountPointSystem).then(react => console.log('🟣 NODE 🟣')).catch((e) => { console.log('ERROR', e) });
+        //
+        // const Service = 'welcomebook'
+
+        // const parser = new DOMParser()
+        //
+        // const template = parser.parseFromString(await loadHTML(`/template/${Service}/index.html`), 'text/html').querySelector('template')
+        //
+        // const service = (await import(`/services/${Service}/src/main.mjs`))['default']
+        //
+        // const mountPoint = {
+        //     pathname: `/services/${Service}/src`,
+        //     template: template,
+        //     mountPoint: document.querySelector('.service'),
+        // }
+
+        // store.set('mount_welcomebook', mountPoint)
+        //
+        // const images = template.content.querySelectorAll('img')
+        //
+        // for(let i =0 ; i < images.length; ++i) {
+        //     let url = new URL(images[i].src)
+        //     url.pathname = `${mountPoint.pathname}${url.pathname.slice(url.pathname.indexOf('/this'))}`
+        //     images[i].src = url.pathname
+        // }
+
+        // service(mountPoint).then(api => {})
+
+    // })
+</script>
+</html>

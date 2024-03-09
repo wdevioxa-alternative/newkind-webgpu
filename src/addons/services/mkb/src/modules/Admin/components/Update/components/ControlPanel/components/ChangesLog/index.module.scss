@@ -1,0 +1,15 @@
+.ChangesLog {
+  border: 1px solid #dcdfe5;
+  display: flex;
+  width: fit-content;
+  padding: 10px 22px;
+  cursor: pointer;
+
+  &Text {
+    font-size: 14px;
+    color: var(--blue-100per);
+  }
+  &Icon {
+    margin-left: 10px;
+  }
+}

@@ -1,0 +1,12 @@
+export default {"closeWrapper":"custom-prefix_closeWrapper_qraVya","filterBox":"custom-prefix_filterBox_qraVya","h4":"custom-prefix_h4_qraVya","menu":"custom-prefix_menu_qraVya","rotateArrow":"custom-prefix_rotateArrow_qraVya","rotateArrowActive":"custom-prefix_rotateArrowActive_qraVya","selectListWrapper":"custom-prefix_selectListWrapper_qraVya","selectMenuContainer":"custom-prefix_selectMenuContainer_qraVya","selectMenuContainerActive":"custom-prefix_selectMenuContainerActive_qraVya","text":"custom-prefix_text_qraVya","wrapper":"custom-prefix_wrapper_qraVya"} as const;
+export const closeWrapper = "custom-prefix_closeWrapper_qraVya" as const;
+export const filterBox = "custom-prefix_filterBox_qraVya" as const;
+export const h4 = "custom-prefix_h4_qraVya" as const;
+export const menu = "custom-prefix_menu_qraVya" as const;
+export const rotateArrow = "custom-prefix_rotateArrow_qraVya" as const;
+export const rotateArrowActive = "custom-prefix_rotateArrowActive_qraVya" as const;
+export const selectListWrapper = "custom-prefix_selectListWrapper_qraVya" as const;
+export const selectMenuContainer = "custom-prefix_selectMenuContainer_qraVya" as const;
+export const selectMenuContainerActive = "custom-prefix_selectMenuContainerActive_qraVya" as const;
+export const text = "custom-prefix_text_qraVya" as const;
+export const wrapper = "custom-prefix_wrapper_qraVya" as const;

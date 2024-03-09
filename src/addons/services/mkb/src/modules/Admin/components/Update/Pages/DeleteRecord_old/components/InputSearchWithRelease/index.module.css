@@ -1,0 +1,362 @@
+.content {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: 100%;
+}
+
+p {
+	margin: 0;
+}
+
+.side {
+	display: flex;
+	flex-direction: column;
+	width: 20vw;
+
+}
+
+.wrapper, .container {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+}
+
+.wrapper {
+	gap: 20px;
+}
+
+.h1 {
+	color: var(--black-100, #333);
+	font-family: 'Golos 16pt Medium 16x24', serif;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 24px; /* 133.333% */
+	letter-spacing: -0.2px;
+	margin: 0;
+	padding: 0;
+}
+
+.p {
+	color: #7B7D8A;
+	font-feature-settings: 'clig' off, 'liga' off;
+	font-family: 'Golos 16pt Medium 16x24', serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 142.857%;
+	letter-spacing: -0.07px;
+	margin: 0;
+	padding: 0;
+}
+
+.comparison {
+	display: flex;
+	flex-direction: row;
+	gap: 25px;
+	margin-top: 36px;
+}
+
+.icon {
+	width: 14px;
+	height: 20px;
+	align-self: center;
+}
+
+.h4 {
+	margin: 0;
+	position: absolute;
+	top: -24px;
+	left: 0;
+}
+
+.mkb {
+	position: relative;
+}
+
+.button {
+	border: none;
+	overflow: visible;
+
+	background: transparent;
+	font: inherit;
+
+	/* Corrects font smoothing for webkit */
+	-webkit-font-smoothing: inherit;
+	-moz-osx-font-smoothing: inherit;
+
+	/* Corrects inability to style clickable `input` types in iOS */
+	-webkit-appearance: none;
+
+	display: inline-flex;
+	padding: 9px 24px 11px 24px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+
+	border-radius: 4px;
+	background: var(--black-35, #9FA2B4);
+	width: 188px;
+	box-sizing: border-box;
+
+
+	color: var(--white-100, #FFF);
+	text-align: center;
+	font-feature-settings: 'clig' off, 'liga' off;
+
+	font-family: 'Golos', serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 142.857%;
+	letter-spacing: -0.07px;
+	margin: 20px 0 0 0;
+}
+
+.button::-moz-focus-inner {
+	border: 0;
+	padding: 0;
+}
+
+.dots {
+	height: 1px;
+	margin-bottom: 32px;
+}
+
+
+.errorMessage, .sucessMessage  {
+	display: flex;
+
+	color: var(--black-100, #333);
+	font-family: 'Golos', serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 171.429%;
+	letter-spacing: -0.2px;
+	gap: 8px;
+	position: relative;
+	border-radius: 8px;
+	padding: 16px 28px;
+	box-sizing: border-box;
+	background: var(--red-10, #FDECEF);
+	flex-direction: column;
+	width: 100%;
+}
+
+.errorMessage::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	background: var(--red-100, #C61C1C);
+	width: 4px;
+	height: 100%;
+	border-top-left-radius: 8px;
+	border-bottom-left-radius: 8px;
+}
+
+.errorHeader {
+	display: flex;
+	flex-direction: row;
+	gap: 8px;
+}
+
+.errorFooter {
+	padding-left: 28px;
+	color: var(--black-40, rgba(51, 51, 51, 0.40));
+	font-family: 'Golos', serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 150%;
+	letter-spacing: -0.048px;
+}
+
+.p_error {
+	color: var(--black-100, #333);
+	font-family: 'Golos', serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 171.429%;
+	letter-spacing: -0.2px;
+}
+
+.main {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+
+.data {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	background: white;
+	padding: 20px;
+	gap: 12px
+}
+
+.padding {
+	width: 10vw;
+	background: white;
+}
+
+.button_reset {
+	color: #3256B0;
+	text-align: center;
+	font-feature-settings: 'clig' off, 'liga' off;
+	font-family: 'Golos', serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 142.857%;
+	letter-spacing: -0.07px;
+
+	display: inline-flex;
+	padding: 9px 24px 11px 24px;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+
+	border-radius: 4px;
+	border: 1px solid rgba(0, 0, 0, 0.10);
+
+	width: 185px;
+	height: 40px;
+	background: transparent;
+	align-self: flex-end;
+	margin-top: 28px;
+}
+
+.result {
+	margin-top: 20px;
+}
+
+.comparison_result {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	margin-top: 16px;
+}
+
+.mkb_result, .mkb_result_11_description {
+	width: 100%;
+	display: flex;
+	gap: 16px;
+}
+
+.mkb_result_11 {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.button_result_10, .button_result_11 {
+	border: none;
+	overflow: visible;
+	font: inherit;
+
+	/* Corrects font smoothing for webkit */
+	-webkit-font-smoothing: inherit;
+	-moz-osx-font-smoothing: inherit;
+
+	/* Corrects inability to style clickable `input` types in iOS */
+	-webkit-appearance: none;
+
+	color: var(--white-100, #FFF);
+	text-align: center;
+	font-feature-settings: 'clig' off, 'liga' off;
+
+	/* 14x20 DemiBold */
+	font-family: 'Golos', serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 142.857%;
+	letter-spacing: -0.07px;
+
+	display: inline-flex;
+	padding: 5px 24px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+
+	border-radius: 10px;
+}
+
+.button_result_10 {
+	background: #6C8BC9;
+	height: min-content;
+}
+
+.button_result_11 {
+	background: #FDA52C;
+	height: min-content;
+}
+
+.result_description {
+	color: var(--black-100, #333);
+	font-family: 'Golos', serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 142.857%;
+	letter-spacing: -0.14px;
+}
+
+.result_notification {
+	color: #7B7D8A;
+	font-feature-settings: 'clig' off, 'liga' off;
+	font-family: 'Golos', serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 142.857%;
+	letter-spacing: -0.07px;
+	margin-top: 16px;
+}
+
+.search__wrapper {
+	width: 100%;
+	padding: 15px 16px;
+}
+
+.ModalResultSearch {
+	width: 100%!important;
+	top: 64px!important;
+}
+
+.mainWrapper {
+	width: 100%!important;
+}
+
+.inputSearch {
+	background: transparent;
+}
+
+.result_link {
+	color: #6C8BCB;
+	font-feature-settings: 'clig' off, 'liga' off;
+	font-family: 'Golos', serif;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 142.857%;
+	letter-spacing: -0.07px;
+	text-decoration-line: underline;
+	margin-top: 8px;
+}
+
+.h4_decoding {
+	margin: 0;
+}
+
+.children__inputSearch {
+	width: 100%;
+}

@@ -1,0 +1,16 @@
+.sign-in {
+  height: 1.08342vw;
+  display: flex;
+  align-items: center;
+  padding-left: 0.86674vw;
+  border-left: 0.05417vw solid rgba(255, 255, 255, 0.2);
+
+}
+
+.sign-in__text {
+  font-family: 'Golos 14pt Medium 14x20';
+  color: var(--white-60per);
+  text-decoration: none;
+  margin-left: 0.59588vw;
+  cursor: pointer;
+}

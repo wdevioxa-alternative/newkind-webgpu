@@ -1,0 +1,46 @@
+.forbiddenPage {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    text-align: center;
+    align-self: center;
+}
+
+img {
+    margin: 0 auto 36px;
+}
+
+.title {
+    color: var(--black-100per);
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.subtitle {
+    color: var(--black-100per);
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.contacts {
+    color: var(--black-100per);
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.contacts span {
+    color: var(--blue-100per);
+}
+
+.adminCloseImg {
+    margin: 0;
+}

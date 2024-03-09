@@ -1,0 +1,75 @@
+.container {
+  padding: 1.08342vw;
+  border-radius: 0.43337vw;
+  border: 0.05417vw dashed var(--black-15per);
+  background: var(--blue-10per);
+}
+
+.emptyList {
+  font-style: italic;
+}
+
+.item {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 0.54171vw;
+}
+
+.item:last-child {
+  margin-bottom: 0;
+}
+
+.item .title {
+  font-family: 'Golos 12pt Medium 12x18';
+  line-height: 1.08342vw;
+  color: var(--blue-100per);
+}
+
+.item .status {
+  font-family: 'Golos 12pt Medium 12x18';
+  font-weight: 400;
+  font-size: 0.65005vw;
+  line-height: 0.97508vw;
+	color: var(--black-35per);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: 'Golos 12pt Medium 12x18';
+  font-size: 0.65005vw;
+  font-weight: 500;
+  line-height: 0.97508vw;
+}
+
+.actionsWrapper {
+  display: flex;
+  margin-bottom: 1.08342vw;
+}
+
+.actions > div {
+  cursor: pointer;
+}
+
+.actions .views {
+  color: var(--blue-120per);
+}
+.actions .report {
+  color: var(--blue-100per);
+}
+.actions .approve {
+  color: var(--green-100per);
+}
+.actions .cancel {
+  color: var(--orange-100per);
+}
+.actions .delete {
+  color: var(--red-100per);
+}
+
+.actionsWrapper > div:not(:last-child) {
+  margin-right: 0.86674vw;
+}

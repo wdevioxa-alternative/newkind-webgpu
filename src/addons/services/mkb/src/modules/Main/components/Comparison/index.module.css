@@ -1,0 +1,790 @@
+.content {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	height: 100%;
+	overflow-y: auto;
+}
+
+p {
+	margin: 0;
+}
+
+.side {
+	display: flex;
+	flex-direction: column;
+	width: 15vw;
+
+}
+
+.warning, .warningBottom {
+	color: #7B7D8A;
+	font-feature-settings: 'clig' off, 'liga' off;
+	font-family: 'Golos 16pt Medium 16x24', serif;
+	font-size: 0.53vw;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 142.857%;
+	letter-spacing: -0.07px;
+	margin: 0 0 0.63vw 0;
+	padding: 0;
+}
+
+
+.warningBottom {
+	position: absolute;
+	bottom: 0.2vw;
+	left: 1.04vw;
+	z-index: 100;
+}
+
+.copyButton {
+	display: flex;
+	flex-direction: row-reverse;
+	align-items: center;
+	gap: 0.61vw;
+}
+
+.copyCode {
+	font-style: normal;
+	font-weight: 500;
+	font-size: 0.63vw;
+	line-height: 0.94vw;
+	letter-spacing: -0.004em;
+	color: var(--blue-100per);
+}
+
+.copyButton svg {
+	width: 100%;
+	height: 100%;
+}
+
+.wrapper, .container {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+}
+
+.wrapper {
+	gap: 1.04vw;
+}
+
+.h1, .h1_sticky {
+	font-style: normal;
+	margin: 0;
+	padding: 0;
+
+	position: -webkit-sticky;
+
+	position: sticky;
+	top: 0;
+	left: 0;
+	background: white;
+	font-family: 'Golos', sans-serif;
+
+	color: var(--black-100, #333);
+
+	/* H4 */
+	font-size: 0.94vw;
+	font-weight: 600;
+	line-height: 1.25vw; /* 133.333% */
+	letter-spacing: -0.01vw;
+}
+
+.h1_sticky {
+	padding-bottom: 0.83vw;
+	white-space: pre-line;
+	color: var(--black-100, #333);
+
+	/* H4 */
+	font-family: 'Golos', sans-serif;
+	font-feature-settings: 'clig' off, 'liga' off;
+	font-size: 0.73vw;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 142.857%;
+	letter-spacing: -0.07px;
+}
+
+.h1_sticky span {
+	font-weight: 600;
+}
+
+.p {
+	color: #7B7D8A;
+	font-feature-settings: 'clig' off, 'liga' off;
+	font-family: 'Golos 16pt Medium 16x24', serif;
+	font-size: 0.73vw;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 142.857%;
+	letter-spacing: -0.07px;
+	margin: 0 0 0.63vw 0;
+	padding: 0;
+}
+
+.comparison {
+	display: flex;
+	flex-direction: row;
+	gap: 1.3vw;
+	margin-top: 1.88vw;
+}
+
+.icon {
+	width: 0.73vw;
+	height: 1.04vw;
+	align-self: center;
+}
+
+.h4 {
+	margin: 0;
+	position: absolute;
+	top: -1.5dvw;
+	left: 0;
+
+	color: var(--black-100, #333);
+
+	/* H4 */
+	font-family: 'Golos', sans-serif;
+	/*font-size: 0.94vw;*/
+	font-size: 0.73vw;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 1.25vw; /* 133.333% */
+	letter-spacing: -0.01vw;
+}
+
+.mkb {
+	position: relative;
+	width: 100%;
+}
+
+.button {
+	border: none;
+	overflow: visible;
+
+	background: transparent;
+	font: inherit;
+
+	/* Corrects font smoothing for webkit */
+	-webkit-font-smoothing: inherit;
+	-moz-osx-font-smoothing: inherit;
+
+	/* Corrects inability to style clickable `input` types in iOS */
+	-webkit-appearance: none;
+
+	display: inline-flex;
+	padding: 0.47vw 1.25vw 0.47vw 1.25vw;
+	justify-content: center;
+	align-items: center;
+	gap: 0.52vw;
+
+	border-radius: 0.21vw;
+	background: var(--black-35, #9FA2B4);
+	width: 9.79vw;
+	box-sizing: border-box;
+
+
+	color: var(--white-100, #FFF);
+	text-align: center;
+	font-feature-settings: 'clig' off, 'liga' off;
+
+	font-family: 'Golos', serif;
+	font-size: 0.73vw;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 142.857%;
+	letter-spacing: -0.07px;
+	margin: 1.04vw 0 0 0;
+}
+
+.active {
+	background: var(--blue-100, #3256B0);
+	cursor: pointer;
+}
+
+.button::-moz-focus-inner {
+	border: 0;
+	padding: 0;
+}
+
+.dots {
+	height: 1.67vw;
+	/*margin-bottom: 32px;*/
+	background-image: url( "./background.svg" );
+	background-position: left center; /* Положение фона */
+	background-repeat: repeat-x; /* Повторяем фон по горизонтали */
+}
+
+
+.errorMessage, .sucessMessage  {
+	display: flex;
+
+	color: var(--black-100, #333);
+	font-family: 'Golos', serif;
+	font-size: 0.73vw;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 171.429%;
+	letter-spacing: -0;
+	gap: 0.42vw;
+	position: relative;
+	border-radius: 0.42vw;
+	padding: 0.83vw 1.46vw;
+	box-sizing: border-box;
+	background: var(--red-10, #FDECEF);
+	flex-direction: column;
+	width: 100%;
+}
+
+.errorMessage::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	background: var(--red-100, #C61C1C);
+	width: 0.21vw;
+	height: 100%;
+	border-top-left-radius: 0.42vw;
+	border-bottom-left-radius: 0.42vw;
+}
+
+.errorHeader {
+	display: flex;
+	flex-direction: row;
+	gap: 0.42vw;
+}
+
+.errorFooter {
+	padding-left: 1.46vw;
+	color: var(--black-40, rgba(51, 51, 51, 0.40));
+	font-family: 'Golos', serif;
+	font-size: 0.63vw;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 150%;
+	letter-spacing: -0.048px;
+}
+
+.p_error {
+	color: var(--black-100, #333);
+	font-family: 'Golos', serif;
+	font-size: 0.73vw;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 171.429%;
+	letter-spacing: -0;
+}
+
+.p_error span {
+	font-weight: 600;
+}
+
+.main {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	position: relative;
+}
+
+.nocode {
+	text-decoration: none!important;
+}
+
+.data {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	background: white;
+	padding: 1.04vw;
+	gap: 0.63vw;
+	box-sizing: border-box;
+}
+/*width: 7.5vw;*/
+.padding {
+	width: 13.5vw;
+	background: var(--blue-5per);
+}
+
+.button_reset, .button_reset_inside {
+	color: #3256B0;
+	text-align: center;
+	font-feature-settings: 'clig' off, 'liga' off;
+	font-family: 'Golos', serif;
+	font-size: 0.73vw;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 142.857%;
+	letter-spacing: -0.07px;
+
+	display: inline-flex;
+	padding: 0.47vw 1.25vw 0.57vw 1.25vw;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 0.52vw;
+
+	border-radius: 0.21vw;
+	border: 0.05vw solid rgba(0, 0, 0, 0.10);
+
+	width: -webkit-max-content;
+
+	width: max-content;
+	height: 2.08vw;
+	background: transparent;
+	align-self: flex-end;
+	cursor: pointer;
+}
+
+.decoding_outside {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+}
+
+.button_reset_inside {
+	margin-top: 0.63vw;
+}
+
+.result {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	overflow: auto;
+	height: 100%;
+}
+
+.comparison_result, .comparison_result_sticky {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	margin-top: 0.83vw;
+}
+
+.comparison_result {
+	margin-top: 0;
+	height: 100%;
+}
+
+.comparison_result_sticky {
+	position: -webkit-sticky;
+	position: sticky;
+	top: 0;
+	left: 0;
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+}
+
+.mkb_result, .mkb_result_11_description {
+	width: 100%;
+	display: flex;
+	gap: 0.83vw;
+}
+
+.mkb_result_11 {
+	display: flex;
+	flex-direction: column;
+	width: 89%;
+	background: white;
+}
+
+.button_result_10, .button_result_11 {
+	border: none;
+	overflow: visible;
+	font: inherit;
+
+	/* Corrects font smoothing for webkit */
+	-webkit-font-smoothing: inherit;
+	-moz-osx-font-smoothing: inherit;
+
+	/* Corrects inability to style clickable `input` types in iOS */
+	-webkit-appearance: none;
+
+	color: var(--white-100, #FFF);
+	text-align: center;
+	font-feature-settings: 'clig' off, 'liga' off;
+
+	/* 14x20 DemiBold */
+	font-family: 'Golos 14pt Regular 14x20', sans-serif;
+	font-size: 0.73vw;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 142.857%;
+	letter-spacing: -0.07px;
+
+	display: inline-flex;
+	padding: 0.26vw 1.25vw;
+	justify-content: center;
+	align-items: center;
+	gap: 0.52vw;
+
+	border-radius: 0.52vw;
+}
+
+.button_result_10 {
+	background: #6C8BC9;
+	height: -webkit-min-content;
+	height: min-content;
+}
+
+.button_result_11 {
+	background: #FDA52C;
+	height: -webkit-min-content;
+	height: min-content;
+}
+
+.result_description {
+	color: var(--black-100, #333);
+	font-family: 'Golos', serif;
+	font-size: 0.73vw;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 142.857%;
+	letter-spacing: -0;
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.result_notification {
+	color: #7B7D8A;
+	font-feature-settings: 'clig' off, 'liga' off;
+	font-family: 'Golos', serif;
+	font-size: 0.73vw;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 142.857%;
+	letter-spacing: -0.07px;
+	margin-top: 0.83vw;
+	white-space: pre-line;
+}
+
+.result_link {
+	display: inline-flex;
+	color: #6C8BCB;
+	font-feature-settings: 'clig' off, 'liga' off;
+	font-family: 'Golos', serif;
+	font-size: 0.73vw;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 142.857%;
+	letter-spacing: -0.07px;
+	text-decoration-line: underline;
+	margin-left: 0.21vw;
+	cursor: pointer;
+}
+
+.h4_decoding {
+	margin: 0;
+}
+
+
+/*Декодированиек*/
+
+.decoding {
+	overflow: auto;
+	align-self: flex-start;
+	width: 100%;
+}
+
+.resultSearch {
+	padding: 0.42vw 0 0.1vw 0;
+	margin-top: 0;
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.postCoordinationCodeList {
+	display: flex;
+	flex-direction: row;
+	margin-bottom: 0.63vw;
+	align-items: center;
+}
+
+
+.code, .postCoordinationCodeString {
+	color: var(--red-100per);
+	margin: 0 0.21vw 0 0;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 0.73vw;
+	line-height: 1.04vw;
+	letter-spacing: -0.01em;
+	text-decoration: underline;
+}
+
+.code {
+	display: flex;
+	flex-direction: revert;
+	flex-wrap: wrap;
+	color: var(--black-100per);
+	margin: 0 0.61vw 0 0;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 0.73vw;
+	line-height: 1.04vw;
+	letter-spacing: -0.01em;
+	cursor: pointer;
+}
+
+.arrow-img__wrapper {
+ 	width: 0.83vw;
+	height: 0.83vw;
+}
+
+.code p {
+	padding: 0;
+	margin: 0;
+}
+
+.isActiveItemCode {
+	color: var(--red-text-100per);
+}
+
+.treeContainer {
+
+}
+
+.postCoordination {
+
+}
+
+.postCoordinationData {
+	display: flex;
+	flex-direction: row;
+	gap: 1.09vw;
+	font-size: 0.73vw;
+	margin-bottom: 1.04vw;
+	margin-top: 1.04vw;
+	margin-left: 3.96vw;
+}
+
+.postCoordinationCode {
+	display: flex;
+	flex-direction: row;
+	font-size: 0.73vw;
+}
+
+.postCoordinationCode {
+	display: flex;
+	flex-direction: column;
+}
+
+.postCoordinationCodeData, .postCoordinationCodeСonnection {
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	gap: 0.63vw;
+}
+
+
+.postCoordinationCodeItem {
+	position: relative;
+	margin-left: 0.63vw;
+}
+
+.postCoordinationCodeItemSecond {
+	position: relative;
+}
+
+.postCoordinationCodeItemActive::after {
+	content: "";
+	position: absolute;
+	width: 1.35vw;
+	height: 140%;
+	left: -1.67vw;
+	top: -0.94vw;
+	border-left: 0.05vw solid var(--black-10per);
+}
+
+.postCoordinationCodeTitle {
+	color: var(--blue-100per);
+	margin: 0;
+	position: relative;
+	padding: 0;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 0.73vw;
+	line-height: 1.04vw;
+	letter-spacing: -0.01em;
+}
+
+.postCoordinationCodeTitle {
+	color: var(--blue-100per);
+	margin: 0;
+	position: relative;
+	padding: 0;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 0.73vw;
+	line-height: 1.04vw;
+	letter-spacing: -0.01em;
+}
+
+.postCoordinationCodeTitle:first-child {
+	color: var(--blue-100per);
+	margin: 0;
+	position: relative;
+	padding-top: 0;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 0.73vw;
+	line-height: 1.04vw;
+	letter-spacing: -0.01em;
+}
+
+.postCoordinationCodeTitle::after {
+	content: "";
+	position: absolute;
+	width: 1.35vw;
+	height: 1.67vw;
+	left: -1.67vw;
+	bottom: 40%;
+	border-left: 0.05vw solid var(--black-10per);
+	border-bottom: 0.05vw solid var(--black-10per);
+}
+
+
+.postCoordinationCodeItemActive::after {
+	content: "";
+	position: absolute;
+	width: 1.35vw;
+	height: 140%;
+	left: -1.67vw;
+	top: -0.94vw;
+	border-left: 0.05vw solid var(--black-10per);
+}
+
+.itemAxisActive::after {
+	content: "";
+	position: absolute;
+	width: 1.35vw;
+	height: calc(100% + 1.51vw);
+	left: 3.33vw;
+	top: -0.89vw;
+	border-left: 0.05vw solid var(--black-10per);
+}
+
+.postCoordinationCodeItemActiveSecond::after {
+	content: "";
+	position: absolute;
+	width: 1.35vw;
+	height: calc(100% + 1.51vw);
+	left: 3.33vw;
+	top: -0.89vw;
+	border-left: 0.05vw solid var(--black-10per);
+}
+
+.isError {
+	color: var(--red-text-100per)!important;
+}
+
+.postCoordinationCodeTitleSecond {
+	color: var(--blue-100per);
+	position: relative;
+	margin-left: 5vw;
+	font-style: normal;
+	font-weight: 500;
+	font-size: 0.73vw;
+	line-height: 1.04vw;
+	letter-spacing: -0.01em;
+}
+
+
+.postCoordinationCodeTitleSecond::after {
+	content: "";
+	position: absolute;
+	width: 1.35vw;
+	height: 1.15vw;
+	left: -1.67vw;
+	bottom: 39%;
+	border-left: 0.05vw solid var(--black-10per);
+	border-bottom: 0.05vw solid var(--black-10per);
+}
+
+.treeContainer {
+
+}
+
+.postCoordinationCodeItemActiveSecond::after {
+	content: "";
+	position: absolute;
+	width: 1.35vw;
+	height: calc(100% + 1.51vw);
+	left: 3.33vw;
+	top: -0.89vw;
+	border-left: 0.05vw solid var(--black-10per);
+}
+
+.search__wrapper, .ModalResultSearch {
+	width: 100%;
+}
+
+.ModalResultSearch {
+	width: 100%;
+}
+
+.link_disabled p {
+	text-decoration: none;
+	cursor: default;
+}
+
+.link_disabled {
+	text-decoration: none;
+}
+
+.result_container {
+	display: flex;
+	flex-direction: column;
+	gap: 0.63vw;
+	width: 75%;
+}
+
+.container_info {
+	display: flex;
+	flex-direction: row;
+}
+
+.itemAxisDataActive {
+
+}
+
+.itemAxisDataActive:after {
+	top: -2.1vw;
+	left: -2.9vw;
+	width: 2vw;
+	border-left: 0.1vw solid var(--black-10per);
+}
+
+.mainWrapper {
+	width: 100%;
+}
+
+.nullWrapper {
+	box-sizing: border-box;
+	height: auto;
+	padding: 0.83vw 1.3vw;
+	overflow: hidden;
+}
+
+.diseaseWrapper {
+	gap: 0.63vw;
+
+}
+
+.diseaseWrapperChild {
+	padding-bottom: 0;
+}
+
+.diseaseTitleFirst:hover {
+	background: white;
+}
+
+.diseaseWrapperChild:hover, .diseaseTitle:hover {
+	background: white;
+}

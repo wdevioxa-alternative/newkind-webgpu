@@ -1,0 +1,64 @@
+.button__main-delete {
+	/* width: 91px; */
+	padding: 0 1.35428vw;
+	height: 2.16685vw;
+	background: var(--red-100per);
+	border-radius: 0.21668vw;
+	font-family: 'Golos 14pt DemiBold 14x20';
+	color: var(--white-100per);
+	border: none;
+	cursor: pointer;
+}
+
+.button__second-delete {
+	width: 4.92958vw;
+	height: 2.16685vw;
+	background: var(--white-100per);
+	border: 0.05417vw solid var(--black-10per);
+	border-radius: 0.21668vw;
+	font-family: 'Golos 14pt Medium 14x20';
+	color: var(--red-100per);
+	outline: none;
+}
+
+.button__main-delete-img {
+	width: 6.66306vw;
+	height: 2.16685vw;
+	min-width: 6.66306vw;
+	min-height: 2.16685vw;
+	background: var(--red-100per);
+	border-radius: 0.21668vw;
+	font-family: 'Golos 14pt DemiBold 14x20';
+	font-size: 0.7584vw;
+	color: var(--white-100per);
+	border: none;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 1.30011vw 0 0.86674vw;
+}
+
+.button__main-delete-img path {
+	fill: var(--white-100per);
+}
+
+.button__second-delete-img {
+	width: 6.66306vw;
+	height: 2.16685vw;
+	min-width: 6.66306vw;
+	min-height: 2.16685vw;
+	background: var(--white-100per);
+	border: 0.05417vw solid var(--black-10per);
+	border-radius: 0.21668vw;
+	font-family: 'Golos 14pt Medium 14x20';
+	color: var(--red-100per);
+	outline: none;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 1.30011vw 0 0.86674vw;
+}
+
+.button__second-delete-img path {
+	fill: var(--red-100per);
+}

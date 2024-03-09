@@ -1,0 +1,51 @@
+.button__second {
+	/* width: 91px; */
+	height: 2.16685vw;
+	/* min-width: 91px; */
+	min-height: 2.16685vw;
+	padding: 0 1.35428vw;
+	background: var(--white-100per);
+	border: 0.05417vw solid var(--black-10per);
+	border-radius: 0.21668vw;
+	font-family: 'Golos 14pt Medium 14x20';
+	font-size: 0.7584vw;
+	color: var(--blue-100per);
+	outline: none;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.button__second:hover {
+	background: var(--blue-10per);
+	border: 0.05417vw solid var(--blue-50per);
+	outline: none;
+
+}
+
+/* .button__second:focus {
+	background: var(--white-100per);
+	border: 3px solid var(--blue-40per);
+	outline: none;
+} */
+
+.button__second:active {
+	background: var(--blue-20per);
+	border: 0.05417vw solid var(--blue-120per);
+	outline: none;
+}
+
+.button__second:disabled {
+	background: var(--black-5per);
+	border: 0.05417vw solid var(--black-10per);
+	color: var(--black-35per);
+}
+
+.button__second-img {
+	background: url('../img/Vector.png');
+	background-repeat: no-repeat;
+	width: 0.7584vw;
+	height: 0.7584vw;
+	margin-right: 0.54171vw;
+}

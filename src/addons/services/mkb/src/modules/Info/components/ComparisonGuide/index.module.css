@@ -1,0 +1,61 @@
+.ul {
+    padding-left: 16px;
+}
+.content {
+    background: white;
+    flex-grow: 1;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+p {
+    margin: 0;
+}
+
+.paragraph {
+    margin-bottom: 8px;
+}
+
+.decoration {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.toc {
+    color: var(--black-100per);
+    position: fixed;
+}
+
+.toc li {
+    color: var(--black-100per);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    margin: 8px 0;
+}
+
+.toc ul, .toc li {
+    list-style-type: none;
+}
+
+.toc ul, .toc ul ul {
+    padding-left: 20px;
+}
+
+.toc a, .toc ul a, .toc ul ul a {
+    text-decoration: none;
+}
+
+.toc ul li {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 18px;
+    margin: 0 0 4px 0;
+}
+
+.tocContent {
+
+
+}
+

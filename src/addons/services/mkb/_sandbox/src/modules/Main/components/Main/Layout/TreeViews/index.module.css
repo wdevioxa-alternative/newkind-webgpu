@@ -1,0 +1,20 @@
+.treeView li {
+    list-style-type: none;
+}
+
+.treeView {
+    height: -webkit-fill-available;
+}
+
+.isNotBranch {
+    margin-left: 0.43337vw;
+}
+
+.isBranch {
+    margin-left: 0.43337vw;
+}
+
+.spinnerWrapper {
+	min-width: 1.08342vw;
+	height: 1.08342vw;
+}

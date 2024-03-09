@@ -1,0 +1,21 @@
+.wrapper {
+	margin-top: 1.08342vw;
+	margin-bottom: 1.08342vw;
+	width: 97%;
+	height: 2.60022vw;
+	background-color: #FCF2E6;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 0.65005vw 0;
+	border-radius: 0.10834vw;
+
+}
+
+.codeContainer {
+
+}
+
+.buttonContainer {
+
+}

@@ -1,0 +1,137 @@
+.postCoordinationData {
+    display: flex;
+    flex-direction: row;
+    gap: 1.09vw;
+    font-size: 0.73vw;
+    margin-bottom: 1.04vw;
+    margin-top: 1.04vw;
+}
+
+.postCoordinationCode {
+    display: flex;
+    flex-direction: row;
+    font-size: 0.73vw;
+}
+
+.postCoordinationCode {
+    display: flex;
+    flex-direction: column;
+}
+
+.postCoordinationCodeData, .postCoordinationCodeСonnection {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    gap: 0.63vw;
+}
+
+.postCoordinationCodeItemActive::after {
+    content: "";
+    position: absolute;
+    width: 1.35vw;
+    height: calc(100% + 1.51vw);
+    left: -2.5vw;
+    top: -0.73vw;
+    border-left: 0.05vw solid var(--black-10per);
+}
+
+.editorItem {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-left: 0.63vw;
+}
+
+.editorItemSecond {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5.63vw;
+    position: relative;
+}
+
+.editorButton {
+    cursor: pointer;
+    height: 1.25vw;
+}
+
+.editorDescription {
+    color: var(--blue-100per);
+    font-size: 0.63vw;
+    text-decoration: none;
+    margin-left: 0.21vw;
+}
+
+.itemAxisDataActive {
+    position: relative;
+}
+
+.itemAxisDataActive::after{
+    content: "";
+    position: absolute;
+    width: 1.35vw;
+    height: 200%;
+    left: -2.3vw;
+    top: -1.04vw;
+    border-left: 0.05vw solid var(--black-10per);
+}
+
+.itemAxisData {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.42vw 0 0.42vw 0;
+    gap: 0.94vw;
+}
+
+.itemAxisDataSecond {
+    padding-bottom: 0.21vw;
+}
+
+.itemAxisWarning {
+    color: red;
+    padding: 0.42vw 0 0 0;
+}
+
+.postCoordinationCodeTitle {
+    color: var(--blue-100per);
+    font-weight: 500;
+    font-size: 0.73vw;
+    margin-top: 0.63vw;
+    margin-bottom: 0.63vw;
+    position: relative;
+    margin-left: 0;
+}
+
+.postCoordinationCodeTitle::after {
+    content: "";
+    position: absolute;
+    width: 1.35vw;
+    height: 100%;
+    left: -1.88vw;
+    top: -0.42vw;
+    border-left: 0.05vw solid var(--black-10per);
+    border-bottom: 0.05vw solid var(--black-10per);
+}
+
+.postCoordinationCodeItem {
+    position: relative;
+    margin-left: 0.63vw;
+}
+
+
+.postCoordinationHelp {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.94vw;
+    margin-top: 1.04vw;
+}
+
+.postCoordinationIcon {
+    height: 1.15vw;
+    cursor: pointer;
+}
+
+.isError {
+    color: var(--red-text-100per);
+}

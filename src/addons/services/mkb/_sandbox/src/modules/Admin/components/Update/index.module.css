@@ -1,0 +1,102 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  background: var(--blue-5per);
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1.08342vw 3.46696vw;
+  gap: 1.08342vw;
+  position: relative;
+  overflow: auto;
+}
+
+.content {
+  background: white;
+  flex-grow: 1;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.aside {
+  width: min(27.30228vw, 27.30228vw);
+  min-width: 16.25135vw;
+}
+
+.wrapper {
+  max-width: 16.90141vw;
+}
+
+.asideMobile {
+  display: none;
+}
+
+.info {
+  margin-bottom: 0.65005vw;
+}
+
+.content {
+  background: white;
+  flex-grow: 1;
+  box-sizing: border-box;
+  padding: 1.08342vw 1.95016vw;
+  width: 100%;
+}
+
+.moveReason {
+  width: 100%;
+  height: calc(3 * 1em);
+}
+
+.banner {
+  margin-bottom: 1.08342vw;
+}
+
+.adminCloseImg {
+  margin: 0;
+}
+
+@media only all and (max-width: 767px) {
+  .asideMobile {
+    display: block;
+  }
+  .aside {
+    display: none;
+  }
+  h3 {
+    display: none;
+  }
+  .titleMobile {
+    display: block;
+  }
+
+  .mobileInfoStatus {
+    display: grid;
+  }
+
+  .reload {
+    text-align: center !important;
+  }
+
+  .container {
+    padding: 0;
+  }
+
+  .content {
+    padding: 0;
+  }
+
+  .titleMobile {
+    font-size: 0.81257vw;
+  }
+}
+
+@media all and (min-width: 768px) and (max-width: 1368px) {
+ .container {
+   padding: 0.7584vw 0.43337vw;
+ }
+}
+
+@media all and (min-width: 1025px) {
+
+}

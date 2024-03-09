@@ -1,0 +1,16 @@
+.tree-node__branch, .tree-node__leaf {
+   font-size: 12px;
+   padding-left: 0px;
+   display: flex;
+   align-items: center;
+   margin-bottom: 12px;
+   cursor: pointer;
+}
+
+:focus-visible {
+   all: unset;
+}
+
+.isActive {
+   background: bisque;
+}

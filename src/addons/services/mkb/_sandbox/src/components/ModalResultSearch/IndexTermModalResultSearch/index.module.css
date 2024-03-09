@@ -1,0 +1,52 @@
+.wrapper {
+display: flex;
+width: 97%;
+}
+
+
+.iTerm {
+	color: var(--black-100per);
+	font-family: 'Golos 14pt Regular 14x20';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 0.65005vw;
+	line-height: 1.08342vw;
+	letter-spacing: -0.01em;
+	margin-right: 0.48754vw;
+	width: 18.95991vw;
+	display: inline-block;
+	align-items: start;
+	background: rgba(221, 128, 0, 0.1);
+	border-radius: 0.21668vw;
+	border-bottom: 0.05417vw solid rgb(255, 255, 255);
+	padding-left: 1.08342vw;
+}
+
+.iTermBlue {
+	color: var(--black-100per);
+	font-family: 'Golos 14pt Regular 14x20';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 0.65005vw;
+	line-height: 1.08342vw;
+	letter-spacing: -0.01em;
+	margin-right: 0.48754vw;
+	width: 18.95991vw;
+	display: inline-block;
+	align-items: start;
+	background: rgba(0, 153, 255, 0.1);
+	padding-left: 1.08342vw;
+}
+
+.iTerm span,
+.iTermBlue span {
+	color: var(--red-100per);
+	font-weight: bold;
+}
+
+.icon {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+}

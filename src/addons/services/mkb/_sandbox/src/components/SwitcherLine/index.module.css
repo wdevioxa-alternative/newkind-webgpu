@@ -1,0 +1,75 @@
+.wrapper {
+		display: flex;
+		align-items: center;
+		margin-right: 4.33369vw;
+}
+
+.title {
+	font-family: 'Golos 12pt Medium 12x18';
+	font-style: normal;
+	font-weight: 500;
+	font-size: 0.65005vw;
+	line-height: 0.97508vw;
+	letter-spacing: -0.004em;
+	margin: 0;
+	padding: 0;
+	margin-bottom: 0.16251vw;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 2.16685vw;
+  height: 1.08342vw;
+	margin: 0 1.19177vw 0.21668vw;
+
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--blue-50per);
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 0.86674vw;
+  width: 0.86674vw;
+  left: 0.16251vw;
+  bottom: 0.10834vw;
+  background-color: var(--white-100per);
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: var(--blue-50per);
+}
+
+input:focus + .slider {
+  background-color: var(--blue-50per);
+}
+
+input:checked + .slider:before {
+  transform: translateX(1.02925vw);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 1.84182vw;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}

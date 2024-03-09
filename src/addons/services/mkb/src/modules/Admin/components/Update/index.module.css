@@ -1,0 +1,108 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  background: var(--blue-5per);
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px 64px;
+  gap: 20px;
+  position: relative;
+  overflow: auto;
+}
+
+.content {
+  background: white;
+  flex-grow: 1;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.aside {
+  width: min(504px, 504px);
+  min-width: 300px;
+}
+
+.wrapper {
+  max-width: 312px;
+}
+
+.asideMobile {
+  display: none;
+}
+
+.info {
+  margin-bottom: 12px;
+}
+
+.content {
+  background: white;
+  flex-grow: 1;
+  box-sizing: border-box;
+  padding: 20px 36px;
+  width: 100%;
+}
+
+.pageTitle {
+  height: 48px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.moveReason {
+  width: 100%;
+  height: calc(3 * 1em);
+}
+
+.banner {
+  margin-bottom: 20px;
+}
+
+.adminCloseImg {
+  margin: 0;
+}
+
+@media only all and (max-width: 767px) {
+  .asideMobile {
+    display: block;
+  }
+  .aside {
+    display: none;
+  }
+  h3 {
+    display: none;
+  }
+  .titleMobile {
+    display: block;
+  }
+
+  .mobileInfoStatus {
+    display: grid;
+  }
+
+  .reload {
+    text-align: center !important;
+  }
+
+  .container {
+    padding: 0;
+  }
+
+  .content {
+    padding: 0;
+  }
+
+  .titleMobile {
+    font-size: 15px;
+  }
+}
+
+@media all and (min-width: 768px) and (max-width: 1368px) {
+  .container {
+    padding: 14px 8px;
+  }
+}
+
+@media all and (min-width: 1025px) {
+}

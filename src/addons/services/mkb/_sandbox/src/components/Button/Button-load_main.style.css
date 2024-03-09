@@ -1,0 +1,48 @@
+.button__main-download {
+  width: 6.66306vw;
+	height: 2.16685vw;
+	min-width: 6.66306vw;
+	min-height: 2.16685vw;
+  padding: 0 1.30011vw 0 1.08342vw;
+	background: var(--blue-100per);
+	border-radius: 0.21668vw;
+	font-family: 'Golos 14pt Medium 14x20';
+	font-size: 0.7584vw;
+	color: var(--white-100per);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: none;
+	outline: none;
+}
+
+.button__main-download path{
+  fill: var(--white-100per);
+}
+
+.button__main-download:hover {
+	background: var(--blue-120per);
+  padding: 0 1.30011vw 0 1.08342vw;
+  border: none;
+	outline: none;
+}
+
+.button__main-download:focus {
+  padding: 0 1.13759vw 0 0.92091vw;
+	background: var(--blue-50per);
+	border: 0.16251vw solid var(--blue-40per);
+	outline: none;
+}
+
+.button__main-download:active {
+  padding: 0 1.30011vw 0 1.08342vw;
+	background: var(--blue-120per);
+	border: none;
+	outline: none;
+}
+
+.button__main-download:disabled {
+  padding: 0 1.35428vw 0 1.13759vw;
+	background: var(--black-35per);
+  outline: none;
+}

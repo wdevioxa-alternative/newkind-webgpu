@@ -1,0 +1,10 @@
+export default {"body":"custom-prefix_body_fmujgW","container":"custom-prefix_container_fmujgW","header":"custom-prefix_header_fmujgW","icon":"custom-prefix_icon_fmujgW","li":"custom-prefix_li_fmujgW","paragraph":"custom-prefix_paragraph_fmujgW","title":"custom-prefix_title_fmujgW","titleHeader":"custom-prefix_titleHeader_fmujgW","ul":"custom-prefix_ul_fmujgW"} as const;
+export const body = "custom-prefix_body_fmujgW" as const;
+export const container = "custom-prefix_container_fmujgW" as const;
+export const header = "custom-prefix_header_fmujgW" as const;
+export const icon = "custom-prefix_icon_fmujgW" as const;
+export const li = "custom-prefix_li_fmujgW" as const;
+export const paragraph = "custom-prefix_paragraph_fmujgW" as const;
+export const title = "custom-prefix_title_fmujgW" as const;
+export const titleHeader = "custom-prefix_titleHeader_fmujgW" as const;
+export const ul = "custom-prefix_ul_fmujgW" as const;

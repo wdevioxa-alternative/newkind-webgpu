@@ -1,0 +1,120 @@
+.postCoordination {
+
+}
+
+.postCoordinationData {
+    display: flex;
+    flex-direction: row;
+    gap: 21px;
+    font-size: 14px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.postCoordinationCode {
+    display: flex;
+    flex-direction: row;
+    font-size: 14px;
+}
+
+.postCoordinationCode {
+    display: flex;
+    flex-direction: column;
+}
+
+.postCoordinationCodeData, .postCoordinationCodeСonnection {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.postCoordinationCodeItemActive::after {
+    content: "";
+    position: absolute;
+    width: 26px;
+    height: calc(100% + 2vw);
+    left: -48px;
+    top: -1vw;
+    border-left: 1px solid var(--black-10per);
+}
+
+.postCoordinationCodeTitle::after {
+    content: "";
+    position: absolute;
+    width: 26px;
+    height: 100%;
+    left: -36px;
+    top: -8px;
+    border-left: 1px solid var(--black-10per);
+    border-bottom: 1px solid var(--black-10per);
+}
+
+.editorItem {
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+}
+
+.editorItemSecond {
+    display: flex;
+    flex-direction: column;
+    margin-left: 96px;
+}
+
+.editorButton {
+    cursor: pointer;
+    height: 24px;
+}
+
+.editorDescription {
+    /* color: var(--blue-100per); */
+    font-size: 12px;
+}
+
+.itemAxisData {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px 0 8px 0;
+    gap: 18px;
+}
+
+.itemAxisDataSecond {
+    padding-bottom: 0;
+    width: fit-content;
+}
+
+.itemAxisWarning {
+    color: red;
+    padding: 8px 0 0 0;
+}
+
+.postCoordinationCodeTitle {
+    color: var(--blue-100per);
+    font-weight: 500;
+    font-size: 14px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    position: relative;
+    margin-left: 0;
+}
+
+.postCoordinationCodeItem {
+    position: relative;
+    margin-left: 12px;
+}
+
+
+.postCoordinationHelp {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 18px;
+    margin-top: 20px;
+}
+
+.postCoordinationIcon {
+    height: 22px;
+    cursor: pointer;
+}

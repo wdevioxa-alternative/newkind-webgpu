@@ -1,0 +1,77 @@
+summary {
+    margin-bottom: 0.65005vw;
+    width: fit-content;
+    width: -moz-fit-content;
+    cursor: pointer;
+    position: relative;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.59588vw;
+    line-height: 0.7584vw;
+}
+
+details {
+    position: relative;
+}
+
+summary::-webkit-details-marker {
+    background: #6d426d;
+    vertical-align: middle;
+}
+
+details summary::-webkit-details-marker {
+    vertical-align: middle;
+    display: none
+}
+/* Убираем стандартный маркер Firefox */
+details > summary {
+    vertical-align: middle;
+    list-style: none;
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*justify-content: center;*/
+}
+
+/* Добавляем собственный маркер для закрытого состояния */
+details summary:before {
+    content: '▴';
+    position: absolute;
+    margin-right: 0.3792vw;
+    top: -0.10834vw;
+    left: -0.70423vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    color: var(--blue-50per);
+}
+
+/* Добавляем собственный маркер для открытого состояния */
+details[open] summary:before {
+    content: '▾';
+    margin-right: 0.3792vw;
+    position: absolute;
+    top: 0;
+    left: -0.86674vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    color: var(--blue-50per);
+}
+
+details[open] .first {
+    display: none;
+}
+
+details[open] .second {
+    display: flex;
+}
+
+details .first {
+    display: flex;
+}
+
+details .second {
+    display: none;
+}

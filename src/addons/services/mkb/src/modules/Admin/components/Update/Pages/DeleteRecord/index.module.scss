@@ -1,0 +1,114 @@
+.ChangesReviewPage {
+  width: 100%;
+  padding: 0 36px 36px;
+  .header {
+    & > div {
+      display: flex;
+      justify-content: space-between;
+    }
+    &Top {
+      .title {
+        //styleName: H4;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 24px;
+      }
+      .commited {
+        display: flex;
+        // align-items: start;
+        text-align: right;
+        color: var(--green-100per);
+        svg {
+          margin-right: 10px;
+        }
+      }
+    }
+    &Bottom {
+      margin-top: 15px;
+      align-items: start;
+      .subtitle {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+        text-align: left;
+      }
+      .download {
+        display: flex;
+        color: var(--blue-100per);
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+        text-align: left;
+        cursor: pointer;
+      }
+    }
+  }
+  .body {
+    .subtitle {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 20px;
+      text-align: left;
+    }
+    table {
+      // border: 1px solid;
+      // border-collapse:collapse;
+      width: 100%;
+      margin-top: 20px;
+      th {
+        border-bottom: 1px dotted var(--blue-120per);
+        background: #fff !important;
+        text-align: center !important;
+        &:first-child {
+          border-right: 1px dotted var(--blue-120per);
+          background: #fff;
+        }
+      }
+      tr {
+        td:first-child {
+          border-right: 1px dotted var(--blue-120per);
+          text-align: right;
+          font-weight: bold;
+        }
+        td input,
+        td textarea {
+          width: 100%;
+          height: 70px;
+          border: 1px solid var(--black-10per);
+          border-radius: 4px;
+          resize: none;
+          line-height: 20px;
+          padding: 10px;
+          box-sizing: border-box;
+        }
+      }
+      th,
+      td {
+        padding: 20px;
+        text-align: left;
+        width: fit-content;
+        font-size: 14px;
+        // background: #dee4fd;
+        max-width: 250px;
+        vertical-align: top;
+        &:first-child {
+          background: #fff;
+          width: 160px;
+          vertical-align: middle;
+        }
+        &:last-child {
+          vertical-align: middle;
+        }
+
+      }
+      .state {
+        &Deleted {
+          color: var(--red-text-100per);
+        }
+        &Changed {
+          color: var(--orange-75per);
+        }
+      }
+    }
+  }
+}

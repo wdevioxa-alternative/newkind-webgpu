@@ -1,0 +1,230 @@
+.container {
+    border: 0.10834vw dashed var(--blue-20per);
+    width: 100%;
+    padding: 0.7584vw 1.08342vw;
+    box-sizing: border-box;
+    background: var(--Main_Main_Editor_container_blue-5per);
+    margin-top: 0.65005vw;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    gap: 0.97508vw;
+}
+
+.uri {
+    font-size: 0.59588vw;
+}
+
+.detailsTitle {
+    font-size: 0.7584vw;
+    display: flex;
+    gap: 0.21668vw;
+    /*margin-bottom: 12px;*/
+		color: var(--blue-100per);
+	}
+
+	.detailsTitleLabel {
+    width: max-content;
+    width: -moz-max-content;
+    white-space: pre;
+		color: var(--blue-100per);
+}
+
+.detailsAgent, .detailsConnection {
+    display: flex;
+    flex-direction: row;
+    gap: 0.21668vw;
+    margin-bottom: 0.7584vw;
+}
+
+.detailsAgent {
+    margin-bottom: 0;
+}
+
+.detailsAgentTitle {
+    color: var(--blue-100per);
+    font-size: 0.7584vw;
+}
+
+.detailsAgentInfo {
+    font-size: 0.7584vw;
+}
+
+.editor {
+    padding-left: 2.16685vw;
+}
+
+.editorItem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.7584vw;
+    margin-bottom: 0.43337vw;
+}
+
+.editorItem:last-child {
+    margin-bottom: 0;
+}
+
+.editorButton {
+    cursor: pointer;
+}
+
+.editorDescription {
+    color: var(--black-100per);
+    font-size: 0.65005vw;
+    cursor: pointer;
+	}
+
+	.editorDescription > span {
+    font-weight: bold;
+    margin-right: 0.65005vw;
+}
+
+.crossHelp {
+    cursor: pointer;
+}
+
+.editorItemChildSecond, .editorItemChild {
+    margin-left: 0.86674vw;
+    display: flex;
+    align-items: center;
+    gap: 0.7584vw;
+    margin-bottom: 0.43337vw;
+}
+
+.editorItemChildSecond:last-child, .editorItemChild:last-child {
+    margin-bottom: 0;
+}
+
+.editorItemChildSecond {
+    margin-left: 1.73348vw;
+}
+
+.button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.65005vw;
+}
+
+.wrapperToc {
+    cursor: pointer;
+    position: relative;
+}
+
+.axisModalContainer {
+    width: 100%;
+    /*height: fit-content;*/
+    height: 100%;
+    /*height: auto;*/
+    background: #FFFFFF;
+    box-shadow: 0px 0.27086vw 1.30011vw rgb(148 152 170 / 48%);
+    border-radius: 0.21668vw;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+.axisTocHeader {
+    border-bottom: 0.05417vw solid #EAEAEF;
+    height: 3.90033vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    padding: 0 1.73348vw;
+    width: -webkit-fill-available;
+    width: -moz-available;
+    background: white;
+}
+
+.axisTocHeader > span {
+    font-family: 'Golos 14pt Medium 14x20';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 0.97508vw;
+    line-height: 1.30011vw;
+    box-sizing: border-box;
+}
+
+.treeViews {
+    padding: 0;
+    height: -webkit-fill-available;
+    margin-top: 0.97508vw;
+}
+
+.icon {
+    cursor: pointer;
+}
+
+.windowPostcoordination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid 0.05417vw #ddd;
+    background: var(--Main_Main_Editor_window-postcoordination);
+}
+
+.children__inputSearch {
+    width: -webkit-fill-available;
+    background: var(--Main_Main_Editor_children__inputSearch);
+}
+
+.search__wrapper {
+    min-width: unset!important;
+    min-height: 2.8169vw;
+    width: 100%!important;
+}
+
+.inputSearch {
+    width: 100%!important;
+}
+
+
+@media only all and (max-width: 479px) {
+    .container {
+        width: 100%;
+    }
+
+    .search {
+        width: 100%;
+    }
+}
+
+.axisContainer {
+    position: fixed;
+    width: calc(100% - 0.86674vw);
+    height: 48vh;
+    top: 30vh;
+    left: 0.43337vw;
+}
+
+@media only all and (max-width: 767px) {
+    .axisTocHeader {
+        width: calc(100% - 0.86674vw);
+        box-sizing: border-box;
+    }
+}
+
+@media all and (min-width: 768px) and (max-width: 1368px) {
+    .container {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .search {
+        width: 100%;
+    }
+
+    .axisTocHeader {
+        margin-right: 0.43337vw;
+    }
+}
+
+@media all and (min-width: 1025px) {
+
+}

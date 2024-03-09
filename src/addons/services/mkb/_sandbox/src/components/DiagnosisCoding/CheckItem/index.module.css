@@ -1,0 +1,41 @@
+.wrapper {
+	height: 1.35428vw;
+	display: flex;
+	justify-content: space-between;
+	margin-top: 0.16251vw;
+	margin-right: 0.92091vw;
+}
+
+.checkBox {
+	margin-right: 0.54171vw;
+}
+
+.circleVoid {
+	margin-right: 0.43337vw;
+}
+
+.checkTitle {
+font-family: 'Golos 9pt Regular 9x12';
+font-style: normal;
+font-weight: 400;
+font-size: 0.48754vw;
+line-height: 0.65005vw;
+display: flex;
+align-items: center;
+color: var(--black-100per);
+}
+
+.checkTitle.checkTitleMany {
+color: var(--red-100per);
+}
+
+.left {
+	display: flex;
+	align-items: center;
+}
+
+.right {
+	display: flex;
+	justify-content: center;
+}
+

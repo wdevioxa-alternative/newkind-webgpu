@@ -1,0 +1,92 @@
+.mainWrapper {
+  width: 26.21885vw;
+  height: 21.93933vw;
+  padding: 0.43337vw 0 0.43337vw;
+  background: #ffffff;
+  box-shadow: 0px 0.10834vw 0.43337vw rgba(0, 31, 141, 0.14);
+  border-radius: 0.43337vw;
+  position: absolute;
+  top: 2.97941vw;
+  left: 0px;
+  z-index: 12;
+  overflow: auto;
+}
+
+.extendWrapper {
+  width: 22.53521vw;
+  height: 17.87649vw;
+  padding: 0.43337vw 0 0.43337vw;
+  background: #ffffff;
+  box-shadow: 0px 0.10834vw 0.43337vw rgba(0, 31, 141, 0.14);
+  border-radius: 0.43337vw;
+  position: absolute;
+  top: 2.97941vw;
+  left: 0px;
+  z-index: 12;
+  overflow: auto;
+}
+
+.extendWrapper {
+  width: 22.53521vw;
+  height: 17.87649vw;
+  padding: 0.43337vw 0 0.43337vw;
+  background: #ffffff;
+  box-shadow: 0px 0.10834vw 0.43337vw rgba(0, 31, 141, 0.14);
+  border-radius: 0.43337vw;
+  position: absolute;
+  top: 2.97941vw;
+  left: 0px;
+  z-index: 12;
+  overflow: auto;
+}
+
+.postcoordinationWrapper {
+  width: 22.53521vw;
+  height: 17.87649vw;
+  padding: 0.43337vw 0 0.43337vw;
+  background: #ffffff;
+  box-shadow: 0px 0.10834vw 0.43337vw rgba(0, 31, 141, 0.14);
+  border-radius: 0.43337vw;
+  position: absolute;
+  top: 22.21018vw;
+  left: 0px;
+  z-index: 12;
+  overflow: auto;
+}
+
+.iTerm {
+  color: var(--black-100per);
+  font-family: 'Golos 14pt Regular 14x20';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.65005vw;
+  line-height: 1.08342vw;
+  letter-spacing: -0.01em;
+  margin-right: 0.48754vw;
+  width: 18.95991vw;
+  display: inline-block;
+  align-items: start;
+  background: rgba(221, 128, 0, 0.1);
+  border-radius: 0.21668vw;
+  border-bottom: 0.05417vw solid rgb(255, 255, 255);
+  padding-left: 1.08342vw;
+}
+
+.infoSearchText {
+  font-family: 'Golos 11pt Regular 11x14';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.59588vw;
+  line-height: 0.7584vw;
+  display: flex;
+  align-items: center;
+  color: var(--red-100per);
+  margin: 0;
+  padding: 0;
+}
+
+@media all and (min-width: 768px) and (max-width: 1368px) {
+  .mainWrapper {
+    width: 100%;
+  }
+}

@@ -1,0 +1,150 @@
+.input-search__wrapper {
+	/*min-width: 416px;*/
+	/*min-height: 52px;*/
+	width: 100%;
+	/*height: 52px;*/
+	display: inline-flex;
+	border: 0.05417vw solid var(--black-10per);
+	border-radius: 0.21668vw;
+	padding: 0 0.86674vw;
+	align-items: center;
+	outline: none;
+	cursor: pointer;
+	box-sizing: border-box;
+}
+
+.input-search {
+	width: 100%;
+	height: 1.30011vw;
+	font-family: 'Golos 14pt Regular 14x20';
+	font-weight: 400;
+	letter-spacing: -0.01em;
+	font-size: 0.7584vw;
+	outline: none;
+	border: none;
+}
+
+/*.input-search__icon {*/
+/*	width: 24px;*/
+/*	height: 24px;*/
+/*	order: -1;*/
+/*}*/
+
+.input-search::-moz-placeholder {
+	font-family: 'Golos 14pt Regular 14x20';
+	color: var(--black-35per);
+}
+
+.input-search::placeholder {
+	font-family: 'Golos 14pt Regular 14x20';
+	color: var(--black-35per);
+}
+
+.input-search__wrapper:hover {
+	border: 0.05417vw solid var(--black-15per);
+	outline: none;
+	border-radius: 0.21668vw;
+	cursor: pointer;
+}
+
+.input-search__wrapper:focus {
+	border: 0.05417vw solid var(--blue-50per);
+	outline: none;
+	border-radius: 0.21668vw;
+	cursor: text;
+}
+
+.input-search:hover,
+.input-search:focus,
+.input-search__wrapper:has(.input-search:focus) {
+	cursor: text;
+}
+
+.input-search__wrapper:has(.input-search:focus) {
+	border: 0.05417vw solid var(--blue-50per);
+	outline: none;
+	border-radius: 0.21668vw;
+}
+/* start disabled */
+.input-search__wrapper.input-search__wrapper_disabled {
+	display: inline-flex;
+	border-radius: 0.21668vw;
+	padding: 0.7584vw 0.86674vw;
+	align-items: center;
+	outline: none;
+	background: var(--black-5per);
+	box-sizing: border-box;
+	border: none;
+	outline: none;
+}
+
+.input-search__wrapper_disabled:hover,
+.input-search__wrapper_disabled:focus,
+.input-search_disabled:hover,
+.input-search_disabled:focus {
+	cursor: pointer;
+}
+
+.input-search.input-search_disabled {
+	width: 19.33911vw;
+	height: 1.30011vw;
+	border: none;
+	font-family: 'Golos 14pt Regular 14x20';
+	font-weight: 400;
+	letter-spacing: -0.01em;
+	font-size: 0.7584vw;
+	outline: none;
+	background: var(--black-5per);
+}
+
+.input-search__icon.input-search__icon_disabled {
+	width: 0.81257vw;
+	height: 0.81257vw;
+	margin-right: 0.65005vw;
+	order: -1;
+}
+
+.input-search__icon.input-search__icon_disabled path {
+	fill: var(--black-15per);
+}
+
+/* end disabled */
+
+/* start error */
+.input-search__wrapper.input-search__wrapper_error {
+	border: 0.05417vw solid var(--red-100per);
+	outline: none;
+	border-radius: 0.21668vw;
+	position: relative;
+}
+
+.input-search__wrapper.input-search__wrapper_error::after {
+	content: 'Это значение некорректно';
+	color: var(--red-100per);
+	font-family: 'Golos 12pt Medium 12x18';
+	font-size: 0.65005vw;
+	font-weight: 500;
+	margin-top: 0.27086vw;
+	position: absolute;
+	bottom: -1.08342vw;
+	left: -0.05417vw;
+}
+
+.input-search__signature_error {
+	color: var(--red-100per);
+	font-family: 'Golos 12pt Medium 12x18';
+	font-size: 0.65005vw;
+	font-weight: 500;
+	margin-top: 0.27086vw;
+}
+
+/* end error */
+
+.input-search__icon,
+.input-delete__icon {
+	cursor: pointer;
+}
+
+@media only all and (max-width: 479px) {
+
+}

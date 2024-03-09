@@ -1,0 +1,185 @@
+.code {
+	color: var(--black-100per);
+	font-family: 'Golos 14pt Regular 14x20';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 0.7584vw;
+	line-height: 1.08342vw;
+	letter-spacing: -0.01em;
+	margin-right: 0.48754vw;
+	/* width: 55px; */
+	text-align: center;
+	display: flex;
+	align-items: flex-start;
+	cursor: pointer;
+
+}
+
+.word {
+	color: var(--black-100per);
+	font-family: 'Golos 14pt Regular 14x20';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 0.7584vw;
+	line-height: 1.08342vw;
+	letter-spacing: -0.01em;
+	margin-right: 0.48754vw;
+	min-width: 10.83424vw;
+	width: 80.01083vw;
+	/* width: 1430px; */
+	display: inline-block;
+	align-items: start;
+	cursor: pointer;
+
+}
+
+.word span {
+	color: var(--red-100per);
+	font-weight: bold;
+}
+
+.container {
+	width: 100%;
+	display: flex;
+	align-items: flex-start;
+	padding-bottom: 0.65005vw;
+	flex-direction: column;
+	/* margin-right: 124px; */
+}
+
+.containerBlue{
+	width: 100%;
+	display: flex;
+	align-items: flex-start;
+	padding-bottom: 0.65005vw;
+	flex-direction: column;
+	background: rgba(0, 153, 255, 0.1);
+}
+
+.link {
+	font-family: 'Golos 11pt Regular 11x14';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 0.48754vw;
+	line-height: 0.65005vw;
+	color: var(--blue-100per);
+	margin-left: 2.70856vw;
+	margin-top: 0.16251vw;
+	display: flex;
+	justify-content: flex-end;
+	width: 7.47562vw;
+}
+
+.marker {
+	display: flex;
+	flex-direction: column;
+	padding-left: 0.3792vw;
+	cursor: pointer;
+	/* justify-content: center; */
+	position: relative;
+}
+
+.marker:hover::before {
+	position: absolute;
+	z-index: 20;
+	width: 9.2091vw;
+	height: 2.4377vw;
+	content: '';
+	top: 2.4377vw;
+	left: -7.58397vw;
+	font-family: 'Golos 14pt Regular 14x20';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 0.7584vw;
+	line-height: 1.08342vw;
+	letter-spacing: -0.01em;
+	background: var(--white-100per);
+	box-shadow: 0px 0.10834vw 0.43337vw rgba(0, 31, 141, 0.14);
+	border-radius: 0.43337vw;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+.marker[typeMark="plusNecessarily"]:hover::before {
+	content: 'Посткоординация обязательна';
+}
+
+.marker[typeMark="plusMaby"]:hover::before {
+	content: 'Доступна посткоординация';
+}
+
+.marker[typeMark="jmark"]:hover::before {
+	content: 'Родственные категории в главе о материнстве';
+}
+
+.marker[typeMark="kmark"]:hover::before {
+	content: 'Родственные категории в перинатальной главе';
+}
+
+.marker[typeMark="equals"]:hover::before {
+	content: 'Примечания по кодированию';
+}
+
+.marker[typeMark="details"]:hover::before {
+	content: 'Подробнее';
+}
+
+.upBlock {
+	display: flex;
+	width: 100%;
+}
+.upBlockBlue {
+	display: flex;
+	background: rgba(0, 153, 255, 0.1);
+	width: 100%;
+}
+
+.iTerm {
+	color: var(--black-100per);
+	font-family: 'Golos 14pt Regular 14x20';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 0.65005vw;
+	line-height: 1.08342vw;
+	letter-spacing: -0.01em;
+	margin-right: 0.48754vw;
+	width: 18.95991vw;
+	display: inline-block;
+	align-items: start;
+	background: rgba(221, 128, 0, 0.1);
+	border-radius: 0.21668vw;
+	padding-left: 1.08342vw;
+}
+
+.iTermBlue {
+	color: var(--black-100per);
+	font-family: 'Golos 14pt Regular 14x20';
+	font-style: normal;
+	font-weight: 400;
+	font-size: 0.65005vw;
+	line-height: 1.08342vw;
+	letter-spacing: -0.01em;
+	margin-right: 0.48754vw;
+	width: 18.95991vw;
+	display: inline-block;
+	align-items: start;
+	background: rgba(0, 153, 255, 0.1);
+	border-radius: 0.21668vw;
+	padding-left: 1.08342vw;
+}
+
+.iTerm span,
+.iTermBlue span {
+	color: var(--red-100per);
+	font-weight: bold;
+}
+
+.title {
+	cursor: pointer;
+}
+
+.downBlock {
+	width: 100%;
+}

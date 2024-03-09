@@ -1,0 +1,16 @@
+.commitBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 15px;
+    height: 40px;
+    border: 1px solid var(--black-10per);
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--white-100per);
+    background: var(--blue-100per);
+    cursor: pointer;
+    svg {
+        margin-right: 10px;
+    }
+}

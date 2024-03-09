@@ -1,0 +1,13 @@
+export default {"code":"custom-prefix_code_p3Z9yW","container":"custom-prefix_container_p3Z9yW","containerBlue":"custom-prefix_containerBlue_p3Z9yW","downBlock":"custom-prefix_downBlock_p3Z9yW","iTerm":"custom-prefix_iTerm_p3Z9yW","iTermBlue":"custom-prefix_iTermBlue_p3Z9yW","link":"custom-prefix_link_p3Z9yW","marker":"custom-prefix_marker_p3Z9yW","title":"custom-prefix_title_p3Z9yW","upBlock":"custom-prefix_upBlock_p3Z9yW","upBlockBlue":"custom-prefix_upBlockBlue_p3Z9yW","word":"custom-prefix_word_p3Z9yW"} as const;
+export const code = "custom-prefix_code_p3Z9yW" as const;
+export const container = "custom-prefix_container_p3Z9yW" as const;
+export const containerBlue = "custom-prefix_containerBlue_p3Z9yW" as const;
+export const downBlock = "custom-prefix_downBlock_p3Z9yW" as const;
+export const iTerm = "custom-prefix_iTerm_p3Z9yW" as const;
+export const iTermBlue = "custom-prefix_iTermBlue_p3Z9yW" as const;
+export const link = "custom-prefix_link_p3Z9yW" as const;
+export const marker = "custom-prefix_marker_p3Z9yW" as const;
+export const title = "custom-prefix_title_p3Z9yW" as const;
+export const upBlock = "custom-prefix_upBlock_p3Z9yW" as const;
+export const upBlockBlue = "custom-prefix_upBlockBlue_p3Z9yW" as const;
+export const word = "custom-prefix_word_p3Z9yW" as const;
