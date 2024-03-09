@@ -9,12 +9,6 @@ import { Accordion } from "../Accordion";
 import { isMobile, isTablet, isDesktop } from "react-device-detect";
 import { SideBar } from "../../img/SideBar";
 import { useNavigate } from "react-router-dom";
-import { useLocalStorage } from "@src/hooks/useLocalStorage";
-import {
-  getTokenPair,
-  getUserInfo,
-  getRefreshToken,
-} from "../../../modules/api";
 import { UserContext } from "@src/App";
 
 export const Header = ({
@@ -46,6 +40,8 @@ export const Header = ({
       setUserRole(userContextValue?.userInfo?.realm_access?.roles[0]);
   }, [userContextValue?.userInfo]);
 
+  console.log('-----------------all--------------------', style)
+  console.log('-------------------------------------', style.header__wrapper)
   return (
     <>
       <div className={style.header__wrapper}>

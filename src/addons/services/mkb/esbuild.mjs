@@ -68,8 +68,9 @@ const buildParams = {
     cssModulesPlugin({
       inject: 'body',
       force: true,
-      emitDeclarationFile: true,
-      localsConvention: 'camelCaseOnly',
+      dashedIndents: true,
+      emitDeclarationFile: false,
+      localsConvention: 'camelCase',
     }),
     aliasPlugin({
       '@src': path.resolve(__dirname, './src'),
