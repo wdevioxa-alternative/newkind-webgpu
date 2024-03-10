@@ -1,5 +1,5 @@
 import {RENDER_QUANTUM, KERNEL_LENGTH, FRAME_SIZE, QUEUE_SIZE, WORKGROUP_SIZE} from '../../../nk-radio/modules/radio/constants.js'
-
+import {Reader} from '../../views/index.mjs'
 export default async (self, actions) => {
     const start = self.shadowRoot.querySelector('.start')
     const startSample = self.shadowRoot.querySelector('.start-sample')
@@ -65,6 +65,10 @@ export default async (self, actions) => {
 
         }
     })
+
+    const reader = await Reader(self)
+    reader.init()
+    console.log('-------------------- reader --------------------', reader)
     console.log('EMULATOR')
     return {
         init: () => {
