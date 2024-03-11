@@ -3,6 +3,8 @@
 # Logs
 logs
 *.log
+/_sandbox
+/_sandbox_1
 npm-debug.log*
 # Runtime data
 pids
