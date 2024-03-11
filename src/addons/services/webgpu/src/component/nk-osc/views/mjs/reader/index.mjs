@@ -222,6 +222,28 @@ export const Reader = (self) => {
         let wpmDisplay;             // The span to display the words per minute.
 
 
+        mainDiv                 = self.shadowRoot.getElementById("mainDiv");
+        outputDiv               = self.shadowRoot.getElementById("outputDiv");
+        outputTextElement       = self.shadowRoot.getElementById("outputTextElement");
+        progressBarBaseDiv      = self.shadowRoot.getElementById("progressBarBaseDiv");
+        progressBarDiv          = self.shadowRoot.getElementById("progressBarDiv");
+        inputTextArea           = self.shadowRoot.getElementById("inputTextArea");
+        speedInputElement       = self.shadowRoot.getElementById("speedInputElement");
+        startStopButton         = self.shadowRoot.getElementById("startStopButton");
+        pauseResumeButton       = self.shadowRoot.getElementById("pauseResumeButton");
+        goBackButton            = self.shadowRoot.getElementById("goBackButton");
+        goForwardButton         = self.shadowRoot.getElementById("goForwardButton");
+        slowerButton            = self.shadowRoot.getElementById("slowerButton");
+        fasterButton            = self.shadowRoot.getElementById("fasterButton");
+        hideTextAreaCheckBox    = self.shadowRoot.getElementById("hideTextArea");
+        hideButtonsCheckBox     = self.shadowRoot.getElementById("hideButtons");
+        alsoTextSpan            = self.shadowRoot.getElementById("alsoTextSpan");
+        inputTextAreaDiv        = self.shadowRoot.getElementById("inputTextAreaDiv");
+        controlButtons          = self.shadowRoot.getElementById("controlButtons");
+        multiWordCheckBox       = self.shadowRoot.getElementById("multiWordCheckBox");
+        wpmDisplay              = self.shadowRoot.getElementById("wpmDisplay");
+
+
         //////////
         // Functions.
         //////////
@@ -1023,84 +1045,9 @@ export const Reader = (self) => {
             }
         };
 
-        // Initializes the speed reader.
-
-        var init = function(){
-            // Create variables for the elements this program accesses.
-            mainDiv                 = self.shadowRoot.getElementById("mainDiv");
-            outputDiv               = self.shadowRoot.getElementById("outputDiv");
-            outputTextElement       = self.shadowRoot.getElementById("outputTextElement");
-            progressBarBaseDiv      = self.shadowRoot.getElementById("progressBarBaseDiv");
-            progressBarDiv          = self.shadowRoot.getElementById("progressBarDiv");
-            inputTextArea           = self.shadowRoot.getElementById("inputTextArea");
-            speedInputElement       = self.shadowRoot.getElementById("speedInputElement");
-            startStopButton         = self.shadowRoot.getElementById("startStopButton");
-            pauseResumeButton       = self.shadowRoot.getElementById("pauseResumeButton");
-            goBackButton            = self.shadowRoot.getElementById("goBackButton");
-            goForwardButton         = self.shadowRoot.getElementById("goForwardButton");
-            slowerButton            = self.shadowRoot.getElementById("slowerButton");
-            fasterButton            = self.shadowRoot.getElementById("fasterButton");
-            hideTextAreaCheckBox    = self.shadowRoot.getElementById("hideTextArea");
-            hideButtonsCheckBox     = self.shadowRoot.getElementById("hideButtons");
-            alsoTextSpan            = self.shadowRoot.getElementById("alsoTextSpan");
-            inputTextAreaDiv        = self.shadowRoot.getElementById("inputTextAreaDiv");
-            controlButtons          = self.shadowRoot.getElementById("controlButtons");
-            multiWordCheckBox       = self.shadowRoot.getElementById("multiWordCheckBox");
-            wpmDisplay              = self.shadowRoot.getElementById("wpmDisplay");
-
-            // Add event handlers
-            if (document.addEventListener)
-            {
-                // Works with all browsers except IE before version 9.
-                document.addEventListener("keydown", keydownInput, false);
-                document.addEventListener("keypress", keypressInput, false);
-                startStopButton.addEventListener("click", startStopReader, false);
-                pauseResumeButton.addEventListener("click", pauseResumeReader, false);
-                goBackButton.addEventListener("click", goBackReader, false);
-                goForwardButton.addEventListener("click", goForwardReader, false);
-                slowerButton.addEventListener("click", slowerReader, false);
-                fasterButton.addEventListener("click", fasterReader, false);
-                hideTextAreaCheckBox.addEventListener("change", hideTextAreaOnChange, false);
-                multiWordCheckBox.addEventListener("change", multiWordCheckBoxOnChange, false);
-            }
-            else
-            {
-                // IE before version 9.
-                if (document.attachEvent)
-                {
-                    document.attachEvent("keydown", keydownInput);
-                    document.attachEvent("keypress", keypressInput);
-                    startStopButton.attachEvent("click", startStopReader);
-                    pauseResumeButton.attachEvent("click", pauseResumeReader);
-                    goBackButton.attachEvent("click", goBackReader);
-                    goForwardButton.attachEvent("click", goForwardReader);
-                    slowerButton.attachEvent("click", slowerReader);
-                    fasterButton.attachEvent("click", fasterReader);
-                    hideTextAreaCheckBox.attachEvent("change", hideTextAreaOnChange);
-                    multiWordCheckBox.attachEvent("change", multiWordCheckBoxOnChange);
-                }
-            }
-
-            // Create a list of consonants for use in hyphenating.
-            var i = 0;
-            consonants = "";
-            for (i = 0; i < highlightLetters.length; ++i)
-            {
-                if (highlightLetterValue[i] >= consonantLowValue && highlightLetterValue[i] <= consonantHighValue)
-                {
-                    consonants += highlightLetters[i];
-                }
-            }
-
-            // Set this flag if the app is running in Firefox.
-            isInFirefox = (navigator.userAgent.toLowerCase().indexOf('firefox') > -1);
-
-            setStopState();
-        };
-
         resolve({
             // Declare public members.
-            init:                   init,
+            setStopState:           setStopState,
             keydownInput:           keydownInput,
             keypressInput:          keypressInput,
             startStopReader:        startStopReader,
@@ -1116,8 +1063,22 @@ export const Reader = (self) => {
             nextWord:               nextWord,
             startReader:            startReader,
             getScore:               getScore,
-            padAndHighlightWord:    padAndHighlightWord
-
+            padAndHighlightWord:    padAndHighlightWord,
+            consonants:             consonants,
+            startStopButton:        startStopButton,
+            pauseResumeButton:      pauseResumeButton,
+            goBackButton:           goBackButton,
+            goForwardButton:        goForwardButton,
+            slowerButton:           slowerButton,
+            fasterButton:           fasterButton,
+            hideTextAreaCheckBox:   hideTextAreaCheckBox,
+            hideTextAreaOnChange:   hideTextAreaOnChange,
+            multiWordCheckBox:      multiWordCheckBox,
+            multiWordCheckBoxOnChange:multiWordCheckBoxOnChange,
+            consonantLowValue:      consonantLowValue,
+            consonantHighValue:     consonantHighValue,
+            isInFirefox:            isInFirefox,
+            inputTextArea:          inputTextArea
         })
     })
 }
