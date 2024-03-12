@@ -91,11 +91,13 @@ body
 
 textarea
 {
-    border:1px solid #999999;
+    /*border:1px solid #999999;*/
     width:100%;
     margin:5px 0;
     padding:3px;
     box-sizing: border-box;
+    border: none;
+    outline: none;
 }
 
 .UIText
@@ -121,4 +123,10 @@ textarea
 
 #inputTextArea:focus-visible {
     border: none;
+    outline: none;
+}
+
+:focus-visible  {
+    border: none;
+    outline: none;
 }
