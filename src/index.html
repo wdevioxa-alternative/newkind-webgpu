@@ -202,12 +202,31 @@
                                     data-services-path="webgpu"
                                 >
                                     <template>
-                                        <div class="settings">
-                                            <h2>Настройки</h2>
-                                            <div class="container-settings">
-                                                <div>Всего памяти</div>
-                                                <div>Используется</div>
-                                                <div>Длинна</div>
+                                        <div class="container">
+                                            <div class="settings">
+                                                <h2>Настройки</h2>
+                                                <div class="container-settings">
+                                                    <div>Всего памяти</div>
+                                                    <div>Используется</div>
+                                                    <div>Длинна</div>
+                                                </div>
+                                            </div>
+                                            <pre>--------------------------------------------------------------------------------</pre>
+                                            <div class="constants">
+                                                <div class="settings" id="RENDER_QUANTUM">RENDER_QUANTUM<span class="value"></span></div>
+                                                <div class="settings" id="KERNEL_LENGTH">KERNEL_LENGTH<span class="value"></span></div>
+                                                <div class="settings" id="FRAME_SIZE">FRAME_SIZE<span class="value"></span></div>
+                                                <div class="settings" id="QUEUE_SIZE">QUEUE_SIZE<span class="value"></span></div>
+                                                <div class="settings" id="WORKGROUP_SIZE">WORKGROUP_SIZE<span class="value"></span></div>
+                                                <pre>--------------------------------------------------------------------------------</pre>
+                                                <div class="settings" id="ARRAY_LENGTH">ARRAY_LENGTH<span class="value">—</span></div>
+                                                <div class="settings" id="freq">freq<span class="value">—</span></div>
+                                                <div class="settings" id="channels">channels<span class="value">—</span></div>
+                                                <div class="settings" id="duration">duration<span class="value">—</span></div>
+                                                <div class="settings" id="samplerate">samplerate<span class="value">—</span></div>
+                                                <div class="settings" id="volumerate">volumerate<span class="value">—</span></div>
+                                                <div class="settings" id="frames">frames<span class="value">—</span></div>
+                                                <div class="settings" id="memdata">memdata<span class="value">—</span></div>
                                             </div>
                                         </div>
                                     </template>
@@ -399,22 +418,6 @@
                                 </template>
                             </nk-switch>
                         </div>
-                    </div>
-                    <div class="constants">
-                        <div class="settings" id="RENDER_QUANTUM">RENDER_QUANTUM<span class="value"></span></div>
-                        <div class="settings" id="KERNEL_LENGTH">KERNEL_LENGTH<span class="value"></span></div>
-                        <div class="settings" id="FRAME_SIZE">FRAME_SIZE<span class="value"></span></div>
-                        <div class="settings" id="QUEUE_SIZE">QUEUE_SIZE<span class="value"></span></div>
-                        <div class="settings" id="WORKGROUP_SIZE">WORKGROUP_SIZE<span class="value"></span></div>
-                        <div>--------------------------------------------------------------------------------</div>
-                        <div class="settings" id="ARRAY_LENGTH">ARRAY_LENGTH<span class="value">—</span></div>
-                        <div class="settings" id="freq">freq<span class="value">—</span></div>
-                        <div class="settings" id="channels">channels<span class="value">—</span></div>
-                        <div class="settings" id="duration">duration<span class="value">—</span></div>
-                        <div class="settings" id="samplerate">samplerate<span class="value">—</span></div>
-                        <div class="settings" id="volumerate">volumerate<span class="value">—</span></div>
-                        <div class="settings" id="frames">frames<span class="value">—</span></div>
-                        <div class="settings" id="memdata">memdata<span class="value">—</span></div>
                     </div>
 
                     <div class="sample">

@@ -8,19 +8,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-}
-
-.constants {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.settings {
-    display: flex;
-    flex-direction: row;
-    gap: 12px;
-    font-weight: bold;
+    height: 100%;
 }
 
 .color_0 {
@@ -117,9 +105,6 @@ button.start {
     gap: 8px;
 }
 
-.settings span.value {
-    color: rgba(180, 73, 73, 0.58);
-}
 
 [class*="sample_"].item span {
     text-align: start;
