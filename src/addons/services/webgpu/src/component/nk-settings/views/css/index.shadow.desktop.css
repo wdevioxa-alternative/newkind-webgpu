@@ -1,0 +1,17 @@
+:host {
+    width: 45vw;
+}
+
+.container-settings {
+    background: black;
+    color: white;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 12px 12px;
+}
+
+.settings {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}

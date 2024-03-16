@@ -140,6 +140,8 @@ button.start {
 /*252*/
 .display.sample {
     display: grid;
-    grid-template-columns: repeat(96, 1fr);
-    grid-template-rows: repeat(54, 0.1vw);
+    grid-template-columns: repeat(64, 1fr);
+    grid-template-rows: repeat(36, 0.1vw);
+    box-shadow: 0px 0px 5px #666666;
+    background: rgba(233, 253, 194, 0.85);
 }

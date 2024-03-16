@@ -135,11 +135,91 @@
                         <div class="container-reader">
                             <div class="container-wrapper">
                                 <nk-osc
+                                    data-field="osc_audio_frame"
+                                    data-services-path="webgpu"
+                                >
+                                    <template>
+                                        <h2>Frame</h2>
+                                        <div id="mainDiv">
+                                            <div id="outputDiv">
+                                                <span
+                                                    class="outputText">_</span>
+                                                <span id="outputTextElement">&nbsp;</span>
+                                                <span
+                                                    class="outputText">¯</span>
+                                            </div>
+                                            <div id="progressBarBaseDiv">
+                                                <div id="progressBarDiv" style="width:0px"></div>
+                                            </div>
+                                            <div id="controlButtons" style="visibility: visible;">
+                                                <input type="button" class="controlButton" id="goBackButton" value="◄◄">
+                                                <input type="button" class="controlButton" id="startStopButton"
+                                                       value="►">
+                                                <input type="button" class="controlButton" id="pauseResumeButton"
+                                                       value="▌▐">
+                                                <input type="button" class="controlButton" id="goForwardButton"
+                                                       value="►►">
+                                                <input type="button" class="controlButton" id="slowerButton" value="▼">
+                                                <input type="button" class="controlButton" id="fasterButton" value="▲">
+                                            </div>
+                                            <div id="inputTextAreaDiv" style="visibility: visible;">
+                                                <textarea id="inputTextArea" class="UIInput" rows="8"></textarea>
+                                                <div id="speedAndCheckBoxesDiv">
+                                                    <span class="UIText">
+                                                        Speed
+                                                        <input type="text" id="speedInputElement" class="UIInput" size="5" value="50">
+                                                        <label>
+                                                            <input type="checkbox" id="hideTextArea">
+                                                            Hide text box when reading
+                                                        </label>
+                                                    </span>
+                                                    <span id="alsoTextSpan" class="UIDisabledText">
+                                                        <label>
+                                                            <input type="checkbox" id="hideButtons" disabled="">
+                                                            Also hide buttons
+                                                        </label>
+                                                    </span>
+                                                    <span class="UIText">
+                                                        <label>
+                                                            <input type="checkbox" id="multiWordCheckBox" checked="">
+                                                            Display multiple words
+                                                        </label>
+                                                    </span>
+                                                    <span class="UIText">
+                                                        Average words per minute:
+                                                        <span id="wpmDisplay">
+                                                            474.2
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </nk-osc>
+                                <nk-settings
+                                    slot="nk-settings"
+                                    data-field="settings"
+                                    data-services-path="webgpu"
+                                >
+                                    <template>
+                                        <div class="settings">
+                                            <h2>Настройки</h2>
+                                            <div class="container-settings">
+                                                <div>Всего памяти</div>
+                                                <div>Используется</div>
+                                                <div>Длинна</div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </nk-settings>
+                            </div>
+                            <div class="container-wrapper">
+                                <nk-osc
                                     data-field="osc_audio"
                                     data-services-path="webgpu"
                                 >
                                     <template>
-                                        <h2>Audio</h2>
+                                        <h2>Sample</h2>
                                         <div id="mainDiv">
                                             <div id="outputDiv">
                                                 <span
@@ -350,18 +430,6 @@
                 </div>
             </template>
         </nk-emulator>
-        <nk-settings
-            slot="nk-settings"
-            data-field="settings"
-            data-services-path="webgpu"
-        >
-            <div class="settings">
-                <h2>Память</h2>
-                <div>Всего памяти</div>
-                <div>Используется</div>
-                <div>Длинна</div>
-            </div>
-        </nk-settings>
 
         <nk-terminal
             slot="nk-terminal"

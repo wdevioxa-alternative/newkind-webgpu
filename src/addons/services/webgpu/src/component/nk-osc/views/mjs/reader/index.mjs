@@ -427,8 +427,7 @@ export const Reader = (self, containerFrame) => {
                             console.log('----------  OUT DATA 1 -------------', result)
                             return result
                         }
-                    }
-                    else {
+                    } else {
                         if (multiWordDisplay && firstWordFound === false) {
                             ++wordCount;
                             firstWordFound = true;
