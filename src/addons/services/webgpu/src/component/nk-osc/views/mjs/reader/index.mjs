@@ -4,6 +4,7 @@ export const Reader = (self) => {
         // letiables.
         //////////
 
+        let isAudio = self.dataset.field === 'osc_audio'
         let text;                       // Stores the text the reader will use.
         let textIndex = 0;              // The current character within the text (text[textIndex]).
         let wordStart = 0;              // The start of the current word.
@@ -24,7 +25,7 @@ export const Reader = (self) => {
         let timeStartReading;           // The time when reading began in milliseconds from Jan 1, 1970. Used to calculate the words per minute.
         let wordCount = 0;              // The number of words that have been displayed. Used to calculate the words per minute.
 
-        let max_word_length = 50;       // Maximum word length to display. Longer words are hyphenated.
+        let max_word_length = 5000;       // Maximum word length to display. Longer words are hyphenated.
         let max_padding = 20;            // Maximum number of non-breaking spaces to add to the front of a displayed word.
         let max_speed = 2500;           // Arbitrary maximum number of words per minute to display.
         let min_speed = 50;             // Arbitrary minimum number of words per minute.
@@ -197,7 +198,7 @@ export const Reader = (self) => {
             h43+h44+h45+h46+h47+h48+h49+h50+h51+h52+h53+h54+h55+h56+h57+h58+h59+h60+h61;
         let highlightLetterValue = v01+v02+v03+v04+v05+v06+v07+v08+v09+v10+v11+v12+v13+v14+v15+v16+v17+v18+v19+v20+v21+v22+v23+v24+v25+v26+v27+v28+v29+v30+v31+v32+v33+v34+v35+v36+v37+v38+v39+v40+v41+v42+
             v43+v44+v45+v46+v47+v48+v49+v50+v51+v52+v53+v54+v55+v56+v57+v58+v59+v60+v61;
-        let highlightCurveValue = ["", "9", "99", "796", "4973", "47952", "469742", "3689631", "34786421", "247964210", "1258984300", "12358975000", "123579760000", "1235798600000", "123579860000000", "123579860000000000"];
+        let highlightCurveValue = ["", "9", "99", "796", "4973", "47952", "469742", "3689631", "34786421", "247964210", "1258984300", "12358975000", "123579760000", "1235798600000", "123579860000000", "123579860000000000", , "12358975000", "123579760000", "1235798600000", "123579860000000", "123579860000000000", "12358975000", "123579760000", "1235798600000", "123579860000000", "123579860000000000", "1235798600000", "123579860000000", "123579860000000000", , "12358975000", "123579760000", "1235798600000", "123579860000000", "123579860000000000", "12358975000", "123579760000", "1235798600000", "123579860000000", "123579860000000000", "1235798600000", "123579860000000", "123579860000000000", , "12358975000", "123579760000", "1235798600000", "123579860000000", "123579860000000000", "12358975000", "123579760000", "1235798600000", "123579860000000", "123579860000000000", "123579760000", "1235798600000", "123579860000000", "123579860000000000", "123579760000", "1235798600000", "123579860000000", "123579860000000000", "123579760000", "1235798600000", "123579860000000", "123579860000000000", "123579760000", "1235798600000", "123579860000000", "123579860000000000"];
 
         // HTML Elements.
         let mainDiv;                // The main div for the page.
@@ -388,8 +389,15 @@ export const Reader = (self) => {
             wordStart = textIndex;
 
 
-            const limit = 3
+
+            let limit = 0
             let count = 0
+            if(isAudio) {
+                limit = 14
+            } else {
+                limit = 0
+            }
+
             // Search ahead to find the end of the word.
             --textIndex;
             do {
@@ -413,9 +421,10 @@ export const Reader = (self) => {
                         }
                         else {
                             // Return the word with its hyphen.
-                            console.log('----------  OUT DATA 1 -------------', wordStart)
                             ++wordCount;
-                            return text.substr(wordStart, textIndex - wordStart + 1);
+                            const result = text.substr(wordStart, textIndex - wordStart + 1);
+                            console.log('----------  OUT DATA 1 -------------', result)
+                            return result
                         }
                     }
                     else {
@@ -428,9 +437,9 @@ export const Reader = (self) => {
                             ++wordCount;
                             const result = text.substr(wordStart, textIndex - wordStart);
 
-                               if(count > limit) {
+                               if(count >= limit) {
                                    count = 0
-                               //     console.log('---------- OUT DATA 2 -------------', wordCount)
+                                   console.log('---------- OUT DATA 2 -------------', result)
                                    return result
                                }
 
@@ -442,24 +451,23 @@ export const Reader = (self) => {
             while (textIndex < text.length && textIndex - wordStart < max_word_length);
 
             // If the second word was too long, return only the first word.
-            console.log('ddddddddddddddddddddddddddddd', {
-                textIndex: textIndex,
-                text: text,
-                wordStart: wordStart,
-                max_word_length: max_word_length
-            })
-
             if (firstWordFound) {
-                textIndex = firstWordEnd;
-                const result = text.substr(wordStart, textIndex - wordStart);
-                console.log('== --------- firstWordEnd --------- ==', result)
+                let result = ''
+                if(!isAudio) {
+                    textIndex = firstWordEnd;
+                    result = text.substr(wordStart, textIndex - wordStart);
+                } else {
+                    result = text.substr(wordStart, textIndex);
+                }
+
+                console.log('--------- OUT DATA 2 -------------', result)
                 return result
             }
 
             // Process the last word.
             if (textIndex >= text.length) {
                 let returnString = text.substr(wordStart, text.length - wordStart);
-                console.log('== --------- returnString --------- ==', returnString)
+                console.log('== --------- end --------- ==', returnString)
                 return returnString;
             }
 
@@ -497,7 +505,7 @@ export const Reader = (self) => {
                             text[wordMiddle + i2 + 1].toUpperCase() === text[wordMiddle + i2 + 1]) {
                             textIndex = wordMiddle + i2 + 1;
                             returnString = text.substr(wordStart, textIndex - wordStart) + "-";
-                            console.log('--- hyphenateWord 1 ----', returnString)
+                            // console.log('--- hyphenateWord 1 ----', returnString)
                             return returnString;
                         }
 
@@ -505,7 +513,7 @@ export const Reader = (self) => {
                             text[wordMiddle - i2 - 1].toUpperCase() === text[wordMiddle - i2 - 1]) {
                             textIndex = wordMiddle - i2 - 1;
                             returnString = text.substr(wordStart, textIndex - wordStart) + "-";
-                            console.log('--- hyphenateWord 2 ----', returnString)
+                            // console.log('--- hyphenateWord 2 ----', returnString)
                             return returnString;
                         }
                     }
@@ -545,7 +553,7 @@ export const Reader = (self) => {
 
         let padAndHighlightWord = function(word){
             let i;
-            console.log('--- padAndHighlightWord ---', word)
+            // console.log('--- padAndHighlightWord ---', word)
             // Find the highlighted character.
             let highlightIndex = getHighlightIndex(word);
 
@@ -560,7 +568,7 @@ export const Reader = (self) => {
             let padding = "";
 
             for (i = 0; i < max_padding - highlightIndex; ++i) {
-                padding = "&nbsp;" + padding;
+                // padding = "&nbsp;" + padding;
             }
             highlightedWord = padding + highlightedWord;
 
@@ -625,19 +633,18 @@ export const Reader = (self) => {
                 // Get the letter's value (vowels are higher than consonants).
                 let letterValue = parseInt(highlightLetterValue[letterIndex], 10);
 
-                console.log('33333333333333333333', highlightCurveValue, {
-                    highlightCurveValue: highlightCurveValue,
-                    wordLength: wordLength,
-                    index: index
-
-                })
+                // console.log('33333333333333333333', {
+                //     highlightCurveValue: highlightCurveValue,
+                //     wordLength: wordLength,
+                //     index: index
+                // })
                 // Get the value for this position within the word.
                 let curveValue = parseInt(highlightCurveValue[wordLength][index], 10);
 
                 // Calculate the score for this letter in this location.
                 let score = letterValue * curveValue;
 
-                console.log('========== score ==========', score)
+                // console.log('========== score ==========', score)
                 // Return the letter's score
                 return score;
             }
@@ -711,7 +718,7 @@ export const Reader = (self) => {
             setStopState();
 
             // Clear the displayed word.
-            outputTextElement.innerHTML = "&nbsp;";
+            outputTextElement.innerHTML = "";
         };
 
         // Sets the values to a stopped state, but does not blank out the current word on the display.

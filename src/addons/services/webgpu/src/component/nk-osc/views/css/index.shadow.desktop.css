@@ -20,20 +20,17 @@ body
     gap: 16px;
 }
 
-#outputDiv
-{
-    width:480px;
-    margin-left:auto;
-    margin-right:auto;
-    margin-top:0;
-    margin-bottom:0;
-    padding:4px;
+#outputDiv {
+    width: 100%;
+    margin: 0 auto;
+    padding: 4px;
+    text-align: center;
 }
 
 #outputTextElement
 {
     text-align:left;
-    font-size:42px;
+    font-size: 0.906vw;
     font-family:monospace;
     /* color:#000000; /* Uncomment for black text on white background */
     color:white; /* Uncomment for white text on black background */
