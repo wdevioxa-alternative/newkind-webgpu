@@ -1,7 +1,7 @@
 export const Reader = (self) => {
     return new Promise((resolve, reject)=> {
         //////////
-        // Variables.
+        // letiables.
         //////////
 
         let text;                       // Stores the text the reader will use.
@@ -24,8 +24,8 @@ export const Reader = (self) => {
         let timeStartReading;           // The time when reading began in milliseconds from Jan 1, 1970. Used to calculate the words per minute.
         let wordCount = 0;              // The number of words that have been displayed. Used to calculate the words per minute.
 
-        let max_word_length = 13;       // Maximum word length to display. Longer words are hyphenated.
-        let max_padding = 8;            // Maximum number of non-breaking spaces to add to the front of a displayed word.
+        let max_word_length = 50;       // Maximum word length to display. Longer words are hyphenated.
+        let max_padding = 20;            // Maximum number of non-breaking spaces to add to the front of a displayed word.
         let max_speed = 2500;           // Arbitrary maximum number of words per minute to display.
         let min_speed = 50;             // Arbitrary minimum number of words per minute.
         let hyphenChars = "-\u2012\u2013\u2014\u2015\u2053";    // List of hyphen characters.
@@ -197,14 +197,14 @@ export const Reader = (self) => {
             h43+h44+h45+h46+h47+h48+h49+h50+h51+h52+h53+h54+h55+h56+h57+h58+h59+h60+h61;
         let highlightLetterValue = v01+v02+v03+v04+v05+v06+v07+v08+v09+v10+v11+v12+v13+v14+v15+v16+v17+v18+v19+v20+v21+v22+v23+v24+v25+v26+v27+v28+v29+v30+v31+v32+v33+v34+v35+v36+v37+v38+v39+v40+v41+v42+
             v43+v44+v45+v46+v47+v48+v49+v50+v51+v52+v53+v54+v55+v56+v57+v58+v59+v60+v61;
-        let highlightCurveValue = ["", "9", "99", "796", "4973", "47952", "469742", "3689631", "34786421", "247964210", "1258984300", "12358975000", "123579760000", "1235798600000"];
+        let highlightCurveValue = ["", "9", "99", "796", "4973", "47952", "469742", "3689631", "34786421", "247964210", "1258984300", "12358975000", "123579760000", "1235798600000", "123579860000000", "123579860000000000"];
 
         // HTML Elements.
         let mainDiv;                // The main div for the page.
         let outputDiv;              // The div for the display word.
         let outputTextElement;      // The span for the display word.
         let progressBarBaseDiv;     // The fixed part of the progress bar.
-        let progressBarDiv;         // The variable part of the progress bar.
+        let progressBarDiv;         // The letiable part of the progress bar.
         let inputTextArea;          // The textarea that stores the text to read.
         let speedInputElement;      // The Word per minute textbox.
         let startStopButton;        // The button that starts and stops the reader.
@@ -251,19 +251,20 @@ export const Reader = (self) => {
 
         // Updates the word on the display with the next word.
 
-        var updateWord = function() {
+        let updateWord = function() {
             // Used to calculate how long the processing takes to obtain the word.
-            var startProcessingTime = Date.now();
+            let startProcessingTime = Date.now();
 
             // Get the next word.
-            var word = nextWord();
+            let word = nextWord();
 
             // Display the word.
+            
             displayWord(word);
 
             if (word) {
                 // If the word is shorter than four letters, use a four letter delay for this word
-                var nextDelay;
+                let nextDelay;
                 if (word.length < 4)
                 {
                     nextDelay = (4 * timerDelaySlope + timerDelayOffset) * timerDelay;
@@ -289,7 +290,8 @@ export const Reader = (self) => {
         // Param: word. The word to display on the screen. Used only to identify end of text to read.
         // Scrolls the textarea to reveal the selected word.
 
-        var displayWord = function(word) {
+        let displayWord = function(word) {
+            
             if (word) {
                 // Display the word with its hightlight.
                 outputTextElement.innerHTML = padAndHighlightWord(word);
@@ -309,7 +311,7 @@ export const Reader = (self) => {
         // Param: start. Starting point of the selection.
         // Param: end. ending point of the selection.
 
-        var selectWordInTextArea = function(start, end){
+        let selectWordInTextArea = function(start, end){
             inputTextArea.focus();
 
             // If this isn't Firefox, scroll the textArea so the selected word is visible.
@@ -319,14 +321,14 @@ export const Reader = (self) => {
                 // Select the word in the textarea.
 
                 // Save the text.
-                var originalText = inputTextArea.value;
+                let originalText = inputTextArea.value;
 
                 // Put in the text before the current word.
                 inputTextArea.value = originalText.substring(0, start);
 
                 // Find the right place to scroll to.
                 inputTextArea.scrollTop = 10000000; // Large enough, I hope.
-                var currentScrollTop = inputTextArea.scrollTop;
+                let currentScrollTop = inputTextArea.scrollTop;
 
                 // Restore the original text.
                 inputTextArea.value = originalText;
@@ -346,22 +348,22 @@ export const Reader = (self) => {
         // Param: progress. The progress toward the limit.
         // Param: limit. The limit of progress to display.
 
-        var updateProgressBar = function(progress, limit){
-            var divWidth = Math.floor((progress / limit) * progressBarBaseDiv.clientWidth);
+        let updateProgressBar = function(progress, limit){
+            let divWidth = Math.floor((progress / limit) * progressBarBaseDiv.clientWidth);
             progressBarDiv.setAttribute("style", "width:" + divWidth + "px");
         };
 
 
         // Calculates and displays the current reading speed in words per minute.
-        var displayWordsPerMinute = function(){
+        let displayWordsPerMinute = function(){
             // Only display words per minute after 20 words (40 for multiWordDisplayhave been read.
             if ((!multiWordDisplay && wordCount > 20) || (multiWordDisplay && wordCount > 40))
             {
                 // Calculate the time spent reading, without counting the time paused.
-                var timeSpentReading = new Date().getTime() - timeStartReading - timeSpentPaused;
+                let timeSpentReading = new Date().getTime() - timeStartReading - timeSpentPaused;
 
                 // Calculate the words per minute to the first decimal place.
-                var wpm = Math.floor(wordCount * 1000 * 60 * 10 / timeSpentReading ) / 10;
+                let wpm = Math.floor(wordCount * 1000 * 60 * 10 / timeSpentReading ) / 10;
 
                 // Display the words per minute.
                 wpmDisplay.innerHTML = wpm;
@@ -372,13 +374,13 @@ export const Reader = (self) => {
         // Returns the next word to display.
         // Sets textIndex and wordStart to identify the word.
 
-        var nextWord = function(){
-            var firstWordFound = false;     // true when the end of the first word is found.
-            var firstWordEnd;               // the end location of the first word.
+        let nextWord = function(){
+            let firstWordFound = false;     // true when the end of the first word is found.
+            let firstWordEnd;               // the end location of the first word.
 
             // Search ahead to find the next non-whitespace character.
-            while (textIndex < text.length && wordBreakChars.indexOf(text[textIndex]) > -1)
-            {
+            while (textIndex < text.length && wordBreakChars.indexOf(text[textIndex]) > -1) {
+                // console.log('---------------------------------',textIndex,  text[textIndex], wordBreakChars.indexOf(text[textIndex]))
                 ++textIndex;
             }
 
@@ -386,48 +388,53 @@ export const Reader = (self) => {
             wordStart = textIndex;
 
 
+            const limit = 3
+            let count = 0
             // Search ahead to find the end of the word.
             --textIndex;
             do {
                 ++textIndex;
-                if (wordBreakChars.indexOf(text[textIndex]) > -1)
-                {
+
+                if (wordBreakChars.indexOf(text[textIndex]) > -1) {
+
                     // Word break found. Was it a hyphen?
-                    if (hyphenChars.indexOf(text[textIndex]) > -1)
-                    {
+                    if (hyphenChars.indexOf(text[textIndex]) > -1) {
                         // On rare occasion, a hyphen will be found just after a max_word_length word (ie., "subscriptions-").
                         //      If that happens, break out. Adding the hyphen will make the word > max_word_length.
-                        if (textIndex - wordStart >= max_word_length)
-                        {
+                        if (textIndex - wordStart >= max_word_length) {
+                            console.log('----------  OUT DATA 3 -------------', wordStart)
                             break;
                         }
 
-                        if (multiWordDisplay && firstWordFound === false)
-                        {
+                        if (multiWordDisplay && firstWordFound === false) {
                             ++wordCount;
                             firstWordFound = true;
                             firstWordEnd = textIndex + 1;
                         }
-                        else
-                        {
+                        else {
                             // Return the word with its hyphen.
+                            console.log('----------  OUT DATA 1 -------------', wordStart)
                             ++wordCount;
                             return text.substr(wordStart, textIndex - wordStart + 1);
                         }
                     }
-                    else
-                    {
-                        if (multiWordDisplay && firstWordFound === false)
-                        {
+                    else {
+                        if (multiWordDisplay && firstWordFound === false) {
                             ++wordCount;
                             firstWordFound = true;
                             firstWordEnd = textIndex;
-                        }
-                        else
-                        {
+                        } else {
                             // Return the word with its hyphen.
                             ++wordCount;
-                            return text.substr(wordStart, textIndex - wordStart);
+                            const result = text.substr(wordStart, textIndex - wordStart);
+
+                               if(count > limit) {
+                                   count = 0
+                               //     console.log('---------- OUT DATA 2 -------------', wordCount)
+                                   return result
+                               }
+
+                            ++count;
                         }
                     }
                 }
@@ -435,16 +442,24 @@ export const Reader = (self) => {
             while (textIndex < text.length && textIndex - wordStart < max_word_length);
 
             // If the second word was too long, return only the first word.
-            if (firstWordFound)
-            {
+            console.log('ddddddddddddddddddddddddddddd', {
+                textIndex: textIndex,
+                text: text,
+                wordStart: wordStart,
+                max_word_length: max_word_length
+            })
+
+            if (firstWordFound) {
                 textIndex = firstWordEnd;
-                return text.substr(wordStart, textIndex - wordStart);
+                const result = text.substr(wordStart, textIndex - wordStart);
+                console.log('== --------- firstWordEnd --------- ==', result)
+                return result
             }
 
             // Process the last word.
-            if (textIndex >= text.length)
-            {
-                var returnString = text.substr(wordStart, text.length - wordStart);
+            if (textIndex >= text.length) {
+                let returnString = text.substr(wordStart, text.length - wordStart);
+                console.log('== --------- returnString --------- ==', returnString)
                 return returnString;
             }
 
@@ -455,46 +470,42 @@ export const Reader = (self) => {
         // Hyphenate the word at text[wordStart] through text[textIndex].
         // Returns the first part of the hyphenated word, with the hyphen.
 
-        var hyphenateWord = function(){
-            var returnString;
-            var i, i2;
+        let hyphenateWord = function(){
+            let returnString;
+            let i, i2;
 
             // Find the end of this word, or another max_word_length - 1 characters.
-            var longWordEnd = textIndex + 1;
+            let longWordEnd = textIndex + 1;
             while (longWordEnd < text.length &&
             longWordEnd - wordStart < max_word_length * 2 - 1 &&
-            wordBreakChars.indexOf(text[longWordEnd]) === -1)
-            {
+            wordBreakChars.indexOf(text[longWordEnd]) === -1) {
                 ++longWordEnd;
             }
 
             // Find the middle of the long word.
-            var wordMiddle = Math.floor((longWordEnd + wordStart) / 2);
+            let wordMiddle = Math.floor((longWordEnd + wordStart) / 2);
 
             // Determine if this is a CamelCase word: Find a lowercase letter with an uppercase letter after it.
-            for (i = 1; i < max_word_length - 1; ++i)
-            {
-                if (text[wordStart + i].toLowerCase() === text[wordStart + i] && text[wordStart + i + 1].toUpperCase() === text[wordStart + i + 1])
-                {
+            for (i = 1; i < max_word_length - 1; ++i) {
+                if (text[wordStart + i].toLowerCase() === text[wordStart + i] && text[wordStart + i + 1].toUpperCase() === text[wordStart + i + 1]) {
                     // This is a CamelCase word. Hyphenate on the upper case letter.
 
                     // Look backward and forward from the middle of the word to find a place to hyphenate.
-                    for (i2 = 0; wordMiddle - i2 > wordStart + 2; ++i2)
-                    {
+                    for (i2 = 0; wordMiddle - i2 > wordStart + 2; ++i2) {
                         if (wordMiddle + i2 + 1 < textIndex &&
                             text[wordMiddle + i2].toLowerCase() === text[wordMiddle + i2] &&
-                            text[wordMiddle + i2 + 1].toUpperCase() === text[wordMiddle + i2 + 1])
-                        {
+                            text[wordMiddle + i2 + 1].toUpperCase() === text[wordMiddle + i2 + 1]) {
                             textIndex = wordMiddle + i2 + 1;
                             returnString = text.substr(wordStart, textIndex - wordStart) + "-";
+                            console.log('--- hyphenateWord 1 ----', returnString)
                             return returnString;
                         }
 
                         if (text[wordMiddle - i2].toLowerCase() === text[wordMiddle - i2] &&
-                            text[wordMiddle - i2 - 1].toUpperCase() === text[wordMiddle - i2 - 1])
-                        {
+                            text[wordMiddle - i2 - 1].toUpperCase() === text[wordMiddle - i2 - 1]) {
                             textIndex = wordMiddle - i2 - 1;
                             returnString = text.substr(wordStart, textIndex - wordStart) + "-";
+                            console.log('--- hyphenateWord 2 ----', returnString)
                             return returnString;
                         }
                     }
@@ -502,18 +513,15 @@ export const Reader = (self) => {
             }
 
             // Look backward and forward from the middle of the word to find a place to hyphenate.
-            for (i = 0; wordMiddle - i > wordStart + 2; ++i)
-            {
+            for (i = 0; wordMiddle - i > wordStart + 2; ++i) {
                 // Two consonants (ie., "ts") as the place to hyphenate.
-                if (wordMiddle + i + 1 < textIndex && consonants.indexOf(text[wordMiddle + i]) > -1 && consonants.indexOf(text[wordMiddle + i + 1]) > -1)
-                {
+                if (wordMiddle + i + 1 < textIndex && consonants.indexOf(text[wordMiddle + i]) > -1 && consonants.indexOf(text[wordMiddle + i + 1]) > -1) {
                     textIndex = wordMiddle + i + 1;
                     returnString = text.substr(wordStart, textIndex - wordStart) + "-";
                     return returnString;
                 }
 
-                if (consonants.indexOf(text[wordMiddle - i]) > -1 && consonants.indexOf(text[wordMiddle - i - 1]) > -1)
-                {
+                if (consonants.indexOf(text[wordMiddle - i]) > -1 && consonants.indexOf(text[wordMiddle - i - 1]) > -1) {
                     textIndex = wordMiddle - i;
                     returnString = text.substr(wordStart, textIndex - wordStart) + "-";
                     return returnString;
@@ -535,24 +543,23 @@ export const Reader = (self) => {
         // Returns the padded and highlighted word. The return value of this function is set to the
         // innerHTML of the outputTextElement.
 
-        var padAndHighlightWord = function(word){
-            var i;
-
+        let padAndHighlightWord = function(word){
+            let i;
+            console.log('--- padAndHighlightWord ---', word)
             // Find the highlighted character.
-            var highlightIndex = getHighlightIndex(word);
+            let highlightIndex = getHighlightIndex(word);
 
-            var leftString = (highlightIndex < 1) ? "" : word.substr(0, highlightIndex);
-            var highlightChar = (word === "") ? "" : word[highlightIndex];
-            var rightString = (highlightIndex < word.length - 1) ? word.substr(highlightIndex + 1, word.length - highlightIndex - 1) : "";
+            let leftString = (highlightIndex < 1) ? "" : word.substr(0, highlightIndex);
+            let highlightChar = (word === "") ? "" : word[highlightIndex];
+            let rightString = (highlightIndex < word.length - 1) ? word.substr(highlightIndex + 1, word.length - highlightIndex - 1) : "";
 
             // Put the character to highlight into a span.
-            var highlightedWord = leftString + "<span class=\"highlight\">" + highlightChar + "</span>" + rightString;
+            let highlightedWord = leftString + "<span class=\"highlight\">" + highlightChar + "</span>" + rightString;
 
             // Add spaces to the beginning of the word to put the highlight in the correct place
-            var padding = "";
+            let padding = "";
 
-            for (i = 0; i < max_padding - highlightIndex; ++i)
-            {
+            for (i = 0; i < max_padding - highlightIndex; ++i) {
                 padding = "&nbsp;" + padding;
             }
             highlightedWord = padding + highlightedWord;
@@ -575,22 +582,19 @@ export const Reader = (self) => {
         // the highlightCurveValue is "4973". Using the word "from", f=3*4=12, r=3*9=27 o=5*7=35 m=3*3=9, the
         // letter "o" has the highest score of 35 and becomes the highlighted letter.
 
-        var getHighlightIndex = function(word){
-            var maxScore = -1;
-            var maxScoreLocation = -1;
-            var score;
-            var i;
+        let getHighlightIndex = function(word){
+            let maxScore = -1;
+            let maxScoreLocation = -1;
+            let score;
+            let i;
 
-            for (i = 0; i < word.length; ++i)
-            {
+            for (i = 0; i < word.length; ++i) {
                 // Find the letter in the list of letters.
                 score = getScore(word[i], i, word.length);
 
-                if (score > -1)
-                {
+                if (score > -1) {
                     // If this is the highest score, record this as the word to highlight.
-                    if (score > maxScore)
-                    {
+                    if (score > maxScore) {
                         maxScore = score;
                         maxScoreLocation = i;
                     }
@@ -599,8 +603,7 @@ export const Reader = (self) => {
 
             // If a score was found, return the location of the best letter to hightlight for the
             // optimal recognition point.
-            if (maxScore > -1)
-            {
+            if (maxScore > -1) {
                 return maxScoreLocation;
             }
 
@@ -615,20 +618,26 @@ export const Reader = (self) => {
         // Param: wordLength. Ie., 7.
         // Returns the score of the given letter in its location within the word.
 
-        var getScore = function(letter, index, wordLength){
+        let getScore = function(letter, index, wordLength){
             // Find the letter in the list of letters.
-            var letterIndex = highlightLetters.indexOf(letter.toLowerCase());
-            if (letterIndex > -1)
-            {
+            let letterIndex = highlightLetters.indexOf(letter.toLowerCase());
+            if (letterIndex > -1) {
                 // Get the letter's value (vowels are higher than consonants).
-                var letterValue = parseInt(highlightLetterValue[letterIndex], 10);
+                let letterValue = parseInt(highlightLetterValue[letterIndex], 10);
 
+                console.log('33333333333333333333', highlightCurveValue, {
+                    highlightCurveValue: highlightCurveValue,
+                    wordLength: wordLength,
+                    index: index
+
+                })
                 // Get the value for this position within the word.
-                var curveValue = parseInt(highlightCurveValue[wordLength][index], 10);
+                let curveValue = parseInt(highlightCurveValue[wordLength][index], 10);
 
                 // Calculate the score for this letter in this location.
-                var score = letterValue * curveValue;
+                let score = letterValue * curveValue;
 
+                console.log('========== score ==========', score)
                 // Return the letter's score
                 return score;
             }
@@ -638,23 +647,21 @@ export const Reader = (self) => {
         };
 
         // Combines the Start and Stop button actions into a single button.
-        var startStopReader = function(){
+        let startStopReader = function(){
             inputTextArea.focus();
 
             // Because the IsPlaying flag gets set later, false means it's about to start playing
-            if (isPlaying)
-            {
+            if (isPlaying) {
                 stopReader();
             }
-            else
-            {
+            else {
                 startReader();
             }
         };
 
         // Starts the reader program on the text in the inputText textarea.
 
-        var startReader = function(){
+        let startReader = function(){
             // Put the focus on the text area.
             inputTextArea.focus();
 
@@ -697,7 +704,7 @@ export const Reader = (self) => {
 
         // Stops the reader.
 
-        var stopReader = function(){
+        let stopReader = function(){
             inputTextArea.focus();
             inputTextArea.setSelectionRange(0, 0);
 
@@ -709,9 +716,8 @@ export const Reader = (self) => {
 
         // Sets the values to a stopped state, but does not blank out the current word on the display.
 
-        var setStopState = function(){
-            if (wordUpdateTimer)
-            {
+        let setStopState = function(){
+            if (wordUpdateTimer) {
                 clearTimeout(wordUpdateTimer);
             }
 
@@ -741,14 +747,12 @@ export const Reader = (self) => {
 
         // Pause/Resume button.
 
-        var pauseResumeReader = function(){
+        let pauseResumeReader = function(){
             // Pause only happens if the reader is playing.
-            if (isPlaying)
-            {
+            if (isPlaying) {
                 inputTextArea.focus();
 
-                if (isPaused)
-                {
+                if (isPaused) {
                     // Resume playing the reader.
                     pauseResumeButton.value = pauseString;
                     isPaused = false;
@@ -760,8 +764,7 @@ export const Reader = (self) => {
                     // Immediately display the next word.
                     wordUpdateTimer = setTimeout(function () { updateWord(); }, 0);
                 }
-                else
-                {
+                else {
                     // Pause the reader.
                     clearTimeout(wordUpdateTimer);
                     timeStartPause = new Date().getTime();
@@ -775,7 +778,7 @@ export const Reader = (self) => {
 
         // Shows the text area and control buttons.
 
-        var showControls = function(){
+        let showControls = function(){
             // Set the flags.
             isTextAreaHidden = false;
             areButtonsHidden = false;
@@ -787,14 +790,13 @@ export const Reader = (self) => {
 
         // Hides the text area and control buttons according to the users settings.
 
-        var hideControls = function(){
+        let hideControls = function(){
             // Set the flags.
             isTextAreaHidden = hideTextAreaCheckBox.checked;
             areButtonsHidden = (isTextAreaHidden) ? hideButtonsCheckBox.checked : false;
 
             // Change the visibility of the controls.
-            if (isPlaying && !isPaused)
-            {
+            if (isPlaying && !isPaused) {
                 inputTextAreaDiv.style.visibility = (isTextAreaHidden) ? "hidden" : "visible";
                 controlButtons.style.visibility = (areButtonsHidden) ? "hidden" : "visible";
             }
@@ -802,8 +804,8 @@ export const Reader = (self) => {
 
         // Faster button. Increases the words per minute by 5% in multiples of 5.
 
-        var fasterReader = function(){
-            var speed = parseInt(speedInputElement.value, 10);
+        let fasterReader = function(){
+            let speed = parseInt(speedInputElement.value, 10);
             speed = Math.floor(speed / 5);
             speed = Math.max(speed + 1, Math.floor(1.05 * speed));
             speed = speed * 5;
@@ -812,8 +814,7 @@ export const Reader = (self) => {
             timerDelay = Math.floor(60000 / speed);
 
             // If the reader is paused, reselect the word in the text area.
-            if (isPaused)
-            {
+            if (isPaused) {
                 inputTextArea.focus();
                 selectWordInTextArea(wordStart, textIndex);
             }
@@ -822,8 +823,8 @@ export const Reader = (self) => {
 
         // Slower button. Decreases the word per minute by just over 5% in multiples of 5.
 
-        var slowerReader = function(){
-            var speed = parseInt(speedInputElement.value, 10);
+        let slowerReader = function(){
+            let speed = parseInt(speedInputElement.value, 10);
             speed = Math.floor(speed / 5);
             speed = Math.floor(0.953 * speed);
             speed = speed * 5;
@@ -832,36 +833,31 @@ export const Reader = (self) => {
             timerDelay = Math.floor(60000 / speed);
 
             // If the reader is paused, reselect the word in the text area.
-            if (isPaused)
-            {
+            if (isPaused) {
                 inputTextArea.focus();
                 selectWordInTextArea(wordStart, textIndex);
             }
         };
-
-
+        
         // Go Back button. Searches backwards one second, then searches to find the beginning of the previous sentence.
 
-        var goBackReader = function(){
-            if (isPlaying || !isPaused)
-            {
+        let goBackReader = function(){
+            if (isPlaying || !isPaused) {
+                console.log('------------ goBackReader ------------')
                 // Go back approximately one second, then search for the start of that sentence.
-                var wordsPerSecond = 1000 / timerDelay;
-                var goBackLength = Math.floor(wordsPerSecond * 6); // Words per second, times an estimate of 6 characters per word.
-                var index = Math.max(0, textIndex - goBackLength);
+                let wordsPerSecond = 1000 / timerDelay;
+                let goBackLength = Math.floor(wordsPerSecond * 6); // Words per second, times an estimate of 6 characters per word.
+                let index = Math.max(0, textIndex - goBackLength);
 
                 // Find the beginning of this sentence, or 1000 characters, whichever comes first.
-                var searchForSentenceStart = 1000;
-                while (index > 0 && searchForSentenceStart-- > 0 && sentenceEnders.indexOf(text[index]) === -1)
-                {
+                let searchForSentenceStart = 1000;
+                while (index > 0 && searchForSentenceStart-- > 0 && sentenceEnders.indexOf(text[index]) === -1) {
                     --index;
                 }
 
-                if (index > 0)
-                {
+                if (index > 0) {
                     // Find the next white space character.
-                    while (index < text.length && wordBreakChars.indexOf(text[index]) === -1)
-                    {
+                    while (index < text.length && wordBreakChars.indexOf(text[index]) === -1) {
                         ++index;
                     }
                 }
@@ -870,12 +866,12 @@ export const Reader = (self) => {
                 textIndex = (index === 0) ? 0 : index + 1;
 
                 // If currently paused, display the word.
-                if (isPaused)
-                {
+                if (isPaused) {
                     // Get the next word.
-                    var word = nextWord();
+                    let word = nextWord();
 
                     // Display the word.
+                    
                     displayWord(word);
                 }
             }
@@ -883,45 +879,39 @@ export const Reader = (self) => {
 
         // Go Forward button. Skips ahead 5 seconds, then searches for the start of the next paragraph.
 
-        var goForwardReader = function(){
-            if (isPlaying || !isPaused)
-            {
+        let goForwardReader = function(){
+            if (isPlaying || !isPaused) {
+                console.log('------------ goForwardReader ------------')
                 // Go forward approximately 5 seconds.
-                var wordsPerSecond = 1000 / timerDelay;
-                var goForwardLength = Math.floor(wordsPerSecond * 6 * 5); // Words per second, times an estimate of 6 characters per word, times 5.
-                var index = Math.min(text.length, textIndex + goForwardLength);
+                let wordsPerSecond = 1000 / timerDelay;
+                let goForwardLength = Math.floor(wordsPerSecond * 6 * 5); // Words per second, times an estimate of 6 characters per word, times 5.
+                let index = Math.min(text.length, textIndex + goForwardLength);
 
                 // Find the end of this paragraph.
-                var searchForParagraphEnd = 2000;
-                while (index < text.length && searchForParagraphEnd-- > 0 && paragraphEnders.indexOf(text[index]) === -1)
-                {
+                let searchForParagraphEnd = 2000;
+                while (index < text.length && searchForParagraphEnd-- > 0 && paragraphEnders.indexOf(text[index]) === -1) {
                     ++index;
                 }
 
                 // If the paragraph end was not found, find the end of this sentence.
-                if (searchForParagraphEnd <= 0)
-                {
+                if (searchForParagraphEnd <= 0) {
                     // Find the end of this sentence.
-                    var searchForSentenceEnd = 1000;
-                    while (index < text.length && searchForSentenceEnd-- > 0 && sentenceEnders.indexOf(text[index]) === -1)
-                    {
+                    let searchForSentenceEnd = 1000;
+                    while (index < text.length && searchForSentenceEnd-- > 0 && sentenceEnders.indexOf(text[index]) === -1) {
                         ++index;
                     }
 
                     // Find the next white space character.
-                    while (index < text.length && searchForSentenceEnd-- > 0 && wordBreakChars.indexOf(text[index]) === -1)
-                    {
+                    while (index < text.length && searchForSentenceEnd-- > 0 && wordBreakChars.indexOf(text[index]) === -1) {
                         ++index;
                     }
                 }
 
                 // Set textIndex to the new location.
-                if (index >= text.length)
-                {
+                if (index >= text.length) {
                     stopReader();
                 }
-                else
-                {
+                else {
                     textIndex = index;
                 }
 
@@ -929,9 +919,10 @@ export const Reader = (self) => {
                 if (isPaused)
                 {
                     // Get the next word.
-                    var word = nextWord();
+                    let word = nextWord();
 
                     // Display the word.
+                    
                     displayWord(word);
                 }
             }
@@ -939,23 +930,21 @@ export const Reader = (self) => {
 
         // Handles the check and uncheck events for the Hide text area checkbox.
 
-        var hideTextAreaOnChange = function(event){
+        let hideTextAreaOnChange = function(event){
             setVisibilityCheckboxes();
             hideControls();
         }
 
         // Disables and enables the "Also hide buttons" checkbox and label text.
 
-        var setVisibilityCheckboxes = function(){
+        let setVisibilityCheckboxes = function(){
             // Check if the hide text area checkbox is checked.
-            if (hideTextAreaCheckBox.checked)
-            {
+            if (hideTextAreaCheckBox.checked) {
                 // If it is, enable the buttons checkbox and text.
                 hideButtonsCheckBox.disabled = false;
                 alsoTextSpan.className = "UIText";
             }
-            else
-            {
+            else {
                 // Otherwise, disable the buttons checkbox and text.
                 hideButtonsCheckBox.disabled = true;
                 alsoTextSpan.className = "UIDisabledText";
@@ -964,7 +953,7 @@ export const Reader = (self) => {
 
         // Handles the check and uncheck events for the multi word checkbox.
 
-        var multiWordCheckBoxOnChange = function(event){
+        let multiWordCheckBoxOnChange = function(event){
             multiWordDisplay = multiWordCheckBox.checked;
         }
 
@@ -972,7 +961,7 @@ export const Reader = (self) => {
         // Suppresses specific keyboard input in the textarea and speed input elements while paused.
         // Allows keys to be used while maintaining the selection in the text area.
 
-        var keypressInput = function(event){
+        let keypressInput = function(event){
             if (isPlaying)
             {
                 if (document.activeElement === inputTextArea || document.activeElement === speedInputElement)
@@ -993,26 +982,22 @@ export const Reader = (self) => {
         // Suppresses specific keyboard input in the textarea and speed input elements while paused.
         // Allows keys to be used while maintaining the selection in the text area.
 
-        var keydownInput = function(event){
+        let keydownInput = function(event){
             // Take keyboard input only when the focus is on the body.
-            if (isPlaying)
-            {
+            if (isPlaying) {
                 // Take the focus away from wherever it is. This puts the focus on document.body.
                 document.activeElement.blur();
 
-                switch (event.keyCode)
-                {
+                switch (event.keyCode) {
                     case 27:
                         stopReader();
                         break;
 
                     case 32: // Spacebar.
-                        if (textIndex !== 0)
-                        {
+                        if (textIndex !== 0) {
                             pauseResumeReader();
                         }
-                        else
-                        {
+                        else {
                             startReader();
                         }
                         break;
@@ -1035,8 +1020,7 @@ export const Reader = (self) => {
                 }
 
                 // Prevent these keys from affecting the display.
-                if (event.keyCode === 27 || event.keyCode === 32 || event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40)
-                {
+                if (event.keyCode === 27 || event.keyCode === 32 || event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40) {
                     event.preventDefault();
                     event.stopPropagation();
                     event.cancelBubble = true;

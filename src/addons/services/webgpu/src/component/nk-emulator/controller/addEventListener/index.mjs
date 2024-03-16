@@ -1,14 +1,15 @@
 import {RENDER_QUANTUM, KERNEL_LENGTH, FRAME_SIZE, QUEUE_SIZE, WORKGROUP_SIZE} from '../../../nk-radio/modules/radio/constants.js'
 
 export default async (self, actions) => {
+    const displaySample = self.shadowRoot.querySelector('.display.sample')
     const start = self.shadowRoot.querySelector('.start')
     const startSample = self.shadowRoot.querySelector('.start-sample')
-
     const settings = self.shadowRoot.querySelectorAll('.settings')
     const containerFrame = self.shadowRoot.querySelector('.frames')
     const array = containerFrame.querySelector('.array')
     const frameArray = 128
     const active = 50
+
     for(let i =0; i < frameArray;++i) {
         array.insertAdjacentHTML('beforeend', `<div class="frame item-${i}"><span class="value ${active === i ? 'active': ''}">🟧</span></div>`)
     }

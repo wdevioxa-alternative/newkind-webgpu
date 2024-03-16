@@ -44,6 +44,8 @@ export default async (self, actions) => {
         }
     }
 
+    inputTextArea.textContent = inputTextArea.textContent.trim()
+
     return {
         init: () => {
             // Add event handlers
