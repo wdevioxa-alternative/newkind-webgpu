@@ -391,7 +391,7 @@ export const Reader = (self) => {
             let limit = 0
             let count = 0
             if(isAudio) {
-                limit = 14
+                limit = 15
             } else {
                 limit = 0
             }
@@ -552,56 +552,66 @@ export const Reader = (self) => {
         let padAndHighlightWord = function(word){
             let i;
             // Find the highlighted character.
-            let highlightIndex = getHighlightIndex(word);
-            const spiltWorlds = word.split(' ')
+            let {
+                highlightIndex: highlightIndex,
+                arrayIndex: arrayIndex
+            } = getHighlightIndex(word);
 
+            const spiltWorlds = word.split(' ')
+            // console.log('3333333333333333333333333333333333', spiltWorlds[arrayIndex].length)
             let leftString = (highlightIndex < 1) ? "" : word.substr(0, highlightIndex);
-            let highlightChar = (word === "") ? "" : word[highlightIndex];
-            let rightString = (highlightIndex < word.length - 1) ? word.substr(highlightIndex + 1, word.length - highlightIndex - 1) : "";
+
+            let highlightChar = ''
+            let rightString = ''
+            if(isAudio) {
+                console.log('dddddddddddddddddddddddddddd', word.substr(highlightIndex + spiltWorlds[arrayIndex].length, word.length - highlightIndex - 1))
+                highlightChar = (word === "") ? "" : word.substr(highlightIndex, spiltWorlds[arrayIndex].length);
+                rightString = (highlightIndex < word.length - 1) ? word.substr(highlightIndex + spiltWorlds[arrayIndex].length, word.length - highlightIndex - 1) : "";
+            } else {
+                highlightChar = (word === "") ? "" : word[highlightIndex];
+                rightString = (highlightIndex < word.length - 1) ? word.substr(highlightIndex + 1, word.length - highlightIndex - 1) : "";
+            }
+
 
             // Add spaces to the beginning of the word to put the highlight in the correct place
-            let padding = "&nbsp;"
+            let padding = ""
             let isRight  = false
             let isLeft = false
+
             if(spiltWorlds[0].length >= highlightIndex) {
-                console.log('---------', spiltWorlds[0].length, highlightIndex)
                 if(spiltWorlds[0].length === highlightIndex + 1) {
-                    // padding = '  !!'
                     isRight = true
-                    console.log('sssssssss')
-                    // debugger
                 }
-                // debugger
             } else {
                 if(spiltWorlds[0].length + 1 === highlightIndex) {
                     isLeft = true
-                    // padding = '  !'
-                    console.log('sssssssss')
-                    // debugger
                 }
-                // debugger
-                console.log('^^^^^^^^^^^^^^^^^^')
-                // debugger
             }
 
             // for (i = 0; i < max_padding - highlightIndex; ++i) {
                 // padding = "&nbsp;" + padding;
             // }
 
+            if(isAudio) {
+                isRight = false
+                isLeft = true
+            }
+
+            // debugger
             let highlightedWord = ''
             // Put the character to highlight into a span.
             if(isLeft) {
-                highlightedWord = `<span class="leftString"> ${leftString}${padding}</span>`;
+                highlightedWord = `<span class="leftString">${leftString}${padding}</span>`;
             } else {
-                highlightedWord = `<span class="leftString"> ${leftString}</span>`;
+                highlightedWord = `<span class="leftString">${leftString}</span>`;
             }
 
             highlightedWord = `${highlightedWord}<span class="highlight">${highlightChar}</span>`;
 
             if(isRight) {
-                highlightedWord = `${highlightedWord}<span class="rightString">${padding}${rightString} </span>`
+                highlightedWord = `${highlightedWord}<span class="rightString">${padding}${rightString}</span>`
             } else {
-                highlightedWord = `${highlightedWord}<span class="rightString"> ${rightString} </span>`
+                highlightedWord = `${highlightedWord}<span class="rightString">${rightString}</span>`
             }
 
             return highlightedWord;
@@ -623,33 +633,59 @@ export const Reader = (self) => {
         // letter "o" has the highest score of 35 and becomes the highlighted letter.
 
         let getHighlightIndex = function(word){
-            let maxScore = -1;
-            let maxScoreLocation = -1;
-            let score;
-            let i;
+            if(!isAudio) {
+                let maxScore = -1;
+                let maxScoreLocation = -1;
+                let score;
+                let i;
 
-            for (i = 0; i < word.length; ++i) {
-                // Find the letter in the list of letters.
-                score = getScore(word[i], i, word.length);
+                for (i = 0; i < word.length; ++i) {
+                    // Find the letter in the list of letters.
+                    score = getScore(word[i], i, word.length);
 
-                if (score > -1) {
-                    // If this is the highest score, record this as the word to highlight.
-                    if (score > maxScore) {
-                        maxScore = score;
-                        maxScoreLocation = i;
+                    if (score > -1) {
+                        // If this is the highest score, record this as the word to highlight.
+                        if (score > maxScore) {
+                            maxScore = score;
+                            maxScoreLocation = i;
+                        }
                     }
                 }
-            }
 
-            // If a score was found, return the location of the best letter to hightlight for the
-            // optimal recognition point.
-            if (maxScore > -1) {
-                return maxScoreLocation;
-            }
+                // If a score was found, return the location of the best letter to hightlight for the
+                // optimal recognition point.
+                if (maxScore > -1) {
+                    return maxScoreLocation;
+                }
 
-            // Could not find a letter to score (ie., this is a collection of symbols).
-            // Highlight the character at the 1/3 position in the word.
-            return Math.max(0, Math.floor(word.length / 3 - 1));
+                // Could not find a letter to score (ie., this is a collection of symbols).
+                // Highlight the character at the 1/3 position in the word.
+                return {
+                    highlightIndex: Math.max(0, Math.floor(word.length / 3 - 1)),
+                    arrayIndex: null
+                };
+            } else {
+                let result = 0
+                let index = 0
+                let splitWorld = word.split(' ')
+
+                if(splitWorld.length !== 17) {
+                    for(let i = 0; i < 17 - splitWorld.length + 4; ++i) {
+                        splitWorld.push(0)
+                    }
+                }
+
+                if(splitWorld.length % 2 === 0) {
+                    index = splitWorld.length / 2
+                } else {
+                    index = (splitWorld.length - 1) / 2
+                }
+
+                return {
+                    highlightIndex: word.indexOf(splitWorld[index]),
+                    arrayIndex: index
+                }
+            }
         };
 
         // Gets the highlight score for the given letter at the given location.
