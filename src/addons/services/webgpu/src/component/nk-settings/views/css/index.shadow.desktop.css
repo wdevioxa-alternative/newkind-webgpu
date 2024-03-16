@@ -2,13 +2,13 @@
     width: 45vw;
 }
 
-.container-settings {
-    background: black;
-    color: white;
-    height: 100%;
-    box-sizing: border-box;
-    padding: 12px 12px;
-}
+/*.container-settings {*/
+/*    background: black;*/
+/*    color: white;*/
+/*    height: 100%;*/
+/*    box-sizing: border-box;*/
+/*    padding: 12px 12px;*/
+/*}*/
 
 .settings {
     display: flex;
@@ -16,7 +16,7 @@
     height: 100%;
 }
 
-.constants {
+.constants, .memory {
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -25,14 +25,14 @@
     padding: 12px 0 12px 12px;
 }
 
-.constants .settings {
+.constants .settings, .memory .settings {
     display: flex;
     flex-direction: row;
     gap: 12px;
     font-weight: bold;
 }
 
-.constants .settings span.value {
+.constants .settings span.value, .memory .settings span.value {
     color: rgba(180, 73, 73, 0.58);
 }
 

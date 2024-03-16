@@ -29,7 +29,7 @@ body
     margin: 0 auto;
     padding: 4px;
     text-align: center;
-    min-height: 180px;
+    min-height: 116px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -76,7 +76,7 @@ body
 
 .outputText {
     position: absolute;
-    top: 65px;
+    top: 36px;
     left: 22.1vw;
     text-align:left;
     font-size:42px;
@@ -113,6 +113,12 @@ body
     text-align:center;
 }
 
+#inputTextAreaDiv {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .controlButton
 {
     margin: 0px 6px 0px 6px;
@@ -121,14 +127,19 @@ body
     font-family:monospace;
 }
 
-#speedAndCheckBoxesDiv
-{
+#speedAndCheckBoxesDiv {
     margin: 0px auto 0px auto;
-    text-align:center;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    box-sizing: border-box;
+    padding: 8px;
 }
 
-textarea
-{
+textarea {
     /*border:1px solid #999999;*/
     width:100%;
     margin:5px 0;
@@ -136,6 +147,7 @@ textarea
     box-sizing: border-box;
     border: none;
     outline: none;
+    height: 100%;
 }
 
 .UIText
