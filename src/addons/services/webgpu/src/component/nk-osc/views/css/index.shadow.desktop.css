@@ -29,11 +29,33 @@ body
 
 #outputTextElement
 {
+    position: relative;
     text-align:left;
     font-size: 0.906vw;
     font-family:monospace;
     /* color:#000000; /* Uncomment for black text on white background */
-    color:white; /* Uncomment for white text on black background */
+    color: white;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.highlight, .leftString, .rightString {
+    width: 100%;
+    white-space: inherit;
+}
+
+.leftString {
+    text-align: right;
+}
+
+.rightString {
+    text-align: left;
+}
+
+.highlight {
+    width: min-content;
+    text-align: center;
 }
 
 .outputText

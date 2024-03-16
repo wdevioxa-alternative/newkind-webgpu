@@ -388,8 +388,6 @@ export const Reader = (self) => {
             // Save the starting location of the word.
             wordStart = textIndex;
 
-
-
             let limit = 0
             let count = 0
             if(isAudio) {
@@ -553,24 +551,58 @@ export const Reader = (self) => {
 
         let padAndHighlightWord = function(word){
             let i;
-            // console.log('--- padAndHighlightWord ---', word)
             // Find the highlighted character.
             let highlightIndex = getHighlightIndex(word);
+            const spiltWorlds = word.split(' ')
 
             let leftString = (highlightIndex < 1) ? "" : word.substr(0, highlightIndex);
             let highlightChar = (word === "") ? "" : word[highlightIndex];
             let rightString = (highlightIndex < word.length - 1) ? word.substr(highlightIndex + 1, word.length - highlightIndex - 1) : "";
 
-            // Put the character to highlight into a span.
-            let highlightedWord = leftString + "<span class=\"highlight\">" + highlightChar + "</span>" + rightString;
-
             // Add spaces to the beginning of the word to put the highlight in the correct place
-            let padding = "";
-
-            for (i = 0; i < max_padding - highlightIndex; ++i) {
-                // padding = "&nbsp;" + padding;
+            let padding = "&nbsp;"
+            let isRight  = false
+            let isLeft = false
+            if(spiltWorlds[0].length >= highlightIndex) {
+                console.log('---------', spiltWorlds[0].length, highlightIndex)
+                if(spiltWorlds[0].length === highlightIndex + 1) {
+                    // padding = '  !!'
+                    isRight = true
+                    console.log('sssssssss')
+                    // debugger
+                }
+                // debugger
+            } else {
+                if(spiltWorlds[0].length + 1 === highlightIndex) {
+                    isLeft = true
+                    // padding = '  !'
+                    console.log('sssssssss')
+                    // debugger
+                }
+                // debugger
+                console.log('^^^^^^^^^^^^^^^^^^')
+                // debugger
             }
-            highlightedWord = padding + highlightedWord;
+
+            // for (i = 0; i < max_padding - highlightIndex; ++i) {
+                // padding = "&nbsp;" + padding;
+            // }
+
+            let highlightedWord = ''
+            // Put the character to highlight into a span.
+            if(isLeft) {
+                highlightedWord = `<span class="leftString"> ${leftString}${padding}</span>`;
+            } else {
+                highlightedWord = `<span class="leftString"> ${leftString}</span>`;
+            }
+
+            highlightedWord = `${highlightedWord}<span class="highlight">${highlightChar}</span>`;
+
+            if(isRight) {
+                highlightedWord = `${highlightedWord}<span class="rightString">${padding}${rightString} </span>`
+            } else {
+                highlightedWord = `${highlightedWord}<span class="rightString"> ${rightString} </span>`
+            }
 
             return highlightedWord;
         };
