@@ -285,11 +285,6 @@ export const Reader = (self, containerFrame) => {
                 // Set the length of time this word will show.
                 wordUpdateTimer = setTimeout(function () { updateWord(); }, nextDelay);
             } else {
-                // document.dispatchEvent(new CustomEvent(`next-frame`, {
-                //     detail: {
-                //         type: "frame-stop"
-                //     }
-                // }))
                 console.log('-------- END -----------')
                 setStopState();
             }
