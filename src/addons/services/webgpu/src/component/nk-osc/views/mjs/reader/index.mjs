@@ -285,11 +285,11 @@ export const Reader = (self, containerFrame) => {
                 // Set the length of time this word will show.
                 wordUpdateTimer = setTimeout(function () { updateWord(); }, nextDelay);
             } else {
-                document.dispatchEvent(new CustomEvent(`next-frame`, {
-                    detail: {
-                        type: "frame-stop"
-                    }
-                }))
+                // document.dispatchEvent(new CustomEvent(`next-frame`, {
+                //     detail: {
+                //         type: "frame-stop"
+                //     }
+                // }))
                 console.log('-------- END -----------')
                 setStopState();
             }
@@ -826,7 +826,6 @@ export const Reader = (self, containerFrame) => {
             wordStart = 0;
             updateProgressBar(0, 100);
 
-            // console.log('222222222222222222222222222222222222222', isPlaying, isPaused)
             document.dispatchEvent(new CustomEvent(`next-frame`, {
                 detail: {
                     type: "frame-stop"
