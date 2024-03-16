@@ -558,13 +558,12 @@ export const Reader = (self) => {
             } = getHighlightIndex(word);
 
             const spiltWorlds = word.split(' ')
-            // console.log('3333333333333333333333333333333333', spiltWorlds[arrayIndex].length)
-            let leftString = (highlightIndex < 1) ? "" : word.substr(0, highlightIndex);
 
+            let leftString = (highlightIndex < 1) ? "" : word.substr(0, highlightIndex);
             let highlightChar = ''
             let rightString = ''
+
             if(isAudio) {
-                console.log('dddddddddddddddddddddddddddd', word.substr(highlightIndex + spiltWorlds[arrayIndex].length, word.length - highlightIndex - 1))
                 highlightChar = (word === "") ? "" : word.substr(highlightIndex, spiltWorlds[arrayIndex].length);
                 rightString = (highlightIndex < word.length - 1) ? word.substr(highlightIndex + spiltWorlds[arrayIndex].length, word.length - highlightIndex - 1) : "";
             } else {
@@ -593,7 +592,7 @@ export const Reader = (self) => {
             // }
 
             if(isAudio) {
-                isRight = false
+                isRight = true
                 isLeft = true
             }
 
@@ -601,7 +600,7 @@ export const Reader = (self) => {
             let highlightedWord = ''
             // Put the character to highlight into a span.
             if(isLeft) {
-                highlightedWord = `<span class="leftString">${leftString}${padding}</span>`;
+                highlightedWord = `<span class="leftString  left">${leftString}</span>`;
             } else {
                 highlightedWord = `<span class="leftString">${leftString}</span>`;
             }
@@ -609,7 +608,7 @@ export const Reader = (self) => {
             highlightedWord = `${highlightedWord}<span class="highlight">${highlightChar}</span>`;
 
             if(isRight) {
-                highlightedWord = `${highlightedWord}<span class="rightString">${padding}${rightString}</span>`
+                highlightedWord = `${highlightedWord}<span class="rightString right">${padding}${rightString}</span>`
             } else {
                 highlightedWord = `${highlightedWord}<span class="rightString">${rightString}</span>`
             }
@@ -655,11 +654,15 @@ export const Reader = (self) => {
                 // If a score was found, return the location of the best letter to hightlight for the
                 // optimal recognition point.
                 if (maxScore > -1) {
-                    return maxScoreLocation;
+                    return {
+                        highlightIndex: maxScoreLocation,
+                        arrayIndex: null
+                    };
                 }
 
                 // Could not find a letter to score (ie., this is a collection of symbols).
                 // Highlight the character at the 1/3 position in the word.
+
                 return {
                     highlightIndex: Math.max(0, Math.floor(word.length / 3 - 1)),
                     arrayIndex: null

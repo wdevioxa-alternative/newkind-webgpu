@@ -42,7 +42,7 @@ body
 
 .highlight, .leftString, .rightString {
     width: 100%;
-    white-space: pre-wrap;
+    white-space: normal;
 }
 
 .leftString {
@@ -51,6 +51,14 @@ body
 
 .rightString {
     text-align: left;
+}
+
+.left {
+    margin-right: 8px;
+}
+
+.right {
+    margin-left: 8px;
 }
 
 .highlight {
