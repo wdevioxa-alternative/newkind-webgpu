@@ -21,10 +21,15 @@ body
 }
 
 #outputDiv {
+    position: relative;
     width: 100%;
     margin: 0 auto;
     padding: 4px;
     text-align: center;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 #outputTextElement
@@ -66,13 +71,16 @@ body
     text-align: center;
 }
 
-.outputText
-{
+.outputText {
+    position: absolute;
+    top: 65px;
+    left: 22.1vw;
     text-align:left;
     font-size:42px;
     font-family:monospace;
     /* color:#000000; /* Uncomment for black text on white background */
     color:white; /* Uncomment for white text on black background */
+    width: min-content;
 }
 
 .highlight

@@ -73,6 +73,10 @@
     height: 100%;
 }
 
+.active .value {
+    background: #2459a987;
+}
+
 .frame .value.active {
     background: #2459a987;
 }

@@ -1,4 +1,4 @@
-export const Reader = (self) => {
+export const Reader = (self, containerFrame) => {
     return new Promise((resolve, reject)=> {
         //////////
         // letiables.
@@ -266,23 +266,31 @@ export const Reader = (self) => {
             if (word) {
                 // If the word is shorter than four letters, use a four letter delay for this word
                 let nextDelay;
-                if (word.length < 4)
-                {
+                if (word.length < 4) {
                     nextDelay = (4 * timerDelaySlope + timerDelayOffset) * timerDelay;
-                }
-                else
-                {
+                } else {
                     nextDelay = (word.length * timerDelaySlope + timerDelayOffset) * timerDelay;
                 }
 
                 // Compensate for time spent processing this word.
                 nextDelay = Math.max(0, nextDelay - (Date.now() - startProcessingTime));
 
+                document.dispatchEvent(new CustomEvent(`next-frame`, {
+                    detail: {
+                        type: "frame"
+                    }
+                }))
+
+                console.log('-------- START -----------', nextDelay)
                 // Set the length of time this word will show.
                 wordUpdateTimer = setTimeout(function () { updateWord(); }, nextDelay);
-            }
-            else
-            {
+            } else {
+                document.dispatchEvent(new CustomEvent(`next-frame`, {
+                    detail: {
+                        type: "frame-stop"
+                    }
+                }))
+                console.log('-------- END -----------')
                 setStopState();
             }
         };
@@ -465,7 +473,6 @@ export const Reader = (self) => {
             // Process the last word.
             if (textIndex >= text.length) {
                 let returnString = text.substr(wordStart, text.length - wordStart);
-                console.log('== --------- end --------- ==', returnString)
                 return returnString;
             }
 
@@ -596,7 +603,6 @@ export const Reader = (self) => {
                 isLeft = true
             }
 
-            // debugger
             let highlightedWord = ''
             // Put the character to highlight into a span.
             if(isLeft) {
@@ -776,7 +782,9 @@ export const Reader = (self) => {
             wpmDisplay.innerHTML = "Calculating ...";
 
             // Immediately display the first word.
-            wordUpdateTimer = setTimeout(function () { updateWord(); }, 0);
+            wordUpdateTimer = setTimeout(function () {
+                updateWord();
+            }, 0);
         };
 
 
@@ -818,6 +826,12 @@ export const Reader = (self) => {
             wordStart = 0;
             updateProgressBar(0, 100);
 
+            // console.log('222222222222222222222222222222222222222', isPlaying, isPaused)
+            document.dispatchEvent(new CustomEvent(`next-frame`, {
+                detail: {
+                    type: "frame-stop"
+                }
+            }))
             // Set the text of the buttons to the stopped state.
             pauseResumeButton.value = pauseString;
             startStopButton.value = startString;

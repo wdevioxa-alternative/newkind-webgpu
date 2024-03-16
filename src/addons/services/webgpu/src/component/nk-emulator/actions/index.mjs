@@ -11,11 +11,31 @@ export const actions = (self) => {
     return new Promise(async (resolve, reject) => {
         const line = await Line(self)
         const settings = self.shadowRoot.querySelectorAll('.settings')
+        const framesArray = self.shadowRoot.querySelector('.array')
+
+        console.log('ddddddddddddddddddd', framesArray)
+        // debugger
         // const osc = await OSC(self)
         // await osc.init()
         // await osc.start()
 
+        let count  = 0
         resolve({
+            bus: {
+                frame: (event) => {
+                    if(event.detail.type === 'frame') {
+                        framesArray?.querySelector(`.item-${count -1}`)?.classList?.remove('active')
+                        framesArray?.querySelector(`.item-${count}`)?.classList?.add('active')
+                        ++count
+                    }
+
+                    if(event.detail.type === 'frame-stop') {
+                        framesArray?.querySelector(`.item-${count - 1}`)?.classList?.remove('active')
+                        framesArray?.querySelector(`.item-${count}`)?.classList?.remove('active')
+                        count = 0
+                    }
+                }
+            },
             sample: {
               click: async (event) => {
                   event.preventDefault()
