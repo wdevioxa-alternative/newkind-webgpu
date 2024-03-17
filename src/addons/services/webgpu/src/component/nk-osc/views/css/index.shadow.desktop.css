@@ -148,6 +148,7 @@ textarea {
     border: none;
     outline: none;
     height: 100%;
+    min-height: 36dvh;
 }
 
 .UIText

@@ -4,7 +4,10 @@ export const Reader = (self, containerFrame) => {
         // letiables.
         //////////
 
-        let isAudio = self.dataset.field === 'osc_audio'
+        const oscAudio = 'osc_audio'
+
+        let isAudio = self.dataset.field === oscAudio
+        let isSample = self.dataset.field === oscAudio
         let text;                       // Stores the text the reader will use.
         let textIndex = 0;              // The current character within the text (text[textIndex]).
         let wordStart = 0;              // The start of the current word.
@@ -223,6 +226,13 @@ export const Reader = (self, containerFrame) => {
         let wpmDisplay;             // The span to display the words per minute.
 
 
+        let isNextSamle = 0
+        let indexSamle = 1
+        let nextSamle = {
+            start: 0
+        }
+        let leftLimit = ''
+
         mainDiv                 = self.shadowRoot.getElementById("mainDiv");
         outputDiv               = self.shadowRoot.getElementById("outputDiv");
         outputTextElement       = self.shadowRoot.getElementById("outputTextElement");
@@ -253,17 +263,27 @@ export const Reader = (self, containerFrame) => {
         // Updates the word on the display with the next word.
 
         let updateWord = function() {
+            // console.log('--------------- START ---------------')
             // Used to calculate how long the processing takes to obtain the word.
             let startProcessingTime = Date.now();
 
+            // textIndex = nextSamle.textIndex
+            // wordStart = 7
+            if(isSample && nextSamle?.textIndex) {
+                textIndex = nextSamle.textIndex
+            }
+
+
             // Get the next word.
             let word = nextWord();
-
+            console.log('🟢',word)
             // Display the word.
             
-            displayWord(word);
 
-            if (word) {
+            const spiltWorlds = word.split(' ')
+            displayWord(word, spiltWorlds.length === 1);
+
+            if (word && spiltWorlds.length !== 1 ) {
                 // If the word is shorter than four letters, use a four letter delay for this word
                 let nextDelay;
                 if (word.length < 4) {
@@ -281,7 +301,7 @@ export const Reader = (self, containerFrame) => {
                     }
                 }))
 
-                console.log('-------- START -----------', nextDelay)
+                // console.log('-------- START -----------', nextDelay)
                 // Set the length of time this word will show.
                 wordUpdateTimer = setTimeout(function () { updateWord(); }, nextDelay);
             } else {
@@ -294,11 +314,15 @@ export const Reader = (self, containerFrame) => {
         // Param: word. The word to display on the screen. Used only to identify end of text to read.
         // Scrolls the textarea to reveal the selected word.
 
-        let displayWord = function(word) {
+        let displayWord = function(word, isEnd) {
             
             if (word) {
                 // Display the word with its hightlight.
-                outputTextElement.innerHTML = padAndHighlightWord(word);
+
+                outputTextElement.innerHTML = padAndHighlightWord(word, isEnd);
+
+
+
 
                 // Select the word in the text area.
                 selectWordInTextArea(wordStart, textIndex);
@@ -320,8 +344,7 @@ export const Reader = (self, containerFrame) => {
 
             // If this isn't Firefox, scroll the textArea so the selected word is visible.
             //   This happens automatically in Firefox.
-            if (!isInFirefox)
-            {
+            if (!isInFirefox) {
                 // Select the word in the textarea.
 
                 // Save the text.
@@ -338,8 +361,7 @@ export const Reader = (self, containerFrame) => {
                 inputTextArea.value = originalText;
 
                 // Scroll to the right place.
-                if (currentScrollTop > 0)
-                {
+                if (currentScrollTop > 0) {
                     // Put the selection at the lower fourth of the displayed textArea.
                     inputTextArea.scrollTop = currentScrollTop + (Math.floor(inputTextArea.clientHeight / 4));
                 }
@@ -361,8 +383,7 @@ export const Reader = (self, containerFrame) => {
         // Calculates and displays the current reading speed in words per minute.
         let displayWordsPerMinute = function(){
             // Only display words per minute after 20 words (40 for multiWordDisplayhave been read.
-            if ((!multiWordDisplay && wordCount > 20) || (multiWordDisplay && wordCount > 40))
-            {
+            if ((!multiWordDisplay && wordCount > 20) || (multiWordDisplay && wordCount > 40)) {
                 // Calculate the time spent reading, without counting the time paused.
                 let timeSpentReading = new Date().getTime() - timeStartReading - timeSpentPaused;
 
@@ -378,15 +399,21 @@ export const Reader = (self, containerFrame) => {
         // Returns the next word to display.
         // Sets textIndex and wordStart to identify the word.
 
+        let countData = 0
         let nextWord = function(){
             let firstWordFound = false;     // true when the end of the first word is found.
             let firstWordEnd;               // the end location of the first word.
 
+            // if(isSample) {
+            //     textIndex = countData
+            // }
             // Search ahead to find the next non-whitespace character.
             while (textIndex < text.length && wordBreakChars.indexOf(text[textIndex]) > -1) {
                 // console.log('---------------------------------',textIndex,  text[textIndex], wordBreakChars.indexOf(text[textIndex]))
                 ++textIndex;
             }
+
+            // console.log('textIndex', textIndex)
 
             // Save the starting location of the word.
             wordStart = textIndex;
@@ -399,13 +426,28 @@ export const Reader = (self, containerFrame) => {
                 limit = 0
             }
 
+
+
             // Search ahead to find the end of the word.
             --textIndex;
+            leftLimit = wordStart
+            isNextSamle = 0
+            // console.log('sssssssss',isNextSamle,  nextSamle)
+            // debugger
             do {
                 ++textIndex;
 
                 if (wordBreakChars.indexOf(text[textIndex]) > -1) {
-
+                    ++isNextSamle
+                    if(isSample && isNextSamle === indexSamle) {
+                        nextSamle = {
+                            start: textIndex,
+                            text: text.substr(leftLimit, textIndex),
+                            leftLimit: leftLimit,
+                            textIndex: textIndex
+                        }
+                    }
+                    leftLimit = textIndex
                     // Word break found. Was it a hyphen?
                     if (hyphenChars.indexOf(text[textIndex]) > -1) {
                         // On rare occasion, a hyphen will be found just after a max_word_length word (ie., "subscriptions-").
@@ -419,8 +461,7 @@ export const Reader = (self, containerFrame) => {
                             ++wordCount;
                             firstWordFound = true;
                             firstWordEnd = textIndex + 1;
-                        }
-                        else {
+                        } else {
                             // Return the word with its hyphen.
                             ++wordCount;
                             const result = text.substr(wordStart, textIndex - wordStart + 1);
@@ -439,7 +480,6 @@ export const Reader = (self, containerFrame) => {
 
                                if(count >= limit) {
                                    count = 0
-                                   console.log('---------- OUT DATA 2 -------------', result)
                                    return result
                                }
 
@@ -460,7 +500,7 @@ export const Reader = (self, containerFrame) => {
                     result = text.substr(wordStart, textIndex);
                 }
 
-                console.log('--------- OUT DATA 2 -------------', result)
+                // console.log('--------- OUT DATA 2 -------------', result)
                 return result
             }
 
@@ -550,7 +590,7 @@ export const Reader = (self, containerFrame) => {
         // Returns the padded and highlighted word. The return value of this function is set to the
         // innerHTML of the outputTextElement.
 
-        let padAndHighlightWord = function(word){
+        let padAndHighlightWord = function(word, isEnd){
             let i;
             // Find the highlighted character.
             let {
@@ -565,8 +605,8 @@ export const Reader = (self, containerFrame) => {
             let rightString = ''
 
             if(isAudio) {
-                highlightChar = (word === "") ? "" : word.substr(highlightIndex, spiltWorlds[arrayIndex].length);
-                rightString = (highlightIndex < word.length - 1) ? word.substr(highlightIndex + spiltWorlds[arrayIndex].length, word.length - highlightIndex - 1) : "";
+                highlightChar = (word === "") ? "" : word.substr(highlightIndex < 0? 0: highlightIndex, spiltWorlds[arrayIndex + highlightIndex < 0? highlightIndex: 0].length);
+                rightString = (highlightIndex < word.length - 1) ? word.substr(highlightIndex + spiltWorlds[arrayIndex+ highlightIndex < 0? highlightIndex: 0].length, word.length - highlightIndex - 1) : "";
             } else {
                 highlightChar = (word === "") ? "" : word[highlightIndex];
                 rightString = (highlightIndex < word.length - 1) ? word.substr(highlightIndex + 1, word.length - highlightIndex - 1) : "";
@@ -607,11 +647,16 @@ export const Reader = (self, containerFrame) => {
 
             highlightedWord = `${highlightedWord}<span class="highlight">${highlightChar}</span>`;
 
-            if(isRight) {
-                highlightedWord = `${highlightedWord}<span class="rightString right">${padding}${rightString}</span>`
+            if(!isEnd) {
+                if(isRight) {
+                    highlightedWord = `${highlightedWord}<span class="rightString right">${padding}${rightString}</span>`
+                } else {
+                    highlightedWord = `${highlightedWord}<span class="rightString">${rightString}</span>`
+                }
             } else {
-                highlightedWord = `${highlightedWord}<span class="rightString">${rightString}</span>`
+                highlightedWord = `${highlightedWord}<span class="rightString"></span>`
             }
+
 
             return highlightedWord;
         };
@@ -818,6 +863,12 @@ export const Reader = (self, containerFrame) => {
             // Set the values to the beginning of the text.
             textIndex = 0;
             wordStart = 0;
+            isNextSamle = 0
+            indexSamle = 1
+            nextSamle = {
+                start: 0
+            }
+            leftLimit = ''
             updateProgressBar(0, 100);
 
             document.dispatchEvent(new CustomEvent(`next-frame`, {
@@ -993,6 +1044,7 @@ export const Reader = (self, containerFrame) => {
                 }
 
                 // Set textIndex to the new location.
+                console.log('----------------------------', index,  text.length)
                 if (index >= text.length) {
                     stopReader();
                 }
