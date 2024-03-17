@@ -24,9 +24,16 @@ export const actions = (self) => {
             bus: {
                 frame: (event) => {
                     if(event.detail.type === 'frame') {
-                        framesArray?.querySelector(`.item-${count -1}`)?.classList?.remove('active')
-                        framesArray?.querySelector(`.item-${count}`)?.classList?.add('active')
-                        ++count
+                        const item = framesArray?.querySelector(`.item-${count}`)
+                        // let isReset =
+                        if(!item) {
+                           count = 0
+                           framesArray?.querySelector(`.item-${count}`)?.classList?.add('active')
+                        } else {
+                            framesArray?.querySelector(`.item-${count -1}`)?.classList?.remove('active')
+                            framesArray?.querySelector(`.item-${count}`)?.classList?.add('active')
+                            ++count
+                        }
                     }
 
                     if(event.detail.type === 'frame-stop') {

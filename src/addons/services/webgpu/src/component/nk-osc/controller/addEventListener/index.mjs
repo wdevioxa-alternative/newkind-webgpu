@@ -37,7 +37,8 @@ export default async (self, actions) => {
 
     console.log('self.dataset.field', self.dataset.field)
 
-    if(self.dataset.field === 'osc_audio') {
+
+    if(self.dataset.field === 'osc_audio' || self.dataset.field === 'osc_audio_frame') {
         inputTextArea.textContent = ''
         for(let i =0; i< 250; ++i) {
             inputTextArea.textContent = `${inputTextArea.textContent} ${i}`

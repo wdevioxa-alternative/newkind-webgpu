@@ -5,8 +5,9 @@ export const Reader = (self, containerFrame) => {
         //////////
 
         const oscAudio = 'osc_audio'
+        const oscAudioFrame = 'osc_audio_frame'
 
-        let isAudio = self.dataset.field === oscAudio
+        let isAudio = self.dataset.field === oscAudio || self.dataset.field === oscAudioFrame
         let isSample = self.dataset.field === oscAudio
         let text;                       // Stores the text the reader will use.
         let textIndex = 0;              // The current character within the text (text[textIndex]).
