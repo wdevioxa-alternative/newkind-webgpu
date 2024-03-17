@@ -226,7 +226,6 @@ export const Reader = (self, containerFrame) => {
         let multiWordCheckBox;      // The checkbox to allow display of more than one word at a time.
         let wpmDisplay;             // The span to display the words per minute.
 
-
         let isNextSamle = 0
         let indexSamle = 1
         let nextSamle = {
@@ -264,7 +263,7 @@ export const Reader = (self, containerFrame) => {
         // Updates the word on the display with the next word.
 
         let updateWord = function() {
-            // console.log('--------------- START ---------------')
+            console.log('--------------- START ---------------')
             // Used to calculate how long the processing takes to obtain the word.
             let startProcessingTime = Date.now();
 
@@ -279,11 +278,12 @@ export const Reader = (self, containerFrame) => {
             let word = nextWord();
             console.log('🟢',word)
             // Display the word.
-            
 
+            word = word.replace(/\n/g, " ");
             const spiltWorlds = word.split(' ')
             displayWord(word, spiltWorlds.length === 1);
 
+            console.log('-----------------', spiltWorlds)
             if (word && spiltWorlds.length !== 1 ) {
                 // If the word is shorter than four letters, use a four letter delay for this word
                 let nextDelay;
