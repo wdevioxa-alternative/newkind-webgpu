@@ -267,6 +267,7 @@ export const Reader = (self, containerFrame) => {
         let isNextFull = false;
         let isSecondStep = true
         let word = ''
+        const isFocus = true
         //////////
         // Functions.
         //////////
@@ -366,7 +367,9 @@ export const Reader = (self, containerFrame) => {
         // Param: end. ending point of the selection.
 
         let selectWordInTextArea = function(start, end) {
-            inputTextArea.focus();
+            if(isFocus) {
+                inputTextArea.focus();
+            }
 
             // If this isn't Firefox, scroll the textArea so the selected word is visible.
             //   This happens automatically in Firefox.
@@ -461,7 +464,6 @@ export const Reader = (self, containerFrame) => {
             isNextSamle = 0;
             // console.log('sssssssss',isNextSamle,  nextSamle)
 
-            debugger
             isCountFull = count2Limit >= limit;
             if (!isCountFull) {
                 isNextFull = (count2Limit + 1) >= limit;
@@ -470,8 +472,6 @@ export const Reader = (self, containerFrame) => {
 
             do {
                 ++textIndex;
-                console.log('text[textIndex]', text[textIndex])
-                debugger
                 //Ищет следующий пробел
                 if (wordBreakChars.indexOf(text[textIndex]) > -1) {
                     ++isNextSamle;
@@ -891,6 +891,7 @@ export const Reader = (self, containerFrame) => {
 
         // Combines the Start and Stop button actions into a single button.
         let startStopReader = function() {
+            
             inputTextArea.focus();
 
             // Because the IsPlaying flag gets set later, false means it's about to start playing
@@ -905,7 +906,11 @@ export const Reader = (self, containerFrame) => {
 
         let startReader = function() {
             // Put the focus on the text area.
-            inputTextArea.focus();
+            
+            if(isFocus) {
+                inputTextArea.focus();    
+            }
+            
 
             // Stop the reader if it is paused.
             stopReader();
@@ -949,7 +954,10 @@ export const Reader = (self, containerFrame) => {
         // Stops the reader.
 
         let stopReader = function() {
-            inputTextArea.focus();
+            if(isFocus) {
+                inputTextArea.focus();
+            }
+
             inputTextArea.setSelectionRange(0, 0);
 
             setStopState();
@@ -1012,7 +1020,10 @@ export const Reader = (self, containerFrame) => {
         let pauseResumeReader = function() {
             // Pause only happens if the reader is playing.
             if (isPlaying) {
-                inputTextArea.focus();
+
+                if(isFocus) {
+                    inputTextArea.focus();
+                }
 
                 if (isPaused) {
                     // Resume playing the reader.
@@ -1078,7 +1089,9 @@ export const Reader = (self, containerFrame) => {
 
             // If the reader is paused, reselect the word in the text area.
             if (isPaused) {
-                inputTextArea.focus();
+                if(isFocus) {
+                    inputTextArea.focus();
+                }
                 selectWordInTextArea(wordStart, textIndex);
             }
         };
@@ -1097,7 +1110,10 @@ export const Reader = (self, containerFrame) => {
 
             // If the reader is paused, reselect the word in the text area.
             if (isPaused) {
-                inputTextArea.focus();
+                if(isFocus) {
+                    inputTextArea.focus();
+                }
+
                 selectWordInTextArea(wordStart, textIndex);
             }
         };
