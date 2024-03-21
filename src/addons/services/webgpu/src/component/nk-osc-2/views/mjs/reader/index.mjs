@@ -276,7 +276,7 @@ export const Reader = (self, containerFrame) => {
 
         let updateWord = function() {
             console.log('--------------- START ---------------', isNextFull);
-            //
+
             // Used to calculate how long the processing takes to obtain the word.
             let startProcessingTime = Date.now();
 
@@ -460,8 +460,8 @@ export const Reader = (self, containerFrame) => {
             leftLimit = wordStart;
             isNextSamle = 0;
             // console.log('sssssssss',isNextSamle,  nextSamle)
-            //
 
+            debugger
             isCountFull = count2Limit >= limit;
             if (!isCountFull) {
                 isNextFull = (count2Limit + 1) >= limit;
@@ -470,6 +470,8 @@ export const Reader = (self, containerFrame) => {
 
             do {
                 ++textIndex;
+                console.log('text[textIndex]', text[textIndex])
+                debugger
                 //Ищет следующий пробел
                 if (wordBreakChars.indexOf(text[textIndex]) > -1) {
                     ++isNextSamle;
@@ -486,7 +488,7 @@ export const Reader = (self, containerFrame) => {
 
                     }
 
-                    if (isCountFull) {
+                    if (isNextFull) {
                         leftLimit = wordStart;
                     } else {
                         leftLimit = 0;
@@ -525,13 +527,13 @@ export const Reader = (self, containerFrame) => {
                             return result;
                         }
                     } else {
-                        debugger
+                        
                         if (multiWordDisplay && firstWordFound === false) {
-                            if (isNextFull) {
+                            if (isCountFull) {
                                 if (limit === 0) {
                                     const result = text.substring(wordStart, textIndex);
                                     console.log('----------  OUT DATA -2 -------------', result);
-                                    debugger
+                                    
                                     return result;
                                 } else {
                                     ++wordCount;
@@ -586,7 +588,7 @@ export const Reader = (self, containerFrame) => {
             // Process the last word.
             if (textIndex >= text.length) {
                 if(limit === 0) {
-                    debugger
+                    
                     return '';
                 } else {
                     let returnString = text.substring(wordStart, text.length - wordStart);
@@ -813,9 +815,11 @@ export const Reader = (self, containerFrame) => {
                 let result = 0;
                 let index = 0;
                 let splitWorld = word.split(' ');
-                const enptyLength = limit - (parseInt(splitWorld.length, 10) + 1);
+                const enptyLength = limit - (parseInt(splitWorld.length, 10)) + 1;
+
                 // console.log('splitWorld', splitWorld)
 
+                
                 console.log('dddddddddddddd', enptyLength, limit, (parseInt(splitWorld.length, 10) + 1))
                 
                 if(!isNextFull) {
