@@ -1,0 +1,183 @@
+:host {
+    width: 45vw;
+    display: flex;
+    flex-direction: column;
+}
+
+body
+{
+    /* background-color:#FFFFFF; /* Uncomment for black text on white background */
+    background-color:#272727; /* Uncomment for white text on black background */
+}
+
+#mainDiv
+{
+    width: 100%;
+    margin-left:auto;
+    margin-right:auto;
+    vertical-align:center;
+    background: #272727;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 100%;
+}
+
+#outputDiv {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    padding: 4px;
+    text-align: center;
+    min-height: 116px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#outputTextElement
+{
+    position: relative;
+    text-align:left;
+    font-size: 0.906vw;
+    font-family:monospace;
+    /* color:#000000; /* Uncomment for black text on white background */
+    color: white;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.highlight, .leftString, .rightString {
+    width: 100%;
+    white-space: normal;
+}
+
+.leftString {
+    text-align: right;
+}
+
+.rightString {
+    text-align: left;
+}
+
+.left {
+    margin-right: 8px;
+}
+
+.right {
+    margin-left: 8px;
+}
+
+.highlight {
+    width: min-content;
+    text-align: center;
+}
+
+.outputText {
+    position: absolute;
+    top: 36px;
+    left: 22.1vw;
+    text-align:left;
+    font-size:42px;
+    font-family:monospace;
+    /* color:#000000; /* Uncomment for black text on white background */
+    color:white; /* Uncomment for white text on black background */
+    width: min-content;
+}
+
+.highlight
+{
+    color:#ff7030;
+}
+
+#progressBarBaseDiv
+{
+    width:600px;
+    height:3px;
+    margin-left:auto;
+    margin-right:auto;
+    background-color:#606060;
+}
+
+#progressBarDiv
+{
+    width:0px;
+    height:3px;
+    background-color:#a0a0a0;
+}
+
+#controlButtons
+{
+    margin: 0px auto 0px auto;
+    text-align:center;
+}
+
+#inputTextAreaDiv {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.controlButton
+{
+    margin: 0px 6px 0px 6px;
+    text-align:center;
+    font-size:32px;
+    font-family:monospace;
+}
+
+#speedAndCheckBoxesDiv {
+    margin: 0px auto 0px auto;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    box-sizing: border-box;
+    padding: 8px;
+}
+
+textarea {
+    /*border:1px solid #999999;*/
+    width:100%;
+    margin:5px 0;
+    padding:3px;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    height: 100%;
+    min-height: 36dvh;
+}
+
+.UIText
+{
+    /* color:#000000; /* Uncomment for black text on white background */
+    color:#a0a0a0;    /* Uncomment for black text on white background */
+}
+
+.UIDisabledText
+{
+    color:#808080;
+}
+
+.UIInput
+{
+    background-color:#e0e0e0;
+}
+
+.UIInputReadOnly
+{
+    background-color:#b0b0b0;
+}
+
+#inputTextArea:focus-visible {
+    border: none;
+    outline: none;
+}
+
+:focus-visible  {
+    border: none;
+    outline: none;
+}
