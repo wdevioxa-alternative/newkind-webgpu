@@ -45,6 +45,18 @@ export default async (self, actions) => {
         }
     }
 
+    if(self.dataset.field === 'osc_audio') {
+        inputTextArea.textContent = ''
+        inputTextArea.textContent = `
+      0 1 2 3 4 5 6 7 8 9 10
+        `
+
+
+
+        inputTextArea.textContent = inputTextArea.textContent.replace(/\s*\n\s*/g,"\n").trim()
+        // inputTextArea.textContent =    inputTextArea.textContent.replace(/  +/g, ' ').trim()
+    }
+
     inputTextArea.textContent = inputTextArea.textContent.trim()
 
     return {

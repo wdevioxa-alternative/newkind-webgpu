@@ -248,8 +248,8 @@ export const Reader = (self, containerFrame) => {
         const oscAudioFrame = 'osc_audio_frame';
 
         const defaultData = {
-            limit: 16
-        }
+            limit: 3
+        };
         let isAudio = self.dataset.field === oscAudio || self.dataset.field === oscAudioFrame;
         let isSample = self.dataset.field === oscAudio;
 
@@ -265,9 +265,12 @@ export const Reader = (self, containerFrame) => {
         let count = 0;
         let isCountFull = false;
         let isNextFull = false;
-        let isSecondStep = true
-        let word = ''
-        const isFocus = true
+        let isSecondStep = true;
+        let word = '';
+        const isFocus = true;
+        let isLastWords = false;
+        let indexWords = -1;
+        let isLastChar = false;
         //////////
         // Functions.
         //////////
@@ -276,7 +279,8 @@ export const Reader = (self, containerFrame) => {
         // Updates the word on the display with the next word.
 
         let updateWord = function() {
-            console.log('--------------- START ---------------', isNextFull);
+            ++indexWords;
+            console.log('--------------- START ---------------', indexWords);
 
             // Used to calculate how long the processing takes to obtain the word.
             let startProcessingTime = Date.now();
@@ -300,19 +304,23 @@ export const Reader = (self, containerFrame) => {
             console.log('textIndex', textIndex, isNextFull);
 
             // Get the next word.
+            // console.log('word', word, text)
+            // 
+
             word = nextWord();
             console.log('🟢', word);
 
-            
+
             // Display the word.
 
             word = word.replace(/\n/g, ' ');
+
             const spiltWorlds = word.split(' ');
 
             displayWord(word, spiltWorlds.length === 0);
-            console.log('!!!---------  DISPLAY ------------!!!', 'слова: ', word, 'начало слова: ', wordStart, 'индекс:  ', textIndex);
-            //
-            if (word && (spiltWorlds.length !== 0 || limit === 0)) {
+
+            // console.log('=== word ===: ', word, '=== spiltWorlds ===: ', spiltWorlds)
+            if (!isLastChar && word && (spiltWorlds.length !== 0 || limit === 0)) {
                 // If the word is shorter than four letters, use a four letter delay for this word
                 let nextDelay;
                 if (word.length < 4) {
@@ -346,13 +354,12 @@ export const Reader = (self, containerFrame) => {
         // Scrolls the textarea to reveal the selected word.
 
         let displayWord = function(word, isEnd) {
-
             if (word) {
                 // Display the word with its hightlight.
                 outputTextElement.innerHTML = padAndHighlightWord(word, isEnd);
 
                 // Select the word in the text area.
-                selectWordInTextArea(wordStart, textIndex);
+                selectWordInTextArea(wordStart, isLastWords ? text.length : textIndex);
 
                 // Update the progress bar.
                 updateProgressBar(textIndex, text.length);
@@ -367,7 +374,7 @@ export const Reader = (self, containerFrame) => {
         // Param: end. ending point of the selection.
 
         let selectWordInTextArea = function(start, end) {
-            if(isFocus) {
+            if (isFocus) {
                 inputTextArea.focus();
             }
 
@@ -435,22 +442,20 @@ export const Reader = (self, containerFrame) => {
             //     textIndex = countData
             // }
             // Search ahead to find the next non-whitespace character.
-            console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@', textIndex);
 
-            
+
             // console.log('textIndex', textIndex)
             // Save the starting location of the word.
             if (isNextFull) {
                 wordStart = textIndex;
-                console.log('J textIndex[(J wordStart)Первое слово из списка]: ', wordStart);
             } else {
                 wordStart = 0;
             }
 
+
             while (textIndex < text.length && wordBreakChars.indexOf(text[textIndex]) > -1) {
                 ++textIndex;
             }
-
 
             if (isAudio) {
                 // limit = 1;
@@ -470,10 +475,21 @@ export const Reader = (self, containerFrame) => {
                 ++count2Limit;
             }
 
+            const spiltWorlds = text.split(' ');
+            // if(isLastWords) {
+            // if(indexWords - limit === spiltWorlds.length) {
+            //     debugger
+            //     isLastChar = true
+            // }
+            // console.log('------ {|||||||||||||||||} ------','text:index: ', indexWords - limit , 'ddd', spiltWorlds, 'text:value: ', text[textIndex], 'text: ', text.length)
+            // }
+
             do {
                 ++textIndex;
                 //Ищет следующий пробел
                 if (wordBreakChars.indexOf(text[textIndex]) > -1) {
+                    console.log('=== пробел ===', text[textIndex - 2], text[textIndex - 1], '(', text[textIndex], ')', text[textIndex + 1], text[textIndex + 2]);
+
                     ++isNextSamle;
                     if (isSample && isNextSamle === indexSamle) {
                         nextSamle.start = textIndex;
@@ -481,9 +497,9 @@ export const Reader = (self, containerFrame) => {
                         nextSamle.text = text.substring(leftLimit, textIndex);
                         nextSamle.leftLimit = leftLimit;
                         nextSamle.textIndex = textIndex + 1;
-                        if(isSecondStep) {
+                        if (isSecondStep) {
                             nextSamle.secondStep = textIndex + 1;
-                            isSecondStep = false
+                            isSecondStep = false;
                         }
 
                     }
@@ -496,7 +512,6 @@ export const Reader = (self, containerFrame) => {
 
                     // Word break found. Was it a hyphen?
                     if (hyphenChars.indexOf(text[textIndex]) > -1) {
-                        //
                         // On rare occasion, a hyphen will be found just after a max_word_length word (ie., "subscriptions-").
                         //      If that happens, break out. Adding the hyphen will make the word > max_word_length.
                         if (textIndex - wordStart >= max_word_length) {
@@ -508,7 +523,7 @@ export const Reader = (self, containerFrame) => {
                             if (limit === 0) {
                                 const result = text.substring(wordStart, textIndex - wordStart + 1);
                                 console.log('------------ OUT DATA 2 ------------', result);
-                                
+
                                 return result;
                             } else if (count2Limit < limit) {
                                 ++wordCount;
@@ -520,20 +535,16 @@ export const Reader = (self, containerFrame) => {
                                 firstWordEnd = textIndex + 1;
                             }
                         } else {
-                            // Return the word with its hyphen.
                             ++wordCount;
-                            const result = text.substring(wordStart, textIndex - wordStart + 1);
-                            console.log('----------  OUT DATA 1 -------------', result);
-                            return result;
                         }
                     } else {
-                        
+
                         if (multiWordDisplay && firstWordFound === false) {
                             if (isCountFull) {
                                 if (limit === 0) {
                                     const result = text.substring(wordStart, textIndex);
                                     console.log('----------  OUT DATA -2 -------------', result);
-                                    
+
                                     return result;
                                 } else {
                                     ++wordCount;
@@ -544,7 +555,7 @@ export const Reader = (self, containerFrame) => {
                             } else {
                                 const result = text.substring(wordStart, textIndex - wordStart);
                                 if (!isNextFull) {
-                                    nextSamle.previous = nextSamle.secondStep
+                                    nextSamle.previous = nextSamle.secondStep;
                                 }
                                 console.log('----------  OUT DATA 0 -------------', result, isNextFull);
 
@@ -553,19 +564,25 @@ export const Reader = (self, containerFrame) => {
 
                         } else {
                             // Return the word with its hyphen.
-                            const result = text.substring(wordStart, textIndex);
+                            let result = '';
+                            if (isLastWords) {
+                                result = text.substring(wordStart, text.length);
+                            } else {
+                                result = text.substring(wordStart, textIndex);
+                            }
+
                             if (count >= count2Limit) {
-                                // ++wordCount;
                                 count = 0;
                                 console.log('----------  OUT DATA 4 -------------', result);
-                                //
-                                // textIndex = wordStart
-
                                 return result;
                             }
 
                             ++count;
                         }
+                    }
+                } else {
+                    if (indexWords >= spiltWorlds.length) {
+                        isLastWords = true;
                     }
                 }
             }
@@ -581,19 +598,24 @@ export const Reader = (self, containerFrame) => {
                     result = text.substring(wordStart, textIndex);
                 }
 
-                console.log('--------- OUT DATA 2 -------------', result)
+                console.log('--------- OUT DATA 2 -------------', result);
                 return result;
             }
 
             // Process the last word.
-            if (textIndex >= text.length) {
-                if(limit === 0) {
-                    
+            if (textIndex != text.length) {
+                if (limit === 0) {
+
                     return '';
                 } else {
+                    debugger
                     let returnString = text.substring(wordStart, text.length - wordStart);
                     return returnString;
                 }
+            } else {
+                let returnString = text.substring(wordStart, text.length);
+                isLastChar = true;
+                return returnString;
             }
 
             // The word is longer than max_word_length. Choose a subset of the current word.
@@ -683,20 +705,20 @@ export const Reader = (self, containerFrame) => {
         let padAndHighlightWord = function(word, isEnd) {
             let i;
             // Find the highlighted character.
-            let data= getHighlightIndex(word);
-            word = data.word
-            let highlightIndex = data.highlightIndex
-            let centerWorldLength = data.arrayIndex
+            let data = getHighlightIndex(word);
+            word = data.word;
+            let highlightIndex = data.highlightIndex;
+            let centerWorldLength = data.arrayIndex;
 
-            if(highlightIndex >= 0) {
+            if (highlightIndex >= 0) {
                 const spiltWorlds = word.split(' ');
                 let highlightChar = '';
                 let rightString = '';
-                let leftString = ''
+                let leftString = '';
 
                 if (isAudio) {
                     leftString = word.substring(0, highlightIndex);
-                    highlightChar = (word === '') ? '' : word.substring(highlightIndex, highlightIndex + centerWorldLength );
+                    highlightChar = (word === '') ? '' : word.substring(highlightIndex, highlightIndex + centerWorldLength);
                     rightString = word.substring(highlightIndex + centerWorldLength);
 
                     // highlightChar = (word === '') ? '' : word.substring(highlightIndex < 0 ? 0 : highlightIndex, spiltWorlds[arrayIndex + highlightIndex < 0 ? highlightIndex : 0].length);
@@ -754,7 +776,7 @@ export const Reader = (self, containerFrame) => {
 
                 return highlightedWord;
             } else {
-                console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+                console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
             }
         };
 
@@ -819,10 +841,7 @@ export const Reader = (self, containerFrame) => {
 
                 // console.log('splitWorld', splitWorld)
 
-                
-                console.log('dddddddddddddd', enptyLength, limit, (parseInt(splitWorld.length, 10) + 1))
-                
-                if(!isNextFull) {
+                if (!isNextFull) {
                     for (let i = 0; i < enptyLength; ++i) {
                         splitWorld.push('0');
                     }
@@ -835,12 +854,12 @@ export const Reader = (self, containerFrame) => {
                 }
 
                 let highlightIndex = splitWorld.reduce((accumulator, currentValue, iterator) => {
-                    if(iterator < index) {
-                        console.log('iterator: ', iterator, 'index: ', index, currentValue.toString().length)
-                        return accumulator + parseInt(currentValue.toString().length + 1, 10)
+                    if (iterator < index) {
+                        console.log('iterator: ', iterator, 'index: ', index, currentValue.toString().length);
+                        return accumulator + parseInt(currentValue.toString().length + 1, 10);
                     }
-                    return accumulator
-                },0);
+                    return accumulator;
+                }, 0);
 
                 return {
                     word: splitWorld.join(' '),
@@ -891,7 +910,7 @@ export const Reader = (self, containerFrame) => {
 
         // Combines the Start and Stop button actions into a single button.
         let startStopReader = function() {
-            
+
             inputTextArea.focus();
 
             // Because the IsPlaying flag gets set later, false means it's about to start playing
@@ -906,11 +925,11 @@ export const Reader = (self, containerFrame) => {
 
         let startReader = function() {
             // Put the focus on the text area.
-            
-            if(isFocus) {
-                inputTextArea.focus();    
+
+            if (isFocus) {
+                inputTextArea.focus();
             }
-            
+
 
             // Stop the reader if it is paused.
             stopReader();
@@ -954,7 +973,7 @@ export const Reader = (self, containerFrame) => {
         // Stops the reader.
 
         let stopReader = function() {
-            if(isFocus) {
+            if (isFocus) {
                 inputTextArea.focus();
             }
 
@@ -995,13 +1014,16 @@ export const Reader = (self, containerFrame) => {
                 start: 0
             };
             leftLimit = '';
-            limit = structuredClone(defaultData.limit)
+            limit = structuredClone(defaultData.limit);
             count2Limit = -1;
+            isLastWords = false;
             count = 0;
             isCountFull = false;
             isNextFull = false;
             textIndex = 0;
-            isSecondStep = true
+            isSecondStep = true;
+            indexWords = -1;
+            isLastChar = false
 
             updateProgressBar(0, 100);
 
@@ -1021,7 +1043,7 @@ export const Reader = (self, containerFrame) => {
             // Pause only happens if the reader is playing.
             if (isPlaying) {
 
-                if(isFocus) {
+                if (isFocus) {
                     inputTextArea.focus();
                 }
 
@@ -1089,7 +1111,7 @@ export const Reader = (self, containerFrame) => {
 
             // If the reader is paused, reselect the word in the text area.
             if (isPaused) {
-                if(isFocus) {
+                if (isFocus) {
                     inputTextArea.focus();
                 }
                 selectWordInTextArea(wordStart, textIndex);
@@ -1110,7 +1132,7 @@ export const Reader = (self, containerFrame) => {
 
             // If the reader is paused, reselect the word in the text area.
             if (isPaused) {
-                if(isFocus) {
+                if (isFocus) {
                     inputTextArea.focus();
                 }
 

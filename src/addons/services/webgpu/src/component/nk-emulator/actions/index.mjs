@@ -12,8 +12,6 @@ export const actions = (self) => {
         const line = await Line(self)
         const settings = self.shadowRoot.querySelectorAll('.settings')
         const framesArray = self.shadowRoot.querySelector('.array')
-
-        console.log('ddddddddddddddddddd', framesArray)
         // debugger
         // const osc = await OSC(self)
         // await osc.init()
