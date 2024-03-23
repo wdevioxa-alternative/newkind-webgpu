@@ -169,7 +169,7 @@ textarea {
 }
 
 .UIInputReadOnly {
-    background-color:#b0b0b0;
+    background-color: #32f5bf;
 }
 
 #inputTextArea, #inputTextArea:focus-visible {
@@ -217,5 +217,20 @@ textarea {
 }
 
 .active {
-    color: red;
+    background: rgba(0, 157, 255, 0.73);
+    color: back;
+}
+
+[contenteditable="true"] {
+    -webkit-user-select: unset;
+    -moz-user-select: unset;
+    -ms-user-select: unset;
+    user-select: unset;
+}
+
+[contenteditable="false"] {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

@@ -393,13 +393,13 @@ export const Reader = (self, containerFrame) => {
                 // }
             }
 
-            // inputTextArea.value = ''
-            // const left = inputTextArea.value.substring(0, start);
-            // const center = inputTextArea.value.substring(start - 1, end);
-            // const right = inputTextArea.value.substring(end);
+            inputTextArea.value = ''
+            const left = readableStream.value.substring(0, start);
+            const center = readableStream.value.substring(start - 1, end);
+            const right = readableStream.value.substring(end);
 
-            inputTextArea.value = '3333'
-            // inputTextArea.insertAdjacentHTML('afterbegin',`${left}<span class="active">${center}</span>${right}`)
+            inputTextArea.textContent = ``
+            inputTextArea.insertAdjacentHTML('afterbegin',`${left}<span class="active">${center.trim()}</span>${right}`)
         };
 
         // Updates the progress bar.
@@ -953,6 +953,7 @@ export const Reader = (self, containerFrame) => {
             isPlaying = true;
             hideControls();
             startStopButton.value = stopString;
+            inputTextArea.setAttribute('contenteditable', false)
             // inputTextArea.readOnly = true;
             inputTextArea.className = 'UIInputReadOnly';
             speedInputElement.readOnly = false;
@@ -1008,6 +1009,7 @@ export const Reader = (self, containerFrame) => {
 
             // Set the textarea and the words per minute textbox to read-only.
             // inputTextArea.readOnly = false;
+            inputTextArea.setAttribute('contenteditable', true)
             inputTextArea.className = 'UIInput';
             speedInputElement.readOnly = false;
             speedInputElement.className = 'UIInput';
@@ -1290,10 +1292,10 @@ export const Reader = (self, containerFrame) => {
         let keydownInput = function(event) {
             // Take keyboard input only when the focus is on the body.
             console.log('########## keydownInput ##############', event.currentTarget.tagName)
-            if(event.currentTarget.tagName  === 'TEXTAREA') {
+            if(event.currentTarget.tagName  === 'DIV') {
                 // let read = event.currentTarget.parentNode.querySelector('.readable-stream')
                 // event.currentTarget.value = event.currentTarget.value.trim()
-                readableStream.value = event.currentTarget.value
+                readableStream.value = event.currentTarget.textContent
                 // readableStream.textContent = event.currentTarget.value.trim()
 
                 console.log('event.currentTarget.textContent', event.currentTarget.parentNode.querySelector('.readable-stream'))
