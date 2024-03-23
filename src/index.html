@@ -356,32 +356,36 @@
                                                 </div>
                                             </div>
                                             <div id="speedAndCheckBoxesDiv">
+                                                <div class="container-settings-0">
                                                     <span class="UIText">
                                                         Speed
-                                                        <input type="text" id="speedInputElement" class="UIInput" size="5" value="2500">
+                                                        <input type="text" id="speedInputElement" class="UIInput" size="5" value="50">
                                                         <label>
                                                             <input type="checkbox" id="hideTextArea">
                                                             Hide text box when reading
                                                         </label>
                                                     </span>
-                                                <span id="alsoTextSpan" class="UIDisabledText">
+                                                    <span id="alsoTextSpan" class="UIDisabledText">
                                                         <label>
                                                             <input type="checkbox" id="hideButtons" disabled="">
                                                             Also hide buttons
                                                         </label>
                                                     </span>
-                                                <span class="UIText">
+                                                    <span class="UIText">
                                                         <label>
                                                             <input type="checkbox" id="multiWordCheckBox" checked="">
                                                             Display multiple words
                                                         </label>
                                                     </span>
-                                                <span class="UIText">
+                                                </div>
+                                                <div class="container-settings-0">
+                                                     <span class="UIText">
                                                         Average words per minute:
                                                         <span id="wpmDisplay">
                                                             474.2
                                                         </span>
                                                     </span>
+                                                </div>
                                             </div>
                                         </template>
                                     </nk-osc-2>
@@ -457,7 +461,7 @@
                                         </template>
                                     </nk-switch>
                                     <nk-osc-2
-                                        data-field="osc_audio"
+                                        data-field="osc_text"
                                         data-services-path="webgpu"
                                         data-id="2"
                                     >
@@ -504,43 +508,42 @@
                                                 </div>
                                             </div>
                                             <div id="speedAndCheckBoxesDiv">
+                                                <div class="container-settings-0">
                                                     <span class="UIText">
                                                         Speed
-                                                        <input type="text" id="speedInputElement" class="UIInput" size="5" value="2500">
+                                                        <input type="text" id="speedInputElement" class="UIInput" size="5" value="50">
                                                         <label>
                                                             <input type="checkbox" id="hideTextArea">
                                                             Hide text box when reading
                                                         </label>
                                                     </span>
-                                                <span id="alsoTextSpan" class="UIDisabledText">
+                                                    <span id="alsoTextSpan" class="UIDisabledText">
                                                         <label>
                                                             <input type="checkbox" id="hideButtons" disabled="">
                                                             Also hide buttons
                                                         </label>
                                                     </span>
-                                                <span class="UIText">
+                                                    <span class="UIText">
                                                         <label>
                                                             <input type="checkbox" id="multiWordCheckBox" checked="">
                                                             Display multiple words
                                                         </label>
                                                     </span>
-                                                <span class="UIText">
+                                                </div>
+                                                <div class="container-settings-0">
+                                                     <span class="UIText">
                                                         Average words per minute:
                                                         <span id="wpmDisplay">
                                                             474.2
                                                         </span>
                                                     </span>
+                                                </div>
                                             </div>
                                         </template>
                                     </nk-osc-2>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="sample">
-                        <div class="array-sample"></div>
-                        <button class="start-sample"> Start sample</button>
                     </div>
                 </div>
             </template>

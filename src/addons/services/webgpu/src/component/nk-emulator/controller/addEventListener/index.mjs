@@ -1,7 +1,7 @@
 export default async (self, actions) => {
     const displaySample = self.shadowRoot.querySelector('.display.sample')
 
-    const startSample = self.shadowRoot.querySelector('.start-sample')
+    // const startSample = self.shadowRoot.querySelector('.start-sample')
     // const containerFrame = self.shadowRoot.querySelector('.frames')
     // const array = containerFrame.querySelector('.array')
     // const nkTimeLine = self.shadowRoot.querySelector('nk-time-line')
@@ -17,11 +17,10 @@ export default async (self, actions) => {
     console.log('EMULATOR')
     return {
         init: () => {
-            // document.addEventListener('next-frame', actions.bus.frame)
-            startSample.addEventListener('click', actions.sample.click)
+            // startSample.addEventListener('click', actions.sample.click)
         },
         terminate: () => {
-            startSample.removeEventListener('click', actions.sample.click)
+            // startSample.removeEventListener('click', actions.sample.click)
         }
     }
 }

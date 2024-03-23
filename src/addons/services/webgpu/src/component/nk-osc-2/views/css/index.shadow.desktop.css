@@ -131,13 +131,15 @@ body {
     margin: 0px auto 0px auto;
     text-align: center;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
     gap: 8px;
     box-sizing: border-box;
     padding: 8px;
     background: black;
+    min-height: 64px;
+    width: 100%;
 }
 
 textarea {
@@ -155,6 +157,7 @@ textarea {
 .UIText {
     /* color:#000000; /* Uncomment for black text on white background */
     color:#a0a0a0;    /* Uncomment for black text on white background */
+    min-width: 24px;
 }
 
 .UIDisabledText {

@@ -246,13 +246,14 @@ export const Reader = (self, containerFrame) => {
 
         const oscAudio = 'osc_audio';
         const oscAudioFrame = 'osc_audio_frame';
+        const oscText = 'osc_text';
 
         const defaultData = {
             limit: 4
         };
 
-        let isAudio = self.dataset.field === oscAudio || self.dataset.field === oscAudioFrame;
-        let isSample = self.dataset.field === oscAudio;
+        let isAudio = self.dataset.field === oscAudio || self.dataset.field === oscAudioFrame  || self.dataset.field === oscText;
+        let isSample = self.dataset.field === oscAudio || self.dataset.field === oscText;
 
         let countData = 0;
         let isNextSamle = 0;
