@@ -1,10 +1,10 @@
 export default async (self, actions) => {
     const displaySample = self.shadowRoot.querySelector('.display.sample')
-    const start = self.shadowRoot.querySelector('.start')
+
     const startSample = self.shadowRoot.querySelector('.start-sample')
     // const containerFrame = self.shadowRoot.querySelector('.frames')
     // const array = containerFrame.querySelector('.array')
-    const nkTimeLine = self.shadowRoot.querySelector('nk-time-line')
+    // const nkTimeLine = self.shadowRoot.querySelector('nk-time-line')
     // const frameArray = 100
     // const active = -1
     //
@@ -19,11 +19,9 @@ export default async (self, actions) => {
         init: () => {
             // document.addEventListener('next-frame', actions.bus.frame)
             startSample.addEventListener('click', actions.sample.click)
-            start.addEventListener('click', actions.click)
         },
         terminate: () => {
             startSample.removeEventListener('click', actions.sample.click)
-            start.removeEventListener('click', actions.click)
         }
     }
 }

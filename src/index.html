@@ -249,7 +249,7 @@
                             <div class="container-wrapper">
                                 <div class="position-sample-container">
                                     <nk-time-line
-                                        data-field="settings-1"
+                                        data-field="settings-time"
                                         data-services-path="webgpu"
                                         data-id="1"
                                     >
@@ -260,6 +260,18 @@
                                             </div>
                                         </template>
                                     </nk-time-line>
+                                    <nk-filter
+                                        data-field="filter-0"
+                                        data-services-path="webgpu"
+                                        data-id="1"
+                                    >
+                                        <template>
+                                            <div class="filters">
+                                                <div class="array line"></div>
+                                                <button class="start"> Start</button>
+                                            </div>
+                                        </template>
+                                    </nk-filter>
                                     <nk-switch data-field="settings-1" data-services-path="webgpu">
                                         <template>
                                             <div class="container">
@@ -387,6 +399,18 @@
                                             </div>
                                         </template>
                                     </nk-time-line>
+                                    <nk-filter
+                                        data-field="filter-0"
+                                        data-services-path="webgpu"
+                                        data-id="2"
+                                    >
+                                        <template>
+                                            <div class="filters">
+                                                <div class="array line"></div>
+                                                <button class="start"> Start</button>
+                                            </div>
+                                        </template>
+                                    </nk-filter>
                                     <nk-switch data-field="settings-1" data-services-path="webgpu">
                                         <template>
                                             <div class="container">
@@ -518,12 +542,6 @@
                         <div class="array-sample"></div>
                         <button class="start-sample"> Start sample</button>
                     </div>
-
-                    <div class="filters">
-                        <div class="array line"></div>
-                        <button class="start"> Start</button>
-                    </div>
-
                 </div>
             </template>
         </nk-emulator>
