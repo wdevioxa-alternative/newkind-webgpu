@@ -242,6 +242,7 @@ export const Reader = (self, containerFrame) => {
         controlButtons = self.shadowRoot.getElementById('controlButtons');
         multiWordCheckBox = self.shadowRoot.getElementById('multiWordCheckBox');
         wpmDisplay = self.shadowRoot.getElementById('wpmDisplay');
+        const readableStream = self.shadowRoot.querySelector('.readable-stream');
 
         const oscAudio = 'osc_audio';
         const oscAudioFrame = 'osc_audio_frame';
@@ -1360,7 +1361,8 @@ export const Reader = (self, containerFrame) => {
             consonantLowValue: consonantLowValue,
             consonantHighValue: consonantHighValue,
             isInFirefox: isInFirefox,
-            inputTextArea: inputTextArea
+            inputTextArea: inputTextArea,
+            readableStream: readableStream
         });
     });
 };

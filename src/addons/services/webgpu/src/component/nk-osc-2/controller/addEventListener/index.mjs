@@ -32,7 +32,8 @@ export default async (self, actions) => {
         consonantLowValue,
         consonantHighValue,
         isInFirefox,
-        inputTextArea
+        inputTextArea,
+        readableStream
     } = await Reader(self)
 
     console.log('self.dataset.field', self.dataset.field)
@@ -40,8 +41,11 @@ export default async (self, actions) => {
 
     if(self.dataset.field === 'osc_audio' || self.dataset.field === 'osc_audio_frame') {
         inputTextArea.textContent = ''
+        readableStream.value = "0"
+
         for(let i =0; i< 250; ++i) {
             inputTextArea.textContent = `${inputTextArea.textContent} ${i}`
+            readableStream.value = `${inputTextArea.value} ${i}`
         }
     }
 
@@ -62,7 +66,9 @@ export default async (self, actions) => {
     //     // inputTextArea.textContent =    inputTextArea.textContent.replace(/  +/g, ' ').trim()
     // }
 
-    inputTextArea.textContent = inputTextArea.textContent.replace(/\s*\n\s*/g,"\n").trim()
+    // inputTextArea.insertAdjacentHTML('beforeend', 'asdasdasda <span>sasas</span> asdasdasdasda')
+    readableStream.textContent = inputTextArea.textContent.replace(/\s*\n\s*/g,"\n").trim()
+    inputTextArea.value = inputTextArea.value.replace(/\s*\n\s*/g,"\n").trim()
 
     return {
         init: () => {

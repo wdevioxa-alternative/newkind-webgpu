@@ -2,6 +2,8 @@
     width: 45vw;
     display: flex;
     flex-direction: column;
+    gap: 40px;
+    background: #0080331a;
 }
 
 body
@@ -111,12 +113,14 @@ body
 {
     margin: 0px auto 0px auto;
     text-align:center;
+    box-sizing: border-box;
+    padding: 24px;
 }
 
 #inputTextAreaDiv {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    margin: 0;
 }
 
 .controlButton
@@ -137,6 +141,7 @@ body
     gap: 8px;
     box-sizing: border-box;
     padding: 8px;
+    background: black;
 }
 
 textarea {
@@ -172,9 +177,43 @@ textarea {
     background-color:#b0b0b0;
 }
 
-#inputTextArea:focus-visible {
+#inputTextArea, #inputTextArea:focus-visible {
+    font-family: monospace;
+    font-feature-settings: normal;
+    font-kerning: auto;
+    font-optical-sizing: auto;
+    font-size: 13.3333px;
+    font-stretch: 100%;
+    font-style: normal;
+    font-variant-alternates: normal;
+    font-variant-caps: normal;
+    font-variant-east-asian: normal;
+    font-variant-ligatures: normal;
+    font-variant-numeric: normal;
+    font-variant-position: normal;
+    font-variation-settings: normal;
+    font-weight: 400;
+    letter-spacing: normal;
+    line-height: normal;
+    text-align: start;
+    text-indent: 0px;
+    text-shadow: none;
+    text-size-adjust: 100%;
+    text-transform: none;
+    text-wrap: wrap;
+    white-space-collapse: preserve;
+    word-spacing: 0px;
     border: none;
     outline: none;
+    margin: 0;
+}
+
+.container-view {
+    background: black;
+}
+
+.readable-stream {
+    display: none;
 }
 
 :focus-visible  {
