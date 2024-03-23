@@ -48,16 +48,21 @@ export default async (self, actions) => {
     if(self.dataset.field === 'osc_audio') {
         inputTextArea.textContent = ''
         inputTextArea.textContent = `
-      0 1 2 3 4 5 6 7 8 9 10
+        В степи мирской, печальной и безбрежной,
+        Таинственно пробились три ключа:
+        Ключ юности, ключ быстрый и мятежный,
+        Кипит, бежит, сверкая и журча.
+        Кастальский ключ волною вдохновенья
+        В степи мирской изгнанников поит.
+        Последний ключ — холодный ключ забвенья,
+        Он слаще всех жар сердца утолит.1827 г.
         `
 
-
-
-        inputTextArea.textContent = inputTextArea.textContent.replace(/\s*\n\s*/g,"\n").trim()
+        // inputTextArea.textContent = inputTextArea.textContent
         // inputTextArea.textContent =    inputTextArea.textContent.replace(/  +/g, ' ').trim()
     }
 
-    inputTextArea.textContent = inputTextArea.textContent.trim()
+    inputTextArea.textContent = inputTextArea.textContent.replace(/\s*\n\s*/g,"\n").trim()
 
     return {
         init: () => {

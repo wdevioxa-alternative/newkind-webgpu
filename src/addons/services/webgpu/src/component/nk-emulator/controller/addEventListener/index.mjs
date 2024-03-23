@@ -4,7 +4,7 @@ export default async (self, actions) => {
     const startSample = self.shadowRoot.querySelector('.start-sample')
     const containerFrame = self.shadowRoot.querySelector('.frames')
     const array = containerFrame.querySelector('.array')
-    const frameArray = 128
+    const frameArray = 100
     const active = -1
 
     for(let i =0; i < frameArray;++i) {

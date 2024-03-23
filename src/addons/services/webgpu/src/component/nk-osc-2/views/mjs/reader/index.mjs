@@ -243,22 +243,24 @@ export const Reader = (self, containerFrame) => {
         multiWordCheckBox = self.shadowRoot.getElementById('multiWordCheckBox');
         wpmDisplay = self.shadowRoot.getElementById('wpmDisplay');
 
-
         const oscAudio = 'osc_audio';
         const oscAudioFrame = 'osc_audio_frame';
 
         const defaultData = {
-            limit: 3
+            limit: 4
         };
+
         let isAudio = self.dataset.field === oscAudio || self.dataset.field === oscAudioFrame;
         let isSample = self.dataset.field === oscAudio;
 
         let countData = 0;
         let isNextSamle = 0;
         let indexSamle = 1;
+
         let nextSamle = {
             start: 0
         };
+
         let leftLimit = '';
         let limit = structuredClone(defaultData.limit);
         let count2Limit = -1;
@@ -280,7 +282,7 @@ export const Reader = (self, containerFrame) => {
 
         let updateWord = function() {
             ++indexWords;
-            console.log('--------------- START ---------------', indexWords);
+            //console.log('--------------- START ---------------', indexWords);
 
             // Used to calculate how long the processing takes to obtain the word.
             let startProcessingTime = Date.now();
@@ -294,21 +296,21 @@ export const Reader = (self, containerFrame) => {
 
             if (isNextFull) {
                 if (nextSamle.previous) {
-                    console.log(nextSamle);
+                    //console.log(nextSamle);
 
                     textIndex = parseInt(nextSamle.previous, 10);
                     nextSamle.previous = false;
                 }
             }
 
-            console.log('textIndex', textIndex, isNextFull);
+            //console.log('textIndex', textIndex, isNextFull);
 
             // Get the next word.
-            // console.log('word', word, text)
+            // //console.log('word', word, text)
             // 
 
             word = nextWord();
-            console.log('🟢', word);
+            //console.log('🟢', word);
 
 
             // Display the word.
@@ -319,7 +321,7 @@ export const Reader = (self, containerFrame) => {
 
             displayWord(word, spiltWorlds.length === 0);
 
-            // console.log('=== word ===: ', word, '=== spiltWorlds ===: ', spiltWorlds)
+            // //console.log('=== word ===: ', word, '=== spiltWorlds ===: ', spiltWorlds)
             if (!isLastChar && word && (spiltWorlds.length !== 0 || limit === 0)) {
                 // If the word is shorter than four letters, use a four letter delay for this word
                 let nextDelay;
@@ -338,13 +340,13 @@ export const Reader = (self, containerFrame) => {
                     }
                 }));
 
-                // console.log('-------- START -----------', nextDelay)
+                // //console.log('-------- START -----------', nextDelay)
                 // Set the length of time this word will show.
                 wordUpdateTimer = setTimeout(function() {
                     updateWord();
                 }, nextDelay);
             } else {
-                console.log('-------- END -----------');
+                //console.log('-------- END -----------');
                 setStopState();
             }
         };
@@ -444,7 +446,7 @@ export const Reader = (self, containerFrame) => {
             // Search ahead to find the next non-whitespace character.
 
 
-            // console.log('textIndex', textIndex)
+            // //console.log('textIndex', textIndex)
             // Save the starting location of the word.
             if (isNextFull) {
                 wordStart = textIndex;
@@ -467,7 +469,7 @@ export const Reader = (self, containerFrame) => {
             --textIndex;
             leftLimit = wordStart;
             isNextSamle = 0;
-            // console.log('sssssssss',isNextSamle,  nextSamle)
+            // //console.log('sssssssss',isNextSamle,  nextSamle)
 
             isCountFull = count2Limit >= limit;
             if (!isCountFull) {
@@ -481,15 +483,14 @@ export const Reader = (self, containerFrame) => {
             //     debugger
             //     isLastChar = true
             // }
-            // console.log('------ {|||||||||||||||||} ------','text:index: ', indexWords - limit , 'ddd', spiltWorlds, 'text:value: ', text[textIndex], 'text: ', text.length)
+            // //console.log('------ {|||||||||||||||||} ------','text:index: ', indexWords - limit , 'ddd', spiltWorlds, 'text:value: ', text[textIndex], 'text: ', text.length)
             // }
 
             do {
                 ++textIndex;
                 //Ищет следующий пробел
                 if (wordBreakChars.indexOf(text[textIndex]) > -1) {
-                    console.log('=== пробел ===', text[textIndex - 2], text[textIndex - 1], '(', text[textIndex], ')', text[textIndex + 1], text[textIndex + 2]);
-
+                    // //console.log('=== пробел ===', text[textIndex - 2], text[textIndex - 1], '(', text[textIndex], ')', text[textIndex + 1], text[textIndex + 2]);
                     ++isNextSamle;
                     if (isSample && isNextSamle === indexSamle) {
                         nextSamle.start = textIndex;
@@ -515,14 +516,14 @@ export const Reader = (self, containerFrame) => {
                         // On rare occasion, a hyphen will be found just after a max_word_length word (ie., "subscriptions-").
                         //      If that happens, break out. Adding the hyphen will make the word > max_word_length.
                         if (textIndex - wordStart >= max_word_length) {
-                            console.log('----------  OUT DATA 3 -------------', wordStart);
+                            //console.log('----------  OUT DATA 3 -------------', wordStart);
                             break;
                         }
 
                         if (multiWordDisplay && firstWordFound === false) {
                             if (limit === 0) {
                                 const result = text.substring(wordStart, textIndex - wordStart + 1);
-                                console.log('------------ OUT DATA 2 ------------', result);
+                                //console.log('------------ OUT DATA 2 ------------', result);
 
                                 return result;
                             } else if (count2Limit < limit) {
@@ -543,8 +544,7 @@ export const Reader = (self, containerFrame) => {
                             if (isCountFull) {
                                 if (limit === 0) {
                                     const result = text.substring(wordStart, textIndex);
-                                    console.log('----------  OUT DATA -2 -------------', result);
-
+                                    //console.log('----------  OUT DATA -2 -------------', result);
                                     return result;
                                 } else {
                                     ++wordCount;
@@ -557,8 +557,7 @@ export const Reader = (self, containerFrame) => {
                                 if (!isNextFull) {
                                     nextSamle.previous = nextSamle.secondStep;
                                 }
-                                console.log('----------  OUT DATA 0 -------------', result, isNextFull);
-
+                                //console.log('----------  OUT DATA 0 -------------', result, isNextFull);
                                 return result;
                             }
 
@@ -573,7 +572,7 @@ export const Reader = (self, containerFrame) => {
 
                             if (count >= count2Limit) {
                                 count = 0;
-                                console.log('----------  OUT DATA 4 -------------', result);
+                                //console.log('----------  OUT DATA 4 -------------', result);
                                 return result;
                             }
 
@@ -598,7 +597,7 @@ export const Reader = (self, containerFrame) => {
                     result = text.substring(wordStart, textIndex);
                 }
 
-                console.log('--------- OUT DATA 2 -------------', result);
+                //console.log('--------- OUT DATA 2 -------------', result);
                 return result;
             }
 
@@ -610,10 +609,12 @@ export const Reader = (self, containerFrame) => {
                 } else {
                     debugger
                     let returnString = text.substring(wordStart, text.length - wordStart);
+                    //console.log('--------- OUT DATA 6 -------------', returnString)
                     return returnString;
                 }
             } else {
                 let returnString = text.substring(wordStart, text.length);
+                //console.log('--------- OUT DATA END -------------', returnString)
                 isLastChar = true;
                 return returnString;
             }
@@ -630,7 +631,7 @@ export const Reader = (self, containerFrame) => {
             let i, i2;
 
 
-            console.log('ddddddddddddddddddd', wordStart);
+            //console.log('ddddddddddddddddddd', wordStart);
             //
 
             // Find the end of this word, or another max_word_length - 1 characters.
@@ -656,7 +657,7 @@ export const Reader = (self, containerFrame) => {
                             text[wordMiddle + i2 + 1].toUpperCase() === text[wordMiddle + i2 + 1]) {
                             textIndex = wordMiddle + i2 + 1;
                             returnString = text.substring(wordStart, textIndex - wordStart) + '-';
-                            // console.log('--- hyphenateWord 1 ----', returnString)
+                            // //console.log('--- hyphenateWord 1 ----', returnString)
                             return returnString;
                         }
 
@@ -664,7 +665,7 @@ export const Reader = (self, containerFrame) => {
                             text[wordMiddle - i2 - 1].toUpperCase() === text[wordMiddle - i2 - 1]) {
                             textIndex = wordMiddle - i2 - 1;
                             returnString = text.substring(wordStart, textIndex - wordStart) + '-';
-                            // console.log('--- hyphenateWord 2 ----', returnString)
+                            // //console.log('--- hyphenateWord 2 ----', returnString)
                             return returnString;
                         }
                     }
@@ -776,7 +777,7 @@ export const Reader = (self, containerFrame) => {
 
                 return highlightedWord;
             } else {
-                console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+                //console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
             }
         };
 
@@ -837,12 +838,20 @@ export const Reader = (self, containerFrame) => {
                 let result = 0;
                 let index = 0;
                 let splitWorld = word.split(' ');
-                const enptyLength = limit - (parseInt(splitWorld.length, 10)) + 1;
+                const emptyLength = limit - (parseInt(splitWorld.length, 10)) + 1;
 
-                // console.log('splitWorld', splitWorld)
+                // //console.log('sssssss isLastWords ssssssssss', isLastWords, isLastChar)
+
+                // //console.log('splitWorld', splitWorld)
+
+                if(isLastWords) {
+                    for (let i = 0; i < emptyLength; ++i) {
+                        splitWorld.unshift('0');
+                    }
+                }
 
                 if (!isNextFull) {
-                    for (let i = 0; i < enptyLength; ++i) {
+                    for (let i = 0; i < emptyLength; ++i) {
                         splitWorld.push('0');
                     }
                 }
@@ -855,7 +864,7 @@ export const Reader = (self, containerFrame) => {
 
                 let highlightIndex = splitWorld.reduce((accumulator, currentValue, iterator) => {
                     if (iterator < index) {
-                        console.log('iterator: ', iterator, 'index: ', index, currentValue.toString().length);
+                        // //console.log('iterator: ', iterator, 'index: ', index, currentValue.toString().length);
                         return accumulator + parseInt(currentValue.toString().length + 1, 10);
                     }
                     return accumulator;
@@ -866,12 +875,6 @@ export const Reader = (self, containerFrame) => {
                     highlightIndex: highlightIndex,
                     arrayIndex: splitWorld[index].length
                 };
-
-                // return {
-                //     word: splitWorld.join(' '),
-                //     highlightIndex: highlightIndex - 2,
-                //     arrayIndex: splitWorld[index].length
-                // };
             }
         };
 
@@ -888,7 +891,7 @@ export const Reader = (self, containerFrame) => {
                 // Get the letter's value (vowels are higher than consonants).
                 let letterValue = parseInt(highlightLetterValue[letterIndex], 10);
 
-                // console.log('33333333333333333333', {
+                // //console.log('33333333333333333333', {
                 //     highlightCurveValue: highlightCurveValue,
                 //     wordLength: wordLength,
                 //     index: index
@@ -899,7 +902,7 @@ export const Reader = (self, containerFrame) => {
                 // Calculate the score for this letter in this location.
                 let score = letterValue * curveValue;
 
-                // console.log('========== score ==========', score)
+                // //console.log('========== score ==========', score)
                 // Return the letter's score
                 return score;
             }
@@ -1144,7 +1147,7 @@ export const Reader = (self, containerFrame) => {
 
         let goBackReader = function() {
             if (isPlaying || !isPaused) {
-                console.log('------------ goBackReader ------------');
+                //console.log('------------ goBackReader ------------');
                 // Go back approximately one second, then search for the start of that sentence.
                 let wordsPerSecond = 1000 / timerDelay;
                 let goBackLength = Math.floor(wordsPerSecond * 6); // Words per second, times an estimate of 6 characters per word.
@@ -1182,7 +1185,7 @@ export const Reader = (self, containerFrame) => {
 
         let goForwardReader = function() {
             if (isPlaying || !isPaused) {
-                console.log('------------ goForwardReader ------------');
+                //console.log('------------ goForwardReader ------------');
                 // Go forward approximately 5 seconds.
                 let wordsPerSecond = 1000 / timerDelay;
                 let goForwardLength = Math.floor(wordsPerSecond * 6 * 5); // Words per second, times an estimate of 6 characters per word, times 5.
@@ -1209,7 +1212,7 @@ export const Reader = (self, containerFrame) => {
                 }
 
                 // Set textIndex to the new location.
-                console.log('----------------------------', index, text.length);
+                //console.log('----------------------------', index, text.length);
                 if (index >= text.length) {
                     stopReader();
                 } else {

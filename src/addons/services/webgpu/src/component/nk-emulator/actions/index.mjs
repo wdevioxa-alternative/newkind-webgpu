@@ -24,9 +24,10 @@ export const actions = (self) => {
                     if(event.detail.type === 'frame') {
                         const item = framesArray?.querySelector(`.item-${count}`)
                         // let isReset =
+                        // console.log('sssssssssssssss',count,item)
                         if(!item) {
+                           framesArray?.querySelector(`.item-${count - 1}`)?.classList?.remove('active')
                            count = 0
-                           framesArray?.querySelector(`.item-${count}`)?.classList?.add('active')
                         } else {
                             framesArray?.querySelector(`.item-${count -1}`)?.classList?.remove('active')
                             framesArray?.querySelector(`.item-${count}`)?.classList?.add('active')
@@ -35,8 +36,8 @@ export const actions = (self) => {
                     }
 
                     if(event.detail.type === 'frame-stop') {
-                        framesArray?.querySelector(`.item-${count - 1}`)?.classList?.remove('active')
-                        framesArray?.querySelector(`.item-${count}`)?.classList?.remove('active')
+                        // framesArray?.querySelector(`.item-${count - 1}`)?.classList?.remove('active')
+                        // framesArray?.querySelector(`.item-${count}`)?.classList?.remove('active')
                         count = 0
                     }
                 }

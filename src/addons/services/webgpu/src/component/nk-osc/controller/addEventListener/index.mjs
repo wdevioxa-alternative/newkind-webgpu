@@ -45,7 +45,7 @@ export default async (self, actions) => {
         }
     }
 
-    inputTextArea.textContent = inputTextArea.textContent.trim()
+    inputTextArea.textContent = inputTextArea.textContent.replace(/\s*\n\s*/g,"\n").trim()
 
     return {
         init: () => {
