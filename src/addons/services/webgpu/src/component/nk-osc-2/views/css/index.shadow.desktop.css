@@ -155,24 +155,20 @@ textarea {
     min-height: 36dvh;
 }
 
-.UIText
-{
+.UIText {
     /* color:#000000; /* Uncomment for black text on white background */
     color:#a0a0a0;    /* Uncomment for black text on white background */
 }
 
-.UIDisabledText
-{
+.UIDisabledText {
     color:#808080;
 }
 
-.UIInput
-{
+.UIInput {
     background-color:#e0e0e0;
 }
 
-.UIInputReadOnly
-{
+.UIInputReadOnly {
     background-color:#b0b0b0;
 }
 
@@ -218,4 +214,8 @@ textarea {
 :focus-visible  {
     border: none;
     outline: none;
+}
+
+.active {
+    color: red;
 }

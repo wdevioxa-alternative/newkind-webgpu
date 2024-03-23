@@ -285,6 +285,7 @@ export const Reader = (self, containerFrame) => {
             ++indexWords;
             //console.log('--------------- START ---------------', indexWords);
 
+            
             // Used to calculate how long the processing takes to obtain the word.
             let startProcessingTime = Date.now();
 
@@ -300,7 +301,7 @@ export const Reader = (self, containerFrame) => {
             }
 
             word = nextWord();
-            //console.log('🟢', word);
+            console.log('🟢', word);
 
 
             // Display the word.
@@ -331,9 +332,7 @@ export const Reader = (self, containerFrame) => {
 
                 // //console.log('-------- START -----------', nextDelay)
                 // Set the length of time this word will show.
-                wordUpdateTimer = setTimeout(function() {
-                    updateWord();
-                }, nextDelay);
+                wordUpdateTimer = setTimeout(function() { updateWord() }, nextDelay);
             } else {
                 //console.log('-------- END -----------');
                 setStopState();
@@ -365,9 +364,9 @@ export const Reader = (self, containerFrame) => {
         // Param: end. ending point of the selection.
 
         let selectWordInTextArea = function(start, end) {
-            if (isFocus) {
-                inputTextArea.focus();
-            }
+            // if (isFocus) {
+            //     inputTextArea.focus();
+            // }
 
             // If this isn't Firefox, scroll the textArea so the selected word is visible.
             //   This happens automatically in Firefox.
@@ -378,23 +377,29 @@ export const Reader = (self, containerFrame) => {
                 let originalText = readableStream.value;
 
                 // Put in the text before the current word.
-                inputTextArea.value = originalText.substring(0, start);
+                readableStream.value = originalText.substring(0, start);
 
                 // Find the right place to scroll to.
-                inputTextArea.scrollTop = 10000000; // Large enough, I hope.
-                let currentScrollTop = inputTextArea.scrollTop;
+                // inputTextArea.scrollTop = 10000000; // Large enough, I hope.
+                // let currentScrollTop = inputTextArea.scrollTop;
 
                 // Restore the original text.
-                inputTextArea.value = originalText;
+                readableStream.value = originalText;
 
                 // Scroll to the right place.
-                if (currentScrollTop > 0) {
+                // if (currentScrollTop > 0) {
                     // Put the selection at the lower fourth of the displayed textArea.
-                    inputTextArea.scrollTop = currentScrollTop + (Math.floor(inputTextArea.clientHeight / 4));
-                }
+                    // inputTextArea.scrollTop = currentScrollTop + (Math.floor(inputTextArea.clientHeight / 4));
+                // }
             }
 
-            inputTextArea.setSelectionRange(start, end);
+            // inputTextArea.value = ''
+            // const left = inputTextArea.value.substring(0, start);
+            // const center = inputTextArea.value.substring(start - 1, end);
+            // const right = inputTextArea.value.substring(end);
+
+            inputTextArea.value = '3333'
+            // inputTextArea.insertAdjacentHTML('afterbegin',`${left}<span class="active">${center}</span>${right}`)
         };
 
         // Updates the progress bar.
@@ -429,6 +434,8 @@ export const Reader = (self, containerFrame) => {
             let firstWordFound = false;     // true when the end of the first word is found.
             let firstWordEnd;               // the end location of the first word.
 
+            console.log('ddddddddddddddd', text)
+            
             // if(isSample) {
             //     textIndex = countData
             // }
@@ -469,7 +476,7 @@ export const Reader = (self, containerFrame) => {
             const spiltWorlds = text.split(' ');
             // if(isLastWords) {
             // if(indexWords - limit === spiltWorlds.length) {
-            //     debugger
+            //     
             //     isLastChar = true
             // }
             // //console.log('------ {|||||||||||||||||} ------','text:index: ', indexWords - limit , 'ddd', spiltWorlds, 'text:value: ', text[textIndex], 'text: ', text.length)
@@ -596,7 +603,7 @@ export const Reader = (self, containerFrame) => {
 
                     return '';
                 } else {
-                    debugger
+                    
                     let returnString = text.substring(wordStart, text.length - wordStart);
                     //console.log('--------- OUT DATA 6 -------------', returnString)
                     return returnString;
@@ -903,7 +910,7 @@ export const Reader = (self, containerFrame) => {
         // Combines the Start and Stop button actions into a single button.
         let startStopReader = function() {
 
-            inputTextArea.focus();
+            // inputTextArea.focus();
 
             // Because the IsPlaying flag gets set later, false means it's about to start playing
             if (isPlaying) {
@@ -919,7 +926,7 @@ export const Reader = (self, containerFrame) => {
             // Put the focus on the text area.
 
             if (isFocus) {
-                inputTextArea.focus();
+                // inputTextArea.focus();
             }
 
 
@@ -946,7 +953,7 @@ export const Reader = (self, containerFrame) => {
             isPlaying = true;
             hideControls();
             startStopButton.value = stopString;
-            inputTextArea.readOnly = true;
+            // inputTextArea.readOnly = true;
             inputTextArea.className = 'UIInputReadOnly';
             speedInputElement.readOnly = false;
             speedInputElement.className = 'UIInputReadOnly';
@@ -965,11 +972,18 @@ export const Reader = (self, containerFrame) => {
         // Stops the reader.
 
         let stopReader = function() {
-            if (isFocus) {
-                inputTextArea.focus();
-            }
+            // if (isFocus) {
+            //     inputTextArea.focus();
+            // }
 
-            inputTextArea.setSelectionRange(0, 0);
+            // const left = inputTextArea.value.substring(0, start);
+            // const center = inputTextArea.value.substring(start - 1, end);
+            // const right = inputTextArea.value.substring(end);
+
+            // inputTextArea.innerHTML = ''
+            // inputTextArea.insertAdjacentHTML('afterbegin',`${left}<span class="active">${center}</span>${right}`)
+
+            // inputTextArea.setSelectionRange(0, 0);
 
             setStopState();
 
@@ -993,7 +1007,7 @@ export const Reader = (self, containerFrame) => {
             showControls();
 
             // Set the textarea and the words per minute textbox to read-only.
-            inputTextArea.readOnly = false;
+            // inputTextArea.readOnly = false;
             inputTextArea.className = 'UIInput';
             speedInputElement.readOnly = false;
             speedInputElement.className = 'UIInput';
@@ -1035,9 +1049,9 @@ export const Reader = (self, containerFrame) => {
             // Pause only happens if the reader is playing.
             if (isPlaying) {
 
-                if (isFocus) {
-                    inputTextArea.focus();
-                }
+                // if (isFocus) {
+                //     inputTextArea.focus();
+                // }
 
                 if (isPaused) {
                     // Resume playing the reader.
@@ -1072,8 +1086,8 @@ export const Reader = (self, containerFrame) => {
             areButtonsHidden = false;
 
             // Change the visibility of the controls.
-            inputTextAreaDiv.style.visibility = 'visible';
-            controlButtons.style.visibility = 'visible';
+            // inputTextAreaDiv.style.visibility = 'visible';
+            // controlButtons.style.visibility = 'visible';
         };
 
         // Hides the text area and control buttons according to the users settings.
@@ -1085,8 +1099,8 @@ export const Reader = (self, containerFrame) => {
 
             // Change the visibility of the controls.
             if (isPlaying && !isPaused) {
-                inputTextAreaDiv.style.visibility = (isTextAreaHidden) ? 'hidden' : 'visible';
-                controlButtons.style.visibility = (areButtonsHidden) ? 'hidden' : 'visible';
+                // inputTextAreaDiv.style.visibility = (isTextAreaHidden) ? 'hidden' : 'visible';
+                // controlButtons.style.visibility = (areButtonsHidden) ? 'hidden' : 'visible';
             }
         };
 
@@ -1103,10 +1117,11 @@ export const Reader = (self, containerFrame) => {
 
             // If the reader is paused, reselect the word in the text area.
             if (isPaused) {
-                if (isFocus) {
-                    inputTextArea.focus();
-                }
-                selectWordInTextArea(wordStart, textIndex);
+                // if (isFocus) {
+                //     inputTextArea.focus();
+                // }
+                
+                // selectWordInTextArea(wordStart, textIndex);
             }
         };
 
@@ -1124,10 +1139,11 @@ export const Reader = (self, containerFrame) => {
 
             // If the reader is paused, reselect the word in the text area.
             if (isPaused) {
-                if (isFocus) {
-                    inputTextArea.focus();
-                }
+                // if (isFocus) {
+                //     inputTextArea.focus();
+                // }
 
+                
                 selectWordInTextArea(wordStart, textIndex);
             }
         };
@@ -1325,7 +1341,7 @@ export const Reader = (self, containerFrame) => {
                 }
             } else {
                 console.error(' Надо поставить обработчик')
-                debugger
+                
             }
 
         };

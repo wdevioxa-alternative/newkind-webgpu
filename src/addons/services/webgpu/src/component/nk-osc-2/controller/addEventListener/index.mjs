@@ -68,8 +68,7 @@ export default async (self, actions) => {
 
     // inputTextArea.insertAdjacentHTML('beforeend', 'asdasdasda <span>sasas</span> asdasdasdasda')
     // console.log('sssssssssssssssss', inputTextArea)
-    // debugger
-    readableStream.textContent = inputTextArea.textContent.replace(/\s*\n\s*/g,"\n").trim()
+    readableStream.value = inputTextArea.textContent.replace(/\s*\n\s*/g,"\n").trim()
     inputTextArea.textContent = inputTextArea.textContent.replace(/\s*\n\s*/g,"\n").trim()
 
     return {
