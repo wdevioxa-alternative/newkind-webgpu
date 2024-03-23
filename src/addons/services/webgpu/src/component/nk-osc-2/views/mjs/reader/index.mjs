@@ -398,9 +398,50 @@ export const Reader = (self, containerFrame) => {
             const left = readableStream.value.substring(0, start);
             const center = readableStream.value.substring(start - 1, end);
             const right = readableStream.value.substring(end);
-
             inputTextArea.textContent = ``
-            inputTextArea.insertAdjacentHTML('afterbegin',`${left}<span class="active">${center.trim()}</span>${right}`)
+
+            if(limit === 0) {
+                inputTextArea.insertAdjacentHTML('afterbegin',`${left}<span class="active center">${center.trim()}</span>${right}`)
+            } else {
+                // let isNextFull = false;
+                // isLastWords
+                if(isNextFull) {
+                   const splitWorld = center.split(' ')
+                   let index = 0
+                    if (splitWorld.length %2 === 0) {
+                        index = splitWorld.length / 2;
+                    } else {
+                        index = (splitWorld.length - 1) / 2;
+                    }
+
+                    let rightCenter= splitWorld.slice(index + 1)
+                    let activeCenter = splitWorld.slice(index, index + 1)
+                    let leftCenter= splitWorld.slice(0, index)
+                    inputTextArea.insertAdjacentHTML('afterbegin',`${left}<span class="active">${leftCenter.join(' ').trim()} <span class="center">${activeCenter.join('  ').trim()}</span> ${rightCenter.join(' ').trim()}</span>${right}`)
+                } else {
+                    const splitWorld = center.split(' ')
+                    let index = 0
+                    if (limit %2 === 0) {
+                        index = limit / 2;
+                    } else {
+                        index = (limit - 1) / 2;
+                    }
+
+                    if(indexWords >= index ) {
+                        let leftCenter = splitWorld.slice(0, index)
+                        let activeCenter= splitWorld.slice(index, index + 1)
+                        let rightCenter= splitWorld.slice(index + 1)
+
+                        if(rightCenter.length === 0) {
+                            inputTextArea.insertAdjacentHTML('afterbegin',`${left}<span class="active">${leftCenter.join(' ').trim()} <span class="center">${activeCenter.join('  ').trim()}</span></span>${right}`)
+                        } else {
+                            inputTextArea.insertAdjacentHTML('afterbegin',`${left}<span class="active">${leftCenter.join(' ').trim()} <span class="center">${activeCenter.join('  ').trim()}</span> ${rightCenter.join(' ').trim()}</span>${right}`)
+                        }
+                    } else {
+                        inputTextArea.insertAdjacentHTML('afterbegin',`${left}<span class="active">${center.trim()}</span>${right}`)
+                    }
+                }
+            }
         };
 
         // Updates the progress bar.

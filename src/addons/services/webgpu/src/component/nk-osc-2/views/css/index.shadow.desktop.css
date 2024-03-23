@@ -231,3 +231,9 @@ textarea {
     -ms-user-select: none;
     user-select: none;
 }
+
+.center {
+    background: rgb(255 0 71 / 74%);
+    color: #89fffa;
+    box-sizing: border-box;
+}
