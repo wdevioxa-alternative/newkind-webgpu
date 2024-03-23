@@ -288,34 +288,22 @@ export const Reader = (self, containerFrame) => {
             // Used to calculate how long the processing takes to obtain the word.
             let startProcessingTime = Date.now();
 
-            // //
-            // textIndex = nextSamle.textIndex
-            // wordStart = 7
             if (isSample && nextSamle?.textIndex) {
                 textIndex = nextSamle.textIndex;
             }
 
             if (isNextFull) {
                 if (nextSamle.previous) {
-                    //console.log(nextSamle);
-
                     textIndex = parseInt(nextSamle.previous, 10);
                     nextSamle.previous = false;
                 }
             }
-
-            //console.log('textIndex', textIndex, isNextFull);
-
-            // Get the next word.
-            // //console.log('word', word, text)
-            // 
 
             word = nextWord();
             //console.log('🟢', word);
 
 
             // Display the word.
-
             word = word.replace(/\n/g, ' ');
 
             const spiltWorlds = word.split(' ');
@@ -387,7 +375,7 @@ export const Reader = (self, containerFrame) => {
                 // Select the word in the textarea.
 
                 // Save the text.
-                let originalText = inputTextArea.value;
+                let originalText = readableStream.value;
 
                 // Put in the text before the current word.
                 inputTextArea.value = originalText.substring(0, start);
@@ -938,7 +926,7 @@ export const Reader = (self, containerFrame) => {
             // Stop the reader if it is paused.
             stopReader();
 
-            text = inputTextArea.value;
+            text = readableStream.value;
             multiWordDisplay = multiWordCheckBox.checked;
 
             // To increase the amount of time a long word is displayed, increase the value of timerDelaySlope.
