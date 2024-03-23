@@ -1,19 +1,16 @@
 :host {
-    width: 45vw;
     display: flex;
     flex-direction: column;
     gap: 40px;
     background: #0080331a;
 }
 
-body
-{
+body {
     /* background-color:#FFFFFF; /* Uncomment for black text on white background */
     background-color:#272727; /* Uncomment for white text on black background */
 }
 
-#mainDiv
-{
+#mainDiv {
     width: 100%;
     margin-left:auto;
     margin-right:auto;

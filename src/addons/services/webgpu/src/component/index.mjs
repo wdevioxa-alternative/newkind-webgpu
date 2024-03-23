@@ -9,6 +9,7 @@ import nkRadio from './nk-radio/index.mjs'
 import nkEmulator from './nk-emulator/index.mjs'
 import nkOsc from './nk-osc/index.mjs'
 import nkOsc2 from './nk-osc-2/index.mjs'
+import nkTimeLine from './nk-time-line/index.mjs'
 export default {
     description: "components"
 }

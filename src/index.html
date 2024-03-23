@@ -248,14 +248,19 @@
                             </div>
                             <div class="container-wrapper">
                                 <div class="position-sample-container">
-                                    <div class="frames">
-                                        <h3>Sample time line</h3>
-                                        <div class="array"></div>
-                                    </div>
+                                    <nk-time-line
+                                        data-field="settings-1"
+                                        data-services-path="webgpu"
+                                    >
+                                        <template>
+                                            <div class="frames">
+                                                <h3>Sample time line</h3>
+                                                <div class="array"></div>
+                                            </div>
+                                        </template>
+                                    </nk-time-line>
                                     <nk-switch data-field="settings-1" data-services-path="webgpu">
                                         <template>
-                                            <!--                                            <h2>Sample</h2>-->
-                                            <!--                                            <h3>Position</h3>-->
                                             <div class="container">
                                                 <fieldset data-field="settingsDelay" class="multiswitch">
                                                     <div class="slide-container">
@@ -368,14 +373,19 @@
                                     </nk-osc-2>
                                 </div>
                                 <div class="position-sample-container">
-                                    <div class="frames">
-                                        <h3>Words time line</h3>
-                                        <div class="array"></div>
-                                    </div>
+                                    <nk-time-line
+                                        data-field="settings-1"
+                                        data-services-path="webgpu"
+                                    >
+                                        <template>
+                                            <div class="frames">
+                                                <h3>Sample time line</h3>
+                                                <div class="array"></div>
+                                            </div>
+                                        </template>
+                                    </nk-time-line>
                                     <nk-switch data-field="settings-1" data-services-path="webgpu">
                                         <template>
-                                            <!--                                            <h3>Position</h3>-->
-                                            <!--                                            <h2>Words</h2>-->
                                             <div class="container">
                                                 <fieldset data-field="settingsDelay" class="multiswitch">
                                                     <div class="slide-container">
@@ -419,13 +429,12 @@
                                             </div>
                                         </template>
                                     </nk-switch>
-                                    <nk-osc
-                                        data-field="osc_words"
+                                    <nk-osc-2
+                                        data-field="osc_audio"
                                         data-services-path="webgpu"
                                     >
                                         <template>
-                                            <!--                                            <h2>Words</h2>-->
-                                            <div id="mainDiv">
+                                            <div class="container-view">
                                                 <div id="outputDiv">
                                                 <span
                                                     class="outputText">_</span>
@@ -450,56 +459,54 @@
                                                     <input type="button" class="controlButton" id="fasterButton"
                                                            value="▲">
                                                 </div>
+                                            </div>
+                                            <div id="mainDiv">
                                                 <div id="inputTextAreaDiv" style="visibility: visible;">
-                                                <textarea id="inputTextArea" class="UIInput" rows="8">
-                                                    В степи мирской, печальной и безбрежной,
-                                                    Таинственно пробились три ключа:
-                                                    Ключ юности, ключ быстрый и мятежный,
-                                                    Кипит, бежит, сверкая и журча.
-                                                    Кастальский ключ волною вдохновенья
-                                                    В степи мирской изгнанников поит.
-                                                    Последний ключ — холодный ключ забвенья,
-                                                    Он слаще всех жар сердца утолит.1827 г.
-                                                </textarea>
-                                                    <div id="speedAndCheckBoxesDiv">
+                                                    <div id="inputTextArea" class="UIInput" rows="8">
+                                                        В степи мирской, печальной и безбрежной,
+                                                        Таинственно пробились три ключа:
+                                                        Ключ юности, ключ быстрый и мятежный,
+                                                        Кипит, бежит, сверкая и журча.
+                                                        Кастальский ключ волною вдохновенья
+                                                        В степи мирской изгнанников поит.
+                                                        Последний ключ — холодный ключ забвенья,
+                                                        Он слаще всех жар сердца утолит.1827 г.
+                                                    </div>
+                                                    <data class="readable-stream" value="readable-stream"></data>
+                                                </div>
+                                            </div>
+                                            <div id="speedAndCheckBoxesDiv">
                                                     <span class="UIText">
                                                         Speed
-                                                        <input type="text" id="speedInputElement" class="UIInput"
-                                                               size="5" value="50">
+                                                        <input type="text" id="speedInputElement" class="UIInput" size="5" value="2500">
                                                         <label>
                                                             <input type="checkbox" id="hideTextArea">
                                                             Hide text box when reading
                                                         </label>
                                                     </span>
-                                                        <span id="alsoTextSpan" class="UIDisabledText">
+                                                <span id="alsoTextSpan" class="UIDisabledText">
                                                         <label>
                                                             <input type="checkbox" id="hideButtons" disabled="">
                                                             Also hide buttons
                                                         </label>
                                                     </span>
-                                                        <span class="UIText">
+                                                <span class="UIText">
                                                         <label>
                                                             <input type="checkbox" id="multiWordCheckBox" checked="">
                                                             Display multiple words
                                                         </label>
                                                     </span>
-                                                        <span class="UIText">
+                                                <span class="UIText">
                                                         Average words per minute:
                                                         <span id="wpmDisplay">
                                                             474.2
                                                         </span>
                                                     </span>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </template>
-                                    </nk-osc>
+                                    </nk-osc-2>
                                 </div>
                             </div>
-                            <!--                            <div class="frames">-->
-                            <!--                                <h3>Window</h3>-->
-                            <!--                                <div class="array"></div>-->
-                            <!--                            </div>-->
                         </div>
                     </div>
 
