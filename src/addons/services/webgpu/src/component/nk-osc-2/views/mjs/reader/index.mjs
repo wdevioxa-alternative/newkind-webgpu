@@ -326,6 +326,7 @@ export const Reader = (self, containerFrame) => {
 
                 document.dispatchEvent(new CustomEvent(`next-frame`, {
                     detail: {
+                        id: self.dataset.id,
                         type: 'frame'
                     }
                 }));
@@ -1037,6 +1038,7 @@ export const Reader = (self, containerFrame) => {
 
             document.dispatchEvent(new CustomEvent(`next-frame`, {
                 detail: {
+                    id: self.dataset.id,
                     type: 'frame-stop'
                 }
             }));
