@@ -114,7 +114,7 @@ button.start {
 .container-reader {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 16px;
 }
 
 .container-wrapper {
@@ -137,4 +137,30 @@ button.start {
     display: flex;
     flex-direction: column;
     gap: 8px;
+}
+
+
+.info-color-1, .info-color-2, .info-color-3 {
+    width: 24px;
+    height: 24px;
+    border-right: 20px;
+}
+
+.info-color-1 {
+    background: rgb(11 28 30 / 72%);
+}
+
+.info-color-2 {
+    background: rgba(0, 157, 255, 0.73);
+}
+
+.info-color-3 {
+    background: rgb(255 0 71 / 74%);
+}
+
+.info-item {
+    display: flex;
+    flex-direction: row;
+    font-size: 24px;
+    gap: 12px;
 }

@@ -48,6 +48,9 @@ body {
 }
 
 .highlight, .leftString, .rightString {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     width: 100%;
     white-space: normal;
 }
@@ -169,7 +172,7 @@ textarea {
 }
 
 .UIInputReadOnly {
-    background-color: #32f5bf;
+    background-color: #ecf6ffe0;
 }
 
 #inputTextArea, #inputTextArea:focus-visible {
@@ -239,4 +242,9 @@ textarea {
     background: rgb(255 0 71 / 74%);
     color: #89fffa;
     box-sizing: border-box;
+}
+
+.onair {
+    background: rgb(11 28 30 / 72%);
+    color: #5fefe9;
 }

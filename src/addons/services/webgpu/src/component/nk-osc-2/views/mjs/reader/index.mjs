@@ -249,7 +249,7 @@ export const Reader = (self, containerFrame) => {
         const oscText = 'osc_text';
 
         const defaultData = {
-            limit: 4
+            limit: 16
         };
 
         let isAudio = self.dataset.field === oscAudio || self.dataset.field === oscAudioFrame  || self.dataset.field === oscText;
@@ -402,7 +402,7 @@ export const Reader = (self, containerFrame) => {
             inputTextArea.textContent = ``
 
             if(limit === 0) {
-                inputTextArea.insertAdjacentHTML('afterbegin',`${left}<span class="active center">${center.trim()}</span>${right}`)
+                inputTextArea.insertAdjacentHTML('afterbegin',`<span class="onair">${left}</span><span class="active center">${center.trim()}</span>${right}`)
             } else {
                 // let isNextFull = false;
                 // isLastWords
@@ -418,7 +418,7 @@ export const Reader = (self, containerFrame) => {
                     let rightCenter= splitWorld.slice(index + 1)
                     let activeCenter = splitWorld.slice(index, index + 1)
                     let leftCenter= splitWorld.slice(0, index)
-                    inputTextArea.insertAdjacentHTML('afterbegin',`${left}<span class="active">${leftCenter.join(' ').trim()} <span class="center">${activeCenter.join('  ').trim()}</span> ${rightCenter.join(' ').trim()}</span>${right}`)
+                    inputTextArea.insertAdjacentHTML('afterbegin',`<span class="onair">${left}</span><span class="active">${leftCenter.join(' ').trim()} <span class="center">${activeCenter.join('  ').trim()}</span> ${rightCenter.join(' ').trim()}</span>${right}`)
                 } else {
                     const splitWorld = center.split(' ')
                     let index = 0
@@ -434,12 +434,12 @@ export const Reader = (self, containerFrame) => {
                         let rightCenter= splitWorld.slice(index + 1)
 
                         if(rightCenter.length === 0) {
-                            inputTextArea.insertAdjacentHTML('afterbegin',`${left}<span class="active">${leftCenter.join(' ').trim()} <span class="center">${activeCenter.join('  ').trim()}</span></span>${right}`)
+                            inputTextArea.insertAdjacentHTML('afterbegin',`<span class="onair">${left}</span><span class="active">${leftCenter.join(' ').trim()} <span class="center">${activeCenter.join('  ').trim()}</span></span>${right}`)
                         } else {
-                            inputTextArea.insertAdjacentHTML('afterbegin',`${left}<span class="active">${leftCenter.join(' ').trim()} <span class="center">${activeCenter.join('  ').trim()}</span> ${rightCenter.join(' ').trim()}</span>${right}`)
+                            inputTextArea.insertAdjacentHTML('afterbegin',`<span class="onair">${left}</span><span class="active">${leftCenter.join(' ').trim()} <span class="center">${activeCenter.join('  ').trim()}</span> ${rightCenter.join(' ').trim()}</span>${right}`)
                         }
                     } else {
-                        inputTextArea.insertAdjacentHTML('afterbegin',`${left}<span class="active">${center.trim()}</span>${right}`)
+                        inputTextArea.insertAdjacentHTML('afterbegin',`<span class="onair">${left}</span><span class="active">${center.trim()}</span>${right}`)
                     }
                 }
             }
