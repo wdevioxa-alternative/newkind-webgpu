@@ -45,22 +45,22 @@ export default async (self, actions) => {
         }
     }
 
-    if(self.dataset.field === 'osc_audio') {
-        inputTextArea.textContent = ''
-        inputTextArea.textContent = `
-        В степи мирской, печальной и безбрежной,
-        Таинственно пробились три ключа:
-        Ключ юности, ключ быстрый и мятежный,
-        Кипит, бежит, сверкая и журча.
-        Кастальский ключ волною вдохновенья
-        В степи мирской изгнанников поит.
-        Последний ключ — холодный ключ забвенья,
-        Он слаще всех жар сердца утолит.1827 г.
-        `
-
-        // inputTextArea.textContent = inputTextArea.textContent
-        // inputTextArea.textContent =    inputTextArea.textContent.replace(/  +/g, ' ').trim()
-    }
+    // if(self.dataset.field === 'osc_audio') {
+    //     inputTextArea.textContent = ''
+    //     inputTextArea.textContent = `
+    //     В степи мирской, печальной и безбрежной,
+    //     Таинственно пробились три ключа:
+    //     Ключ юности, ключ быстрый и мятежный,
+    //     Кипит, бежит, сверкая и журча.
+    //     Кастальский ключ волною вдохновенья
+    //     В степи мирской изгнанников поит.
+    //     Последний ключ — холодный ключ забвенья,
+    //     Он слаще всех жар сердца утолит.1827 г.
+    //     `
+    //
+    //     // inputTextArea.textContent = inputTextArea.textContent
+    //     // inputTextArea.textContent =    inputTextArea.textContent.replace(/  +/g, ' ').trim()
+    // }
 
     inputTextArea.textContent = inputTextArea.textContent.replace(/\s*\n\s*/g,"\n").trim()
 
