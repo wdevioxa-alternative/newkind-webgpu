@@ -73,8 +73,9 @@ export default async (self, actions) => {
     return {
         init: () => {
             // Add event handlers
-            document.addEventListener("keydown", keydownInput, false);
-            document.addEventListener("keypress", keypressInput, false);
+            inputTextArea.addEventListener("input", keydownInput, false);
+            inputTextArea.addEventListener("keypress", keypressInput, false);
+
             startStopButton.addEventListener("click", startStopReader, false);
             pauseResumeButton.addEventListener("click", pauseResumeReader, false);
             goBackButton.addEventListener("click", goBackReader, false);
@@ -101,8 +102,9 @@ export default async (self, actions) => {
             setStopState();
         },
         terminate: () => {
-            document.removeEventListener("keydown", keydownInput, false);
-            document.removeEventListener("keypress", keypressInput, false);
+            inputTextArea.removeEventListener("input", keydownInput, false);
+            inputTextArea.removeEventListener("keypress", keypressInput, false);
+
             startStopButton.removeEventListener("click", startStopReader, false);
             pauseResumeButton.removeEventListener("click", pauseResumeReader, false);
             goBackButton.removeEventListener("click", goBackReader, false);

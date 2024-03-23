@@ -109,8 +109,7 @@ body
     background-color:#a0a0a0;
 }
 
-#controlButtons
-{
+#controlButtons {
     margin: 0px auto 0px auto;
     text-align:center;
     box-sizing: border-box;

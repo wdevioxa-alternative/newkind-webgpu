@@ -242,7 +242,7 @@ export const Reader = (self, containerFrame) => {
         controlButtons = self.shadowRoot.getElementById('controlButtons');
         multiWordCheckBox = self.shadowRoot.getElementById('multiWordCheckBox');
         wpmDisplay = self.shadowRoot.getElementById('wpmDisplay');
-        const readableStream = self.shadowRoot.querySelector('.readable-stream');
+        let readableStream = self.shadowRoot.querySelector('.readable-stream');
 
         const oscAudio = 'osc_audio';
         const oscAudioFrame = 'osc_audio_frame';
@@ -1265,6 +1265,7 @@ export const Reader = (self, containerFrame) => {
         // Allows keys to be used while maintaining the selection in the text area.
 
         let keypressInput = function(event) {
+            console.log('########## keypressInput ##############', event.keyCode)
             if (isPlaying) {
                 if (document.activeElement === inputTextArea || document.activeElement === speedInputElement) {
                     if (event.keyCode === 27 || event.keyCode === 32 || event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40) {
@@ -1284,48 +1285,61 @@ export const Reader = (self, containerFrame) => {
 
         let keydownInput = function(event) {
             // Take keyboard input only when the focus is on the body.
-            if (isPlaying) {
-                // Take the focus away from wherever it is. This puts the focus on document.body.
-                document.activeElement.blur();
+            console.log('########## keydownInput ##############', event.currentTarget.tagName)
+            if(event.currentTarget.tagName  === 'TEXTAREA') {
+                // let read = event.currentTarget.parentNode.querySelector('.readable-stream')
+                // event.currentTarget.value = event.currentTarget.value.trim()
+                readableStream.value = event.currentTarget.value
+                // readableStream.textContent = event.currentTarget.value.trim()
 
-                switch (event.keyCode) {
-                    case 27:
-                        stopReader();
-                        break;
+                console.log('event.currentTarget.textContent', event.currentTarget.parentNode.querySelector('.readable-stream'))
+                if (isPlaying) {
+                    // Take the focus away from wherever it is. This puts the focus on document.body.
+                    document.activeElement.blur();
 
-                    case 32: // Spacebar.
-                        if (textIndex !== 0) {
-                            pauseResumeReader();
-                        } else {
-                            startReader();
-                        }
-                        break;
+                    switch (event.keyCode) {
+                        case 27:
+                            stopReader();
+                            break;
 
-                    case 37: // Left Arrow.
-                        goBackReader();
-                        break;
+                        case 32: // Spacebar.
+                            if (textIndex !== 0) {
+                                pauseResumeReader();
+                            } else {
+                                startReader();
+                            }
+                            break;
 
-                    case 38: // Up Arrow.
-                        fasterReader();
-                        break;
+                        case 37: // Left Arrow.
+                            goBackReader();
+                            break;
 
-                    case 39: // Right Arrow.
-                        goForwardReader();
-                        break;
+                        case 38: // Up Arrow.
+                            fasterReader();
+                            break;
 
-                    case 40: // Down Arrow.
-                        slowerReader();
-                        break;
+                        case 39: // Right Arrow.
+                            goForwardReader();
+                            break;
+
+                        case 40: // Down Arrow.
+                            slowerReader();
+                            break;
+                    }
+
+                    // Prevent these keys from affecting the display.
+                    if (event.keyCode === 27 || event.keyCode === 32 || event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        event.cancelBubble = true;
+                        return false;
+                    }
                 }
-
-                // Prevent these keys from affecting the display.
-                if (event.keyCode === 27 || event.keyCode === 32 || event.keyCode === 37 || event.keyCode === 38 || event.keyCode === 39 || event.keyCode === 40) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    event.cancelBubble = true;
-                    return false;
-                }
+            } else {
+                console.error(' Надо поставить обработчик')
+                debugger
             }
+
         };
 
         resolve({
