@@ -134,37 +134,116 @@
                         <div class="display sample"></div>
                         <div class="container-reader">
                             <div class="container-wrapper">
-                                <nk-osc
-                                    data-field="osc_audio_frame"
-                                    data-services-path="webgpu"
-                                >
-                                    <template>
-                                        <h2>Frame</h2>
-                                        <div id="mainDiv">
-                                            <div id="outputDiv">
+                                <div class="position-sample-container">
+                                    <nk-time-line
+                                        data-field="settings-time"
+                                        data-services-path="webgpu"
+                                        data-id="0"
+                                    >
+                                        <template>
+                                            <div class="frames">
+                                                <h3>frame time line</h3>
+                                                <div class="array"></div>
+                                            </div>
+                                        </template>
+                                    </nk-time-line>
+                                    <nk-filter
+                                        data-field="filter-0"
+                                        data-services-path="webgpu"
+                                        data-id="0"
+                                    >
+                                        <template>
+                                            <div class="filters">
+                                                <div class="array line"></div>
+                                                <button class="start"> Start</button>
+                                            </div>
+                                        </template>
+                                    </nk-filter>
+                                    <nk-switch data-id="0" data-field="settings-1" data-services-path="webgpu">
+                                        <template>
+                                            <div class="container">
+                                                <fieldset data-field="settingsDelay" class="multiswitch">
+                                                    <div class="slide-container">
+                                                        <input type="radio" name="sample" id="sample-0">
+                                                        <label for="sample-0">-16</label>
+                                                        <input type="radio" name="sample" id="sample-1">
+                                                        <label for="sample-1">-15</label>
+                                                        <input type="radio" name="sample" id="sample-2">
+                                                        <label for="sample-2">-14</label>
+                                                        <input type="radio" name="sample" id="sample-3">
+                                                        <label for="sample-3">-13</label>
+                                                        <input type="radio" name="sample" id="sample-4">
+                                                        <label for="sample-4">-12</label>
+                                                        <input type="radio" name="sample" id="sample-5">
+                                                        <label for="sample-5">-11</label>
+                                                        <input type="radio" name="sample" id="sample-6">
+                                                        <label for="sample-6">-10</label>
+                                                        <input type="radio" name="sample" id="sample-7">
+                                                        <label for="sample-7">-9</label>
+                                                        <input type="radio" name="sample" id="sample-8" checked>
+                                                        <label for="sample-8">-8</label>
+                                                        <input type="radio" name="sample" id="sample-9">
+                                                        <label for="sample-9">-7</label>
+                                                        <input type="radio" name="sample" id="sample-10">
+                                                        <label for="sample-10">-6</label>
+                                                        <input type="radio" name="sample" id="sample-11">
+                                                        <label for="sample-11">-5</label>
+                                                        <input type="radio" name="sample" id="sample-12">
+                                                        <label for="sample-12">-4</label>
+                                                        <input type="radio" name="sample" id="sample-13">
+                                                        <label for="sample-13">-3</label>
+                                                        <input type="radio" name="sample" id="sample-14">
+                                                        <label for="sample-14">-2</label>
+                                                        <input type="radio" name="sample" id="sample-15">
+                                                        <label for="sample-15">-1</label>
+                                                        <input type="radio" name="sample" id="sample-16">
+                                                        <label for="sample-16">0</label>
+                                                        <a class="slide" aria-hidden="true"></a>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </template>
+                                    </nk-switch>
+                                    <nk-osc-2
+                                        data-field="osc_audio_frame"
+                                        data-services-path="webgpu"
+                                        data-id="0"
+                                    >
+                                        <template>
+                                            <div class="container-view">
+                                                <div id="outputDiv">
                                                 <span
                                                     class="outputText">_</span>
-                                                <span id="outputTextElement">&nbsp;</span>
-                                                <span
-                                                    class="outputText">¯</span>
+                                                    <span id="outputTextElement">&nbsp;</span>
+                                                    <span
+                                                        class="outputText">¯</span>
+                                                </div>
+                                                <div id="progressBarBaseDiv">
+                                                    <div id="progressBarDiv" style="width:0px"></div>
+                                                </div>
+                                                <div id="controlButtons" style="visibility: visible;">
+                                                    <input type="button" class="controlButton" id="goBackButton"
+                                                           value="◄◄">
+                                                    <input type="button" class="controlButton" id="startStopButton"
+                                                           value="►">
+                                                    <input type="button" class="controlButton" id="pauseResumeButton"
+                                                           value="▌▐">
+                                                    <input type="button" class="controlButton" id="goForwardButton"
+                                                           value="►►">
+                                                    <input type="button" class="controlButton" id="slowerButton"
+                                                           value="▼">
+                                                    <input type="button" class="controlButton" id="fasterButton"
+                                                           value="▲">
+                                                </div>
                                             </div>
-                                            <div id="progressBarBaseDiv">
-                                                <div id="progressBarDiv" style="width:0px"></div>
+                                            <div id="mainDiv">
+                                                <div id="inputTextAreaDiv" style="visibility: visible;">
+                                                    <div id="inputTextArea" class="UIInput" rows="8"></div>
+                                                    <data class="readable-stream" value="readable-stream"></data>
+                                                </div>
                                             </div>
-                                            <div id="controlButtons" style="visibility: visible;">
-                                                <input type="button" class="controlButton" id="goBackButton" value="◄◄">
-                                                <input type="button" class="controlButton" id="startStopButton"
-                                                       value="►">
-                                                <input type="button" class="controlButton" id="pauseResumeButton"
-                                                       value="▌▐">
-                                                <input type="button" class="controlButton" id="goForwardButton"
-                                                       value="►►">
-                                                <input type="button" class="controlButton" id="slowerButton" value="▼">
-                                                <input type="button" class="controlButton" id="fasterButton" value="▲">
-                                            </div>
-                                            <div id="inputTextAreaDiv" style="visibility: visible;">
-                                                <textarea id="inputTextArea" class="UIInput" rows="8"></textarea>
-                                                <div id="speedAndCheckBoxesDiv">
+                                            <div id="speedAndCheckBoxesDiv">
+                                                <div class="container-settings-0">
                                                     <span class="UIText">
                                                         Speed
                                                         <input type="text" id="speedInputElement" class="UIInput"
@@ -186,7 +265,9 @@
                                                             Display multiple words
                                                         </label>
                                                     </span>
-                                                    <span class="UIText">
+                                                </div>
+                                                <div class="container-settings-0">
+                                                     <span class="UIText">
                                                         Average words per minute:
                                                         <span id="wpmDisplay">
                                                             474.2
@@ -194,63 +275,81 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </template>
-                                </nk-osc>
-                                <nk-settings
-                                    slot="nk-settings"
-                                    data-field="settings"
-                                    data-services-path="webgpu"
-                                >
-                                    <template>
-                                        <div class="container">
-                                            <div class="wrapper">
-                                                <h2>Настройки</h2>
-                                                <div class="memory">
-                                                    <div class="settings">Всего памяти<span class="value">—</span></div>
-                                                    <div class="settings">Используется<span class="value">—</span></div>
-                                                    <div class="settings">Длинна<span class="value">—</span></div>
+                                        </template>
+                                    </nk-osc-2>
+                                </div>
+                                <div class="position-sample-container">
+                                    <nk-settings
+                                        slot="nk-settings"
+                                        data-field="settings"
+                                        data-services-path="webgpu"
+                                    >
+                                        <template>
+                                            <div class="container">
+                                                <div class="wrapper">
+                                                    <h2>Настройки</h2>
+                                                    <div class="memory">
+                                                        <div class="settings">Всего памяти<span class="value">—</span>
+                                                        </div>
+                                                        <div class="settings">Используется<span class="value">—</span>
+                                                        </div>
+                                                        <div class="settings">Длинна<span class="value">—</span></div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <pre>--------------------------------------------------------------------------------</pre>
-                                            <div class="constants">
-                                                <h2>Переменные</h2>
-                                                <div class="settings" id="RENDER_QUANTUM">RENDER_QUANTUM<span
-                                                    class="value"></span></div>
-                                                <div class="settings" id="KERNEL_LENGTH">KERNEL_LENGTH<span
-                                                    class="value"></span></div>
-                                                <div class="settings" id="FRAME_SIZE">FRAME_SIZE<span
-                                                    class="value"></span></div>
-                                                <div class="settings" id="QUEUE_SIZE">QUEUE_SIZE<span
-                                                    class="value"></span></div>
-                                                <div class="settings" id="WORKGROUP_SIZE">WORKGROUP_SIZE<span
-                                                    class="value"></span></div>
                                                 <pre>--------------------------------------------------------------------------------</pre>
-                                                <div class="settings" id="ARRAY_LENGTH">ARRAY_LENGTH<span class="value">—</span>
-                                                </div>
-                                                <div class="settings" id="freq">freq<span class="value">—</span></div>
-                                                <div class="settings" id="channels">channels<span class="value">—</span>
-                                                </div>
-                                                <div class="settings" id="duration">duration<span class="value">—</span>
-                                                </div>
-                                                <div class="settings" id="samplerate">samplerate<span
-                                                    class="value">—</span></div>
-                                                <div class="settings" id="volumerate">volumerate<span
-                                                    class="value">—</span></div>
-                                                <div class="settings" id="frames">frames<span class="value">—</span>
-                                                </div>
-                                                <div class="settings" id="memdata">memdata<span class="value">—</span>
+                                                <div class="constants">
+                                                    <h2>Переменные</h2>
+                                                    <div class="settings" id="RENDER_QUANTUM">RENDER_QUANTUM<span
+                                                        class="value"></span></div>
+                                                    <div class="settings" id="KERNEL_LENGTH">KERNEL_LENGTH<span
+                                                        class="value"></span></div>
+                                                    <div class="settings" id="FRAME_SIZE">FRAME_SIZE<span
+                                                        class="value"></span></div>
+                                                    <div class="settings" id="QUEUE_SIZE">QUEUE_SIZE<span
+                                                        class="value"></span></div>
+                                                    <div class="settings" id="WORKGROUP_SIZE">WORKGROUP_SIZE<span
+                                                        class="value"></span></div>
+                                                    <pre>--------------------------------------------------------------------------------</pre>
+                                                    <div class="settings" id="ARRAY_LENGTH">ARRAY_LENGTH<span
+                                                        class="value">—</span>
+                                                    </div>
+                                                    <div class="settings" id="freq">freq<span class="value">—</span>
+                                                    </div>
+                                                    <div class="settings" id="channels">channels<span
+                                                        class="value">—</span>
+                                                    </div>
+                                                    <div class="settings" id="duration">duration<span
+                                                        class="value">—</span>
+                                                    </div>
+                                                    <div class="settings" id="samplerate">samplerate<span
+                                                        class="value">—</span></div>
+                                                    <div class="settings" id="volumerate">volumerate<span
+                                                        class="value">—</span></div>
+                                                    <div class="settings" id="frames">frames<span class="value">—</span>
+                                                    </div>
+                                                    <div class="settings" id="memdata">memdata<span
+                                                        class="value">—</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </template>
-                                </nk-settings>
+                                        </template>
+                                    </nk-settings>
+                                </div>
                             </div>
                             <div class="info">
                                 <div class="container">
-                                    <div class="info-item"><div class="info-color-1"></div> - Индекс сигнала которы отдается на выход</div>
-                                    <div class="info-item"><div class="info-color-2"></div> - Задержанный сигнал для обработки</div>
-                                    <div class="info-item"><div class="info-color-3"></div> - Основной сигнал для вывода на график (На шкале -8 семплов задержка)</div>
+                                    <div class="info-item">
+                                        <div class="info-color-1"></div>
+                                        - Индекс сигнала которы отдается на выход
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-color-2"></div>
+                                        - Задержанный сигнал для обработки
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-color-3"></div>
+                                        - Основной сигнал для вывода на график (На шкале -8 семплов задержка)
+                                    </div>
                                 </div>
                             </div>
                             <div class="container-wrapper">
@@ -262,7 +361,7 @@
                                     >
                                         <template>
                                             <div class="frames">
-                                                <h3>Sample time line</h3>
+                                                <h3>sample time line</h3>
                                                 <div class="array"></div>
                                             </div>
                                         </template>
@@ -366,7 +465,8 @@
                                                 <div class="container-settings-0">
                                                     <span class="UIText">
                                                         Speed
-                                                        <input type="text" id="speedInputElement" class="UIInput" size="5" value="50">
+                                                        <input type="text" id="speedInputElement" class="UIInput"
+                                                               size="5" value="50">
                                                         <label>
                                                             <input type="checkbox" id="hideTextArea">
                                                             Hide text box when reading
@@ -405,7 +505,7 @@
                                     >
                                         <template>
                                             <div class="frames">
-                                                <h3>Sample time line</h3>
+                                                <h3>sample time line</h3>
                                                 <div class="array"></div>
                                             </div>
                                         </template>
@@ -518,7 +618,8 @@
                                                 <div class="container-settings-0">
                                                     <span class="UIText">
                                                         Speed
-                                                        <input type="text" id="speedInputElement" class="UIInput" size="5" value="50">
+                                                        <input type="text" id="speedInputElement" class="UIInput"
+                                                               size="5" value="50">
                                                         <label>
                                                             <input type="checkbox" id="hideTextArea">
                                                             Hide text box when reading
