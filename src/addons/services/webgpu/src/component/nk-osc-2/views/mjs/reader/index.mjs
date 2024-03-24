@@ -275,6 +275,18 @@ export const Reader = (self, containerFrame) => {
         let isLastWords = false;
         let indexWords = -1;
         let isLastChar = false;
+
+        let halfWindow = []
+        let halfWindowIndex = 0
+        if (limit %2 === 0) {
+            halfWindowIndex = limit / 2;
+        } else {
+            halfWindowIndex = (limit - 1) / 2;
+        }
+
+        for(let i = 0; i < halfWindowIndex; ++i) {
+            halfWindow.push('0')
+        }
         //////////
         // Functions.
         //////////
@@ -395,29 +407,44 @@ export const Reader = (self, containerFrame) => {
                 // }
             }
 
-            inputTextArea.value = ''
+
             const left = readableStream.value.substring(0, start);
             const center = readableStream.value.substring(start - 1, end);
             const right = readableStream.value.substring(end);
-            inputTextArea.textContent = ``
 
             if(limit === 0) {
+                inputTextArea.textContent = ``
+                inputTextArea.value = ''
                 inputTextArea.insertAdjacentHTML('afterbegin',`<span class="onair">${left}</span><span class="active center">${center.trim()}</span>${right}`)
             } else {
-                // let isNextFull = false;
-                // isLastWords
                 if(isNextFull) {
-                   const splitWorld = center.split(' ')
-                   let index = 0
+                    let indexWindow = 0
+                    if (limit %2 === 0) {
+                        indexWindow = limit / 2;
+                    } else {
+                        indexWindow = (limit - 1) / 2;
+                    }
+
+                    const isThird = indexWords <= indexWindow * 3
+                    const splitWorld = center.trim().split(' ')
+
+                    let index = 0
                     if (splitWorld.length %2 === 0) {
                         index = splitWorld.length / 2;
                     } else {
                         index = (splitWorld.length - 1) / 2;
                     }
 
-                    let rightCenter= splitWorld.slice(index + 1)
-                    let activeCenter = splitWorld.slice(index, index + 1)
                     let leftCenter= splitWorld.slice(0, index)
+                    let activeCenter = splitWorld.slice(index, index + 1)
+                    let rightCenter= splitWorld.slice(index + 1)
+
+                    const popActive = activeCenter.pop()
+                    activeCenter.push(leftCenter.shift())
+                    leftCenter.push(popActive)
+
+                    inputTextArea.textContent = ``
+                    inputTextArea.value = ''
                     inputTextArea.insertAdjacentHTML('afterbegin',`<span class="onair">${left}</span><span class="active">${leftCenter.join(' ').trim()} <span class="center">${activeCenter.join('  ').trim()}</span> ${rightCenter.join(' ').trim()}</span>${right}`)
                 } else {
                     const splitWorld = center.split(' ')
@@ -432,13 +459,53 @@ export const Reader = (self, containerFrame) => {
                         let leftCenter = splitWorld.slice(0, index)
                         let activeCenter= splitWorld.slice(index, index + 1)
                         let rightCenter= splitWorld.slice(index + 1)
-
                         if(rightCenter.length === 0) {
+                            console.log('Fires center: ',leftCenter, activeCenter, rightCenter)
+                            inputTextArea.textContent = ``
+                            inputTextArea.value = ''
                             inputTextArea.insertAdjacentHTML('afterbegin',`<span class="onair">${left}</span><span class="active">${leftCenter.join(' ').trim()} <span class="center">${activeCenter.join('  ').trim()}</span></span>${right}`)
                         } else {
+                            let popLeft = []
+
+                            popLeft.push(activeCenter.pop())
+
+                            for(let i = 0; i < rightCenter.length;++i){
+                                if(i === 0) {
+                                    activeCenter.push(leftCenter.pop())
+                                    leftCenter.unshift(popLeft.pop())
+                                } else {
+                                    if(i === 1) {
+                                        popLeft.push(activeCenter.pop())
+                                        activeCenter.push(leftCenter.pop())
+                                        leftCenter = popLeft.concat(leftCenter)
+                                        popLeft = []
+                                    } else {
+                                        if(i === 2) {
+                                            let pop = activeCenter.pop()
+                                            activeCenter.push(leftCenter.pop())
+                                            leftCenter.unshift(pop)
+                                        } else {
+                                            // console.log('sssssssssssssssssss',popLeft, leftCenter, activeCenter, rightCenter)
+                                            // debugger
+                                            let pop = activeCenter.pop()
+                                            activeCenter.push(leftCenter.pop())
+                                            leftCenter.unshift(pop)
+
+                                            // pop = activeCenter.pop()
+                                            // activeCenter.push(leftCenter.pop())
+                                            // leftCenter.unshift(pop)
+                                            //
+                                        }
+                                    }
+                                }
+                            }
+                            inputTextArea.textContent = ``
+                            inputTextArea.value = ''
                             inputTextArea.insertAdjacentHTML('afterbegin',`<span class="onair">${left}</span><span class="active">${leftCenter.join(' ').trim()} <span class="center">${activeCenter.join('  ').trim()}</span> ${rightCenter.join(' ').trim()}</span>${right}`)
                         }
                     } else {
+                        inputTextArea.textContent = ``
+                        inputTextArea.value = ''
                         inputTextArea.insertAdjacentHTML('afterbegin',`<span class="onair">${left}</span><span class="active">${center.trim()}</span>${right}`)
                     }
                 }
@@ -477,8 +544,6 @@ export const Reader = (self, containerFrame) => {
             let firstWordFound = false;     // true when the end of the first word is found.
             let firstWordEnd;               // the end location of the first word.
 
-            console.log('ddddddddddddddd', text)
-            
             // if(isSample) {
             //     textIndex = countData
             // }
