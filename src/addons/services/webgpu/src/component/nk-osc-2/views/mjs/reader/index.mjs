@@ -276,17 +276,6 @@ export const Reader = (self, containerFrame) => {
         let indexWords = -1;
         let isLastChar = false;
 
-        let halfWindow = []
-        let halfWindowIndex = 0
-        if (limit %2 === 0) {
-            halfWindowIndex = limit / 2;
-        } else {
-            halfWindowIndex = (limit - 1) / 2;
-        }
-
-        for(let i = 0; i < halfWindowIndex; ++i) {
-            halfWindow.push('0')
-        }
         //////////
         // Functions.
         //////////
@@ -480,22 +469,9 @@ export const Reader = (self, containerFrame) => {
                                         leftCenter = popLeft.concat(leftCenter)
                                         popLeft = []
                                     } else {
-                                        if(i === 2) {
-                                            let pop = activeCenter.pop()
-                                            activeCenter.push(leftCenter.pop())
-                                            leftCenter.unshift(pop)
-                                        } else {
-                                            // console.log('sssssssssssssssssss',popLeft, leftCenter, activeCenter, rightCenter)
-                                            // debugger
-                                            let pop = activeCenter.pop()
-                                            activeCenter.push(leftCenter.pop())
-                                            leftCenter.unshift(pop)
-
-                                            // pop = activeCenter.pop()
-                                            // activeCenter.push(leftCenter.pop())
-                                            // leftCenter.unshift(pop)
-                                            //
-                                        }
+                                        let pop = activeCenter.pop()
+                                        activeCenter.push(leftCenter.pop())
+                                        leftCenter.unshift(pop)
                                     }
                                 }
                             }
