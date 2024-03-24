@@ -2,6 +2,9 @@
     display: flex;
     flex-direction: column;
     margin: auto;
+    background: black;
+    color: whitesmoke;
+    height: inherit;
 }
 
 .container {
@@ -167,9 +170,4 @@ button.start {
 
 nk-osc-2 {
     width: 45dvw;
-}
-
-.position-sample-settings {
-    display: flex;
-    flex-direction: row;
 }

@@ -423,22 +423,6 @@
                                     </nk-osc-2>
                                 </div>
                             </div>
-                            <div class="info">
-                                <div class="container">
-                                    <div class="info-item">
-                                        <div class="info-color-1"></div>
-                                        - Индекс сигнала которы отдается на выход
-                                    </div>
-                                    <div class="info-item">
-                                        <div class="info-color-2"></div>
-                                        - Задержанный сигнал для обработки
-                                    </div>
-                                    <div class="info-item">
-                                        <div class="info-color-3"></div>
-                                        - Основной сигнал для вывода на график (На шкале -8 семплов задержка)
-                                    </div>
-                                </div>
-                            </div>
                             <div class="container-wrapper">
                                 <div class="position-sample-container">
                                     <nk-time-line
@@ -794,6 +778,30 @@
                                         </div>
                                     </template>
                                 </nk-settings>
+                                <nk-info
+                                    slot="nk-info"
+                                    data-field="info"
+                                    data-services-path="webgpu"
+                                >
+                                    <template>
+                                        <div class="info">
+                                            <div class="container">
+                                                <div class="info-item">
+                                                    <div class="info-color-1"></div>
+                                                    - Индекс сигнала которы отдается на выход
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-color-2"></div>
+                                                    - Задержанный сигнал для обработки
+                                                </div>
+                                                <div class="info-item">
+                                                    <div class="info-color-3"></div>
+                                                    - Основной сигнал для вывода на график (На шкале -8 семплов задержка)
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </nk-info>
                             </div>
                         </div>
                     </div>
