@@ -1,6 +1,6 @@
 import { onload } from '../../this/index.mjs'
 
-const COMPONENT = 'nk-osc-2'
+const COMPONENT = 'nk-osc'
 const INDEX = class extends HTMLElement {
     _doRender() {
 

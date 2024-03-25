@@ -1,16 +1,17 @@
 :host {
+    width: 45vw;
     display: flex;
     flex-direction: column;
-    gap: 40px;
-    background: #0080331a;
 }
 
-body {
+body
+{
     /* background-color:#FFFFFF; /* Uncomment for black text on white background */
     background-color:#272727; /* Uncomment for white text on black background */
 }
 
-#mainDiv {
+#mainDiv
+{
     width: 100%;
     margin-left:auto;
     margin-right:auto;
@@ -48,9 +49,6 @@ body {
 }
 
 .highlight, .leftString, .rightString {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     width: 100%;
     white-space: normal;
 }
@@ -109,17 +107,16 @@ body {
     background-color:#a0a0a0;
 }
 
-#controlButtons {
+#controlButtons
+{
     margin: 0px auto 0px auto;
     text-align:center;
-    box-sizing: border-box;
-    padding: 24px;
 }
 
 #inputTextAreaDiv {
     display: flex;
     flex-direction: column;
-    margin: 0;
+    height: 100%;
 }
 
 .controlButton
@@ -134,15 +131,12 @@ body {
     margin: 0px auto 0px auto;
     text-align: center;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     gap: 8px;
     box-sizing: border-box;
     padding: 8px;
-    background: black;
-    min-height: 64px;
-    width: 100%;
 }
 
 textarea {
@@ -157,94 +151,33 @@ textarea {
     min-height: 36dvh;
 }
 
-.UIText {
+.UIText
+{
     /* color:#000000; /* Uncomment for black text on white background */
     color:#a0a0a0;    /* Uncomment for black text on white background */
-    min-width: 24px;
 }
 
-.UIDisabledText {
+.UIDisabledText
+{
     color:#808080;
 }
 
-.UIInput {
+.UIInput
+{
     background-color:#e0e0e0;
 }
 
-.UIInputReadOnly {
-    background-color: #ecffece0;
+.UIInputReadOnly
+{
+    background-color:#b0b0b0;
 }
 
-#inputTextArea, #inputTextArea:focus-visible {
-    font-family: monospace;
-    font-feature-settings: normal;
-    font-kerning: auto;
-    font-optical-sizing: auto;
-    font-size: 13.3333px;
-    font-stretch: 100%;
-    font-style: normal;
-    font-variant-alternates: normal;
-    font-variant-caps: normal;
-    font-variant-east-asian: normal;
-    font-variant-ligatures: normal;
-    font-variant-numeric: normal;
-    font-variant-position: normal;
-    font-variation-settings: normal;
-    font-weight: 400;
-    letter-spacing: normal;
-    line-height: normal;
-    text-align: start;
-    text-indent: 0px;
-    text-shadow: none;
-    text-size-adjust: 100%;
-    text-transform: none;
-    text-wrap: wrap;
-    white-space-collapse: preserve;
-    word-spacing: 0px;
+#inputTextArea:focus-visible {
     border: none;
     outline: none;
-    margin: 0;
-}
-
-.container-view {
-    background: black;
-}
-
-.readable-stream {
-    display: none;
 }
 
 :focus-visible  {
     border: none;
     outline: none;
-}
-
-.active {
-    background: rgba(0, 157, 255, 0.73);
-    color: back;
-}
-
-[contenteditable="true"] {
-    -webkit-user-select: unset;
-    -moz-user-select: unset;
-    -ms-user-select: unset;
-    user-select: unset;
-}
-
-[contenteditable="false"] {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.center {
-    background: rgb(255 0 71 / 74%);
-    color: #89fffa;
-    box-sizing: border-box;
-}
-
-.onair {
-    background: rgb(11 28 30 / 72%);
-    color: #5fefe9;
 }

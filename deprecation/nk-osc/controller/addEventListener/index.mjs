@@ -32,8 +32,7 @@ export default async (self, actions) => {
         consonantLowValue,
         consonantHighValue,
         isInFirefox,
-        inputTextArea,
-        readableStream
+        inputTextArea
     } = await Reader(self)
 
     console.log('self.dataset.field', self.dataset.field)
@@ -41,23 +40,18 @@ export default async (self, actions) => {
 
     if(self.dataset.field === 'osc_audio' || self.dataset.field === 'osc_audio_frame') {
         inputTextArea.textContent = ''
-        readableStream.value = "0"
-
         for(let i =0; i< 250; ++i) {
             inputTextArea.textContent = `${inputTextArea.textContent} ${i}`
-            readableStream.value = `${inputTextArea.value} ${i}`
         }
     }
 
-    readableStream.value = inputTextArea.textContent.replace(/\s*\n\s*/g,"\n").trim()
     inputTextArea.textContent = inputTextArea.textContent.replace(/\s*\n\s*/g,"\n").trim()
 
     return {
         init: () => {
             // Add event handlers
-            inputTextArea.addEventListener("input", keydownInput, false);
-            inputTextArea.addEventListener("keypress", keypressInput, false);
-
+            document.addEventListener("keydown", keydownInput, false);
+            document.addEventListener("keypress", keypressInput, false);
             startStopButton.addEventListener("click", startStopReader, false);
             pauseResumeButton.addEventListener("click", pauseResumeReader, false);
             goBackButton.addEventListener("click", goBackReader, false);
@@ -84,9 +78,8 @@ export default async (self, actions) => {
             setStopState();
         },
         terminate: () => {
-            inputTextArea.removeEventListener("input", keydownInput, false);
-            inputTextArea.removeEventListener("keypress", keypressInput, false);
-
+            document.removeEventListener("keydown", keydownInput, false);
+            document.removeEventListener("keypress", keypressInput, false);
             startStopButton.removeEventListener("click", startStopReader, false);
             pauseResumeButton.removeEventListener("click", pauseResumeReader, false);
             goBackButton.removeEventListener("click", goBackReader, false);
