@@ -1,5 +1,5 @@
 import { store } from '../../../this/index.mjs'
-import { Line } from '../../nk-emulator/views/index.mjs';
+import { Line } from '../views/index.mjs';
 
 export const actions = (self) => {
     return new Promise(async (resolve, reject) => {
@@ -7,22 +7,24 @@ export const actions = (self) => {
         const settings = self.shadowRoot.querySelectorAll('.settings')
         const framesArray = self.shadowRoot.querySelector('.array')
         let count  = 0
+        await line.init(self)
 
         resolve({
             click: async (event) => {
                 event.currentTarget.classList.toggle('active')
                 if(event.currentTarget.classList.contains('active')) {
                     event.currentTarget.textContent = 'Стоп'
-                    line.start(self)
+                    // line.start(self)
                 } else {
                     event.currentTarget.textContent = 'Старт'
-                    line.stop(self)
+                    // line.stop(self)
                     // console.clear();
                 }
             },
             bus: {
-                frame: (event) => {
+                frame: async (event) => {
                     if(event.detail.type === 'frame' && self.dataset.id === event.detail.id) {
+                        await line.tick()
                         console.log('-------------- TICK --------------')
                         // const item = framesArray?.querySelector(`.item-${count}`)
                         // let isReset =
@@ -38,6 +40,7 @@ export const actions = (self) => {
                     }
 
                     if(event.detail.type === 'frame-stop' && self.dataset.id === event.detail.id) {
+                        await line.end()
                         // framesArray?.querySelector(`.item-${count - 1}`)?.classList?.remove('active')
                         // framesArray?.querySelector(`.item-${count}`)?.classList?.remove('active')
                         // count = 0

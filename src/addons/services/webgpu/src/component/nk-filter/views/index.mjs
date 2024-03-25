@@ -1,7 +1,6 @@
-import html from './html/index.mjs'
+export {Line, OSC, fetchAudioFileToF32Array} from './mjs/index.mjs'
+export {template} from './html/index.mjs'
 
-export { Reader } from './mjs/index.mjs'
-export { html }
 export default {
-    html: html
+    "description":""
 }
