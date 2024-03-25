@@ -254,7 +254,7 @@ export const Reader = (self, containerFrame) => {
 
         let isAudio = self.dataset.field === oscAudio || self.dataset.field === oscAudioFrame  || self.dataset.field === oscText;
         let isSample = self.dataset.field === oscAudio || self.dataset.field === oscText;
-
+        let isFrame = self.dataset.field === oscAudioFrame
         let countData = 0;
         let isNextSamle = 0;
         let indexSamle = 1;
@@ -285,8 +285,6 @@ export const Reader = (self, containerFrame) => {
 
         let updateWord = function() {
             ++indexWords;
-            //console.log('--------------- START ---------------', indexWords);
-
             
             // Used to calculate how long the processing takes to obtain the word.
             let startProcessingTime = Date.now();
@@ -305,7 +303,6 @@ export const Reader = (self, containerFrame) => {
             word = nextWord();
             console.log('🟢', word);
 
-
             // Display the word.
             word = word.replace(/\n/g, ' ');
 
@@ -313,7 +310,6 @@ export const Reader = (self, containerFrame) => {
 
             displayWord(word, spiltWorlds.length === 0);
 
-            // //console.log('=== word ===: ', word, '=== spiltWorlds ===: ', spiltWorlds)
             if (!isLastChar && word && (spiltWorlds.length !== 0 || limit === 0)) {
                 // If the word is shorter than four letters, use a four letter delay for this word
                 let nextDelay;
@@ -333,11 +329,8 @@ export const Reader = (self, containerFrame) => {
                     }
                 }));
 
-                // //console.log('-------- START -----------', nextDelay)
-                // Set the length of time this word will show.
                 wordUpdateTimer = setTimeout(function() { updateWord() }, nextDelay);
             } else {
-                //console.log('-------- END -----------');
                 setStopState();
             }
         };
@@ -367,10 +360,6 @@ export const Reader = (self, containerFrame) => {
         // Param: end. ending point of the selection.
 
         let selectWordInTextArea = function(start, end) {
-            // if (isFocus) {
-            //     inputTextArea.focus();
-            // }
-
             // If this isn't Firefox, scroll the textArea so the selected word is visible.
             //   This happens automatically in Firefox.
             if (!isInFirefox) {
@@ -520,69 +509,52 @@ export const Reader = (self, containerFrame) => {
             let firstWordFound = false;     // true when the end of the first word is found.
             let firstWordEnd;               // the end location of the first word.
 
-            // if(isSample) {
-            //     textIndex = countData
+
+            // if(!isFrame) {
+                // Save the starting location of the word.
+                if (isNextFull) {
+                    wordStart = textIndex;
+                } else {
+                    wordStart = 0;
+                }
             // }
-            // Search ahead to find the next non-whitespace character.
-
-
-            // //console.log('textIndex', textIndex)
-            // Save the starting location of the word.
-            if (isNextFull) {
-                wordStart = textIndex;
-            } else {
-                wordStart = 0;
-            }
 
 
             while (textIndex < text.length && wordBreakChars.indexOf(text[textIndex]) > -1) {
                 ++textIndex;
             }
 
-            if (isAudio) {
-                // limit = 1;
-            } else {
-                limit = 0;
-            }
 
             // Search ahead to find the end of the word.
             --textIndex;
             leftLimit = wordStart;
             isNextSamle = 0;
-            // //console.log('sssssssss',isNextSamle,  nextSamle)
 
             isCountFull = count2Limit >= limit;
+
             if (!isCountFull) {
                 isNextFull = (count2Limit + 1) >= limit;
                 ++count2Limit;
             }
 
             const spiltWorlds = text.split(' ');
-            // if(isLastWords) {
-            // if(indexWords - limit === spiltWorlds.length) {
-            //     
-            //     isLastChar = true
-            // }
-            // //console.log('------ {|||||||||||||||||} ------','text:index: ', indexWords - limit , 'ddd', spiltWorlds, 'text:value: ', text[textIndex], 'text: ', text.length)
-            // }
 
             do {
                 ++textIndex;
-                //Ищет следующий пробел
                 if (wordBreakChars.indexOf(text[textIndex]) > -1) {
-                    // //console.log('=== пробел ===', text[textIndex - 2], text[textIndex - 1], '(', text[textIndex], ')', text[textIndex + 1], text[textIndex + 2]);
                     ++isNextSamle;
+
                     if (isSample && isNextSamle === indexSamle) {
                         nextSamle.start = textIndex;
                         nextSamle.previous = nextSamle.previous;
                         nextSamle.text = text.substring(leftLimit, textIndex);
                         nextSamle.leftLimit = leftLimit;
                         nextSamle.textIndex = textIndex + 1;
+
                         if (isSecondStep) {
                             nextSamle.secondStep = textIndex + 1;
                             isSecondStep = false;
                         }
-
                     }
 
                     if (isNextFull) {
