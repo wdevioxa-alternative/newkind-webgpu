@@ -22,9 +22,7 @@ Thumbs.db
 build/Release
 bin
 # Personal Scripts
-*.bat
 *.ssh
-*.sh
 package-lock.json
 # Editors
 .vscode
