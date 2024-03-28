@@ -18,7 +18,7 @@ Module.onRuntimeInitialized = () => {
     );
   };
   window["startplayback"] = function( nameoffile ) {
-    window["disable-spinners"]();
+    if ( window["disable-spinners"] ) window.disable-spinners();
     let retval = Module.ccall(
       'AL_play',
       'number',
@@ -28,7 +28,7 @@ Module.onRuntimeInitialized = () => {
     return retval;
   };
   window["stopplayback"] = function() {
-    window["enable-spinners"]();
+    if ( window["enable-spinners"] ) window.enable-spinners();
     let retval = Module.ccall(
       'AL_stop',
       'number',
